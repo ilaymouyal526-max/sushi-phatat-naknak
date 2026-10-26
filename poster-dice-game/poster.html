@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yoko Ono — Le Grand Jeu</title>
+<style>
+  @font-face { font-family: "Montserrat"; font-weight: 300 900; font-display: block;
+    src: url(fonts/montserrat-latin.woff2) format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: "Montserrat"; font-weight: 300 900; font-display: block;
+    src: url(fonts/montserrat-latin-ext.woff2) format("woff2");
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: "Cormorant"; font-style: italic; font-weight: 500 700; font-display: block;
+    src: url(fonts/cormorant-italic-latin.woff2) format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: "Cormorant"; font-style: italic; font-weight: 500 700; font-display: block;
+    src: url(fonts/cormorant-italic-latin-ext.woff2) format("woff2");
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+2020, U+20A0-20AB, U+2113, U+A720-A7FF; }
+  @font-face { font-family: "Shippori"; font-weight: 800; font-display: block;
+    src: url(fonts/shippori-mincho-unadameshi.woff2) format("woff2"); }
+
+  :root {
+    --ink: #14110e;
+    --ink-2: #1d1915;
+    --ivory: #f4ecdf;
+    --ivory-dim: #d8cdbb;
+    --muted: #a3947f;
+    --gold: #c9a36b;
+    --gold-light: #e2c590;
+    --bronze: #9c7a55;
+    --red: #b8322a;
+  }
+
+  @page { size: 297mm 420mm; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #2a2622; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @media print { html, body { background: var(--ink); } }
+
+  .poster {
+    position: relative;
+    width: 297mm; height: 420mm;
+    margin: 0 auto;
+    overflow: hidden;
+    background: radial-gradient(ellipse 70% 45% at 50% 26%, #2a221b 0%, var(--ink) 70%);
+    color: var(--ivory);
+    font-family: "Montserrat", sans-serif;
+  }
+  .bg-pattern { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  .frame { position: absolute; inset: 26px; border: 1.5px solid var(--gold); pointer-events: none; }
+  .frame::after { content: ""; position: absolute; inset: 7px; border: 0.75px solid rgba(201,163,107,.55); }
+  .corner { position: absolute; width: 34px; height: 34px; }
+  .corner svg { width: 100%; height: 100%; display: block; }
+  .c-tl { top: 18px; left: 18px; } .c-tr { top: 18px; right: 18px; transform: scaleX(-1); }
+  .c-bl { bottom: 18px; left: 18px; transform: scaleY(-1); } .c-br { bottom: 18px; right: 18px; transform: scale(-1,-1); }
+
+  .content { position: absolute; inset: 0; padding: 60px 74px 46px; display: flex; flex-direction: column; align-items: center; }
+  .content > * { flex-shrink: 0; }
+
+  /* Logo */
+  .logo { text-align: center; line-height: 1; }
+  .logo .name { font-weight: 800; font-size: 60px; letter-spacing: .05em; color: var(--gold); }
+  .logo .sub { margin-top: 10px; font-weight: 400; font-size: 17px; letter-spacing: .52em; padding-left: .52em; color: var(--ivory-dim); }
+  .logo .rule { display: flex; align-items: center; gap: 14px; justify-content: center; margin-top: 12px; color: var(--gold); }
+  .logo .rule i { display: block; width: 74px; height: 1px; background: currentColor; opacity: .7; }
+  .logo .rule b { width: 6px; height: 6px; background: currentColor; transform: rotate(45deg); }
+
+  /* Hero */
+  .hero { position: relative; width: 975px; height: 380px; margin-top: 4px; }
+  .hero svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .vertical-jp {
+    position: absolute; left: 6px; top: 46px;
+    writing-mode: vertical-rl; font-family: "Shippori", serif; font-weight: 800;
+    font-size: 44px; letter-spacing: .18em; color: var(--gold);
+  }
+  .vertical-jp small { display: block; margin-top: 10px; font-family: "Montserrat"; font-size: 10.5px; font-weight: 600; letter-spacing: .38em; color: var(--muted); }
+  .badge-new {
+    position: absolute; left: 236px; top: 18px;
+    width: 116px; height: 116px; border-radius: 50%;
+    border: 1.5px solid var(--gold); display: grid; place-items: center; text-align: center;
+    transform: rotate(-12deg);
+    background: var(--ink);
+  }
+  .badge-new::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; border: 0.75px dashed rgba(201,163,107,.7); }
+  .badge-new span { display: block; font-weight: 800; font-size: 16px; letter-spacing: .12em; padding-left: .12em; color: var(--ivory); line-height: 1.15; }
+  .badge-new em { display: block; font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 22px; color: var(--gold-light); letter-spacing: .02em; }
+
+  /* Headline */
+  .kicker { margin-top: 10px; display: flex; align-items: center; gap: 16px; font-weight: 600; font-size: 15px; letter-spacing: .42em; color: var(--gold); text-transform: uppercase; }
+  .kicker i { width: 48px; height: 1px; background: var(--gold); opacity: .7; display: block; }
+  .kicker em { font-family: "Cormorant"; font-style: italic; text-transform: none; letter-spacing: .04em; font-size: 22px; font-weight: 600; color: var(--gold-light); }
+  h1 { margin-top: 10px; font-weight: 900; font-size: 100px; line-height: .95; letter-spacing: -.005em; color: var(--ivory); text-align: center; }
+  .h1-en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 52px; line-height: 1; color: var(--gold-light); margin-top: 6px; }
+  .tagline { margin-top: 12px; text-align: center; }
+  .tagline p { font-weight: 500; font-size: 19px; letter-spacing: .01em; color: var(--ivory-dim); }
+  .tagline p.en { font-family: "Cormorant"; font-style: italic; font-weight: 500; font-size: 22px; color: var(--muted); margin-top: 2px; }
+
+  /* Prizes */
+  .prizes { margin-top: 30px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  .prize { position: relative; padding: 22px 26px 18px; text-align: center; border: 1.5px solid var(--gold); background: rgba(20,17,14,.72); }
+  .prize .label { font-weight: 800; font-size: 17px; letter-spacing: .28em; padding-left: .28em; }
+  .prize .minidice { display: flex; justify-content: center; gap: 18px; margin-top: 12px; }
+  .prize .minidice span { display: flex; gap: 4px; }
+  .prize .minidice svg { width: 26px; height: 26px; display: block; }
+  .prize .big { font-weight: 900; line-height: .9; margin-top: 10px; }
+  .prize .fr { font-weight: 600; font-size: 17px; margin-top: 8px; }
+  .prize .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 21px; margin-top: 2px; }
+
+  .prize.half .label { color: var(--gold); }
+  .prize.half .big { font-size: 100px; color: var(--gold-light); letter-spacing: -.02em; }
+  .prize.half .big small { font-size: .62em; letter-spacing: 0; }
+  .prize.half .fr { color: var(--ivory); }
+  .prize.half .en { color: var(--muted); }
+
+  .prize.free { background: linear-gradient(160deg, #d9b67c 0%, var(--gold) 55%, #b48c55 100%); border-color: var(--gold-light); color: var(--ink); }
+  .prize.free .label { color: var(--ink); }
+  .prize.free .big { font-size: 88px; letter-spacing: -.01em; margin-top: 16px; }
+  .prize.free .fr { color: var(--ink); margin-top: 14px; }
+  .prize.free .en { color: #4a3a27; }
+  .ribbon {
+    position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+    background: var(--red); color: var(--ivory); font-weight: 800; font-size: 13px; letter-spacing: .34em; padding: 7px 14px 7px 19px; white-space: nowrap;
+  }
+
+  /* Rules */
+  .rules { margin-top: 28px; width: 100%; }
+  .rules-head { display: flex; align-items: center; gap: 18px; }
+  .rules-head i { flex: 1; height: 1px; background: var(--gold); opacity: .55; }
+  .rules-head h2 { font-weight: 800; font-size: 20px; letter-spacing: .32em; color: var(--ivory); white-space: nowrap; }
+  .rules-head h2 em { font-family: "Cormorant"; font-style: italic; font-weight: 600; letter-spacing: .02em; font-size: 25px; color: var(--gold-light); margin-left: 10px; }
+  .rules-grid { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; column-gap: 44px; row-gap: 16px; }
+  .rule { display: grid; grid-template-columns: 52px 1fr; column-gap: 8px; }
+  .rule .num { font-family: "Cormorant"; font-style: italic; font-weight: 700; font-size: 44px; line-height: .9; color: var(--gold); }
+  .rule h3 { font-weight: 800; font-size: 14px; letter-spacing: .2em; color: var(--ivory); }
+  .rule h3 span { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 18px; letter-spacing: .02em; color: var(--gold-light); margin-left: 6px; }
+  .rule p { font-size: 14.5px; line-height: 1.42; color: var(--ivory-dim); margin-top: 5px; }
+  .rule p b { color: var(--ivory); font-weight: 700; }
+  .rule p.en { font-family: "Cormorant"; font-style: italic; font-weight: 500; font-size: 17.5px; line-height: 1.25; color: var(--muted); margin-top: 3px; }
+
+  /* Footer notes */
+  .notes { margin-top: 22px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 26px; border-top: 1px solid rgba(201,163,107,.35); padding-top: 18px; }
+  .note { display: grid; grid-template-columns: 34px 1fr; column-gap: 12px; align-items: start; }
+  .note svg { width: 34px; height: 34px; color: var(--gold); }
+  .note h4 { font-weight: 800; font-size: 12.5px; letter-spacing: .2em; color: var(--gold); text-transform: uppercase; }
+  .note p { font-size: 12.5px; line-height: 1.42; color: var(--ivory-dim); margin-top: 3px; }
+  .note p.en { font-family: "Cormorant"; font-style: italic; font-weight: 500; font-size: 15px; line-height: 1.25; color: var(--muted); margin-top: 2px; }
+
+  .signoff { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); background: var(--ink); padding: 0 18px; white-space: nowrap; display: flex; justify-content: center; align-items: center; gap: 16px; color: var(--gold); font-weight: 700; font-size: 12px; letter-spacing: .48em; }
+  .signoff .seal { width: 26px; height: 26px; background: var(--red); color: var(--ivory); display: grid; place-items: center; font-family: "Shippori"; font-size: 17px; letter-spacing: 0; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="poster" id="poster">
+
+  <!-- seigaiha wave pattern -->
+  <svg class="bg-pattern" aria-hidden="true">
+    <defs>
+      <pattern id="seigaiha" width="64" height="32" patternUnits="userSpaceOnUse">
+        <g fill="#14110e" stroke="#c9a36b" stroke-width="1">
+          <g id="wave"><circle r="31"/><circle r="23" fill="none"/><circle r="15" fill="none"/><circle r="7" fill="none"/></g>
+          <use href="#wave" x="64"/>
+          <use href="#wave" x="32" y="16"/>
+          <use href="#wave" y="32"/>
+          <use href="#wave" x="64" y="32"/>
+        </g>
+      </pattern>
+      <radialGradient id="fade" cx="50%" cy="27%" r="75%">
+        <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+        <stop offset=".45" stop-color="#fff" stop-opacity=".25"/>
+        <stop offset="1" stop-color="#fff" stop-opacity="1"/>
+      </radialGradient>
+      <mask id="fadeMask"><rect width="100%" height="100%" fill="url(#fade)"/></mask>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#seigaiha)" opacity=".1" mask="url(#fadeMask)"/>
+  </svg>
+
+  <div class="frame"></div>
+  <div class="corner c-tl"><svg viewBox="0 0 34 34"><path d="M2 32V2h30M8 32V8h24" fill="none" stroke="#c9a36b" stroke-width="1.5"/><rect x="13" y="13" width="6" height="6" transform="rotate(45 16 16)" fill="#c9a36b"/></svg></div>
+  <div class="corner c-tr"><svg viewBox="0 0 34 34"><path d="M2 32V2h30M8 32V8h24" fill="none" stroke="#c9a36b" stroke-width="1.5"/><rect x="13" y="13" width="6" height="6" transform="rotate(45 16 16)" fill="#c9a36b"/></svg></div>
+  <div class="corner c-bl"><svg viewBox="0 0 34 34"><path d="M2 32V2h30M8 32V8h24" fill="none" stroke="#c9a36b" stroke-width="1.5"/><rect x="13" y="13" width="6" height="6" transform="rotate(45 16 16)" fill="#c9a36b"/></svg></div>
+  <div class="corner c-br"><svg viewBox="0 0 34 34"><path d="M2 32V2h30M8 32V8h24" fill="none" stroke="#c9a36b" stroke-width="1.5"/><rect x="13" y="13" width="6" height="6" transform="rotate(45 16 16)" fill="#c9a36b"/></svg></div>
+
+  <div class="content">
+
+    <header class="logo">
+      <div class="name">YOKO ONO</div>
+      <div class="sub">ASIAN KITCHEN</div>
+      <div class="rule"><i></i><b></b><i></i></div>
+    </header>
+
+    <section class="hero">
+      <svg id="hero" viewBox="0 0 975 420" preserveAspectRatio="xMidYMax meet" aria-label="Deux dés lancés devant un soleil rouge"></svg>
+      <div class="vertical-jp">運試し<small>TENTEZ VOTRE CHANCE</small></div>
+      <div class="badge-new"><div><span>NOUVEAU</span><em>new!</em></div></div>
+    </section>
+
+    <div class="kicker"><i></i>Le grand jeu <em>the grand game</em><i></i></div>
+    <h1>LANCEZ LES DÉS</h1>
+    <div class="h1-en">Roll the dice</div>
+    <div class="tagline">
+      <p>Faites un double… et votre addition fond de moitié, ou disparaît.</p>
+      <p class="en">Roll a double… and your bill gets cut in half, or vanishes.</p>
+    </div>
+
+    <section class="prizes">
+      <div class="prize half">
+        <div class="label">DOUBLE 1 · 2 · 3</div>
+        <div class="minidice" data-faces="1,2,3"></div>
+        <div class="big">−50<small>%</small></div>
+        <div class="fr">sur toute l'addition de votre table</div>
+        <div class="en">off your table's entire bill</div>
+      </div>
+      <div class="prize free">
+        <div class="ribbon">JACKPOT !</div>
+        <div class="label">DOUBLE 4 · 5 · 6</div>
+        <div class="minidice" data-faces="4,5,6" data-dark></div>
+        <div class="big">OFFERT</div>
+        <div class="fr">La totalité de votre repas est offerte</div>
+        <div class="en">your entire meal is on the house</div>
+      </div>
+    </section>
+
+    <section class="rules">
+      <div class="rules-head"><i></i><h2>RÈGLES DU JEU<em>Rules of the game</em></h2><i></i></div>
+      <div class="rules-grid">
+        <div class="rule">
+          <div class="num">01</div>
+          <div>
+            <h3>LE MOMENT DE VÉRITÉ<span>The moment of truth</span></h3>
+            <p>Le jeu se déroule exclusivement <b>à la fin de votre repas</b>, au moment du règlement de l'addition.</p>
+            <p class="en">Only at the end of your meal, when settling the bill.</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="num">02</div>
+          <div>
+            <h3>UN SEUL JOUEUR<span>A single player</span></h3>
+            <p>Une seule personne est autorisée à lancer les dés <b>pour toute la table</b>.</p>
+            <p class="en">One person rolls the dice for all guests at the table.</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="num">03</div>
+          <div>
+            <h3>UNE CHANCE UNIQUE<span>A unique chance</span></h3>
+            <p>Le lanceur désigné n'a droit qu'à <b>un seul et unique essai</b> pour toute la table.</p>
+            <p class="en">The designated roller gets only one single attempt.</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="num">04</div>
+          <div>
+            <h3>LE LANCER PARFAIT<span>The perfect roll</span></h3>
+            <p>Pour être validés, les deux dés doivent <b>rebondir sur la paroi d'en face</b>.</p>
+            <p class="en">Both dice must bounce off the opposite wall to count.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes">
+      <div class="note">
+        <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <circle cx="17" cy="17" r="15.5"/><path d="M11 21c1.5 2.3 3.6 3.4 6 3.4s4.5-1.1 6-3.4M12 13.5h.01M22 13.5h.01" stroke-linecap="round" stroke-width="2"/>
+        </svg>
+        <div>
+          <h4>Le service · Service</h4>
+          <p>Seul le pourboire n'est pas inclus dans l'offre : il reste dû à votre serveur pour saluer son travail et son accueil.</p>
+          <p class="en">Only the tip is not included: it remains due to your waiter.</p>
+        </div>
+      </div>
+      <div class="note">
+        <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <rect x="2" y="10" width="21" height="15" rx="2"/><path d="M23 15.5l9-5v14l-9-5z" stroke-linejoin="round"/><circle cx="7.5" cy="14.5" r="1.4" fill="currentColor" stroke="none"/>
+        </svg>
+        <div>
+          <h4>Souriez, vous êtes filmés !</h4>
+          <p>En cas de gain, le gagnant autorise l'équipe Yoko Ono à filmer ce moment de joie et à partager la vidéo sur ses réseaux sociaux, sans restriction.</p>
+          <p class="en">Winners authorize us to film the moment and share it on our social networks, without restriction.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="signoff"><span class="seal">運</span><span>YOKO ONO · ASIAN KITCHEN</span></div>
+</div>
+
+<script>
+(() => {
+  const NS = "http://www.w3.org/2000/svg";
+  const RED = "#c0352b", PIP = "#1b1714";
+  // pip positions on a 100x100 face
+  const lo = 25, c = 50, hi = 75;
+  const PIPS = {
+    1: [[c, c]],
+    2: [[lo, lo], [hi, hi]],
+    3: [[lo, lo], [c, c], [hi, hi]],
+    4: [[lo, lo], [hi, lo], [lo, hi], [hi, hi]],
+    5: [[lo, lo], [hi, lo], [c, c], [lo, hi], [hi, hi]],
+    6: [[lo, lo], [lo, c], [lo, hi], [hi, lo], [hi, c], [hi, hi]],
+  };
+  // Asian dice: the one and the four are red
+  const pipColor = n => (n === 1 || n === 4) ? RED : PIP;
+  const pipRadius = n => n === 1 ? 15 : 9.5;
+
+  const el = (tag, attrs = {}, parent) => {
+    const e = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    if (parent) parent.appendChild(e);
+    return e;
+  };
+
+  function face(parent, n, m, fill) {
+    const g = el("g", { transform: `matrix(${m.join(" ")})` }, parent);
+    el("rect", { x: 2.5, y: 2.5, width: 95, height: 95, rx: 17, fill }, g);
+    for (const [x, y] of PIPS[n]) el("circle", { cx: x, cy: y, r: pipRadius(n), fill: pipColor(n) }, g);
+  }
+
+  // Isometric die: (cx, cy) is the centre of the silhouette, s the edge length.
+  function die(parent, { cx, cy, s, rot = 0, top, left, right }) {
+    const g = el("g", { transform: `rotate(${rot} ${cx} ${cy})`, filter: "url(#dieShadow)" }, parent);
+    const k = 0.866 * s, h = 0.5 * s;
+    const P0 = [cx, cy - s];
+    const pts = [P0, [cx + k, cy - h], [cx + k, cy + h], [cx, cy + s], [cx - k, cy + h], [cx - k, cy - h]];
+    el("polygon", { points: pts.map(p => p.join(",")).join(" "), fill: "#c7b697", stroke: "#c7b697", "stroke-width": s * 0.1, "stroke-linejoin": "round" }, g);
+    const u = 1 / 100;
+    face(g, top,   [k * u, h * u, -k * u, h * u, P0[0], P0[1]], "url(#gTop)");
+    face(g, left,  [k * u, h * u, 0, s * u, cx - k, cy - h], "url(#gLeft)");
+    face(g, right, [k * u, -h * u, 0, s * u, cx, cy], "url(#gRight)");
+  }
+
+  // Hero illustration
+  const svg = document.getElementById("hero");
+  const defs = el("defs", {}, svg);
+  defs.innerHTML = `
+    <radialGradient id="sun" cx="42%" cy="38%" r="70%">
+      <stop offset="0" stop-color="#cf4034"/><stop offset=".7" stop-color="#b8322a"/><stop offset="1" stop-color="#982821"/>
+    </radialGradient>
+    <linearGradient id="gTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffdf7"/><stop offset="1" stop-color="#f3ead9"/></linearGradient>
+    <linearGradient id="gLeft" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ece1cc"/><stop offset="1" stop-color="#ddd0b7"/></linearGradient>
+    <linearGradient id="gRight" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d6c7ab"/><stop offset="1" stop-color="#c3b291"/></linearGradient>
+    <filter id="dieShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#000" flood-opacity=".45"/>
+    </filter>`;
+
+  const CX = 487, CY = 200;
+  el("circle", { cx: CX, cy: CY, r: 208, fill: "none", stroke: "#c9a36b", "stroke-width": 1.2, opacity: .8 }, svg);
+  el("circle", { cx: CX, cy: CY, r: 218, fill: "none", stroke: "#c9a36b", "stroke-width": .7, "stroke-dasharray": "2 6", opacity: .7 }, svg);
+  el("circle", { cx: CX, cy: CY, r: 184, fill: "url(#sun)" }, svg);
+
+  // the throw: across the table, off the opposite wall, back down
+  const WALL = 862;
+  el("path", { d: `M${WALL} 60 V340`, stroke: "#c9a36b", "stroke-width": 3, "stroke-linecap": "round" }, svg);
+  for (let y = 72; y <= 330; y += 18)
+    el("path", { d: `M${WALL} ${y} l12 -10`, stroke: "#c9a36b", "stroke-width": 1.2, opacity: .7 }, svg);
+  const traj = { fill: "none", stroke: "#e2c590", "stroke-width": 2, "stroke-dasharray": "3 9", "stroke-linecap": "round" };
+  el("path", { ...traj, d: `M118 372 C 300 100, 640 40, ${WALL - 4} 160` }, svg);
+  el("path", { ...traj, d: `M${WALL - 4} 160 C 800 172, 760 184, 700 202` }, svg);
+  el("path", { ...traj, d: `M150 358 C 330 130, 640 90, ${WALL - 4} 212` }, svg);
+  el("path", { ...traj, d: `M${WALL - 4} 212 C 780 226, 640 268, 548 298` }, svg);
+  // impact marks on the wall
+  for (const y of [160, 212]) {
+    for (const [dx, dy] of [[-16, -12], [-20, 0], [-16, 12]])
+      el("path", { d: `M${WALL - 6} ${y} l${dx} ${dy}`, stroke: "#e2c590", "stroke-width": 2, "stroke-linecap": "round" }, svg);
+  }
+  const wallLabel = el("text", { x: WALL + 26, y: 200, fill: "#a3947f", "font-family": "Montserrat", "font-weight": 600, "font-size": 10.5, "letter-spacing": "3.5", "text-anchor": "middle", transform: `rotate(90 ${WALL + 26} 200)` }, svg);
+  wallLabel.textContent = "PAROI D'EN FACE · OPPOSITE WALL";
+
+  die(svg, { cx: 420, cy: 224, s: 112, rot: -12, top: 6, left: 4, right: 2 });
+  die(svg, { cx: 598, cy: 184, s: 98, rot: 14, top: 6, left: 3, right: 5 });
+
+  // flat mini dice for the prize cards
+  for (const row of document.querySelectorAll(".minidice")) {
+    const dark = row.hasAttribute("data-dark");
+    for (const n of row.dataset.faces.split(",").map(Number)) {
+      const pair = document.createElement("span");
+      for (let i = 0; i < 2; i++) {
+        const m = el("svg", { viewBox: "0 0 100 100" }, pair);
+        el("rect", { x: 3, y: 3, width: 94, height: 94, rx: 18, fill: dark ? "#14110e" : "#f4ecdf" }, m);
+        for (const [x, y] of PIPS[n])
+          el("circle", { cx: x, cy: y, r: n === 1 ? 14 : 10, fill: (n === 1 || n === 4) ? RED : (dark ? "#f4ecdf" : PIP) }, m);
+      }
+      row.appendChild(pair);
+    }
+  }
+})();
+</script>
+</body>
+</html>
