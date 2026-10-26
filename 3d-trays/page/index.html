@@ -1,0 +1,1211 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>מגשי יוקו בתלת-ממד</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karantina:wght@400;700&family=Assistant:wght@400;600;700&display=swap">
+<style>
+/* Layout: full-bleed 3D stage on black lacquer; brand line on top, a bottom sheet for the picked piece. Single dark look by design (Yoko black + gold). */
+:root{
+  --ink:#f3eadb;
+  --soft:#b3a58f;
+  --gold:#cfa65a;
+  --gold-hi:#f1d593;
+  --lacquer:#060507;
+  --panel:rgba(18,14,11,.86);
+  --line:rgba(207,166,90,.28);
+  --display:"Karantina","Assistant",sans-serif;
+  --body:"Assistant","Segoe UI",Arial,sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--lacquer);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0;touch-action:none}
+#stage canvas{display:block;width:100%;height:100%;cursor:grab}
+#stage canvas:active{cursor:grabbing}
+body.hover #stage canvas{cursor:pointer}
+#overlay{position:fixed;inset:0;pointer-events:none}
+#lines{position:absolute;inset:0;width:100%;height:100%}
+.lbl{position:absolute;left:0;top:0;transform:translate(-50%,-50%);white-space:nowrap;font-size:14px;font-weight:700;line-height:1.2;color:var(--ink);
+  background:rgba(8,6,5,.8);border:1px solid var(--line);border-radius:99px;padding:5px 12px;opacity:0;transition:opacity .25s,border-color .2s,background .2s;pointer-events:none}
+.lbl.on{opacity:1;pointer-events:auto;cursor:pointer}
+.lbl.sel{border-color:var(--gold-hi);background:rgba(40,29,13,.92)}
+.lbl small{display:block;font-size:11px;font-weight:400;color:var(--soft)}
+@media (max-width:520px){.lbl:not(.sel) small{display:none}.lbl{padding:4px 10px;font-size:13px}}
+#tip{pointer-events:none!important}
+header.top{position:fixed;inset:0 0 auto;padding-top:calc(14px + env(safe-area-inset-top,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  pointer-events:none;text-align:center}
+.eyebrow{font-size:12px;letter-spacing:.24em;color:var(--gold);font-weight:700}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(48px,13vw,76px);line-height:.85;margin:4px 0 0;color:var(--gold-hi);text-wrap:balance;text-shadow:0 4px 24px rgba(0,0,0,.9)}
+.sub{margin:6px 0 0;color:var(--soft);font-size:14px}
+#hint{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom,0px));
+  font-size:14px;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:8px 16px;white-space:nowrap;pointer-events:none;transition:opacity .3s}
+#sheet{position:fixed;inset:auto 0 0;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  transform:translateY(105%);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+#sheet.open{transform:none}
+.card{max-width:560px;margin:0 auto;background:var(--panel);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid var(--line);border-radius:18px;padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px}
+.kicker{font-size:12px;letter-spacing:.18em;color:var(--gold);font-weight:700;min-height:1em}
+.card h2{font-family:var(--display);font-weight:700;font-size:40px;line-height:.9;margin:-4px 0 0;color:var(--gold-hi)}
+.card p{margin:0;font-size:15px;line-height:1.5;color:var(--ink);max-width:60ch}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{min-height:36px;padding:6px 12px;font-size:14px;font-weight:600;border-radius:99px;border:1px solid var(--line);background:rgba(8,6,5,.55);color:var(--ink)}
+.chip[aria-pressed="true"]{background:linear-gradient(180deg,var(--gold-hi),var(--gold));color:#140e08;border-color:var(--gold)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;font-weight:700;font-size:16px;border-radius:12px;padding:11px 16px;cursor:pointer;border:1px solid var(--gold);min-height:44px}
+.primary{flex:1 1 140px;color:#140e08;background:linear-gradient(180deg,var(--gold-hi),var(--gold))}
+.ghost{flex:0 1 auto;color:var(--ink);background:transparent;border-color:var(--line)}
+.icon{flex:0 0 44px;padding:0;color:var(--ink);background:transparent;border-color:var(--line);font-size:24px;line-height:1}
+button:focus-visible{outline:2px solid var(--gold-hi);outline-offset:2px}
+.tools{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:10px;pointer-events:auto;transition:opacity .3s}
+body.focus .tools{opacity:0;pointer-events:none}
+body.focus #hint{opacity:0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;padding:3px;background:rgba(8,6,5,.7)}
+.seg button,.shot{min-height:36px;padding:6px 14px;font-size:14px;border:0;border-radius:99px;background:none;color:var(--ink)}
+.seg button[aria-pressed="true"],.shot{background:linear-gradient(180deg,var(--gold-hi),var(--gold));color:#140e08}
+#shotNote{font-size:13px;color:var(--soft)}
+#loading{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:var(--lacquer);transition:opacity .6s;z-index:5;padding-inline:16px;text-align:center}
+#loading.done{opacity:0;pointer-events:none}
+#loadTxt{font-size:15px;color:var(--soft)}
+.bar{width:min(240px,60vw);height:3px;background:rgba(207,166,90,.18);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .25s}
+#fail{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding-inline:max(16px,env(safe-area-inset-left,0px));color:var(--soft);z-index:6;background:var(--lacquer)}
+@media (prefers-reduced-motion:reduce){#sheet{transition:none}.lbl{transition:none}#loading{transition:none}}
+</style>
+
+<div id="stage" aria-label="מגש מסיבה בתלת-ממד"></div>
+<div id="overlay" aria-hidden="true"><svg id="lines"></svg><div class="lbl" id="tip"></div></div>
+
+<header class="top" dir="rtl" lang="he">
+  <div class="eyebrow">YOKO ONO · ASIAN KITCHEN</div>
+  <h1 id="title">מגש מסיבה</h1>
+  <p class="sub" id="sub">מגש מסיבה</p>
+  <div class="tools"><div class="seg" id="trays" role="group" aria-label="בחירת מגש"><button type="button" data-t="party" aria-pressed="true">מסיבה</button><button type="button" data-t="promoL" aria-pressed="false">פרומו L</button><button type="button" data-t="promoXL" aria-pressed="false">פרומו XL</button></div><div class="seg" id="views" role="group" aria-label="זווית מצלמה"><button type="button" data-v="angle" aria-pressed="true">3/4</button><button type="button" data-v="top" aria-pressed="false">מלמעלה</button><button type="button" data-v="low" aria-pressed="false">גובה עיניים</button></div><button type="button" class="shot" id="btnShot">שמור פריים</button><span id="shotNote" aria-live="polite"></span></div>
+</header>
+
+<div id="hint" dir="rtl" lang="he">גררו כדי לסובב · לחצו על רול כדי לפרק אותו</div>
+
+<div id="sheet" dir="rtl" lang="he" aria-live="polite">
+  <div class="card">
+    <div class="kicker" id="heroKicker"></div>
+    <h2 id="heroName">רול</h2>
+    <p id="heroText"></p>
+    <div class="chips" id="chips" role="group" aria-label="המרכיבים"></div>
+    <div class="row">
+      <button type="button" class="icon" id="btnPrev" aria-label="הקודם">›</button>
+      <button type="button" class="primary" id="btnExplode">פרקו למרכיבים</button>
+      <button type="button" class="icon" id="btnNext" aria-label="הבא">‹</button>
+      <button type="button" class="ghost" id="btnBack">חזרה למגש</button>
+    </div>
+  </div>
+</div>
+
+<div id="loading" dir="rtl" lang="he"><div class="eyebrow">YOKO ONO · ASIAN KITCHEN</div><div id="loadTxt">מכינים את המגש…</div><div class="bar"><i id="loadBar"></i></div></div>
+<div id="fail" hidden dir="rtl" lang="he">הדפדפן הזה לא מצליח להציג תלת-ממד. נסו בכרום או בספארי מעודכנים.</div>
+
+<script type="importmap">
+{"imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/",
+  "camera-controls":"https://cdn.jsdelivr.net/npm/camera-controls@2.9.0/dist/camera-controls.module.js"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import CameraControls from 'camera-controls';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
+import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+CameraControls.install({THREE});
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const coarse = matchMedia('(pointer: coarse)').matches;
+const lockQ = new URLSearchParams(location.search).get('q');
+const stage = document.getElementById('stage');
+
+let renderer;
+try{
+  renderer = new THREE.WebGLRenderer({antialias:false, powerPreference:'high-performance', preserveDrawingBuffer:true});
+}catch(e){ document.getElementById('fail').hidden = false; throw e; }
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.NeutralToneMapping;
+renderer.toneMappingExposure = 1.05;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.autoUpdate = false; // the tray is still; shadows refresh only while something moves
+renderer.info.autoReset = false;
+stage.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x060507);
+const pmrem = new THREE.PMREMGenerator(renderer);
+
+// ---------- studio reflections: a big warm softbox over the key light, a cool strip behind, a low front fill ----------
+function studioEnvironment(){
+  const s = new THREE.Scene();
+  const room = new THREE.Mesh(new THREE.BoxGeometry(80, 40, 80), new THREE.MeshBasicMaterial({color:0x0a0806, side:THREE.BackSide}));
+  room.position.y = 14; s.add(room);
+  const panel = (w, h, color, k, pos)=>{ const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({color:new THREE.Color(color).multiplyScalar(k), side:THREE.DoubleSide})); m.position.set(...pos); m.lookAt(0, 0, 0); s.add(m); };
+  panel(30, 20, 0xfff0dc, 6, [-20, 28, -14]);
+  panel(6, 34, 0xdbe6ff, 2.4, [24, 12, -22]);
+  panel(34, 6, 0xfff3e6, 1.0, [0, 9, 30]);
+  panel(10, 10, 0xffe2bf, 1.6, [26, 20, 18]);
+  const t = pmrem.fromScene(s, 0.02).texture; s.traverse(o=>{ if(o.geometry) o.geometry.dispose(); if(o.material) o.material.dispose(); });
+  return t;
+}
+scene.environment = studioEnvironment();
+scene.environmentIntensity = 0.55;
+
+const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 400);
+const cc = new CameraControls(camera, renderer.domElement);
+cc.smoothTime = reduce ? 0.05 : 0.42; cc.draggingSmoothTime = 0.1;
+cc.minDistance = 2.5; cc.maxDistance = 150; cc.maxPolarAngle = 1.42;
+cc.dollyToCursor = true; cc.dollySpeed = 0.7;
+cc.mouseButtons.right = CameraControls.ACTION.NONE;
+cc.touches.two = CameraControls.ACTION.TOUCH_DOLLY;
+cc.touches.three = CameraControls.ACTION.NONE;
+
+// ---------- lights: warm key from the upper left (as in the photo), cool rim from behind ----------
+const key = new THREE.DirectionalLight(0xffe2bf, 3.2);
+key.position.set(-26, 42, -20);
+key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+Object.assign(key.shadow.camera, {left:-28, right:28, top:28, bottom:-28, near:1, far:120});
+key.shadow.bias = -0.0004; key.shadow.normalBias = 0.03;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0xbfd4ff, 1.4); rim.position.set(14, 12, -22); scene.add(rim);
+const fill = new THREE.HemisphereLight(0xfff1dd, 0x0a0806, 0.35); scene.add(fill);
+
+// ---------- small helpers ----------
+function rng(seed){ return function(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const clamp = THREE.MathUtils.clamp, smooth = x => x*x*(3 - 2*x), easeOut = t => 1 - Math.pow(1 - t, 3);
+// critically damped springs: every move eases in and out, and can be reversed mid-way without a jolt
+const S = (x=0)=>({x, v:0});
+function spring(s, target, dt, w){
+  if(reduce) w *= 4;
+  const x = s.x - target, e = Math.exp(-w*dt), t = (s.v + w*x)*dt;
+  s.v = (s.v - w*t)*e; s.x = target + (x + t)*e;
+  if(Math.abs(s.x - target) < 1e-4 && Math.abs(s.v) < 1e-3){ s.x = target; s.v = 0; return false; }
+  return true;
+}
+let dirty = 3, shadowDirty = true;
+const needs = (n=2)=>{ dirty = Math.max(dirty, n); };
+
+function makeTex(size, draw, repeat=1){
+  const c = document.createElement('canvas'); c.width = c.height = size;
+  const g = c.getContext('2d'); draw(g, size);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(repeat, repeat); t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return t;
+}
+function speckle(g, s, r, n, colors, min, max, alpha=1){
+  for(let i=0;i<n;i++){
+    g.globalAlpha = alpha * (0.4 + r()*0.6);
+    g.fillStyle = colors[(r()*colors.length)|0];
+    const x = r()*s, y = r()*s, rad = min + r()*(max-min);
+    g.beginPath(); g.arc(x, y, rad, 0, Math.PI*2); g.fill();
+  }
+  g.globalAlpha = 1;
+}
+
+// ---------- photo textures: colour + depth (normal) + shine (roughness), made from the Yoko photos ----------
+const manager = new THREE.LoadingManager();
+const TL = new THREE.TextureLoader(manager);
+const ANISO = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+function photo(path, repeat=1, color=true){
+  const t = TL.load(path, ()=>needs()); if(color) t.colorSpace = THREE.SRGBColorSpace;
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(repeat, repeat); t.anisotropy = ANISO; return t;
+}
+const tileSet = (k, repeat)=>({map:photo(`assets/tile-${k}.webp`, repeat), normalMap:photo(`assets/tilen-${k}.webp`, repeat, false), roughnessMap:photo(`assets/tiler-${k}.webp`, repeat, false)});
+// the 2k fillings are only seen when a roll comes apart: start with a flat colour and swap the photos in once the tray is up
+const LAZY = [];
+function solidTex(css){ const c = document.createElement('canvas'); c.width = c.height = 4; const g = c.getContext('2d'); g.fillStyle = css; g.fillRect(0,0,4,4); const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = ANISO; return t; }
+function fillSet(k, repeat, base, rough){
+  const map = solidTex(base), normalMap = solidTex('rgb(128,128,255)'), roughnessMap = solidTex(`rgb(0,${Math.round(rough*255)},0)`);
+  map.colorSpace = THREE.SRGBColorSpace;
+  for(const [t, f] of [[map, `assets/fill-${k}.webp`], [normalMap, `assets/filln-${k}.webp`], [roughnessMap, `assets/fillr-${k}.webp`]]){ t.repeat.set(repeat, repeat); LAZY.push([t, f]); }
+  return {map, normalMap, roughnessMap};
+}
+const T = {rice:tileSet('rice', .14), ses:tileSet('ses', .14), pink:tileSet('pink', .2), flake:tileSet('flake', .2),
+  tempura:tileSet('tempura', .2), avoWrap:tileSet('avo', .35), nori:tileSet('nori', .4)};
+const FT = {salmon:fillSet('salmon', .36, '#f47a34', .35), sear:fillSet('sear', .42, '#e0703a', .45), cooked:fillSet('cooked', .5, '#f0a984', .7),
+  tunamayo:fillSet('tunamayo', .5, '#e2c7b4', .6), spicy:fillSet('spicy', .5, '#e8622c', .4), avo:fillSet('avo', .42, '#c9cf55', .35),
+  cuc:fillSet('cuc', .6, '#a9cf6a', .25), carrot:fillSet('carrot', .6, '#f08a2b', .4), onion:fillSet('onion', .9, '#7fb24a', .4)};
+const F = id => `assets/face-${id}.webp`, FN = id => `assets/facen-${id}.webp`;
+const FACE_OF = {mcc:'mcc', nmk:'nmk', pnk:'pnk', ses:'ses', ins:'ins', drg:'drg', tmp:'tmp', tmy:'tmy', sat:'sat', vgp:'vgp', tmc:'tmc', sap:'sap', sag:'sap', ssg:'sap', scp:'sap'};
+
+const phys = o => new THREE.MeshPhysicalMaterial(o), std = o => new THREE.MeshStandardMaterial(o);
+const glow = (c, k)=>({emissive:new THREE.Color(c), emissiveIntensity:k}); // a little light from inside reads as wet, translucent flesh
+const MAT = {
+  rice:    phys({...T.rice, roughness:1, sheen:.5, sheenColor:0xffffff, sheenRoughness:.45}),
+  sesRice: phys({...T.ses, roughness:1, sheen:.5, sheenColor:0xffffff, sheenRoughness:.45}),
+  seedW:   std({color:0xf1e5c6, roughness:.45}),
+  seedB:   std({color:0x1c1714, roughness:.35}),
+  panko:   std({...T.flake, roughness:1, normalScale:new THREE.Vector2(1.4, 1.4)}),
+  pink:    std({...T.pink, roughness:1, normalScale:new THREE.Vector2(1.4, 1.4)}),
+  tempura: std({...T.tempura, roughness:1, normalScale:new THREE.Vector2(1.4, 1.4)}),
+  nori:    phys({...T.nori, roughness:1, sheen:.6, sheenColor:0x3c5a30}),
+  avoSkin: phys({...T.avoWrap, roughness:1, clearcoat:.6, clearcoatRoughness:.3, ...glow(0x2a3305, .5), emissiveMap:T.avoWrap.map}),
+  salmon:  phys({...FT.salmon, roughness:1, clearcoat:.7, clearcoatRoughness:.25, sheen:.4, sheenColor:0xffb08a, ...glow(0x3a1406, .7), emissiveMap:FT.salmon.map}),
+  seared:  phys({...FT.sear, roughness:1, clearcoat:.5, clearcoatRoughness:.35, ...glow(0x2a0f05, .5), emissiveMap:FT.sear.map}),
+  cooked:  std({...FT.cooked, roughness:1}),
+  tunamayo:phys({...FT.tunamayo, roughness:1, sheen:.3, sheenColor:0xffffff}),
+  spicy:   phys({...FT.spicy, roughness:1, clearcoat:.4, clearcoatRoughness:.3, ...glow(0x2a0c04, .5), emissiveMap:FT.spicy.map}),
+  avo:     phys({...FT.avo, roughness:1, clearcoat:.35, clearcoatRoughness:.4, ...glow(0x222a04, .5), emissiveMap:FT.avo.map}),
+  cuc:     phys({...FT.cuc, roughness:1, clearcoat:.4, ...glow(0x1a2a08, .6), emissiveMap:FT.cuc.map}),
+  cucSkin: phys({...FT.cuc, color:0x35562a, roughness:1, clearcoat:.6}),
+  carrot:  phys({...FT.carrot, roughness:1, clearcoat:.3, ...glow(0x3a1500, .4), emissiveMap:FT.carrot.map}),
+  onion:   phys({...FT.onion, roughness:1, clearcoat:.3}),
+  grain:   phys({color:0xf7f3ea, roughness:.36, sheen:.7, sheenColor:0xffffff, sheenRoughness:.35, clearcoat:.25, ...glow(0x30302a, .5)}),
+  flake:   std({color:0xffffff, roughness:.85}),
+};
+for(const [id, f] of Object.entries(FACE_OF)) MAT['face_'+id] = std({map:photo(F(f)), normalMap:photo(FN(f), 1, false), alphaTest:.5, roughness:.48, normalScale:new THREE.Vector2(.9, .9)});
+
+// ---------- roll construction (cm): roll axis along X, cut faces at ±X ----------
+const L = 2.05, R_RICE = 2.28, R_IN = 1.58, R_NORI_IN = 1.51, COAT = 0.2;
+// UVs that wrap around the roll, so photo tiles run evenly round the sides
+const CylUV = {
+  generateTopUV(g, v, a, b, c){ return [a, b, c].map(i => new THREE.Vector2(v[i*3], v[i*3+1])); },
+  generateSideWallUV(g, v, a, b, c, d){
+    const p = [a, b, c, d].map(i => [Math.atan2(v[i*3+1], v[i*3]), Math.hypot(v[i*3], v[i*3+1]), v[i*3+2]]);
+    for(const q of p){ if(q[0] - p[0][0] > Math.PI) q[0] -= 2*Math.PI; else if(p[0][0] - q[0] > Math.PI) q[0] += 2*Math.PI; }
+    const rm = (p[0][1] + p[1][1] + p[2][1] + p[3][1])/4 || 1;
+    return p.map(([ang, , z]) => new THREE.Vector2(ang*rm, z));
+  }
+};
+function extrude(shape, depth, bevel=0, segs=48, steps=1){
+  const geo = new THREE.ExtrudeGeometry(shape, {depth, steps, bevelEnabled:bevel>0, bevelThickness:bevel, bevelSize:bevel, bevelSegments:2, curveSegments:segs, UVGenerator:CylUV});
+  geo.translate(0,0,-depth/2); geo.rotateY(Math.PI/2); geo.computeVertexNormals(); return geo;
+}
+// push the outer surface of a roll part in and out a little, so rice and crumbs read as packed lumps, not a tube
+function lumpy(geo, rMin, amp, freq, seed){
+  const r = rng(seed), ph = [r()*9, r()*9, r()*9, r()*9], p = geo.attributes.position;
+  for(let i=0;i<p.count;i++){
+    const x = p.getX(i), y = p.getY(i), z = p.getZ(i), rad = Math.hypot(y,z); if(rad < rMin) continue;
+    const a = Math.atan2(z,y);
+    const n = Math.sin(a*freq+ph[0])*Math.sin(x*freq*.45+ph[1])*.5 + Math.sin(a*(2*freq+1)+ph[2]+x*1.7)*.3 + Math.sin(a*(4*freq+3)+ph[3]-x*3.1)*.2;
+    const k = (rad + amp*n)/rad; p.setY(i, y*k); p.setZ(i, z*k);
+  }
+  geo.deleteAttribute('normal'); const m = BufferGeometryUtils.mergeVertices(geo); m.computeVertexNormals(); return m;
+}
+// sesame seeds as real little seeds on the rice
+function seeds(seed, n, rad){
+  const r = rng(seed), base = new THREE.SphereGeometry(0.1, 6, 4), o = new THREE.Object3D(), out = [];
+  for(let i=0;i<n;i++){ const a = r()*Math.PI*2, x = (r()-.5)*(L-0.3);
+    o.position.set(x, Math.cos(a)*rad, Math.sin(a)*rad); o.rotation.set(a, 0, 0); o.rotateY(r()*Math.PI); o.scale.set(1.6, .5, .9); o.updateMatrix();
+    out.push(base.clone().applyMatrix4(o.matrix)); }
+  return BufferGeometryUtils.mergeGeometries(out);
+}
+function ring(ro, ri){ const s = new THREE.Shape(); s.absarc(0,0,ro,0,Math.PI*2,false); const h = new THREE.Path(); h.absarc(0,0,ri,0,Math.PI*2,true); s.holes.push(h); return s; }
+function blob(cx, cy, rad, wob, seed, n=40){ const r = rng(seed), s = new THREE.Shape(); const ph = [r()*6, r()*6, r()*6];
+  for(let i=0;i<=n;i++){ const a = i/n*Math.PI*2; const k = rad*(1 + wob*(Math.sin(a*3+ph[0])*.5 + Math.sin(a*5+ph[1])*.3 + Math.sin(a*2+ph[2])*.2)); const x = cx + Math.cos(a)*k, y = cy + Math.sin(a)*k; i ? s.lineTo(x,y) : s.moveTo(x,y); } return s; }
+function lens(cx, cy, rx, ry, rot){ const s = new THREE.Shape(); s.absellipse(cx, cy, rx, ry, 0, Math.PI*2, false, rot); return s; }
+function shell(ro, ri, a0, a1){ const s = new THREE.Shape(); s.absarc(0,0,ro,a0,a1,false); s.absarc(0,0,ri,a1,a0,true); return s; }
+function rect(cx,cy,w,h,rot){ const s = new THREE.Shape(); const c=Math.cos(rot), si=Math.sin(rot); [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([a,b],i)=>{ const x=cx+(a*w/2)*c-(b*h/2)*si, y=cy+(a*w/2)*si+(b*h/2)*c; i?s.lineTo(x,y):s.moveTo(x,y); }); return s; }
+
+// filling recipes: [material, shape] inside radius R_NORI_IN
+const FILL = {
+  salmon:   (sd)=>[['salmon', blob(-0.35,0.15,0.72,0.12,sd)]],
+  cooked:   (sd)=>[['cooked', blob(-0.3,0.1,0.85,0.18,sd)]],
+  tunamayo: (sd)=>[['tunamayo', blob(-0.3,0.2,0.8,0.2,sd)]],
+  spicy:    (sd)=>[['spicy', blob(-0.3,0.15,0.8,0.2,sd)]],
+  avo:      ()=>[['avo', lens(0.55,-0.55,0.72,0.34,-0.55)]],
+  cuc:      ()=>[['cuc', rect(0.55,0.5,0.5,0.5,0.2)], ['cucSkin', rect(0.82,0.5,0.08,0.5,0.2)]],
+  carrot:   ()=>[['carrot', rect(-0.35,-0.75,0.36,0.36,0.4)]],
+  onion:    ()=>[['onion', lens(0.05,0.85,0.16,0.16,0)], ['onion', lens(-0.25,-0.85,0.14,0.14,0)]],
+};
+// the rolls: classic promo-tray rolls and the party-tray rolls from the reference photos
+const ROLLS = {
+  sap:{he:'סלמון אבוקדו פנקו',               coat:'panko',   fill:['salmon','avo']},
+  sat:{he:'סלמון אבוקדו טטאקי',              coat:'tataki',  fill:['salmon','avo']},
+  tmy:{he:'טונה מיונז אבוקדו מלפפון שומשום', coat:'sesame',  fill:['tunamayo','avo','cuc']},
+  scp:{he:'סלמון מבושל פנקו',                 coat:'panko',   fill:['cooked','avo','cuc','carrot']},
+  vgp:{he:'צמחוני פנקו',                      coat:'pink',    fill:['avo','cuc','carrot']},
+  ssg:{he:'ספייסי סלמון אבוקדו בצל ירוק פנקו', coat:'panko',  fill:['spicy','avo','onion']},
+  sag:{he:'סלמון אבוקדו בצל ירוק פנקו',        coat:'panko',  fill:['salmon','avo','onion']},
+  mcc:{he:'מאקי גזר מלפפון',                  maki:'veg',     fill:['carrot','cuc']},
+  pnk:{he:'רול פנקו ורוד',                    coat:'pink',    fill:['salmon','avo','cuc','carrot']},
+  ses:{he:'רול שומשום',                       coat:'sesame',  fill:['salmon','avo','cuc','carrot']},
+  ins:{he:'אינסייד אאוט סלמון',               coat:'plain',   fill:['salmon','avo','cuc','carrot']},
+  drg:{he:'רול אבוקדו',                       coat:'avoWrap', fill:['salmon','cuc','carrot']},
+  tmp:{he:'רול טמפורה',                       coat:'tempura', fill:['cooked','cuc','carrot']},
+  tmc:{he:'טונה מיונז מלפפון',                coat:'plain',   fill:['tunamayo','cuc']},
+  nmk:{he:'מאקי טונה מיונז',                  maki:'tuna',    fill:['tunamayo','cuc']},
+};
+// every ingredient's name, short tag (on the 3D label) and longer description (in the sheet)
+const FILL_INFO = {
+  salmon:  ['סלמון נא', 'רצועה טרייה', 'רצועת סלמון טרי באיכות סושי, עם פסי השומן הלבנים.'],
+  cooked:  ['סלמון מבושל', 'מפורק לפתיתים', 'סלמון אפוי שמפורק לפתיתים רכים.'],
+  tunamayo:['טונה מיונז', 'רכה וקרמית', 'טונה מפוררת שמעורבבת במיונז.'],
+  spicy:   ['ספייסי סלמון', 'קצוץ עם מיונז חריף', 'סלמון נא קצוץ, מעורבב במיונז חריף ובפתיתי צ׳ילי.'],
+  avo:     ['אבוקדו', 'פרוס בתוך הרול', 'פרוסות אבוקדו בשל, חמאתי ורך.'],
+  cuc:     ['מלפפון', 'רצועה פריכה', 'רצועת מלפפון טרי עם הקליפה, לפריכות ורעננות.'],
+  carrot:  ['גזר', 'רצועות דקות', 'גזר טרי חתוך לרצועות דקות, מתוק ופריך.'],
+  onion:   ['בצל ירוק', 'פרוס דק', 'בצל ירוק פרוס לטבעות דקות.'],
+};
+const COAT_INFO = {
+  panko:  ['פנקו', 'פירורים פריכים מבחוץ', 'פירורי לחם יפניים, לבנים ואווריריים, שעוטפים את האורז ונותנים קראנץ׳.'],
+  pink:   ['פנקו ורוד', 'פירורים פריכים בוורוד', 'פנקו בצבע ורוד שעוטף את הרול מבחוץ, הסימן המזוהה של המגש.'],
+  tempura:['ציפוי טמפורה', 'מטוגן עד הזהבה', 'הרול כולו טובל בבלילת טמפורה ומטוגן עד שהציפוי זהוב ופריך.'],
+  sesame: ['שומשום', 'שחור ולבן, על האורז', 'גרגרי שומשום שחור ולבן שמפוזרים על שכבת האורז החיצונית.'],
+  tataki: ['סלמון צרוב', 'טטאקי מעל הרול', 'פרוסת סלמון שנצרבת בלהבה ומונחת מעל הרול, עם פתיתים פריכים.'],
+  avoWrap:['פרוסות אבוקדו', 'עוטפות את הרול', 'פרוסות אבוקדו דקות שמונחות זו על זו ועוטפות את כל הרול.'],
+};
+const FILL_HE = Object.fromEntries(Object.entries(FILL_INFO).map(([k, v]) => [k, v[0]]));
+const COAT_HE = {panko:'מצופה פנקו', tataki:'עטוף סלמון צרוב (טטאקי)', pink:'מצופה פנקו ורוד', sesame:'מצופה שומשום שחור ולבן', plain:'אורז מבחוץ', avoWrap:'עטוף פרוסות אבוקדו', tempura:'מטוגן בבלילת טמפורה'};
+
+function rollPartsBase(id){
+  const R = ROLLS[id], parts = [], sd = id.charCodeAt(0)*7+id.charCodeAt(1);
+  if(R.maki==='veg'){ // small maki for the promo-tray centre
+    const ro = 1.35, ri = 0.62;
+    parts.push({k:'nori', layer:'nori', mat:'nori', geo: lumpy(extrude(ring(ro, ro-0.07), L*0.9, 0, 48, 4), ro-0.1, 0.025, 5, sd)});
+    parts.push({k:'rice', layer:'rice', mat:'rice', geo: extrude(ring(ro-0.07, ri), L*0.9-0.06, 0.03)});
+    parts.push({k:'f0', layer:'f:carrot', mat:'carrot', geo: extrude(rect(-0.18,0,0.3,0.42,0), L*0.9-0.04)});
+    parts.push({k:'f1', layer:'f:cuc', mat:'cuc', geo: extrude(rect(0.2,0,0.3,0.42,0), L*0.9-0.04)});
+    return parts;
+  }
+  if(R.maki){ // nori outside, rice inside, filling in the middle
+    const ro = 2.05, ri = 0.95;
+    parts.push({k:'nori', layer:'nori', mat:'nori', geo: lumpy(extrude(ring(ro, ro-0.08), L, 0, 64, 4), ro-0.12, 0.035, 6, sd)});
+    parts.push({k:'rice', layer:'rice', mat:'rice', geo: extrude(ring(ro-0.08, ri), L-0.06, 0.03)});
+    parts.push({k:'f0', layer:'f:tunamayo', mat:'tunamayo', geo: extrude(blob(-0.15,0.1,0.72,0.15,sd), L-0.04)});
+    parts.push({k:'f1', layer:'f:cuc', mat:'cuc', geo: extrude(rect(0.5,-0.35,0.32,0.32,0.3), L-0.04)});
+    return parts;
+  }
+  const coatMat = {panko:'panko', pink:'pink', tempura:'tempura'}[R.coat];
+  parts.push({k:'rice', layer:'rice', mat: R.coat==='sesame' ? 'sesRice' : 'rice', geo: lumpy(extrude(ring(R_RICE-0.06, R_IN), L-0.12, 0.06, 72, 6), R_RICE-0.45, 0.07, 9, sd)});
+  parts.push({k:'nori', layer:'nori', mat:'nori', geo: extrude(ring(R_IN, R_NORI_IN), L-0.02, 0, 64)});
+  if(coatMat) parts.push({k:'coat', layer:'coat', mat:coatMat, geo: lumpy(extrude(ring(R_RICE+COAT, R_RICE-0.04), L-0.06, 0.05, 72, 6), R_RICE+0.05, 0.11, 13, sd+3)});
+  if(R.coat==='sesame'){ parts.push({k:'coat', layer:'coat', mat:'seedW', geo: seeds(sd+5, 30, R_RICE-0.03)}); parts.push({k:'coat', layer:'coat', mat:'seedB', geo: seeds(sd+9, 26, R_RICE-0.03)}); }
+  if(R.coat==='tataki') parts.push({k:'coat', layer:'coat', mat:'seared', geo: extrude(shell(R_RICE+0.32, R_RICE-0.02, -0.1, Math.PI+0.1), L+0.12, 0.04, 64)});
+  if(R.coat==='avoWrap') for(let i=0;i<5;i++){ const a = i/5*Math.PI*2 + 0.3; parts.push({k:'coat', layer:'coat', mat:'avoSkin', geo: extrude(shell(R_RICE+0.42, R_RICE-0.02, a, a + Math.PI*2/5 + 0.25), L+0.06, 0.05, 32)}); }
+  let fi = 0;
+  for(const f of R.fill) for(const [mat, shape] of FILL[f](sd+fi*13)) parts.push({k:'f'+(fi++), layer:'f:'+f, mat, geo: extrude(shape, L-0.05, 0.02)});
+  return parts;
+}
+// the photo cut face sits as a thin disc on both ends of every piece
+function rollParts(id){
+  const parts = rollPartsBase(id);
+  let rad = 0, end = 0;
+  for(const pt of parts){ pt.geo.computeBoundingBox(); const b = pt.geo.boundingBox; end = Math.max(end, b.max.x); rad = Math.max(rad, b.max.y, b.max.z); }
+  const a = new THREE.CircleGeometry(rad, 64); a.rotateY(Math.PI/2); a.translate(end + 0.012, 0, 0);
+  const b = new THREE.CircleGeometry(rad, 64); b.rotateY(-Math.PI/2); b.translate(-end - 0.012, 0, 0);
+  parts.push({k:'face', layer:'face', mat:'face_'+id, geo: BufferGeometryUtils.mergeGeometries([a, b])});
+  return parts;
+}
+
+// ---------- the round party tray: black lacquer, red lacquer trim, gold maple print on the rim ----------
+// six wedges around a round centre bowl of kimchi, read off the reference photos
+const DECK_Y = 3.4, FLOOR_Y = 0.35, R_WALL = 19.5, WALL_T = 0.55;
+const R_CENTER = 6.0, DIV_T = 0.42, DIV_TOP = 2.9, BOWL_TOP = 3.7;
+const DIV_ANGLES = [0,1,2,3,4,5].map(k => -Math.PI/2 + k*Math.PI/3);
+
+// gold print: filled maples, outline maples, little leaves
+function drawPrint(g, s, mask){
+  const r = rng(77);
+  g.fillStyle = mask ? '#000' : '#050505'; g.fillRect(0,0,s,s);
+  const gold = () => mask ? '#fff' : ['#d8b24a','#e6c35a','#c9a03c'][(r()*3)|0];
+  function maple(x,y,size,rot,filled){
+    g.save(); g.translate(x,y); g.rotate(rot); g.beginPath();
+    for(let k=0;k<=120;k++){ const t = k/120*Math.PI*2 - Math.PI/2;
+      let rr = 0.42 + 0.58*Math.pow(Math.abs(Math.cos(2.5*(t+Math.PI/2))), 0.7) + 0.07*Math.sin(t*20);
+      if(Math.abs(t - Math.PI/2) < 0.35) rr *= 0.35; // notch for the stem
+      const X = Math.cos(t)*rr*size, Y = Math.sin(t)*rr*size; k ? g.lineTo(X,Y) : g.moveTo(X,Y); }
+    g.closePath();
+    if(filled){ g.fillStyle = gold(); g.fill(); } else { g.strokeStyle = gold(); g.lineWidth = s/400; g.stroke(); }
+    g.strokeStyle = filled ? (mask ? '#000' : '#050505') : gold(); g.lineWidth = s/700;
+    for(let k=0;k<5;k++){ const t = -Math.PI/2 + k*Math.PI*2/5; g.beginPath(); g.moveTo(0,0); g.lineTo(Math.cos(t)*size*.75, Math.sin(t)*size*.75); g.stroke(); }
+    g.beginPath(); g.moveTo(0, 0); g.lineTo(size*.08, size*1.05); g.strokeStyle = gold(); g.lineWidth = s/450; g.stroke();
+    g.restore();
+  }
+  function leaf(x,y,size,rot){
+    g.save(); g.translate(x,y); g.rotate(rot); g.beginPath();
+    g.moveTo(0,-size); g.quadraticCurveTo(size*.8,-size*.2,0,size*.6); g.quadraticCurveTo(-size*.8,-size*.2,0,-size);
+    g.moveTo(0,size*.6); g.lineTo(size*.25,size); g.strokeStyle = gold(); g.lineWidth = s/450; g.stroke(); g.restore();
+  }
+  for(let i=0;i<34;i++){
+    const x = r()*s, y = r()*s, rot = r()*Math.PI*2, t = r();
+    for(const [dx,dy] of [[0,0],[s,0],[-s,0],[0,s],[0,-s],[s,s],[-s,-s],[s,-s],[-s,s]]){
+      const X = x+dx, Y = y+dy; if(X<-60||X>s+60||Y<-60||Y>s+60) continue;
+      if(t < .55) maple(X,Y,s*.04,rot,true); else if(t < .8) maple(X,Y,s*.036,rot,false); else leaf(X,Y,s*.03,rot);
+    }
+  }
+}
+const printTex = makeTex(1024, (g,s)=>drawPrint(g,s,false));
+const printMask = makeTex(1024, (g,s)=>drawPrint(g,s,true)); printMask.colorSpace = THREE.NoColorSpace;
+const trayMat = new THREE.MeshPhysicalMaterial({map:printTex, metalnessMap:printMask, metalness:.85, roughness:.22, clearcoat:1, clearcoatRoughness:.08, side:THREE.DoubleSide});
+const blackMat = new THREE.MeshPhysicalMaterial({color:0x080707, roughness:.2, clearcoat:1, clearcoatRoughness:.06, side:THREE.DoubleSide});
+const redMat = new THREE.MeshPhysicalMaterial({color:0x8e1d12, roughness:.25, clearcoat:1, clearcoatRoughness:.08});
+
+// UVs from tray-local position so the print keeps one scale on every surface
+function planarUV(geo, tile=14){
+  const p = geo.attributes.position, n = geo.attributes.normal, uv = new Float32Array(p.count*2);
+  for(let i=0;i<p.count;i++){
+    const x = p.getX(i), y = p.getY(i), z = p.getZ(i), ax = Math.abs(n.getX(i)), ay = Math.abs(n.getY(i)), az = Math.abs(n.getZ(i));
+    const [u,v] = ay > .6 ? [x,z] : ax > az ? [z,y] : [x,y];
+    uv[i*2] = u/tile; uv[i*2+1] = v/tile;
+  }
+  geo.setAttribute('uv', new THREE.BufferAttribute(uv,2));
+  return geo;
+}
+function flat(shape, depth, y0, segs=128){ // extrude upward from y0
+  const geo = new THREE.ExtrudeGeometry(shape, {depth, bevelEnabled:false, curveSegments:segs});
+  geo.rotateX(-Math.PI/2); geo.translate(0, y0, 0); geo.computeVertexNormals(); return geo;
+}
+function ringShape(ro, ri){ const s = new THREE.Shape(); s.absarc(0,0,ro,0,Math.PI*2,false); const h = new THREE.Path(); h.absarc(0,0,ri,0,Math.PI*2,true); s.holes.push(h); return s; }
+// one mesh per material: far fewer draw calls for the still parts of the tray
+function mergedMeshes(list, group, uvTile){
+  const byMat = new Map();
+  for(const [g, mat] of list){ const geo = g.index ? g.toNonIndexed() : g; geo.computeVertexNormals(); if(uvTile && (mat === trayMat || mat === realTrayMat)) planarUV(geo, uvTile[mat === trayMat ? 0 : 1]); geo.clearGroups(); (byMat.get(mat) || byMat.set(mat, []).get(mat)).push(geo); }
+  for(const [mat, geos] of byMat){ const m = new THREE.Mesh(BufferGeometryUtils.mergeGeometries(geos), mat); m.castShadow = m.receiveShadow = true; group.add(m); }
+}
+const tray = new THREE.Group(); scene.add(tray);
+const trayRound = new THREE.Group(), traySquare = new THREE.Group(); tray.add(trayRound, traySquare);
+const trayGeos = []; // [geometry, material]
+{
+  // outer wall: printed outside, black inside, rounded top lip
+  trayGeos.push([flat(ringShape(R_WALL+WALL_T, R_WALL), DECK_Y, 0), trayMat]);
+  const lip = new THREE.TorusGeometry(R_WALL+WALL_T/2, WALL_T/2, 12, 160); lip.rotateX(Math.PI/2); lip.translate(0, DECK_Y, 0);
+  trayGeos.push([lip, trayMat]);
+  // thin red lacquer line just inside the rim
+  const redLine = new THREE.TorusGeometry(R_WALL-0.05, 0.09, 8, 160); redLine.rotateX(Math.PI/2); redLine.translate(0, DECK_Y-0.25, 0);
+  trayGeos.push([redLine, redMat]);
+  // floor
+  const disk = new THREE.Shape(); disk.absarc(0,0,R_WALL,0,Math.PI*2,false);
+  trayGeos.push([flat(disk, FLOOR_Y, 0), blackMat]);
+  // centre bowl: black with a red rim, taller than the dividers
+  trayGeos.push([flat(ringShape(R_CENTER+0.45, R_CENTER), BOWL_TOP - FLOOR_Y, FLOOR_Y), blackMat]);
+  const bowlRim = new THREE.TorusGeometry(R_CENTER+0.22, 0.26, 10, 128); bowlRim.rotateX(Math.PI/2); bowlRim.translate(0, BOWL_TOP, 0);
+  trayGeos.push([bowlRim, redMat]);
+  // 6 radial dividers: black body, red lacquer cap
+  for(const a of DIV_ANGLES){
+    const len = R_WALL - R_CENTER - 0.45, mid = R_CENTER + 0.45 + len/2;
+    const g = new THREE.BoxGeometry(len, DIV_TOP - FLOOR_Y, DIV_T);
+    g.rotateY(-a); g.translate(Math.cos(a)*mid, FLOOR_Y + (DIV_TOP-FLOOR_Y)/2, Math.sin(a)*mid);
+    trayGeos.push([g, blackMat]);
+    const cap = new RoundedBoxGeometry(len, 0.22, DIV_T+0.12, 2, 0.08);
+    cap.rotateY(-a); cap.translate(Math.cos(a)*mid, DIV_TOP+0.08, Math.sin(a)*mid);
+    trayGeos.push([cap, redMat]);
+  }
+}
+
+// ---------- the square promo tray, as the real Yoko trays: black with gold chevrons and red blossom medallions ----------
+// measurements read off the photos (cm): ~42 square, 6 wedges + centre well, 4 corner pockets
+const realPrintTex = makeTex(1024, (g,s)=>{
+  const r = rng(321); g.fillStyle = '#070606'; g.fillRect(0,0,s,s);
+  g.strokeStyle = 'rgba(214,190,140,.55)'; g.lineWidth = s/520;
+  const cell = s/6;
+  for(let cy=0; cy<6; cy++) for(let cx=0; cx<6; cx++){ // nested chevrons, alternating direction per cell
+    const x0 = cx*cell, y0 = cy*cell, flip = (cx+cy)%2;
+    for(let k=1;k<=5;k++){ const d = k*cell/12; g.beginPath();
+      if(flip){ g.moveTo(x0, y0+d); g.lineTo(x0+cell/2, y0+cell/2+d-cell/4); g.lineTo(x0+cell, y0+d); }
+      else { g.moveTo(x0+d, y0); g.lineTo(x0+cell/2+d-cell/4, y0+cell/2); g.lineTo(x0+d, y0+cell); }
+      g.stroke(); }
+  }
+  for(let i=0;i<9;i++){ const x = r()*s, y = r()*s, rad = s*.032; // red medallions with gold blossoms
+    for(const [dx,dy] of [[0,0],[s,0],[-s,0],[0,s],[0,-s]]){ const X = x+dx, Y = y+dy; if(X<-60||X>s+60||Y<-60||Y>s+60) continue;
+      g.fillStyle = '#9b1d17'; g.beginPath(); g.arc(X,Y,rad,0,7); g.fill();
+      for(const [fx,fy,fr] of [[-.35,-.2,.42],[.35,.25,.32]]){ g.fillStyle = '#e8c27a';
+        for(let p=0;p<5;p++){ const a = p/5*Math.PI*2; g.beginPath(); g.arc(X+fx*rad+Math.cos(a)*fr*rad*.45, Y+fy*rad+Math.sin(a)*fr*rad*.45, fr*rad*.38, 0, 7); g.fill(); }
+        g.fillStyle = '#9b1d17'; g.beginPath(); g.arc(X+fx*rad, Y+fy*rad, fr*rad*.18, 0, 7); g.fill(); } } }
+});
+const realTrayMat = new THREE.MeshPhysicalMaterial({map:realPrintTex, roughness:.25, clearcoat:1, clearcoatRoughness:.1, side:THREE.DoubleSide});
+// black lacquer should read black: it gets the studio reflections, but only a little of them
+for(const [m, k] of [[trayMat, .4], [blackMat, .07], [redMat, .3], [realTrayMat, .08]]){ m.envMap = scene.environment; m.envMapIntensity = k; }
+blackMat.clearcoatRoughness = .16; realTrayMat.clearcoatRoughness = .07; realTrayMat.roughness = .45;
+mergedMeshes(trayGeos, trayRound, [14, 15]);
+const SQ = {S:42, CR:3.4, DECK_Y:2.7, R_WALL:17.4, WALL_T:0.4, R_CENTER:5.9, DIV_T:0.42, DIV_TOP:2.35};
+SQ.DIV_ANGLES = [0,1,2,3,4,5].map(k => Math.PI/2 + k*Math.PI/3);
+function rrectPath(path, w, h, rad, cx=0, cy=0){
+  const x = cx - w/2, y = cy - h/2;
+  path.moveTo(x+rad, y); path.lineTo(x+w-rad, y); path.quadraticCurveTo(x+w, y, x+w, y+rad);
+  path.lineTo(x+w, y+h-rad); path.quadraticCurveTo(x+w, y+h, x+w-rad, y+h);
+  path.lineTo(x+rad, y+h); path.quadraticCurveTo(x, y+h, x, y+h-rad);
+  path.lineTo(x, y+rad); path.quadraticCurveTo(x, y, x+rad, y); return path;
+}
+function triPath(path, pts, rad){ // rounded triangle
+  const n = pts.length;
+  for(let i=0;i<n;i++){
+    const p = pts[i], a = pts[(i+n-1)%n], b = pts[(i+1)%n];
+    const da = new THREE.Vector2().subVectors(a,p).normalize().multiplyScalar(rad), db = new THREE.Vector2().subVectors(b,p).normalize().multiplyScalar(rad);
+    const p1 = p.clone().add(da), p2 = p.clone().add(db);
+    i ? path.lineTo(p1.x,p1.y) : path.moveTo(p1.x,p1.y); path.quadraticCurveTo(p.x,p.y,p2.x,p2.y);
+  }
+  path.closePath(); return path;
+}
+const SQ_H = SQ.S/2 - 1.5, SQ_P = 7.2;
+const pocketTris = [[1,1],[-1,1],[-1,-1],[1,-1]].map(([sx,sy])=>[new THREE.Vector2(sx*SQ_H, sy*SQ_H), new THREE.Vector2(sx*SQ_H, sy*(SQ_H-SQ_P)), new THREE.Vector2(sx*(SQ_H-SQ_P), sy*SQ_H)]);
+{
+  const geos = [];
+  const deck = rrectPath(new THREE.Shape(), SQ.S-0.6, SQ.S-0.6, SQ.CR);
+  const hole = new THREE.Path(); hole.absarc(0,0,SQ.R_WALL+SQ.WALL_T,0,Math.PI*2,true); deck.holes.push(hole);
+  for(const t of pocketTris) deck.holes.push(triPath(new THREE.Path(), t.slice().reverse(), 1.1));
+  geos.push(flat(deck, 0.22, SQ.DECK_Y-0.22, 64));
+  const lip = rrectPath(new THREE.Shape(), SQ.S, SQ.S, SQ.CR+0.3); lip.holes.push(rrectPath(new THREE.Path(), SQ.S-0.7, SQ.S-0.7, SQ.CR));
+  geos.push(flat(lip, SQ.DECK_Y + 0.3, 0, 64));
+  const disk = new THREE.Shape(); disk.absarc(0,0,SQ.R_WALL+SQ.WALL_T,0,Math.PI*2,false);
+  geos.push(flat(disk, FLOOR_Y, 0, 64));
+  for(const t of pocketTris) geos.push(flat(triPath(new THREE.Shape(), t, 1.1), 0.9, 0, 64));
+  for(const t of pocketTris){
+    const c = t[0].clone().add(t[1]).add(t[2]).divideScalar(3);
+    const inner = t.map(p => p.clone().sub(c).multiplyScalar(.9).add(c));
+    const w = triPath(new THREE.Shape(), t, 1.1); w.holes.push(triPath(new THREE.Path(), inner.slice().reverse(), 0.9));
+    geos.push(flat(w, SQ.DECK_Y - 0.9, 0.9, 64));
+  }
+  for(const [ro, ri, top] of [[SQ.R_WALL+SQ.WALL_T, SQ.R_WALL, SQ.DECK_Y], [SQ.R_CENTER+0.3, SQ.R_CENTER, SQ.DIV_TOP]]) geos.push(flat(ringShape(ro, ri), top - FLOOR_Y, FLOOR_Y, 128));
+  for(const a of SQ.DIV_ANGLES){
+    const len = SQ.R_WALL - SQ.R_CENTER - 0.3, mid = SQ.R_CENTER + 0.3 + len/2;
+    const g = new RoundedBoxGeometry(len, SQ.DIV_TOP - FLOOR_Y, SQ.DIV_T, 2, 0.15);
+    g.rotateY(-a); g.translate(Math.cos(a)*mid, FLOOR_Y + (SQ.DIV_TOP-FLOOR_Y)/2, Math.sin(a)*mid);
+    geos.push(g);
+  }
+  for(let gI=0; gI<24; gI++) for(let j=-1;j<=1;j++){ // fluted ribs on the inside of the round wall, in threes
+    const a = gI/24*Math.PI*2 + j*0.022 + Math.PI/24;
+    const rib = new THREE.CylinderGeometry(0.1, 0.1, SQ.DECK_Y - FLOOR_Y - 0.2, 6);
+    rib.translate(Math.cos(a)*(SQ.R_WALL-0.02), FLOOR_Y + (SQ.DECK_Y-FLOOR_Y)/2, Math.sin(a)*(SQ.R_WALL-0.02));
+    geos.push(rib);
+  }
+  mergedMeshes(geos.map(g => [g, realTrayMat]), traySquare, [14, 15]);
+}
+function sqWedgeSlots(w){ // 8 lying pieces per wedge: outer arc 5, inner arc 3
+  const r = rng(w*97+5), out = [], HALF = L/2, DEPTH = R_RICE + 0.05 + COAT;
+  const outerRow = SQ.R_WALL - 0.4 - DEPTH, rows = [outerRow - DEPTH*2 - 0.25, outerRow];
+  const a0 = SQ.DIV_ANGLES[w], a1 = a0 + Math.PI/3;
+  for(const rr of rows){
+    const ri = rr - DEPTH, margin = Math.asin(Math.min(.99, (HALF + SQ.DIV_T/2 + 0.2) / ri)), step = (L + 0.1) / ri;
+    const n = Math.floor(((a1-a0) - 2*margin)/step + 1e-6) + 1, startA = (a0+a1)/2 - step*(n-1)/2;
+    for(let k=0;k<n;k++){ const phi = startA + k*step; out.push({x:Math.cos(phi)*rr+(r()-.5)*.06, y:FLOOR_Y + R_RICE + COAT*.6, z:Math.sin(phi)*rr+(r()-.5)*.06, ry:-(phi+Math.PI/2)+(r()-.5)*.06, rz:(r()-.5)*.05, sc:1}); }
+  }
+  return out;
+}
+// soft floor glow so the tray sits on something
+const floorTex = makeTex(256,(g,s)=>{ const gr = g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2); gr.addColorStop(0,'#1d1b19'); gr.addColorStop(.6,'#0e0d0c'); gr.addColorStop(1,'#060507'); g.fillStyle=gr; g.fillRect(0,0,s,s); });
+floorTex.wrapS = floorTex.wrapT = THREE.ClampToEdgeWrapping;
+const floorFade = makeTex(256,(g,s)=>{ const gr = g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2); gr.addColorStop(0,'#fff'); gr.addColorStop(.35,'#fff'); gr.addColorStop(1,'#000'); g.fillStyle=gr; g.fillRect(0,0,s,s); }); floorFade.colorSpace = THREE.NoColorSpace;
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(200,200), new THREE.MeshStandardMaterial({map:floorTex, alphaMap:floorFade, transparent:true, depthWrite:false, roughness:.95}));
+floor.rotation.x = -Math.PI/2; floor.position.y = -0.01; floor.receiveShadow = true; scene.add(floor);
+
+// ---------- the tray copy uses its own material clones, so the tray can dim while the picked piece stays bright ----------
+const TM = {}; for(const k in MAT){ TM[k] = MAT[k].clone(); }
+const dimmables = [];
+function dimmable(m){ if(m.userData.base) return; m.userData.base = m.color.clone(); if(m.emissive) m.userData.baseE = m.emissiveIntensity; dimmables.push(m); }
+[...Object.values(TM), trayMat, blackMat, redMat, realTrayMat].forEach(dimmable);
+function setDim(d){ for(const m of dimmables){ m.color.copy(m.userData.base).multiplyScalar(1 - .62*d); if(m.userData.baseE !== undefined) m.emissiveIntensity = m.userData.baseE*(1 - .7*d); } }
+
+// ---------- garnish: photo-scanned wasabi and lettuce meshes, hand-built ginger rose and kimchi ----------
+const GARN = {
+  frisee: std({color:0x9ccc4c, roughness:.6, side:THREE.DoubleSide}),
+  friseeHi: std({color:0xd6ea8c, roughness:.6, side:THREE.DoubleSide}),
+  ginger: phys({color:0xf7d5c2, roughness:.28, clearcoat:.8, clearcoatRoughness:.2, sheen:.7, sheenColor:0xffe2d6, side:THREE.DoubleSide, ...glow(0x4a2418, .8)}),
+  wasabi: std({color:0x9db64a, roughness:.75}),
+  kRed:   phys({color:0xd2261a, roughness:.28, clearcoat:.9, clearcoatRoughness:.15, ...glow(0x2a0402, .5)}),
+  kCarrot:phys({...FT.carrot, roughness:1, clearcoat:.6, ...glow(0x3a1500, .5), emissiveMap:FT.carrot.map}),
+  kCab:   phys({color:0xf3ead2, roughness:.35, clearcoat:.6, side:THREE.DoubleSide, ...glow(0x1e1c14, .6)}),
+  kCuc:   phys({map:makeTex(256, (g,s)=>{ // a cucumber slice: dark rim, pale flesh, seed star
+            const c = s/2; g.fillStyle = '#2f4f1d'; g.fillRect(0,0,s,s);
+            const gr = g.createRadialGradient(c,c,0,c,c,c*.9); gr.addColorStop(0,'#e4f0b8'); gr.addColorStop(.55,'#c9e08e'); gr.addColorStop(1,'#9cc05a');
+            g.fillStyle = gr; g.beginPath(); g.arc(c,c,c*.9,0,7); g.fill();
+            g.fillStyle = 'rgba(245,250,220,.9)'; for(let i=0;i<3;i++){ const a = i/3*Math.PI*2 + .5; g.save(); g.translate(c+Math.cos(a)*c*.28, c+Math.sin(a)*c*.28); g.rotate(a); g.beginPath(); g.ellipse(0,0,c*.16,c*.06,0,0,7); g.fill(); g.restore(); } }),
+          roughness:.35, clearcoat:.7, ...glow(0x14200a, .6)}),
+  kSeedW: std({color:0xf3e6c4, roughness:.5}),
+  kSeedB: std({color:0x1a1512, roughness:.4}),
+};
+GARN.kCuc.emissiveMap = GARN.kCuc.map;
+Object.values(GARN).forEach(dimmable);
+function makeFrisee(seed){
+  const g = new THREE.Group(), r = rng(seed), blade = new THREE.PlaneGeometry(0.22, 1.5, 1, 4);
+  for(const [mat, n] of [[GARN.frisee, 90], [GARN.friseeHi, 60]]){
+    const im = new THREE.InstancedMesh(blade, mat, n), o = new THREE.Object3D(); im.castShadow = true;
+    for(let i=0;i<n;i++){ const a = r()*Math.PI*2, d = r()*2.1;
+      o.position.set(Math.cos(a)*d, 0.6 + r()*1.6, Math.sin(a)*d); o.rotation.set((r()-.5)*2.4, r()*6, (r()-.5)*2.4);
+      o.scale.setScalar(1 + r()*.9); o.updateMatrix(); im.setMatrixAt(i, o.matrix); }
+    g.add(im);
+  }
+  return g;
+}
+// pickled ginger: a loose heap of thin, pale, folded slices (as on the trays)
+const PETAL = new THREE.SphereGeometry(1, 22, 10, 0, Math.PI*1.1, 0, Math.PI/2.4); PETAL.scale(1.25, .32, .95);
+function makeGinger(seed=5){
+  const g = new THREE.Group(), r = rng(seed), e = new THREE.Euler();
+  for(let i=0;i<13;i++){
+    const m = new THREE.Mesh(PETAL, GARN.ginger), a = r()*Math.PI*2, rad = Math.sqrt(r())*1.2;
+    e.set((r()-.5)*1.4, r()*Math.PI*2, (r()-.5)*1.4); m.quaternion.setFromEuler(e);
+    m.position.set(Math.cos(a)*rad, .12 + (1.25 - rad)*.45 + r()*.25, Math.sin(a)*rad);
+    m.scale.set(.8 + r()*.5, .7 + r()*.5, .8 + r()*.4); m.castShadow = m.receiveShadow = true; g.add(m);
+  }
+  return g;
+}
+function makeWasabi(){ const m = new THREE.Mesh(new THREE.SphereGeometry(1.25, 32, 20), GARN.wasabi); m.scale.set(1, .8, 1); m.position.y = 1 - FLOOR_Y + .3; m.castShadow = true; const g = new THREE.Group(); g.add(m); return g; }
+// kimchi in the centre bowl: a glossy mound with red pepper strips, carrot slices, cabbage, cucumber and sesame lying on it (as in the photos)
+const kimchi = new THREE.Group(); {
+  const r = rng(99), o = new THREE.Object3D(), Rm = R_CENTER - 0.5, Hm = 2.5, nq = new THREE.Quaternion(), tq = new THREE.Quaternion(), up = new THREE.Vector3(0,1,0), nn = new THREE.Vector3();
+  const mound = new THREE.SphereGeometry(1, 48, 16, 0, Math.PI*2, 0, Math.PI/2); mound.scale(Rm, Hm, Rm);
+  const moundMat = phys({map:makeTex(256, (g,s)=>{ const rr = rng(5); g.fillStyle = '#7a3a22'; g.fillRect(0,0,s,s); speckle(g,s,rr,700,['#c8401f','#e8913a','#efe2c8','#5e2414','#d86a2a','#e9dcc0'],4,16,.85); }, 2), roughness:.32, clearcoat:.8, clearcoatRoughness:.2});
+  dimmable(moundMat); const mm = new THREE.Mesh(mound, moundMat); mm.receiveShadow = true; kimchi.add(mm);
+  const bent = (geo, k)=>{ const p = geo.attributes.position; for(let i=0;i<p.count;i++){ const x = p.getX(i), z = p.getZ(i); p.setY(i, p.getY(i) - k*x*x - k*.6*z*z); } geo.computeVertexNormals(); return geo; };
+  const strip = bent(new THREE.BoxGeometry(3.6, .1, .8, 16, 1, 3), .035);
+  const coin = new THREE.CylinderGeometry(.62, .62, .09, 24); coin.scale(1.6, 1, .9);
+  const cab = bent(new THREE.BoxGeometry(2.6, .08, 1.9, 8, 1, 6), .07); { const p = cab.attributes.position, rr = rng(8); for(let i=0;i<p.count;i++){ p.setX(i, p.getX(i)*(1 + (rr()-.5)*.15)); p.setZ(i, p.getZ(i)*(1 + (rr()-.5)*.2)); } cab.computeVertexNormals(); }
+  const cuc = new THREE.CylinderGeometry(.78, .78, .14, 28);
+  const seed = new THREE.SphereGeometry(.07, 6, 4); seed.scale(1.7, .6, 1);
+  // pieces lie on the mound: each one sits on the surface, turned to its slope, at a random heading
+  const place = (geo, mat, n, lift, tilt)=>{ const im = new THREE.InstancedMesh(geo, mat, n); im.castShadow = im.receiveShadow = true;
+    for(let i=0;i<n;i++){ const a = r()*Math.PI*2, t = Math.sqrt(r())*.93, x = Math.cos(a)*t*Rm, z = Math.sin(a)*t*Rm, y = Hm*Math.sqrt(1 - t*t);
+      nn.set(x/(Rm*Rm), y/(Hm*Hm), z/(Rm*Rm)).normalize(); nq.setFromUnitVectors(up, nn); tq.setFromEuler(new THREE.Euler((r()-.5)*tilt, r()*6.3, (r()-.5)*tilt));
+      o.quaternion.multiplyQuaternions(nq, tq); o.position.set(x, y, z).addScaledVector(nn, lift + r()*.12); o.scale.setScalar(.85 + r()*.3); o.updateMatrix(); im.setMatrixAt(i, o.matrix); }
+    kimchi.add(im); };
+  place(cab, GARN.kCab, 15, .02, .6);
+  place(strip, GARN.kRed, 14, .1, .5);
+  place(coin, GARN.kCarrot, 10, .16, .4);
+  place(cuc, GARN.kCuc, 5, .2, .35);
+  place(seed, GARN.kSeedW, 150, .26, .8);
+  place(seed, GARN.kSeedB, 90, .26, .8);
+  kimchi.userData.kind = 'kimchi';
+}
+const GLB = {};
+const GARN_FIT = {wasabi:{size:4.2, by:'xz'}, lettuce:{size:5.0, by:'y'}, ginger:{size:3.6, by:'xz'}, kimchi:{size:(R_CENTER - .3)*2, by:'xz'}};
+const GLB_FILES = ['wasabi', 'lettuce', 'ginger', 'kimchi'];
+const gltf = new GLTFLoader(manager).setMeshoptDecoder(MeshoptDecoder);
+function onGLB(k, res){
+  const o = res.scene, fit = GARN_FIT[k], b = new THREE.Box3().setFromObject(o), s = b.getSize(new THREE.Vector3()), c = b.getCenter(new THREE.Vector3());
+  const sc = fit.by === 'y' ? fit.size/s.y : fit.size/Math.max(s.x, s.z);
+  o.scale.setScalar(sc); o.position.set(-c.x*sc, -b.min.y*sc, -c.z*sc);
+  o.traverse(m=>{ if(!m.isMesh) return; m.castShadow = m.receiveShadow = true; m.material.metalness = 0; m.material.envMapIntensity = .9; dimmable(m.material); });
+  const w = new THREE.Group(); w.add(o); GLB[k] = w; if(current) placeGarnish();
+}
+// the scanned meshes ship as base64 inside small script modules (the artifact host doesn't serve .glb files)
+for(const k of GLB_FILES){
+  const id = `assets/g-${k}.glb.js`; manager.itemStart(id);
+  import(`./assets/g-${k}.glb.js`)
+    .then(m => { const s = atob(m.default), u = new Uint8Array(s.length); for(let i=0;i<s.length;i++) u[i] = s.charCodeAt(i); return u.buffer; })
+    .then(buf => new Promise((res, rej) => gltf.parse(buf, '', res, rej))).then(res => onGLB(k, res))
+    .catch(()=>{}).finally(()=> manager.itemEnd(id));
+}
+const garnish = new THREE.Group(); tray.add(garnish);
+let garnPick = [];
+const GARN_INFO = {
+  kimchi:['קימצ׳י', 'ירקות כבושים בקערה שבמרכז: רצועות פלפל אדום, פרוסות גזר, כרוב ומלפפון, עם שומשום שחור ולבן.'],
+  ginger:['ג׳ינג׳ר כבוש', 'פרוסות דקות של ג׳ינג׳ר כבוש בחומץ אורז, לניקוי הטעם בין רול לרול.'],
+  wasabi:['וואסאבי', 'ממרח חזרת יפנית חריפה. מעט על הרול, או בתוך הסויה.'],
+  frisee:['חסה', 'עלי חסה מסולסלת לקישוט ולרעננות.'],
+};
+function garnishObj(kind, seed, size=1){
+  let o;
+  if(kind === 'wasabi') o = GLB.wasabi ? GLB.wasabi.clone() : makeWasabi();
+  else if(kind === 'frisee') o = GLB.lettuce ? GLB.lettuce.clone() : makeFrisee(seed);
+  else o = GLB.ginger ? GLB.ginger.clone() : makeGinger(seed);
+  const r = rng(seed); o.rotation.y = r()*Math.PI*2; if(kind === 'frisee' && GLB.lettuce) o.rotation.x = (r()-.5)*.3;
+  o.scale.multiplyScalar(size); o.userData.kind = kind; return o;
+}
+function placeGarnish(){
+  garnish.clear();
+  const T = TRAYS[current];
+  if(T.slots) PARTY_GARNISH.forEach(([g, x, y], i)=>{ const [wx, wz] = px2w(x, y); const o = garnishObj(g, 77+i, g === 'ginger' ? 1.05 : 1); o.position.set(wx, FLOOR_Y, wz); garnish.add(o); });
+  else {
+    pocketTris.forEach((t,i)=>{ const c = t[0].clone().add(t[1]).add(t[2]).divideScalar(3); const o = garnishObj(i%2 ? 'ginger' : 'wasabi', 300+i, i%2 ? .85 : 1.05); o.position.set(c.x, 0.9, c.y); garnish.add(o); });
+    SQ.DIV_ANGLES.forEach((a,w)=>{ if(w%2) return; const ang = a + 0.16, rr = SQ.R_WALL - 2.2; const o = garnishObj('frisee', 200+w, .9); o.position.set(Math.cos(ang)*rr, FLOOR_Y, Math.sin(ang)*rr); garnish.add(o); });
+  }
+  if(!T.center){ const kim = GLB.kimchi || kimchi; kim.userData.kind = 'kimchi'; kim.position.set(0, FLOOR_Y, 0); garnish.add(kim); }
+  garnPick = [];
+  for(const top of garnish.children) top.traverse(m=>{ if(m.isMesh){ m.userData.garn = top; garnPick.push(m); } });
+  shadowDirty = true; needs();
+}
+
+// ---------- party tray layout traced from the top-down reference photo: [id, x px, y px, radius px, axis deg for a piece lying on its side (null = standing)] ----------
+const PARTY_SLOTS = [
+  ['pnk',420,128,62], ['pnk',205,262,64], ['pnk',415,262,60], ['pnk',318,320,66], ['pnk',330,155,64,-34], ['pnk',262,192,62,-34],
+  ['ins',570,130,62], ['ses',655,160,60,-20], ['ses',725,205,58,-20], ['ins',575,265,62], ['ins',795,270,64], ['ses',680,325,68],
+  ['tmc',860,380,46], ['tmc',715,450,46], ['tmc',880,465,46], ['tmc',730,540,46], ['tmc',890,555,46], ['nmk',797,428,44,0], ['nmk',810,515,44,0],
+  ['drg',625,712,68], ['drg',640,850,68], ['drg',855,640,66,123], ['drg',808,715,66,123], ['drg',742,790,66,123],
+  ['tmp',235,785,66], ['tmp',310,840,64,15], ['tmp',385,850,64,15], ['tmp',480,880,62],
+  ['tmc',115,385,45], ['tmc',95,470,45], ['tmc',100,562,45], ['tmc',130,645,45], ['tmc',258,492,45], ['tmc',275,580,45], ['nmk',182,515,44,0], ['nmk',200,600,44,0],
+];
+const PARTY_GARNISH = [['frisee',210,400], ['frisee',720,605], ['ginger',355,705], ['wasabi',470,735]];
+const PX = (R_WALL + WALL_T) / 490, px2w = (x,y) => [(x-500)*PX, (y-500)*PX];
+const outerOf = id => { const R = ROLLS[id]; return R.maki==='veg' ? 1.35 : R.maki ? 2.05 : R.coat==='avoWrap' ? 2.7 : (R.coat==='pink' || R.coat==='tempura' || R.coat==='panko') ? 2.48 : R.coat==='tataki' ? 2.6 : 2.28; };
+
+const TRAYS = {
+  party:  {he:'מגש מסיבה', title:'מגש מסיבה', shape:'round', slots:PARTY_SLOTS},
+  promoL: {he:'מגש פרומו L', title:'מגש פרומו', shape:'square', price:199, pcs:56, wedges:['sap','sat','tmy','scp','vgp','ssg'], center:'mcc'},
+  promoXL:{he:'מגש פרומו XL', title:'מגש פרומו', shape:'square', price:299, pcs:80, wedges:['sap','sat','tmy','scp','vgp','ssg'], center:'mcc'},
+};
+
+// ---------- build a tray ----------
+let pieces = [], groupsInst = [], pickables = [], slotsOf = [], current = null;
+const o3 = new THREE.Object3D(), ZERO = new THREE.Matrix4().makeScale(0,0,0), tmpM = new THREE.Matrix4();
+const PARTS = {}; const partsOf = id => PARTS[id] || (PARTS[id] = rollParts(id));
+const drop = {t:1};
+function build(trayId){
+  finishLeaving();
+  for(const im of groupsInst){ tray.remove(im); im.dispose(); }
+  groupsInst = []; pickables = []; pieces = []; current = trayId;
+  const T = TRAYS[trayId];
+  trayRound.visible = T.shape === 'round'; traySquare.visible = T.shape === 'square';
+  if(T.slots){
+    T.slots.forEach(([id, x, y, r, ang], i)=>{ const [wx, wz] = px2w(x, y), sc = r*PX/outerOf(id);
+      if(ang == null) pieces.push({id, x:wx, z:wz, y:FLOOR_Y + L*sc/2 + 0.02, sc, ry:i*1.7, upright:true});
+      else pieces.push({id, x:wx, z:wz, y:FLOOR_Y + outerOf(id)*sc*0.97, sc, ry:-ang*Math.PI/180, rz:0}); });
+  } else {
+    T.wedges.forEach((id,w)=> sqWedgeSlots(w).forEach(s=>pieces.push({id, ...s})));
+    if(T.center){ const sc = 1.25, d = 2*1.35*sc + 0.12; // seven maki standing in the centre well, like the real trays
+      [[0,0], ...[0,1,2,3,4,5].map(k=>[Math.cos(k*Math.PI/3)*d, Math.sin(k*Math.PI/3)*d])].forEach(([x,z],i)=> pieces.push({id:T.center, x, z, y:FLOOR_Y + L*0.9*sc/2 + 0.02, sc, ry:i*1.3, upright:true})); }
+  }
+  slotsOf = pieces.map(()=>[]);
+  const byRoll = {}; pieces.forEach((p,i)=>{ (byRoll[p.id] ||= []).push(i); });
+  for(const [id, idxs] of Object.entries(byRoll)){
+    for(const part of partsOf(id)){
+      const im = new THREE.InstancedMesh(part.geo, TM[part.mat], idxs.length); im.castShadow = im.receiveShadow = true;
+      im.userData.idxs = idxs;
+      idxs.forEach((pi,j)=>{ const p = pieces[pi]; o3.position.set(p.x,p.y,p.z); o3.rotation.set(0, p.ry || 0, 0); o3.rotateZ(p.upright ? Math.PI/2 : (p.rz || 0));
+        o3.scale.setScalar(p.sc); o3.updateMatrix(); p.matrix = o3.matrix.clone(); im.setMatrixAt(j, p.matrix); slotsOf[pi].push([im, j]); });
+      o3.scale.setScalar(1);
+      im.instanceMatrix.needsUpdate = true; im.computeBoundingSphere();
+      tray.add(im); groupsInst.push(im); pickables.push(im);
+    }
+  }
+  pieces.forEach(p=>{ p.lift = S(0); p.dy = 0; p.hidden = false; });
+  placeGarnish();
+  sub.textContent = trayLabel(); document.getElementById('title').textContent = T.title;
+  drop.t = (reduce || !ready) ? 1 : 0; shadowDirty = true; needs();
+}
+function writePiece(pi){
+  const p = pieces[pi]; if(!p) return;
+  const dy = p.dy + p.lift.x, m = p.hidden ? ZERO : dy ? tmpM.makeTranslation(0, dy, 0).multiply(p.matrix) : p.matrix;
+  for(const [im, j] of slotsOf[pi]){ im.setMatrixAt(j, m); im.instanceMatrix.needsUpdate = true; }
+}
+const trayLabel = ()=>{ const T = TRAYS[current]; return `${T.he} · ${T.pcs || pieces.length} יח'${T.price ? ` · ${T.price} ₪` : ''}${T.center ? '' : ` · קימצ'י במרכז`}`; };
+
+// ---------- the picked piece: real layers you can pull apart, label and inspect one by one ----------
+let hero = null, exploded = false, mode = 'tray', ready = false;
+const leaving = [];
+const ISO_S = 1.6, HERO_POS = new THREE.Vector3(0, 14, 12);
+const portrait = () => innerWidth / innerHeight < 0.85;
+// grains of rice and crumbs of panko, only on the piece you hold up close
+const GRAIN = new THREE.SphereGeometry(1, 9, 6); GRAIN.scale(.2, .07, .085);
+const CRUMB = new THREE.IcosahedronGeometry(1, 0); CRUMB.scale(.16, .055, .12);
+const CRUMB_COLORS = {panko:['#f4ecdc','#e9dcc0','#fbf6ea','#dcc39a'], pink:['#d94f94','#ef8fbe','#f6c3da','#c23d82'], tempura:['#e9b866','#f3d08c','#d79a45','#c98a3a']};
+const UP = new THREE.Vector3(0,1,0), nrm = new THREE.Vector3();
+function scatter(geo, mat, n, seed, place, colors){
+  const r = rng(seed), o = new THREE.Object3D(), im = new THREE.InstancedMesh(geo, mat, n), c = new THREE.Color();
+  for(let i=0;i<n;i++){ place(o, r); o.updateMatrix(); im.setMatrixAt(i, o.matrix); colors ? c.set(colors[(r()*colors.length)|0]) : c.setScalar(.9 + r()*.1); im.setColorAt(i, c); }
+  im.castShadow = im.receiveShadow = true; return im;
+}
+const onTube = (R, len)=>(o, r)=>{ const a = r()*Math.PI*2; nrm.set(0, Math.cos(a), Math.sin(a)); o.position.set((r()-.5)*len, nrm.y*R, nrm.z*R); o.quaternion.setFromUnitVectors(UP, nrm); o.rotateY(r()*Math.PI); o.scale.setScalar(.85 + r()*.35); };
+const onFace = (ro, ri, x)=>(o, r)=>{ const a = r()*Math.PI*2, rr = Math.sqrt(ri*ri + r()*(ro*ro - ri*ri)), sx = r() < .5 ? -1 : 1; nrm.set(sx, 0, 0); o.position.set(sx*x, Math.cos(a)*rr, Math.sin(a)*rr); o.quaternion.setFromUnitVectors(UP, nrm); o.rotateY(r()*Math.PI); o.scale.setScalar(.85 + r()*.35); };
+
+function layerDefs(id){
+  const R = ROLLS[id], D = 2.5, out = [];
+  if(R.maki){
+    out.push({key:'nori', name:'נורי', sub:'עוטף את הרול מבחוץ', desc:'עלה אצה קלויה שעוטף את המאקי מבחוץ.', off:[0, 2.6, 0], delay:0});
+    out.push({key:'rice', name:'אורז סושי', sub:'מתחת לנורי', desc:'אורז יפני עגול, מתובל בחומץ אורז, בשכבה דקה מתחת לנורי.', off:[-D, 0, 0], delay:.1});
+  } else {
+    if(R.coat !== 'plain'){ const [name, sub, desc] = COAT_INFO[R.coat]; out.push({key:'coat', name, sub, desc, off:[0, 2.9, 0], delay:0}); }
+    out.push({key:'rice', name:'אורז סושי', sub:'מבחוץ, מתובל בחומץ', desc:'אורז יפני עגול, מבושל ומתובל בחומץ אורז, סוכר ומלח. ברול אינסייד-אאוט הוא בצד החיצוני.', off:[-2*D, 0, 0], delay:.12});
+    out.push({key:'nori', name:'נורי', sub:'עוטף את המילוי', desc:'עלה אצה קלויה שמחזיק את המילוי במרכז הרול.', off:[-D, 0, 0], delay:.2});
+  }
+  R.fill.forEach((f,i)=>{ const [name, sub, desc] = FILL_INFO[f]; out.push({key:'f:'+f, name, sub, desc, off:[D*(i+1), i%2 ? .35 : -.35, 0], delay:.25 + i*.06}); });
+  // on a narrow screen the same layers sit in two columns, outside layers first
+  const rows = Math.ceil(out.length/2);
+  out.forEach((Lr, i)=>{ Lr.offP = [i%2 ? 2.9 : -2.9, ((rows - 1)/2 - Math.floor(i/2))*3.7, 0]; });
+  return out;
+}
+function buildHero(pi){
+  const p = pieces[pi], R = ROLLS[p.id], parts = partsOf(p.id), sd = p.id.charCodeAt(0)*7 + p.id.charCodeAt(1);
+  const root = new THREE.Group(), spin = new THREE.Group(); root.add(spin);
+  const layers = layerDefs(p.id).map(d => ({...d, g:new THREE.Group(), mats:[], cache:{}, box:new THREE.Box3(), iso:S(0), fade:S(0)}));
+  const byKey = Object.fromEntries(layers.map(Lr => [Lr.key, Lr]));
+  const matFor = (Lr, key)=>{ if(!Lr.cache[key]){ const m = MAT[key].clone(); m.transparent = true; Lr.cache[key] = m; Lr.mats.push(m); } return Lr.cache[key]; };
+  for(const Lr of layers) spin.add(Lr.g);
+  let face = null;
+  for(const part of parts){
+    if(part.layer === 'face'){ const m = MAT[part.mat].clone(); m.transparent = true; face = new THREE.Mesh(part.geo, m); spin.add(face); continue; }
+    const Lr = byKey[part.layer], mesh = new THREE.Mesh(part.geo, matFor(Lr, part.mat));
+    mesh.castShadow = mesh.receiveShadow = true; mesh.userData.layer = Lr; Lr.g.add(mesh);
+    part.geo.computeBoundingBox(); Lr.box.union(part.geo.boundingBox);
+  }
+  // rice grains on the rice (and on its cut faces, shown once the photo face fades), crumbs on panko and tempura
+  const rice = byKey.rice, gm = matFor(rice, 'grain');
+  let faceGrains;
+  if(R.maki === 'veg') faceGrains = scatter(GRAIN, gm, 120, sd, onFace(1.26, .66, L*.45));
+  else if(R.maki) faceGrains = scatter(GRAIN, gm, 200, sd, onFace(1.95, 1.0, L/2 - .02));
+  else { const tube = scatter(GRAIN, gm, 420, sd + 1, onTube(R_RICE - .04, L - .25)); tube.userData.layer = rice; rice.g.add(tube); faceGrains = scatter(GRAIN, gm, 220, sd + 2, onFace(R_RICE - .1, R_IN + .06, L/2 - .02)); }
+  faceGrains.userData.layer = rice; rice.g.add(faceGrains);
+  if(CRUMB_COLORS[R.coat]){ const cm = matFor(byKey.coat, 'flake'), cr = scatter(CRUMB, cm, 520, sd + 3, onTube(R_RICE + COAT + .02, L - .15), CRUMB_COLORS[R.coat]); cr.userData.layer = byKey.coat; byKey.coat.g.add(cr); }
+  for(const Lr of layers){ Lr.c = Lr.box.getCenter(new THREE.Vector3()); Lr.r = Lr.box.getSize(new THREE.Vector3()).length()/2; }
+  const from = new THREE.Vector3(), q0 = new THREE.Quaternion(), scl = new THREE.Vector3(); p.matrix.decompose(from, q0, scl);
+  return {pi, id:p.id, tray:current, root, spin, layers, face, faceGrains, sc:p.sc, from, q0, q1:heroQ(),
+          k:S(0), kT:1, ex:S(0), pop:S(1), popT:1, turn:0, iso:-1};
+}
+// the held piece faces you side-on, so its photo cut face shows
+function heroQ(){ return new THREE.Quaternion(); }
+const offOf = Lr => portrait() ? Lr.offP : Lr.off;
+const qTurn = new THREE.Quaternion(), YAX = new THREE.Vector3(0,1,0), v3 = new THREE.Vector3();
+function updateHero(h, dt){
+  const isCur = h === hero;
+  let act = spring(h.k, h.kT, dt, 6.5);
+  act = spring(h.ex, isCur && exploded ? 1 : 0, dt, 5.5) || act;
+  act = spring(h.pop, h.popT, dt, 11) || act;
+  const k = clamp(h.k.x, 0, 1);
+  h.root.position.lerpVectors(h.from, HERO_POS, k); h.root.position.y += Math.sin(k*Math.PI)*2.2;
+  h.root.quaternion.slerpQuaternions(h.q0, h.q1, k);
+  // a slow turntable while the piece is whole; it turns back to face you when it comes apart
+  if(isCur && !exploded && mode === 'focus' && !reduce && k > .97){ h.turn += dt*.32; act = true; }
+  else { const t = Math.round(h.turn/(Math.PI*2))*Math.PI*2; if(Math.abs(t - h.turn) > 1e-3){ h.turn += (t - h.turn)*(1 - Math.exp(-dt*5)); act = true; } else h.turn = t; }
+  qTurn.setFromAxisAngle(YAX, h.turn*k); h.root.quaternion.premultiply(qTurn);
+  h.root.scale.setScalar(h.sc*Math.max(h.pop.x, 1e-4));
+  const E = clamp(h.ex.x, 0, 1);
+  h.layers.forEach((Lr, i)=>{
+    act = spring(Lr.iso, isCur && h.iso === i ? 1 : 0, dt, 8) || act;
+    act = spring(Lr.fade, isCur && h.iso >= 0 && h.iso !== i ? 1 : 0, dt, 8) || act;
+    const e = smooth(clamp((E - Lr.delay)/.55, 0, 1)), s = 1 + (ISO_S - 1)*Lr.iso.x, o = offOf(Lr);
+    Lr.g.position.set(o[0]*e + Lr.c.x*(1-s), o[1]*e + Lr.c.y*(1-s), o[2]*e + Lr.c.z*(1-s)); Lr.g.scale.setScalar(s);
+    const op = 1 - Lr.fade.x; Lr.g.visible = op > .02; for(const m of Lr.mats){ m.opacity = op; m.depthWrite = op > .6; }
+  });
+  if(h.face){ const fo = 1 - smooth(clamp(E/.18, 0, 1)); h.face.visible = fo > .01; h.face.material.opacity = fo; h.face.material.alphaTest = Math.max(.01, .5*fo); h.faceGrains.visible = fo < .6; }
+  if(act) shadowDirty = true;
+  return act;
+}
+function disposeHero(h){
+  const i = leaving.indexOf(h); if(i >= 0) leaving.splice(i, 1);
+  scene.remove(h.root);
+  for(const Lr of h.layers) for(const m of Lr.mats) m.dispose();
+  if(h.face) h.face.material.dispose();
+  h.root.traverse(o=>{ if(o.isInstancedMesh) o.dispose(); });
+  if(h.tray === current && pieces[h.pi]){ pieces[h.pi].hidden = false; writePiece(h.pi); }
+  shadowDirty = true; needs();
+}
+function finishLeaving(){ while(leaving.length) disposeHero(leaving[0]); }
+
+// ---------- camera framing: fit what you are looking at into the free band between the title and the sheet ----------
+const sheet = document.getElementById('sheet'), headerEl = document.querySelector('header.top');
+const TRAY_TARGET = new THREE.Vector3(0, 2, 0);
+const VIEWS = { angle: ()=> new THREE.Vector3(22, 46, 50).multiplyScalar(portrait() ? 1.5 : 1),
+                top:   ()=> new THREE.Vector3(0, portrait()? 120 : 82, 0.001),
+                low:   ()=> new THREE.Vector3(0, 16, 46).multiplyScalar(portrait() ? 1.45 : 1) };
+let view = 'angle';
+function band(){
+  const hb = mode === 'tray' ? headerEl.querySelector('.tools').getBoundingClientRect().bottom : headerEl.querySelector('.sub').getBoundingClientRect().bottom;
+  const top = Math.min(hb + 8, innerHeight*.32);
+  const bottom = mode === 'tray' ? innerHeight - (portrait() ? 64 : 0) : Math.max(innerHeight - sheet.offsetHeight - 8, innerHeight*.5);
+  return {top, bottom};
+}
+// fit a set of world points into the free band, seen from direction dir: per-axis, so long thin things fill the screen
+const fitBasis = {r:new THREE.Vector3(), u:new THREE.Vector3(), d:new THREE.Vector3()};
+function frame(points, dir, pad=1.08){
+  const {top, bottom} = band(), H = innerHeight, vf = THREE.MathUtils.degToRad(camera.fov);
+  const tv = Math.tan(vf/2)*Math.max(.25, (bottom - top)/H), th = Math.tan(vf/2)*camera.aspect*.94;
+  const {r, u, d} = fitBasis; d.copy(dir).normalize(); r.crossVectors(UP, d); if(r.lengthSq() < 1e-6) r.set(1, 0, 0); r.normalize(); u.crossVectors(d, r);
+  const box = new THREE.Box3().setFromPoints(points), center = box.getCenter(new THREE.Vector3());
+  // centre the points on screen in the camera's own right/up axes
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  for(const p of points){ v3.subVectors(p, center); const x = v3.dot(r), y = v3.dot(u); x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+  center.addScaledVector(r, (x0 + x1)/2).addScaledVector(u, (y0 + y1)/2);
+  let dist = 0;
+  for(const p of points){ v3.subVectors(p, center); const x = Math.abs(v3.dot(r)), y = Math.abs(v3.dot(u)), z = v3.dot(d); dist = Math.max(dist, z + x/th, z + y/tv); }
+  dist *= pad; const pos = center.clone().addScaledVector(d, dist);
+  cc.setLookAt(pos.x, pos.y, pos.z, center.x, center.y, center.z, true);
+  const perPx = 2*dist*Math.tan(vf/2)/H, shift = ((H - bottom) - top)/2;
+  cc.setFocalOffset(0, shift*perPx, 0, true); // camera-controls moves the camera down for a positive y, which lifts the subject
+}
+const boxPoints = b => [0,1,2,3,4,5,6,7].map(i => new THREE.Vector3(i&1 ? b.max.x : b.min.x, i&2 ? b.max.y : b.min.y, i&4 ? b.max.z : b.min.z));
+function camDir(){ const p = cc.getPosition(new THREE.Vector3(), true), t = cc.getTarget(new THREE.Vector3(), true); return p.sub(t).normalize(); }
+const heroDir = ()=> new THREE.Vector3(6.2, 3.4, 8.6).normalize();
+function heroPoints(h){
+  const out = [], c = new THREE.Vector3();
+  for(const [i, Lr] of h.layers.entries()){ if(h.iso >= 0 && i !== h.iso) continue;
+    const s = h.iso >= 0 ? ISO_S : 1, half = Lr.box.getSize(new THREE.Vector3()).multiplyScalar(s/2);
+    c.copy(Lr.c); if(exploded || h.iso >= 0) c.add(new THREE.Vector3(...offOf(Lr)));
+    for(const p of boxPoints(new THREE.Box3(c.clone().sub(half), c.clone().add(half)))) out.push(p.multiplyScalar(h.sc).applyQuaternion(h.q1).add(HERO_POS));
+  }
+  return out;
+}
+function frameHero(initial){ if(!hero) return; frame(heroPoints(hero), initial ? heroDir() : camDir(), hero.iso >= 0 ? 1.3 : exploded ? 1.06 : 1.35); }
+const TRAY_BOX = {round:new THREE.Box3(new THREE.Vector3(-20.2, 0, -20.2), new THREE.Vector3(20.2, 4.2, 20.2)), square:new THREE.Box3(new THREE.Vector3(-21, 0, -21), new THREE.Vector3(21, 4.2, 21))};
+function frameTray(){
+  if(!portrait()){ const p = VIEWS[view](); cc.setFocalOffset(0, 0, 0, true); cc.setLookAt(p.x, p.y, p.z, TRAY_TARGET.x, TRAY_TARGET.y, TRAY_TARGET.z, true); return; }
+  const dir = view === 'top' ? new THREE.Vector3(0, 1, .001) : VIEWS[view]().normalize();
+  const pts = TRAYS[current].shape === 'round' ? [...Array(32)].flatMap((_, i)=>{ const a = i/32*Math.PI*2, x = Math.cos(a)*20.1, z = Math.sin(a)*20.1; return [new THREE.Vector3(x, 0, z), new THREE.Vector3(x, 4.2, z)]; }) : boxPoints(TRAY_BOX.square);
+  frame(pts, dir, 1.02);
+}
+
+// ---------- state + UI ----------
+const hint = document.getElementById('hint'), sub = document.getElementById('sub');
+const btnExplode = document.getElementById('btnExplode'), btnBack = document.getElementById('btnBack'), btnPrev = document.getElementById('btnPrev'), btnNext = document.getElementById('btnNext');
+const heroName = document.getElementById('heroName'), heroText = document.getElementById('heroText'), heroKicker = document.getElementById('heroKicker'), chipsEl = document.getElementById('chips');
+const dimS = S(0); let dimT = 0, gObj = null;
+hint.textContent = coarse ? 'גררו כדי לסובב · צבטו לזום · הקישו על רול כדי לפתוח אותו' : 'גררו כדי לסובב · גלגלת לזום · לחצו על רול כדי לפתוח אותו';
+const rollBlurb = R => R.maki ? `מאקי: נורי מבחוץ, אורז, ${R.fill.map(f=>FILL_HE[f]).join(' ו')}.` : `${COAT_HE[R.coat]}. בפנים: ${R.fill.map(f=>FILL_HE[f]).join(', ')}.`;
+function setMode(m){ mode = m; document.body.classList.toggle('focus', m !== 'tray'); if(m !== 'tray') setHover(-1); }
+function fillSheet(rebuildChips){
+  if(mode === 'garnish' && gObj){
+    const [name, desc] = GARN_INFO[gObj.userData.kind];
+    heroKicker.textContent = 'קישוט במגש'; heroName.textContent = name; heroText.textContent = desc;
+    chipsEl.hidden = true; btnExplode.hidden = true; btnPrev.setAttribute('aria-label', 'הקישוט הקודם'); btnNext.setAttribute('aria-label', 'הקישוט הבא');
+    sub.textContent = 'גררו כדי להסתכל מכל הצדדים'; return;
+  }
+  const h = hero; if(!h) return; const R = ROLLS[h.id];
+  chipsEl.hidden = false; btnExplode.hidden = false;
+  if(rebuildChips){ chipsEl.replaceChildren(...h.layers.map((Lr, i)=>{ const b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = Lr.name; b.addEventListener('click', ()=> isolate(hero && hero.iso === i ? -1 : i)); return b; })); }
+  [...chipsEl.children].forEach((b, i)=> b.setAttribute('aria-pressed', h.iso === i));
+  if(h.iso >= 0){ const Lr = h.layers[h.iso];
+    heroKicker.textContent = R.he; heroName.textContent = Lr.name; heroText.textContent = Lr.desc;
+    btnExplode.textContent = 'כל המרכיבים'; btnPrev.setAttribute('aria-label', 'המרכיב הקודם'); btnNext.setAttribute('aria-label', 'המרכיב הבא');
+    sub.textContent = 'לחצו על מקום ריק כדי לחזור לכל המרכיבים';
+  } else {
+    heroKicker.textContent = exploded ? 'מפורק למרכיבים' : 'רול מהמגש'; heroName.textContent = R.he;
+    heroText.textContent = exploded ? 'לחצו על מרכיב, על התווית שלו או על הכפתור שלו כדי לראות אותו מקרוב.' : rollBlurb(R);
+    btnExplode.textContent = exploded ? 'הרכיבו חזרה' : 'פרקו למרכיבים'; btnPrev.setAttribute('aria-label', 'הרול הקודם'); btnNext.setAttribute('aria-label', 'הרול הבא');
+    sub.textContent = exploded ? 'לחצו על מרכיב כדי לראות אותו מקרוב' : 'לחצו על הרול כדי לפרק אותו';
+  }
+}
+function focusPiece(pi){
+  if(!ready) return;
+  if(hero && hero.pi === pi) return;
+  if(hero){ hero.kT = 0; hero.iso = -1; leaving.push(hero); hero = null; }
+  setMode('focus');
+  const back = leaving.find(h => h.pi === pi && h.tray === current && !h.swapOut);
+  if(back){ leaving.splice(leaving.indexOf(back), 1); hero = back; hero.kT = 1; }
+  else {
+    const p = pieces[pi]; p.hidden = true; p.lift.x = p.lift.v = 0; writePiece(pi);
+    hero = buildHero(pi); scene.add(hero.root);
+  }
+  exploded = false; hero.iso = -1; dimT = 1;
+  makeLabels(hero); fillSheet(true); sheet.classList.add('open');
+  frameHero(true); bokeh.enabled = quality < 2; needs();
+}
+function toggleExplode(){ if(!hero) return; exploded = !exploded; if(!exploded) hero.iso = -1; fillSheet(); frameHero(); needs(); }
+function isolate(i){ if(!hero) return; if(i >= 0) exploded = true; hero.iso = i; fillSheet(); frameHero(); needs(); }
+function backToTray(){
+  if(mode === 'tray') return;
+  if(hero){ hero.kT = 0; hero.iso = -1; leaving.push(hero); hero = null; }
+  exploded = false; gObj = null; dimT = 0; setMode('tray'); sheet.classList.remove('open');
+  sub.textContent = trayLabel(); bokeh.enabled = false; makeLabels(null); frameTray(); needs();
+}
+// step to the next roll type without going back to the tray: the held piece shrinks away and the next one pops in
+function swapRoll(dir){
+  if(!hero) return;
+  const ids = [...new Set(pieces.map(p => p.id))], nid = ids[(ids.indexOf(hero.id) + dir + ids.length) % ids.length];
+  const npi = pieces.findIndex(p => p.id === nid && !p.hidden); if(npi < 0) return;
+  const old = hero; old.popT = 0; old.swapOut = true; leaving.push(old);
+  const p = pieces[npi]; p.hidden = true; writePiece(npi);
+  hero = buildHero(npi); hero.k = S(1); hero.pop = S(0); scene.add(hero.root);
+  hero.iso = -1; makeLabels(hero); fillSheet(true); frameHero(); needs();
+}
+function focusGarnish(top){
+  if(!ready) return;
+  gObj = top; setMode('garnish'); dimT = .35; fillSheet(); sheet.classList.add('open');
+  const bx = new THREE.Box3().setFromObject(top); bx.expandByScalar(Math.max(0, 2.2 - bx.getSize(v3).length()/2));
+  frame(boxPoints(bx), camDir(), 1.25); needs();
+}
+function step(dir){
+  if(mode === 'garnish'){ const list = garnish.children, i = list.indexOf(gObj); focusGarnish(list[(i + dir + list.length) % list.length]); }
+  else if(hero && hero.iso >= 0){ const n = hero.layers.length; isolate((hero.iso + dir + n) % n); }
+  else swapRoll(dir);
+}
+btnExplode.addEventListener('click', ()=>{ if(hero && hero.iso >= 0) isolate(-1); else toggleExplode(); });
+btnBack.addEventListener('click', backToTray);
+btnPrev.addEventListener('click', ()=> step(-1)); btnNext.addEventListener('click', ()=> step(1));
+document.getElementById('trays').addEventListener('click', e=>{ const b = e.target.closest('button'); if(!b || mode !== 'tray') return;
+  document.querySelectorAll('#trays button').forEach(x=>x.setAttribute('aria-pressed', x===b)); build(b.dataset.t); lastInput = performance.now(); frameTray(); });
+document.getElementById('views').addEventListener('click', e=>{ const b = e.target.closest('button'); if(!b || mode !== 'tray') return;
+  view = b.dataset.v; document.querySelectorAll('#views button').forEach(x=>x.setAttribute('aria-pressed', x===b)); lastInput = performance.now(); frameTray(); });
+
+// ---------- ingredient labels with gold pointer lines (as in the Red Dragon and nigiri models) ----------
+const overlay = document.getElementById('overlay'), svg = document.getElementById('lines'), tip = document.getElementById('tip');
+let LBL = [];
+function makeLabels(h){
+  for(const x of LBL){ x.el.remove(); x.line.remove(); }
+  LBL = h ? h.layers.map((Lr, i)=>{
+    const el = document.createElement('div'); el.className = 'lbl'; el.dir = 'rtl'; el.lang = 'he'; el.textContent = Lr.name;
+    const s = document.createElement('small'); s.textContent = Lr.sub; el.appendChild(s);
+    el.addEventListener('click', ()=> isolate(hero && hero.iso === i ? -1 : i)); overlay.appendChild(el);
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line'); line.setAttribute('stroke', 'rgba(207,166,90,.6)'); line.setAttribute('stroke-width', '1'); line.setAttribute('opacity', '0'); svg.appendChild(line);
+    return {el, line, w:0, h:0};
+  }) : [];
+}
+function updateLabels(){
+  const h = hero, show = h && mode === 'focus' && h.ex.x > .75 && h.k.x > .95 && h.pop.x > .9;
+  if(!show){ for(const x of LBL){ x.el.classList.remove('on'); x.line.setAttribute('opacity', '0'); } return; }
+  const {top, bottom} = band(), W = innerWidth, items = []; let cx = 0, cy = 0;
+  h.layers.forEach((Lr, i)=>{ const v = Lr.g.localToWorld(v3.copy(Lr.c)).project(camera); const it = {i, ax:(v.x*.5+.5)*W, ay:(-v.y*.5+.5)*innerHeight, vis:v.z < 1 && (h.iso < 0 || h.iso === i)}; cx += it.ax; cy += it.ay; items.push(it); });
+  cx /= items.length; cy /= items.length;
+  for(const it of items){ const x = LBL[it.i]; if(!x.w){ x.w = x.el.offsetWidth; x.h = x.el.offsetHeight; }
+    let dx = it.ax - cx, dy = it.ay - cy; const d = Math.hypot(dx, dy); if(d < 1){ dx = 0; dy = -1; } else { dx /= d; dy /= d; }
+    const reach = h.iso >= 0 ? 120 : 66; it.x = it.ax + dx*reach; it.y = it.ay + dy*reach; it.w = x.w; it.h = x.h; }
+  const vis = items.filter(it => it.vis);
+  for(let k=0;k<10;k++) for(let a=0;a<vis.length;a++) for(let b=a+1;b<vis.length;b++){ const A = vis[a], B = vis[b];
+    const ox = (A.w + B.w)/2 + 8 - Math.abs(A.x - B.x), oy = (A.h + B.h)/2 + 6 - Math.abs(A.y - B.y);
+    if(ox > 0 && oy > 0){ if(oy < ox){ const s = A.y <= B.y ? -1 : 1; A.y += s*oy/2; B.y -= s*oy/2; } else { const s = A.x <= B.x ? -1 : 1; A.x += s*ox/2; B.x -= s*ox/2; } } }
+  for(const it of items){ const x = LBL[it.i];
+    it.x = clamp(it.x, it.w/2 + 8, W - it.w/2 - 8); it.y = clamp(it.y, top + it.h/2 + 4, bottom - it.h/2 - 8);
+    x.el.style.left = it.x + 'px'; x.el.style.top = it.y + 'px'; x.el.classList.toggle('on', it.vis); x.el.classList.toggle('sel', h.iso === it.i);
+    x.line.setAttribute('x1', it.ax); x.line.setAttribute('y1', it.ay); x.line.setAttribute('x2', it.x); x.line.setAttribute('y2', it.y); x.line.setAttribute('opacity', it.vis ? '1' : '0'); }
+}
+
+// ---------- hover (mouse): the roll under the pointer lifts a little and names itself ----------
+let hoverPi = -1, hoverEv = null; const lifted = new Set();
+function setHover(pi, ev){
+  if(pi !== hoverPi){ hoverPi = pi; if(pi >= 0) lifted.add(pi); document.body.classList.toggle('hover', pi >= 0); needs(); }
+  if(pi >= 0 && ev){ const R = ROLLS[pieces[pi].id]; tip.replaceChildren(R.he, Object.assign(document.createElement('small'), {textContent:'לחצו כדי לפתוח'})); tip.style.left = ev.clientX + 'px'; tip.style.top = (ev.clientY - 34) + 'px'; tip.classList.add('on'); }
+  else if(pi < 0) tip.classList.remove('on');
+}
+
+// ---------- tap vs drag, double-tap to zoom ----------
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), canvas = renderer.domElement;
+let down = null, lastTap = null, lastInput = performance.now();
+function pick(e, list, recursive=false){ ndc.set(e.clientX/innerWidth*2-1, -(e.clientY/innerHeight)*2+1); ray.setFromCamera(ndc, camera); return ray.intersectObjects(list, recursive)[0]; }
+canvas.addEventListener('pointerdown', e=>{ down = {x:e.clientX, y:e.clientY, t:performance.now()}; lastInput = performance.now(); });
+canvas.addEventListener('pointerup', e=>{
+  if(!down) return; const moved = Math.hypot(e.clientX-down.x, e.clientY-down.y), dt = performance.now()-down.t; down = null;
+  if(moved > 8 || dt > 450 || !ready) return;
+  if(mode === 'tray'){
+    const hit = pick(e, [...pickables, ...garnPick]);
+    if(hit && hit.object.userData.garn) return focusGarnish(hit.object.userData.garn);
+    if(hit && hit.instanceId != null) return focusPiece(hit.object.userData.idxs[hit.instanceId]);
+    const now = performance.now();
+    if(lastTap && now - lastTap.t < 360 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 30){ lastTap = null; zoomAt(e); }
+    else lastTap = {t:now, x:e.clientX, y:e.clientY};
+  } else if(mode === 'focus' && hero){
+    ndc.set(e.clientX/innerWidth*2-1, -(e.clientY/innerHeight)*2+1); ray.setFromCamera(ndc, camera);
+    const hit = ray.intersectObject(hero.spin, true).find(x => x.object.visible);
+    if(!hit){ if(hero.iso >= 0) isolate(-1); return; }
+    let o = hit.object; while(o && !o.userData.layer) o = o.parent;
+    if(!exploded || !o) return toggleExplode();
+    const i = hero.layers.indexOf(o.userData.layer); isolate(hero.iso === i ? -1 : i);
+  }
+});
+function zoomAt(e){
+  if(cc.distance < 40) return frameTray();
+  ndc.set(e.clientX/innerWidth*2-1, -(e.clientY/innerHeight)*2+1); ray.setFromCamera(ndc, camera);
+  const p = new THREE.Vector3(); if(!ray.ray.intersectPlane(new THREE.Plane(UP, -2), p)) return;
+  cc.moveTo(p.x, p.y, p.z, true); cc.dollyTo(cc.distance*.5, true);
+}
+canvas.addEventListener('pointermove', e=>{ if(e.pointerType === 'mouse' && !down) hoverEv = e; });
+canvas.addEventListener('pointerleave', ()=>{ hoverEv = null; setHover(-1); });
+canvas.addEventListener('wheel', ()=>{ lastInput = performance.now(); }, {passive:true});
+cc.addEventListener('controlstart', ()=>{ lastInput = performance.now(); });
+addEventListener('keydown', e=>{
+  if(e.key === 'Escape'){ if(hero && hero.iso >= 0) isolate(-1); else if(hero && exploded) toggleExplode(); else backToTray(); }
+  if(mode !== 'tray' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !e.target.closest('input')) step(e.key === 'ArrowLeft' ? 1 : -1);
+});
+
+// ---------- post: ambient occlusion in the contact points, a soft depth of field on close-ups ----------
+const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(1, 1, {type:THREE.HalfFloatType, samples:4}));
+composer.addPass(new RenderPass(scene, camera));
+const gtao = new GTAOPass(scene, camera, 1, 1);
+gtao.updateGtaoMaterial({radius:1.1, distanceExponent:1.6, thickness:1.2, scale:1.15, samples:12, distanceFallOff:1});
+gtao.updatePdMaterial({lumaPhi:10, depthPhi:2, normalPhi:3, radius:5, rings:2, samples:12});
+gtao.blendIntensity = .9;
+composer.addPass(gtao);
+const bokeh = new BokehPass(scene, camera, {focus:20, aperture:.00045, maxblur:.006}); bokeh.enabled = false;
+composer.addPass(bokeh);
+composer.addPass(new OutputPass());
+let quality = lockQ != null ? +lockQ : coarse ? 1 : 0;
+function applyQuality(){
+  const dpr = Math.min(devicePixelRatio, [2, 1.5, 1][quality]);
+  renderer.setPixelRatio(dpr); composer.setPixelRatio(dpr); gtao.enabled = quality < 2; if(quality >= 2) bokeh.enabled = false; resize();
+}
+function resize(){ renderer.setSize(innerWidth, innerHeight, false); composer.setSize(innerWidth, innerHeight); camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix(); for(const x of LBL) x.w = 0; needs(); }
+addEventListener('resize', ()=>{ resize(); if(mode === 'focus') frameHero(); else if(mode === 'tray') frameTray(); });
+applyQuality();
+let lastFrame = 0, frameTimes = [];
+function watchFrameRate(now){ // step the sharpness and effects down if this device can't hold a smooth frame rate
+  if(lockQ == null && lastFrame && now - lastFrame < 250){ frameTimes.push(now - lastFrame);
+    if(frameTimes.length >= 40){ const avg = frameTimes.reduce((a,b)=>a+b)/frameTimes.length; frameTimes = []; if(avg > 26 && quality < 2){ quality++; applyQuality(); } } }
+  lastFrame = now;
+}
+
+// ---------- save a frame (for ads and the Higgsfield upgrade) ----------
+let downloads = null;
+(async()=>{ try{ downloads = window.claude ? await window.claude.use('downloads') : null; }catch(e){ downloads = null; }
+  if(!downloads) document.getElementById('btnShot').hidden = true; })();
+document.getElementById('btnShot').addEventListener('click', ()=>{
+  const note = document.getElementById('shotNote');
+  renderer.shadowMap.needsUpdate = true; composer.render();
+  renderer.domElement.toBlob(async blob=>{
+    try{ await downloads.save({filename:`yoko-${current}-${view}.png`, data:blob}); note.textContent = 'נשמר'; }
+    catch(e){ note.textContent = e && e.code==='declined' ? 'בוטל' : 'השמירה לא זמינה כאן'; }
+    setTimeout(()=>note.textContent='', 2500);
+  }, 'image/png');
+});
+
+// ---------- the loop: springs, camera, and a render only when something changed ----------
+const clock = new THREE.Clock();
+function stepWorld(dt){
+  let act = false;
+  if(drop.t < 1){ // pieces drop into the tray one after another
+    drop.t = Math.min(1, drop.t + dt/1.3); const N = pieces.length;
+    pieces.forEach((p, i)=>{ const u = clamp((drop.t - .45*i/N)/.55, 0, 1); p.dy = 7*(1 - easeOut(u)); writePiece(i); });
+    garnish.position.y = 7*(1 - easeOut(clamp((drop.t - .35)/.65, 0, 1)));
+    shadowDirty = true; act = true;
+  }
+  if(hoverEv && mode === 'tray' && ready){ const hit = pick(hoverEv, pickables); setHover(hit && hit.instanceId != null ? hit.object.userData.idxs[hit.instanceId] : -1, hoverEv); hoverEv = null; }
+  for(const pi of lifted){ const p = pieces[pi]; if(!p){ lifted.delete(pi); continue; }
+    const t = pi === hoverPi && mode === 'tray' ? .5*p.sc : 0;
+    if(spring(p.lift, t, dt, 14)) act = true; else if(!t) lifted.delete(pi);
+    writePiece(pi); shadowDirty = true; }
+  if(spring(dimS, dimT, dt, 6)){ setDim(dimS.x); act = true; }
+  if(hero && updateHero(hero, dt)) act = true;
+  for(const h of [...leaving]){ updateHero(h, dt); act = true; if(h.swapOut ? h.pop.x < .02 : (h.k.x < .004 && Math.abs(h.k.v) < .05)) disposeHero(h); }
+  return act;
+}
+renderer.setAnimationLoop(now=>{
+  const dt = Math.min(clock.getDelta(), lockQ != null ? .5 : 1/20);
+  let act = false;
+  if(ready && mode === 'tray' && view !== 'top' && !reduce && now - lastInput > 6000){ cc.rotate(dt*.09, 0, false); act = true; }
+  act = cc.update(dt) || act;
+  act = stepWorld(dt) || act;
+  if(act) needs();
+  if(dirty <= 0){ lastFrame = 0; return; }
+  dirty--;
+  if(bokeh.enabled) bokeh.uniforms.focus.value = camera.position.distanceTo(cc.getTarget(v3));
+  if(shadowDirty){ renderer.shadowMap.needsUpdate = true; shadowDirty = false; }
+  renderer.info.reset(); composer.render(dt);
+  updateLabels();
+  watchFrameRate(now);
+});
+
+// ---------- loading: textures and meshes first, then compile every shader so the first tap is smooth ----------
+const loadBar = document.getElementById('loadBar'), loading = document.getElementById('loading');
+manager.onProgress = (u, a, b)=>{ loadBar.style.width = Math.round(a/b*100) + '%'; };
+manager.onLoad = ()=> finishLoading();
+setTimeout(()=> finishLoading(), 20000);
+async function finishLoading(){
+  if(ready) return; ready = true;
+  const tmp = new THREE.Group(), box = new THREE.BoxGeometry(.01, .01, .01);
+  for(const k in MAT){ const m = MAT[k].clone(); m.transparent = true; tmp.add(new THREE.Mesh(box, m)); }
+  for(const geo of [GRAIN, CRUMB]){ const im = new THREE.InstancedMesh(geo, MAT.grain.clone(), 1); im.material.transparent = true; im.setColorAt(0, new THREE.Color()); tmp.add(im); }
+  tmp.position.copy(HERO_POS); scene.add(tmp);
+  try{ await renderer.compileAsync(scene, camera); }catch(e){}
+  const be = bokeh.enabled; bokeh.enabled = quality < 2; renderer.shadowMap.needsUpdate = true; composer.render(); bokeh.enabled = be;
+  scene.remove(tmp); tmp.traverse(o=>{ if(o.material) o.material.dispose(); });
+  loading.classList.add('done'); setTimeout(()=> loading.remove(), 800);
+  drop.t = reduce ? 1 : 0; frameTray(); needs();
+  window.__ready = true;
+  prefetchFills();
+}
+// the 2k filling photos: decoded off the main thread one by one, then handed to the GPU
+async function prefetchFills(){
+  for(const [t, f] of LAZY){
+    try{ const img = new Image(); img.src = f; await img.decode(); t.dispose(); t.image = img; t.needsUpdate = true; renderer.initTexture(t); needs(); }catch(e){}
+    await new Promise(r => setTimeout(r, 40));
+  }
+  window.__fills = true;
+}
+
+build('party');
+{ const p = VIEWS.angle().multiplyScalar(1.35); cc.setLookAt(p.x*.6, p.y*1.1, p.z*1.2, TRAY_TARGET.x, TRAY_TARGET.y, TRAY_TARGET.z, false); }
+// test hooks for the render harness
+window.__yoko = {info:()=>({calls:renderer.info.render.calls, triangles:renderer.info.render.triangles, quality}), focusPiece, toggleExplode, isolate, backToTray, swapRoll, focusGarnish, garnish, get pieces(){ return pieces; }, get hero(){ return hero; }, cc, setQuality(q){ quality = q; applyQuality(); }};
+</script>
+
+</body></html>
