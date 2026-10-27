@@ -11,6 +11,7 @@ const POSTERS = {
   "trilingual/noir.html": "yoko-ono-grand-jeu-FR-EN-HE-noir-A3",
   "trilingual/washi.html": "yoko-ono-grand-jeu-FR-EN-HE-washi-A3",
   "trilingual/showa.html": "yoko-ono-grand-jeu-FR-EN-HE-showa-A3",
+  "trilingual/noir-photo.html": "yoko-ono-grand-jeu-FR-EN-HE-noir-photo-A3",
 };
 const files = args.filter(a => !a.startsWith("--"));
 const outDir = path.join(__dirname, "out");

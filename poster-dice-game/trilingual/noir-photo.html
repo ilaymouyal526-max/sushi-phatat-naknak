@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yoko Ono — Le Grand Jeu · Noir photo</title>
+<link rel="stylesheet" href="../../fonts/fonts.css">
+<style>
+  :root {
+    --black: #000;
+    --ivory: #f4ecdf;
+    --ivory-dim: #d8cdbb;
+    --muted: #a3947f;
+    --gold: #c9a36b;
+    --gold-light: #e2c590;
+    --red: #b8322a;
+    --line: rgba(201,163,107,.28);
+  }
+  @page { size: 297mm 420mm; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #2a2622; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @media print { html, body { background: var(--black); } }
+  b { font-weight: 700; color: var(--ivory); }
+  [lang="he"] { font-family: "Heebo", sans-serif; }
+
+  .poster { position: relative; width: 297mm; height: 420mm; margin: 0 auto; overflow: hidden; background: var(--black); color: var(--ivory); font-family: "Montserrat", "Heebo", sans-serif; }
+  /* The photo's edges are pure black, so it sits on the page without a seam */
+  .photo { position: absolute; left: 0; top: 0; width: 100%; height: auto; display: block; }
+  .photo-fade { position: absolute; left: 0; right: 0; top: 520px; height: 330px; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.72) 45%, #000 100%); }
+
+  .frame { position: absolute; inset: 26px; border: 1.5px solid var(--gold); }
+  .frame::after { content: ""; position: absolute; inset: 7px; border: .75px solid rgba(201,163,107,.5); }
+
+  .content { position: absolute; inset: 0; padding: 50px 66px 46px; display: flex; flex-direction: column; align-items: center; }
+  .content > * { flex-shrink: 0; }
+
+  .logo { text-align: center; line-height: 1; }
+  .logo .name { font-weight: 800; font-size: 54px; letter-spacing: .05em; color: var(--gold); }
+  .logo .sub { margin-top: 8px; font-size: 14px; letter-spacing: .52em; padding-left: .52em; color: var(--ivory-dim); }
+
+  .badge-new {
+    position: absolute; left: 86px; top: 236px; width: 118px; height: 118px; border-radius: 50%;
+    border: 1.5px solid var(--gold); background: rgba(0,0,0,.6); display: grid; place-items: center; text-align: center; transform: rotate(-12deg);
+  }
+  .badge-new::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; border: .75px dashed rgba(201,163,107,.7); }
+  .badge-new .fr { display: block; font-weight: 800; font-size: 13px; letter-spacing: .12em; padding-left: .12em; text-transform: uppercase; }
+  .badge-new .en { display: block; font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 21px; line-height: 1; color: var(--gold-light); }
+  .badge-new .he { display: block; font-weight: 700; font-size: 18px; line-height: 1.1; color: var(--gold-light); }
+  .vertical-jp { position: absolute; right: 92px; top: 214px; writing-mode: vertical-rl; font-family: "Shippori", serif; font-weight: 800; font-size: 44px; letter-spacing: .16em; color: var(--gold); }
+
+  .title-block { margin-top: 452px; display: flex; flex-direction: column; align-items: center; }
+  .kicker { display: flex; align-items: center; gap: 14px; color: var(--gold); }
+  .kicker i { width: 40px; height: 1px; background: var(--gold); opacity: .7; }
+  .kicker .fr { font-weight: 600; font-size: 14px; letter-spacing: .4em; text-transform: uppercase; }
+  .kicker .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 21px; color: var(--gold-light); }
+  .kicker .he { font-weight: 600; font-size: 17px; color: var(--gold-light); }
+  .diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); flex: none; }
+  h1 { margin-top: 6px; font-weight: 900; font-size: 90px; line-height: .95; color: var(--ivory); text-transform: uppercase; text-shadow: 0 4px 30px rgba(0,0,0,.8); }
+  .title-alt { margin-top: 8px; display: flex; align-items: center; gap: 22px; color: var(--gold-light); }
+  .title-alt .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 40px; line-height: 1; }
+  .title-alt .he { font-family: "Frank Ruhl", serif; font-weight: 700; font-size: 34px; line-height: 1; }
+
+  .prizes { margin-top: 22px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .prize { position: relative; padding: 15px 22px 13px; text-align: center; border: 1.5px solid var(--gold); background: rgba(12,10,8,.85); }
+  .prize .label { font-weight: 800; font-size: 15px; letter-spacing: .28em; padding-left: .28em; text-transform: uppercase; }
+  .dice-row { display: flex; justify-content: center; gap: 14px; margin-top: 8px; }
+  .dice-row .pair { display: flex; gap: 4px; }
+  .dice-row svg { width: 22px; height: 22px; display: block; }
+  .prize .big { font-weight: 900; font-size: 64px; line-height: .9; margin-top: 8px; letter-spacing: -.02em; }
+  .prize .big small { font-size: .6em; letter-spacing: 0; }
+  .prize .lines { margin-top: 8px; display: grid; gap: 4px; }
+  .prize .lines .fr { font-weight: 500; font-size: 13.5px; line-height: 1.35; }
+  .prize .lines .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 17px; line-height: 1.15; }
+  .prize .lines .he { font-weight: 500; font-size: 14.5px; line-height: 1.35; }
+  .prize.half .label { color: var(--gold); }
+  .prize.half .big { color: var(--gold-light); }
+  .prize.half .lines .fr, .prize.half .lines .he { color: var(--ivory-dim); }
+  .prize.half .lines .en { color: var(--muted); }
+  .prize.free { background: linear-gradient(160deg, #d9b67c 0%, var(--gold) 55%, #b48c55 100%); border-color: var(--gold-light); color: #14110e; }
+  .prize.free b { color: #14110e; }
+  .prize.free .lines .en { color: #4a3a27; }
+  .ribbon { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--red); color: var(--ivory); padding: 5px 16px; white-space: nowrap; display: flex; gap: 12px; align-items: center; }
+  .ribbon .fr { font-weight: 800; font-size: 12.5px; letter-spacing: .3em; text-transform: uppercase; }
+  .ribbon .he { font-weight: 800; font-size: 13.5px; }
+
+  .section-head { margin-top: 16px; width: 100%; display: flex; align-items: center; gap: 16px; }
+  .section-head > i { flex: 1; height: 1px; background: var(--gold); opacity: .55; }
+  .section-head .fr { font-weight: 800; font-size: 17px; letter-spacing: .3em; text-transform: uppercase; }
+  .section-head .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 22px; color: var(--gold-light); }
+  .section-head .he { font-weight: 700; font-size: 18px; color: var(--gold-light); }
+
+  .table { width: 100%; margin-top: 8px; }
+  .row { display: grid; grid-template-columns: 40px 1fr 1fr 1fr; column-gap: 20px; padding: 6px 0; border-top: 1px solid var(--line); }
+  .row.head { border-top: 0; padding: 0 0 5px; }
+  .row.head span { font-weight: 700; font-size: 10px; letter-spacing: .34em; color: var(--muted); text-transform: uppercase; }
+  .row.head span[lang="he"] { font-size: 11.5px; letter-spacing: .05em; text-align: right; }
+  .num { font-family: "Cormorant"; font-style: italic; font-weight: 700; font-size: 32px; line-height: .9; color: var(--gold); }
+  .cell h3 { font-weight: 800; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-light); }
+  .cell p { margin-top: 2px; font-size: 11.5px; line-height: 1.33; color: var(--ivory-dim); }
+  .cell[lang="he"] { text-align: right; }
+  .cell[lang="he"] h3 { font-size: 13.5px; letter-spacing: 0; }
+  .cell[lang="he"] p { font-size: 12.5px; line-height: 1.32; }
+  .row.note .cell h3 { font-size: 10.5px; color: var(--gold); }
+  .row.note .cell[lang="he"] h3 { font-size: 12.5px; }
+  .row.note .cell p { font-size: 10.5px; line-height: 1.34; }
+  .row.note .cell[lang="he"] p { font-size: 11.5px; }
+  .row.note .icon { width: 26px; height: 26px; color: var(--gold); margin-top: 1px; }
+
+  .signoff { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); background: var(--black); padding: 0 18px; white-space: nowrap; display: flex; align-items: center; gap: 16px; color: var(--gold); font-weight: 700; font-size: 12px; letter-spacing: .48em; }
+  .seal { width: 26px; height: 26px; background: var(--red); color: var(--ivory); display: grid; place-items: center; font-family: "Shippori"; font-size: 17px; letter-spacing: 0; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="poster" id="poster">
+  <img class="photo" src="../photo/dice-hero.jpg" alt="Deux dés devant un soleil rouge">
+  <div class="photo-fade"></div>
+  <div class="frame"></div>
+
+  <div class="content">
+    <header class="logo">
+      <div class="name">YOKO ONO</div>
+      <div class="sub">ASIAN KITCHEN</div>
+    </header>
+    <div class="badge-new"><div><span class="fr" data-t="new.fr"></span><span class="en" data-t="new.en"></span><span class="he" data-t="new.he"></span></div></div>
+    <div class="vertical-jp">運試し</div>
+
+    <div class="title-block">
+      <div class="kicker"><i></i><span class="fr" data-t="kicker.fr"></span><b class="diamond"></b><span class="en" data-t="kicker.en"></span><b class="diamond"></b><span class="he" data-t="kicker.he"></span><i></i></div>
+      <h1 data-t="title.fr"></h1>
+      <div class="title-alt"><span class="en" data-t="title.en"></span><b class="diamond"></b><span class="he" data-t="title.he"></span></div>
+    </div>
+
+    <section class="prizes">
+      <div class="prize half">
+        <div class="label" data-t="half.label.fr"></div>
+        <div class="dice-row" data-dice="1,2,3"></div>
+        <div class="big">−50<small>%</small></div>
+        <div class="lines"><span class="fr" data-t="half.fr"></span><span class="en" data-t="half.en"></span><span class="he" data-t="half.he"></span></div>
+      </div>
+      <div class="prize free">
+        <div class="ribbon"><span class="fr" data-t="free.ribbon.fr"></span><span class="he" data-t="free.ribbon.he"></span></div>
+        <div class="label" data-t="free.label.fr"></div>
+        <div class="dice-row" data-dice="4,5,6"></div>
+        <div class="big">100<small>%</small></div>
+        <div class="lines"><span class="fr" data-t="free.fr"></span><span class="en" data-t="free.en"></span><span class="he" data-t="free.he"></span></div>
+      </div>
+    </section>
+
+    <div class="section-head"><i></i><span class="fr" data-t="rulesTitle.fr"></span><b class="diamond"></b><span class="en" data-t="rulesTitle.en"></span><b class="diamond"></b><span class="he" data-t="rulesTitle.he"></span><i></i></div>
+    <section class="table" id="table">
+      <div class="row head"><span></span><span>Français</span><span>English</span><span lang="he" dir="rtl">עברית</span></div>
+    </section>
+  </div>
+
+  <div class="signoff"><span class="seal">運</span><span>YOKO ONO · ASIAN KITCHEN</span></div>
+</div>
+
+<script src="../../shared/dice.js"></script>
+<script src="copy.js"></script>
+<script>
+(() => {
+  const table = document.getElementById("table");
+  const ICONS = [
+    '<svg class="icon" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="17" cy="17" r="15.5"/><path d="M11 21c1.5 2.3 3.6 3.4 6 3.4s4.5-1.1 6-3.4M12 13.5h.01M22 13.5h.01" stroke-linecap="round" stroke-width="2"/></svg>',
+    '<svg class="icon" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="10" width="21" height="15" rx="2"/><path d="M23 15.5l9-5v14l-9-5z" stroke-linejoin="round"/><circle cx="7.5" cy="14.5" r="1.4" fill="currentColor" stroke="none"/></svg>',
+  ];
+  const row = (lead, path, cls = "") => {
+    const r = document.createElement("div");
+    r.className = "row " + cls;
+    r.innerHTML = `<div>${lead}</div>` + ["fr", "en", "he"].map(l =>
+      `<div class="cell" lang="${l}"><h3 data-t="${path}.${l}.t"></h3><p data-t="${path}.${l}.d"></p></div>`).join("");
+    table.appendChild(r);
+  };
+  COPY.rules.forEach((_, i) => row(`<div class="num">0${i + 1}</div>`, `rules.${i}`));
+  COPY.notes.forEach((_, i) => row(ICONS[i], `notes.${i}`, "note"));
+  fillCopy();
+  for (const c of document.querySelectorAll('.cell[lang="he"]')) c.dir = "rtl";
+
+  Dice.fillDoubles(document.querySelector(".half"), {});
+  Dice.fillDoubles(document.querySelector(".free"), { body: "#14110e", pip: "#f4ecdf" });
+})();
+</script>
+</body>
+</html>
