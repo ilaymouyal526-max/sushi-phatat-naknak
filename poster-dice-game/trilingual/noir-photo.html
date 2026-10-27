@@ -26,8 +26,8 @@
 
   .poster { position: relative; width: 297mm; height: 420mm; margin: 0 auto; overflow: hidden; background: var(--black); color: var(--ivory); font-family: "Montserrat", "Heebo", sans-serif; }
   /* The photo's edges are pure black, so it sits on the page without a seam */
-  .photo { position: absolute; left: 0; top: 0; width: 100%; height: auto; display: block; }
-  .photo-fade { position: absolute; left: 0; right: 0; top: 520px; height: 330px; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.72) 45%, #000 100%); }
+  .photo { position: absolute; left: 50%; top: 50px; width: 680px; height: auto; transform: translateX(-50%); display: block; }
+  .photo-fade { position: absolute; left: 0; right: 0; top: 340px; height: 200px; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.75) 45%, #000 100%); }
 
   .frame { position: absolute; inset: 26px; border: 1.5px solid var(--gold); }
   .frame::after { content: ""; position: absolute; inset: 7px; border: .75px solid rgba(201,163,107,.5); }
@@ -40,16 +40,16 @@
   .logo .sub { margin-top: 8px; font-size: 14px; letter-spacing: .52em; padding-left: .52em; color: var(--ivory-dim); }
 
   .badge-new {
-    position: absolute; left: 86px; top: 236px; width: 118px; height: 118px; border-radius: 50%;
+    position: absolute; left: 150px; top: 196px; width: 118px; height: 118px; border-radius: 50%;
     border: 1.5px solid var(--gold); background: rgba(0,0,0,.6); display: grid; place-items: center; text-align: center; transform: rotate(-12deg);
   }
   .badge-new::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; border: .75px dashed rgba(201,163,107,.7); }
   .badge-new .fr { display: block; font-weight: 800; font-size: 13px; letter-spacing: .12em; padding-left: .12em; text-transform: uppercase; }
   .badge-new .en { display: block; font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 21px; line-height: 1; color: var(--gold-light); }
   .badge-new .he { display: block; font-weight: 700; font-size: 18px; line-height: 1.1; color: var(--gold-light); }
-  .vertical-jp { position: absolute; right: 92px; top: 214px; writing-mode: vertical-rl; font-family: "Shippori", serif; font-weight: 800; font-size: 44px; letter-spacing: .16em; color: var(--gold); }
+  .vertical-jp { position: absolute; right: 170px; top: 170px; writing-mode: vertical-rl; font-family: "Shippori", serif; font-weight: 800; font-size: 44px; letter-spacing: .16em; color: var(--gold); }
 
-  .title-block { margin-top: 452px; display: flex; flex-direction: column; align-items: center; }
+  .title-block { margin-top: 274px; display: flex; flex-direction: column; align-items: center; }
   .kicker { display: flex; align-items: center; gap: 14px; color: var(--gold); }
   .kicker i { width: 40px; height: 1px; background: var(--gold); opacity: .7; }
   .kicker .fr { font-weight: 600; font-size: 14px; letter-spacing: .4em; text-transform: uppercase; }
@@ -67,12 +67,12 @@
   .dice-row { display: flex; justify-content: center; gap: 14px; margin-top: 8px; }
   .dice-row .pair { display: flex; gap: 4px; }
   .dice-row svg { width: 22px; height: 22px; display: block; }
-  .prize .big { font-weight: 900; font-size: 64px; line-height: .9; margin-top: 8px; letter-spacing: -.02em; }
+  .prize .big { font-weight: 900; font-size: 68px; line-height: .9; margin-top: 8px; letter-spacing: -.02em; }
   .prize .big small { font-size: .6em; letter-spacing: 0; }
   .prize .lines { margin-top: 8px; display: grid; gap: 4px; }
-  .prize .lines .fr { font-weight: 500; font-size: 13.5px; line-height: 1.35; }
-  .prize .lines .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 17px; line-height: 1.15; }
-  .prize .lines .he { font-weight: 500; font-size: 14.5px; line-height: 1.35; }
+  .prize .lines .fr { font-weight: 500; font-size: 15px; line-height: 1.35; }
+  .prize .lines .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 19px; line-height: 1.15; }
+  .prize .lines .he { font-weight: 500; font-size: 16px; line-height: 1.35; }
   .prize.half .label { color: var(--gold); }
   .prize.half .big { color: var(--gold-light); }
   .prize.half .lines .fr, .prize.half .lines .he { color: var(--ivory-dim); }
@@ -91,21 +91,21 @@
   .section-head .he { font-weight: 700; font-size: 18px; color: var(--gold-light); }
 
   .table { width: 100%; margin-top: 8px; }
-  .row { display: grid; grid-template-columns: 40px 1fr 1fr 1fr; column-gap: 20px; padding: 6px 0; border-top: 1px solid var(--line); }
+  .row { display: grid; grid-template-columns: 44px 1fr 1fr 1fr; column-gap: 22px; padding: 9px 0; border-top: 1px solid var(--line); }
   .row.head { border-top: 0; padding: 0 0 5px; }
-  .row.head span { font-weight: 700; font-size: 10px; letter-spacing: .34em; color: var(--muted); text-transform: uppercase; }
-  .row.head span[lang="he"] { font-size: 11.5px; letter-spacing: .05em; text-align: right; }
-  .num { font-family: "Cormorant"; font-style: italic; font-weight: 700; font-size: 32px; line-height: .9; color: var(--gold); }
-  .cell h3 { font-weight: 800; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-light); }
-  .cell p { margin-top: 2px; font-size: 11.5px; line-height: 1.33; color: var(--ivory-dim); }
+  .row.head span { font-weight: 700; font-size: 11px; letter-spacing: .34em; color: var(--muted); text-transform: uppercase; }
+  .row.head span[lang="he"] { font-size: 13px; letter-spacing: .05em; text-align: right; }
+  .num { font-family: "Cormorant"; font-style: italic; font-weight: 700; font-size: 38px; line-height: .9; color: var(--gold); }
+  .cell h3 { font-weight: 800; font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-light); }
+  .cell p { margin-top: 3px; font-size: 14px; line-height: 1.36; color: var(--ivory-dim); }
   .cell[lang="he"] { text-align: right; }
-  .cell[lang="he"] h3 { font-size: 13.5px; letter-spacing: 0; }
-  .cell[lang="he"] p { font-size: 12.5px; line-height: 1.32; }
-  .row.note .cell h3 { font-size: 10.5px; color: var(--gold); }
-  .row.note .cell[lang="he"] h3 { font-size: 12.5px; }
-  .row.note .cell p { font-size: 10.5px; line-height: 1.34; }
-  .row.note .cell[lang="he"] p { font-size: 11.5px; }
-  .row.note .icon { width: 26px; height: 26px; color: var(--gold); margin-top: 1px; }
+  .cell[lang="he"] h3 { font-size: 15.5px; letter-spacing: 0; }
+  .cell[lang="he"] p { font-size: 15px; line-height: 1.34; }
+  .row.note .cell h3 { font-size: 12px; color: var(--gold); }
+  .row.note .cell[lang="he"] h3 { font-size: 14.5px; }
+  .row.note .cell p { font-size: 12.5px; line-height: 1.36; }
+  .row.note .cell[lang="he"] p { font-size: 13.5px; }
+  .row.note .icon { width: 30px; height: 30px; color: var(--gold); margin-top: 1px; }
 
   .signoff { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); background: var(--black); padding: 0 18px; white-space: nowrap; display: flex; align-items: center; gap: 16px; color: var(--gold); font-weight: 700; font-size: 12px; letter-spacing: .48em; }
   .seal { width: 26px; height: 26px; background: var(--red); color: var(--ivory); display: grid; place-items: center; font-family: "Shippori"; font-size: 17px; letter-spacing: 0; border-radius: 3px; }
