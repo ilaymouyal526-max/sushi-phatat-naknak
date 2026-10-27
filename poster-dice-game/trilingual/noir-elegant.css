@@ -1,0 +1,43 @@
+/* Shared look for the two-poster "Noir élégant" set (hero + rules): black, gold, serif type, no text under 20px. */
+:root {
+  --black: #000;
+  --ivory: #f4ecdf;
+  --ivory-dim: #ddd2c0;
+  --muted: #a3947f;
+  --gold: #c9a36b;
+  --gold-light: #e2c590;
+  --red: #b8322a;
+  --line: rgba(201,163,107,.3);
+}
+@page { size: 297mm 420mm; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #2a2622; }
+body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+@media print { html, body { background: var(--black); } }
+b { font-weight: 700; color: var(--ivory); }
+[lang="he"] { font-family: "Frank Ruhl", serif; }
+
+.poster { position: relative; width: 297mm; height: 420mm; margin: 0 auto; overflow: hidden; background: var(--black); color: var(--ivory); font-family: "Cormorant", "Frank Ruhl", serif; font-variant-numeric: lining-nums; }
+.frame { position: absolute; inset: 26px; border: 1.5px solid var(--gold); }
+.frame::after { content: ""; position: absolute; inset: 7px; border: .75px solid rgba(201,163,107,.5); }
+.content { position: absolute; inset: 0; padding: 56px 66px 56px; display: flex; flex-direction: column; align-items: center; }
+.content > * { flex-shrink: 0; }
+
+/* Text stand-in until the restaurant's logo file arrives */
+.logo { position: relative; text-align: center; line-height: 1; }
+.logo .name { font-weight: 600; font-size: 52px; letter-spacing: .24em; padding-left: .24em; color: var(--gold); }
+.logo .sub { margin-top: 10px; font-weight: 700; font-size: 20px; letter-spacing: .52em; padding-left: .52em; color: var(--ivory-dim); }
+
+.kicker { display: flex; align-items: center; gap: 16px; color: var(--gold); }
+.kicker i { width: 48px; height: 1px; background: var(--gold); opacity: .7; }
+.kicker .fr { font-weight: 700; font-size: 21px; letter-spacing: .36em; padding-left: .36em; text-transform: uppercase; }
+.kicker .en { font-style: italic; font-weight: 600; font-size: 26px; color: var(--gold-light); }
+.kicker .he { font-weight: 500; font-size: 23px; color: var(--gold-light); }
+.diamond { width: 7px; height: 7px; background: var(--gold); transform: rotate(45deg); flex: none; }
+h1 { font-weight: 600; text-transform: uppercase; letter-spacing: .05em; line-height: .95; color: var(--ivory); white-space: nowrap; }
+.title-alt { display: flex; align-items: center; gap: 22px; color: var(--gold-light); }
+.title-alt .en { font-style: italic; font-weight: 600; line-height: 1; }
+.title-alt .he { font-weight: 500; line-height: 1; }
+
+.signoff { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); background: var(--black); padding: 0 18px; white-space: nowrap; display: flex; align-items: center; gap: 16px; color: var(--gold); font-weight: 700; font-size: 20px; letter-spacing: .44em; line-height: 1; }
+.seal { width: 30px; height: 30px; background: var(--red); color: var(--ivory); display: grid; place-items: center; font-family: "Shippori"; font-size: 20px; letter-spacing: 0; border-radius: 3px; }

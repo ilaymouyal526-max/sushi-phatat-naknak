@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yoko Ono — Le Grand Jeu · Affiche</title>
+<link rel="stylesheet" href="../../fonts/fonts.css">
+<link rel="stylesheet" href="noir-elegant.css">
+<style>
+  /* Placeholder photo until the betting-table photo and the logo arrive; its edges are pure black, so it sits on the page without a seam */
+  .photo { position: absolute; left: 50%; top: 118px; width: 1040px; height: auto; transform: translateX(-50%); display: block; }
+  .photo-fade { position: absolute; left: 0; right: 0; top: 700px; height: 230px; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.75) 45%, #000 100%); }
+
+  .badge-new {
+    position: absolute; left: 96px; top: 250px; width: 156px; height: 156px; border-radius: 50%;
+    border: 1.5px solid var(--gold); background: rgba(0,0,0,.6); display: grid; place-items: center; text-align: center; transform: rotate(-12deg);
+  }
+  .badge-new::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; border: .75px dashed rgba(201,163,107,.7); }
+  .badge-new .fr { display: block; font-weight: 700; font-size: 20px; letter-spacing: .14em; padding-left: .14em; text-transform: uppercase; }
+  .badge-new .en { display: block; font-style: italic; font-weight: 600; font-size: 30px; line-height: 1; color: var(--gold-light); }
+  .badge-new .he { display: block; font-weight: 700; font-size: 26px; line-height: 1.1; color: var(--gold-light); }
+  .vertical-jp { position: absolute; right: 112px; top: 226px; writing-mode: vertical-rl; font-family: "Shippori", serif; font-weight: 800; font-size: 54px; letter-spacing: .16em; color: var(--gold); }
+
+  .title-block { margin-top: auto; display: flex; flex-direction: column; align-items: center; }
+  h1 { margin-top: 10px; font-size: 104px; text-shadow: 0 4px 30px rgba(0,0,0,.8); }
+  .title-alt { margin-top: 10px; }
+  .title-alt .en { font-size: 48px; }
+  .title-alt .he { font-size: 44px; }
+
+  .prizes { margin-top: 34px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  .prize { position: relative; display: flex; flex-direction: column; justify-content: center; padding: 20px 24px 18px; text-align: center; border: 1.5px solid var(--gold); background: rgba(12,10,8,.85); }
+  .prize .label { font-weight: 700; font-size: 21px; letter-spacing: .26em; padding-left: .26em; text-transform: uppercase; font-variant-numeric: lining-nums; }
+  .dice-row { display: flex; justify-content: center; gap: 16px; margin-top: 10px; }
+  .dice-row .pair { display: flex; gap: 4px; }
+  .dice-row svg { width: 28px; height: 28px; display: block; }
+  .prize .big { font-weight: 700; font-size: 84px; line-height: .9; margin-top: 10px; font-variant-numeric: lining-nums; }
+  .prize .big small { font-size: .6em; }
+  .prize .lines { margin-top: 12px; display: grid; gap: 7px; }
+  .prize .lines .fr { font-weight: 500; font-size: 22px; line-height: 1.25; }
+  .prize .lines .en { font-style: italic; font-weight: 500; font-size: 22px; line-height: 1.25; }
+  .prize .lines .he { font-weight: 400; font-size: 21px; line-height: 1.35; }
+  .prize.half .label { color: var(--gold); }
+  .prize.half .big { color: var(--gold-light); }
+  .prize.half .lines .fr, .prize.half .lines .he { color: var(--ivory-dim); }
+  .prize.half .lines .en { color: #c4b69f; }
+  .prize.free { background: linear-gradient(160deg, #d9b67c 0%, var(--gold) 55%, #b48c55 100%); border-color: var(--gold-light); color: #14110e; }
+  .prize.free b { color: #14110e; }
+  .prize.free .lines .en { color: #4a3a27; }
+  .ribbon { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); background: var(--red); color: var(--ivory); padding: 5px 18px; white-space: nowrap; display: flex; gap: 14px; align-items: center; line-height: 1.1; }
+  .ribbon .fr { font-weight: 700; font-size: 20px; letter-spacing: .26em; text-transform: uppercase; }
+  .ribbon .he { font-weight: 700; font-size: 21px; }
+</style>
+</head>
+<body>
+<div class="poster" id="poster">
+  <img class="photo" src="../photo/dice-hero.jpg" alt="Deux dés devant un soleil rouge">
+  <div class="photo-fade"></div>
+  <div class="frame"></div>
+
+  <div class="content">
+    <header class="logo">
+      <div class="name">YOKO ONO</div>
+      <div class="sub">ASIAN KITCHEN</div>
+    </header>
+    <div class="badge-new"><div><span class="fr" data-t="new.fr"></span><span class="en" data-t="new.en"></span><span class="he" data-t="new.he"></span></div></div>
+    <div class="vertical-jp">運試し</div>
+
+    <div class="title-block">
+      <div class="kicker"><i></i><span class="fr" data-t="kicker.fr"></span><b class="diamond"></b><span class="en" data-t="kicker.en"></span><b class="diamond"></b><span class="he" data-t="kicker.he"></span><i></i></div>
+      <h1 data-t="title.fr"></h1>
+      <div class="title-alt"><span class="en" data-t="title.en"></span><b class="diamond"></b><span class="he" data-t="title.he"></span></div>
+    </div>
+
+    <section class="prizes">
+      <div class="prize half">
+        <div class="label" data-t="half.label.fr"></div>
+        <div class="dice-row" data-dice="1,2,3"></div>
+        <div class="big">−50<small>%</small></div>
+        <div class="lines"><span class="fr" data-t="half.fr"></span><span class="en" data-t="half.en"></span><span class="he" data-t="half.he"></span></div>
+      </div>
+      <div class="prize free">
+        <div class="ribbon"><span class="fr" data-t="free.ribbon.fr"></span><span class="he" data-t="free.ribbon.he"></span></div>
+        <div class="label" data-t="free.label.fr"></div>
+        <div class="dice-row" data-dice="4,5,6"></div>
+        <div class="big">100<small>%</small></div>
+        <div class="lines"><span class="fr" data-t="free.fr"></span><span class="en" data-t="free.en"></span><span class="he" data-t="free.he"></span></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="signoff"><span class="seal">運</span><span>YOKO ONO · ASIAN KITCHEN</span></div>
+</div>
+
+<script src="../../shared/dice.js"></script>
+<script src="copy.js"></script>
+<script>
+(() => {
+  fillCopy();
+  Dice.fillDoubles(document.querySelector(".half"), {});
+  Dice.fillDoubles(document.querySelector(".free"), { body: "#14110e", pip: "#f4ecdf" });
+})();
+</script>
+</body>
+</html>
