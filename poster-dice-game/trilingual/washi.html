@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yoko Ono — Le Grand Jeu · Washi</title>
+<link rel="stylesheet" href="../../fonts/fonts.css">
+<style>
+  :root {
+    --paper: #f2e9d6;
+    --paper-2: #fbf5e8;
+    --ink: #221d18;
+    --ink-soft: #4d4237;
+    --blue: #1f3a5f;
+    --blue-2: #2f5a86;
+    --red: #c8412b;
+    --ochre: #d9a65a;
+    --line: rgba(34,29,24,.22);
+  }
+  @page { size: 297mm 420mm; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #3a352f; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @media print { html, body { background: var(--paper); } }
+
+  .poster {
+    position: relative; width: 297mm; height: 420mm; margin: 0 auto; overflow: hidden;
+    background: url(../../shared/washi-paper.png) 0 0 / 240px 240px, radial-gradient(ellipse 80% 60% at 50% 40%, var(--paper-2) 0%, var(--paper) 60%, #e6d9bf 100%);
+    color: var(--ink); font-family: "Frank Ruhl", serif;
+  }
+  .border { position: absolute; inset: 28px; border: 2px solid var(--ink); }
+  .border::after { content: ""; position: absolute; inset: 6px; border: 1px solid var(--ink); }
+
+  .content { position: absolute; inset: 0; padding: 58px 70px 52px; display: flex; flex-direction: column; align-items: center; }
+  .content > * { flex-shrink: 0; }
+
+  .logo { text-align: center; line-height: 1; }
+  .logo .name { font-weight: 900; font-size: 50px; letter-spacing: .1em; padding-left: .1em; }
+  .logo .sub { margin-top: 8px; font-family: "Montserrat"; font-weight: 500; font-size: 13px; letter-spacing: .6em; padding-left: .6em; color: var(--ink-soft); }
+
+  .hero { position: relative; width: 983px; height: 350px; margin-top: 12px; }
+  .hero > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .cartouche {
+    position: absolute; left: 6px; top: 6px; width: 62px; padding: 14px 0 12px;
+    background: var(--red); border: 2px solid var(--paper-2); outline: 2px solid var(--ink);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .cartouche .jp { writing-mode: vertical-rl; font-family: "Shippori", serif; font-weight: 800; font-size: 34px; letter-spacing: .12em; color: var(--paper-2); }
+  .cartouche .small { writing-mode: vertical-rl; font-family: "Montserrat"; font-weight: 700; font-size: 10px; letter-spacing: .3em; color: var(--paper-2); }
+  .stamp {
+    position: absolute; left: 96px; top: 14px; width: 104px; height: 104px; border-radius: 50%;
+    border: 3px solid var(--red); color: var(--red); display: grid; place-items: center; text-align: center; transform: rotate(-10deg);
+    background: rgba(251,245,232,.85);
+  }
+  .stamp::before { content: ""; position: absolute; inset: 4px; border-radius: 50%; border: 1px solid var(--red); }
+  .stamp .fr { display: block; font-family: "Montserrat"; font-weight: 800; font-size: 12.5px; letter-spacing: .1em; padding-left: .1em; text-transform: uppercase; }
+  .stamp .en { display: block; font-family: "Cormorant"; font-style: italic; font-weight: 700; font-size: 20px; line-height: 1; }
+  .stamp .he { display: block; font-weight: 700; font-size: 18px; line-height: 1.1; }
+
+  .kicker { margin-top: 14px; display: flex; align-items: center; gap: 14px; color: var(--red); }
+  .kicker i { width: 54px; height: 2px; background: var(--red); }
+  .kicker .fr { font-family: "Montserrat"; font-weight: 700; font-size: 14px; letter-spacing: .42em; text-transform: uppercase; }
+  .kicker .en { font-family: "Cormorant"; font-style: italic; font-weight: 700; font-size: 22px; }
+  .kicker .he { font-weight: 700; font-size: 19px; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); flex: none; }
+
+  h1 { margin-top: 6px; font-weight: 900; font-size: 104px; line-height: .95; letter-spacing: .01em; color: var(--blue); text-transform: uppercase; }
+  .title-alt { margin-top: 6px; display: flex; align-items: center; gap: 20px; color: var(--ink); }
+  .title-alt .en { font-family: "Cormorant"; font-style: italic; font-weight: 700; font-size: 44px; line-height: 1; }
+  .title-alt .he { font-weight: 900; font-size: 40px; line-height: 1; }
+  .title-alt .dot { background: var(--ink); }
+
+  .prizes { margin-top: 26px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .prize { position: relative; padding: 20px 22px 18px; text-align: center; }
+  .prize::after { content: ""; position: absolute; inset: 5px; border: 1px solid currentColor; opacity: .55; pointer-events: none; }
+  .prize .label { font-family: "Montserrat"; font-weight: 800; font-size: 15px; letter-spacing: .28em; padding-left: .28em; text-transform: uppercase; }
+  .dice-row { display: flex; justify-content: center; gap: 16px; margin-top: 10px; }
+  .dice-row .pair { display: flex; gap: 4px; }
+  .dice-row svg { width: 25px; height: 25px; display: block; }
+  .prize .big { font-weight: 900; font-size: 88px; line-height: .9; margin-top: 8px; }
+  .prize .big small { font-size: .55em; }
+  .prize .lines { margin-top: 10px; display: grid; gap: 2px; }
+  .prize .lines .fr { font-weight: 700; font-size: 17px; }
+  .prize .lines .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 20px; line-height: 1.1; }
+  .prize .lines .he { font-weight: 700; font-size: 18px; }
+  .prize.half { background: var(--paper-2); border: 2px solid var(--blue); color: var(--blue); }
+  .prize.half .big { color: var(--red); }
+  .prize.half .lines { color: var(--ink); }
+  .prize.free { background: var(--blue); border: 2px solid var(--ink); color: var(--paper-2); }
+  .ribbon { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); background: var(--red); color: var(--paper-2); padding: 6px 16px; white-space: nowrap; display: flex; gap: 12px; align-items: center; outline: 2px solid var(--ink); }
+  .ribbon .fr { font-family: "Montserrat"; font-weight: 800; font-size: 13px; letter-spacing: .3em; text-transform: uppercase; }
+  .ribbon .he { font-weight: 900; font-size: 15px; }
+
+  .section-head { margin-top: 26px; width: 100%; display: flex; align-items: center; gap: 14px; color: var(--blue); }
+  .section-head > i { flex: 1; height: 2px; background: var(--blue); }
+  .section-head .fr { font-family: "Montserrat"; font-weight: 800; font-size: 17px; letter-spacing: .3em; text-transform: uppercase; }
+  .section-head .en { font-family: "Cormorant"; font-style: italic; font-weight: 700; font-size: 23px; }
+  .section-head .he { font-weight: 900; font-size: 20px; }
+  .section-head .dot { background: var(--blue); }
+
+  .rules { margin-top: 14px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; column-gap: 36px; row-gap: 14px; }
+  .rule { display: grid; grid-template-columns: 46px 1fr; column-gap: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .hanko { width: 44px; height: 44px; border-radius: 50%; background: var(--red); color: var(--paper-2); display: grid; place-items: center; font-weight: 900; font-size: 24px; box-shadow: inset 0 0 0 2px var(--red), inset 0 0 0 3.5px var(--paper-2); }
+  .rule p, .note p { font-size: 14.5px; line-height: 1.38; color: var(--ink-soft); }
+  .rule p + p, .note p + p { margin-top: 5px; }
+  .rule p strong, .note p strong { color: var(--blue); font-weight: 800; }
+  .rule p.fr strong, .note p.fr strong { font-family: "Montserrat"; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+  .rule p.en, .note p.en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 17.5px; line-height: 1.2; }
+  .rule p.en strong, .note p.en strong { font-weight: 700; }
+  .rule p[lang="he"], .note p[lang="he"] { text-align: right; font-size: 15.5px; }
+  .rule b, .note b { color: var(--ink); font-weight: 700; }
+
+  .notes { margin-top: 18px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; column-gap: 36px; padding-top: 12px; border-top: 2px solid var(--blue); }
+  .note { display: grid; grid-template-columns: 46px 1fr; column-gap: 14px; }
+  .note .icon { width: 34px; height: 34px; color: var(--red); margin: 2px auto 0; }
+  .note p { font-size: 12.5px; }
+  .note p.en { font-size: 15px; }
+  .note p[lang="he"] { font-size: 13.5px; }
+
+  .signoff { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); background: var(--paper); padding: 0 16px; white-space: nowrap; display: flex; align-items: center; gap: 14px; font-family: "Montserrat"; font-weight: 700; font-size: 12px; letter-spacing: .48em; color: var(--ink); }
+  .seal { width: 26px; height: 26px; background: var(--red); color: var(--paper-2); display: grid; place-items: center; font-family: "Shippori"; font-size: 17px; letter-spacing: 0; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="poster" id="poster">
+  <div class="border"></div>
+
+  <div class="content">
+    <header class="logo">
+      <div class="name">YOKO ONO</div>
+      <div class="sub">ASIAN KITCHEN</div>
+    </header>
+
+    <section class="hero">
+      <svg id="hero" viewBox="0 0 983 350" aria-label="Deux dés devant le mont Fuji et un soleil rouge"></svg>
+      <div class="cartouche"><span class="jp">運試し</span><span class="small">YOKO ONO</span></div>
+      <div class="stamp"><div><span class="fr" data-t="new.fr"></span><span class="en" data-t="new.en"></span><span class="he" data-t="new.he"></span></div></div>
+    </section>
+
+    <div class="kicker"><i></i><span class="fr" data-t="kicker.fr"></span><b class="dot"></b><span class="en" data-t="kicker.en"></span><b class="dot"></b><span class="he" data-t="kicker.he"></span><i></i></div>
+    <h1 data-t="title.fr"></h1>
+    <div class="title-alt"><span class="en" data-t="title.en"></span><b class="dot"></b><span class="he" data-t="title.he"></span></div>
+
+    <section class="prizes">
+      <div class="prize half">
+        <div class="label" data-t="half.label.fr"></div>
+        <div class="dice-row" data-dice="1,2,3"></div>
+        <div class="big">−50<small>%</small></div>
+        <div class="lines"><span class="fr" data-t="half.fr"></span><span class="en" data-t="half.en"></span><span class="he" data-t="half.he"></span></div>
+      </div>
+      <div class="prize free">
+        <div class="ribbon"><span class="fr" data-t="free.ribbon.fr"></span><span class="he" data-t="free.ribbon.he"></span></div>
+        <div class="label" data-t="free.label.fr"></div>
+        <div class="dice-row" data-dice="4,5,6"></div>
+        <div class="big">100<small>%</small></div>
+        <div class="lines"><span class="fr" data-t="free.fr"></span><span class="en" data-t="free.en"></span><span class="he" data-t="free.he"></span></div>
+      </div>
+    </section>
+
+    <div class="section-head"><i></i><span class="fr" data-t="rulesTitle.fr"></span><b class="dot"></b><span class="en" data-t="rulesTitle.en"></span><b class="dot"></b><span class="he" data-t="rulesTitle.he"></span><i></i></div>
+    <section class="rules" id="rules"></section>
+    <section class="notes" id="notes"></section>
+  </div>
+
+  <div class="signoff"><span class="seal">運</span><span>YOKO ONO · ASIAN KITCHEN</span></div>
+</div>
+
+<script src="../../shared/dice.js"></script>
+<script src="copy.js"></script>
+<script>
+(() => {
+  const { el, isoDie } = window.Dice;
+  const get = path => path.split(".").reduce((o, k) => o[k], COPY);
+  // English titles run into the sentence with a colon, unless they already end in punctuation
+  const sep = (path, l) => l !== "en" ? " — " : /[!?.]$/.test(get(`${path}.en.t`)) ? " " : ": ";
+  const paras = path => ["fr", "en", "he"].map(l =>
+    `<p class="${l}"><strong data-t="${path}.${l}.t"></strong>${sep(path, l)}<span data-t="${path}.${l}.d"></span></p>`).join("");
+  document.getElementById("rules").innerHTML = COPY.rules.map((_, i) =>
+    `<div class="rule"><div class="hanko">${i + 1}</div><div>${paras(`rules.${i}`)}</div></div>`).join("");
+  const ICONS = [
+    '<svg class="icon" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="17" cy="17" r="15.5"/><path d="M11 21c1.5 2.3 3.6 3.4 6 3.4s4.5-1.1 6-3.4M12 13.5h.01M22 13.5h.01" stroke-linecap="round" stroke-width="2.2"/></svg>',
+    '<svg class="icon" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="10" width="21" height="15" rx="2"/><path d="M23 15.5l9-5v14l-9-5z" stroke-linejoin="round"/><circle cx="7.5" cy="14.5" r="1.4" fill="currentColor" stroke="none"/></svg>',
+  ];
+  document.getElementById("notes").innerHTML = COPY.notes.map((_, i) =>
+    `<div class="note">${ICONS[i]}<div>${paras(`notes.${i}`)}</div></div>`).join("");
+  fillCopy();
+  for (const p of document.querySelectorAll("p.he")) { p.dir = "rtl"; p.lang = "he"; }
+
+  Dice.fillDoubles(document.querySelector(".half"), { body: "#fbf5e8", pip: "#221d18", red: "#c8412b", stroke: "#221d18", strokeWidth: 6 });
+  Dice.fillDoubles(document.querySelector(".free"), { body: "#fbf5e8", pip: "#1f3a5f", red: "#c8412b" });
+
+  // Hero: red sun behind Mount Fuji, mist bands, seigaiha waves, two dice
+  const svg = document.getElementById("hero");
+  el("defs", {}, svg).innerHTML = `
+    <linearGradient id="fuji" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f3a5f"/><stop offset="1" stop-color="#3d6c99"/></linearGradient>
+    <pattern id="waves" width="40" height="20" patternUnits="userSpaceOnUse">
+      <g fill="#1f3a5f" stroke="#fbf5e8" stroke-width="1.6">
+        <g id="w"><circle r="19"/><circle r="13" fill="none"/><circle r="7" fill="none"/></g>
+        <use href="#w" x="40"/><use href="#w" x="20" y="10"/><use href="#w" y="20"/><use href="#w" x="40" y="20"/>
+      </g>
+    </pattern>`;
+  const INK = "#221d18";
+
+  el("circle", { cx: 858, cy: 112, r: 78, fill: "#c8412b" }, svg);
+  // Mount Fuji with a jagged snow cap
+  const peak = [690, 92], baseY = 300, L = 380, R = 1000;
+  el("path", { d: `M${L} ${baseY} L${peak[0] - 28} ${peak[1]} Q${peak[0]} ${peak[1] - 8} ${peak[0] + 28} ${peak[1]} L${R} ${baseY} Z`, fill: "url(#fuji)", stroke: INK, "stroke-width": 2.5, "stroke-linejoin": "round" }, svg);
+  const snowY = 168, xl = 690 - 28 - (snowY - 92) * (282 / 208), xr = 690 + 28 + (snowY - 92) * (282 / 208);
+  let snow = `M${peak[0] - 28} ${peak[1]} Q${peak[0]} ${peak[1] - 8} ${peak[0] + 28} ${peak[1]} L${xr} ${snowY}`;
+  const teeth = 7;
+  for (let i = 1; i <= teeth; i++) {
+    const x = xr - (xr - xl) * (i / teeth);
+    snow += ` L${x + (xr - xl) / teeth / 2} ${snowY + (i % 2 ? 26 : 14)} L${x} ${snowY}`;
+  }
+  el("path", { d: snow + " Z", fill: "#fbf5e8", stroke: INK, "stroke-width": 2.5, "stroke-linejoin": "round" }, svg);
+
+  // suyari-gasumi mist bands
+  for (const [x, y, w] of [[300, 206, 400], [600, 240, 360], [70, 236, 240]]) {
+    el("rect", { x, y, width: w, height: 24, rx: 12, fill: "#d9a65a", stroke: INK, "stroke-width": 2 }, svg);
+    el("rect", { x: x + 14, y: y + 7, width: w - 28, height: 4, rx: 2, fill: "#f0cf8f" }, svg);
+  }
+
+  // seigaiha sea with a scalloped crest
+  el("rect", { x: 0, y: 292, width: 983, height: 58, fill: "url(#waves)" }, svg);
+  for (let x = 0; x <= 983; x += 34)
+    el("circle", { cx: x, cy: 294, r: 17, fill: "#1f3a5f", stroke: "#fbf5e8", "stroke-width": 2 }, svg);
+  el("rect", { x: 0, y: 296, width: 983, height: 54, fill: "url(#waves)" }, svg);
+  el("line", { x1: 0, y1: 349, x2: 983, y2: 349, stroke: INK, "stroke-width": 2 }, svg);
+
+  // sakura petals
+  const flower = (cx, cy, r, rot) => {
+    const g = el("g", { transform: `translate(${cx} ${cy}) rotate(${rot})` }, svg);
+    for (let i = 0; i < 5; i++)
+      el("ellipse", { cx: 0, cy: -r, rx: r * .62, ry: r, fill: "#eba7ac", stroke: INK, "stroke-width": 1.2, transform: `rotate(${i * 72})` }, g);
+    el("circle", { r: r * .35, fill: "#c8412b" }, g);
+  };
+  flower(250, 70, 9, 10); flower(590, 52, 7, 30); flower(960, 225, 8, 5); flower(220, 175, 6, 40); flower(520, 300, 7, 20);
+
+  // speed strokes behind the dice
+  for (const [x, y, w] of [[196, 192, 64], [168, 212, 92]])
+    el("line", { x1: x, y1: y, x2: x + w, y2: y, stroke: INK, "stroke-width": 2.5, "stroke-linecap": "round" }, svg);
+
+  const theme = { top: "#fff9ec", left: "#eedcb8", right: "#d8bf93", edge: "#fbf5e8", pip: INK, red: "#c8412b", stroke: INK, strokeWidth: 2.2 };
+  isoDie(svg, { cx: 340, cy: 236, s: 74, rot: -10, top: 6, left: 4, right: 2, theme });
+  isoDie(svg, { cx: 478, cy: 204, s: 64, rot: 15, top: 6, left: 3, right: 5, theme });
+})();
+</script>
+</body>
+</html>

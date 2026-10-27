@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<title>Yoko Ono — Écran · Noir & Or</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+  :root { --ink: #14110e; --ivory: #f4ecdf; --ivory-dim: #d8cdbb; --muted: #a3947f; --gold: #c9a36b; --gold-light: #e2c590; --red: #b8322a; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #000; }
+  .screen { position: relative; width: 1080px; height: 1920px; overflow: hidden; color: var(--ivory); font-family: "Montserrat", "Heebo", sans-serif;
+    background: radial-gradient(ellipse 90% 50% at 50% 40%, #241d17 0%, var(--ink) 75%); }
+  [lang="he"] { font-family: "Heebo", sans-serif; direction: rtl; }
+  .bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .frame { position: absolute; inset: 24px; border: 2px solid var(--gold); }
+  .frame::after { content: ""; position: absolute; inset: 9px; border: 1px solid rgba(201,163,107,.5); }
+  .content { position: absolute; inset: 0; padding: 70px 72px 0; display: flex; flex-direction: column; align-items: center; }
+
+  .logo { text-align: center; line-height: 1; }
+  .logo .name { font-weight: 800; font-size: 46px; letter-spacing: .06em; color: var(--gold); }
+  .logo .sub { margin-top: 9px; font-size: 14px; letter-spacing: .55em; padding-left: .55em; color: var(--ivory-dim); }
+
+  .visual { position: relative; overflow: hidden; background: radial-gradient(circle at 50% 45%, #2a2622 0%, #12100e 75%); }
+  .visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .visual .art { position: absolute; inset: 6%; }
+  .visual .art svg { width: 100%; height: 100%; }
+  .visual::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1.5px var(--gold), inset 0 0 0 9px var(--ink), inset 0 0 0 10px rgba(201,163,107,.55); pointer-events: none; }
+
+  /* one dish */
+  .hero .visual { margin-top: 34px; width: 936px; height: 1090px; }
+  .hero .num { margin-top: 44px; display: flex; align-items: center; gap: 18px; color: var(--gold); }
+  .hero .num i { width: 70px; height: 1px; background: var(--gold); opacity: .7; }
+  .hero .num span { font-family: "Cormorant"; font-style: italic; font-weight: 700; font-size: 40px; }
+  .hero h1 { margin-top: 14px; font-weight: 800; font-size: 92px; line-height: .98; text-transform: uppercase; text-align: center; letter-spacing: .01em; }
+  .hero .he-name { margin-top: 14px; font-weight: 700; font-size: 52px; color: var(--gold-light); }
+  .hero .desc { margin-top: 26px; text-align: center; display: grid; gap: 8px; max-width: 900px; }
+  .hero .desc .fr { font-size: 29px; color: var(--ivory-dim); }
+  .hero .desc .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 34px; color: var(--muted); }
+  .hero .desc .he { font-size: 30px; color: var(--ivory-dim); }
+  .price { margin-top: 28px; padding: 10px 34px; border: 1.5px solid var(--gold); color: var(--gold-light); font-weight: 700; font-size: 40px; letter-spacing: .04em; }
+
+  /* several dishes */
+  .grid-title { margin-top: 40px; text-align: center; }
+  .grid-title .fr { font-weight: 800; font-size: 64px; letter-spacing: .14em; text-transform: uppercase; }
+  .grid-title .alt { margin-top: 10px; display: flex; gap: 20px; align-items: center; justify-content: center; color: var(--gold-light); }
+  .grid-title .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 40px; }
+  .grid-title .he { font-weight: 700; font-size: 36px; }
+  .diamond { width: 8px; height: 8px; background: var(--gold); transform: rotate(45deg); }
+  .cards { margin-top: 46px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px 36px; width: 936px; }
+  .card { text-align: center; }
+  .card .visual { width: 100%; aspect-ratio: 4 / 5; }
+  .card .n { margin-top: 18px; font-family: "Cormorant"; font-style: italic; font-weight: 700; font-size: 28px; color: var(--gold); }
+  .card h2 { margin-top: 4px; font-weight: 800; font-size: 34px; line-height: 1.05; text-transform: uppercase; letter-spacing: .02em; }
+  .card .he-name { margin-top: 8px; font-weight: 700; font-size: 30px; color: var(--gold-light); }
+  .card .price { margin-top: 12px; display: inline-block; font-size: 28px; padding: 6px 20px; }
+
+  .signoff { position: absolute; left: 50%; bottom: 13px; transform: translateX(-50%); background: var(--ink); padding: 0 20px; white-space: nowrap; display: flex; align-items: center; gap: 16px; color: var(--gold); font-weight: 700; font-size: 16px; letter-spacing: .48em; }
+  .seal { width: 34px; height: 34px; background: var(--red); color: var(--ivory); display: grid; place-items: center; font-family: "Shippori"; font-size: 22px; letter-spacing: 0; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="screen" id="screen">
+  <svg class="bg" aria-hidden="true">
+    <pattern id="seigaiha" width="64" height="32" patternUnits="userSpaceOnUse">
+      <g fill="#14110e" stroke="#c9a36b" stroke-width="1">
+        <g id="wave"><circle r="31"/><circle r="23" fill="none"/><circle r="15" fill="none"/><circle r="7" fill="none"/></g>
+        <use href="#wave" x="64"/><use href="#wave" x="32" y="16"/><use href="#wave" y="32"/><use href="#wave" x="64" y="32"/>
+      </g>
+    </pattern>
+    <rect width="100%" height="100%" fill="url(#seigaiha)" opacity=".07"/>
+  </svg>
+  <div class="frame"></div>
+  <div class="content" id="content"></div>
+  <div class="signoff"><span class="seal">運</span><span>YOKO ONO · ASIAN KITCHEN</span></div>
+</div>
+
+<script src="plates.js"></script>
+<script src="dishes.js"></script>
+<script>
+(() => {
+  const { layout, dishes } = slideFromUrl();
+  const content = document.getElementById("content");
+  const logo = `<header class="logo"><div class="name">YOKO ONO</div><div class="sub">ASIAN KITCHEN</div></header>`;
+  const price = (d, cls = "") => d.price ? `<div class="price ${cls}">${d.price}</div>` : "";
+  const num = i => "N° " + String(i).padStart(2, "0");
+
+  if (layout === "grid") {
+    content.classList.add("grid");
+    content.innerHTML = logo + `
+      <div class="grid-title"><div class="fr">Nos signatures</div>
+        <div class="alt"><span class="en">Our signatures</span><b class="diamond"></b><span class="he" lang="he">המנות שלנו</span></div></div>
+      <div class="cards">${dishes.map(d => `
+        <div class="card"><div class="visual">${dishVisual(d)}</div>
+          <div class="n">${num(d.index)}</div><h2>${d.name}</h2><div class="he-name" lang="he">${d.he}</div>${price(d)}</div>`).join("")}
+      </div>`;
+  } else {
+    const d = dishes[0];
+    content.classList.add("hero");
+    content.innerHTML = logo + `
+      <div class="visual">${dishVisual(d)}</div>
+      <div class="num"><i></i><span>${num(d.index)}</span><i></i></div>
+      <h1>${d.name}</h1>
+      <div class="he-name" lang="he">${d.he}</div>
+      <div class="desc"><span class="fr">${d.fr}</span><span class="en">${d.en}</span><span class="he" lang="he">${d.heDesc}</span></div>
+      ${price(d)}`;
+  }
+})();
+</script>
+</body>
+</html>

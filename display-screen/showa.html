@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<title>Yoko Ono — Écran · Showa Pop</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+  :root { --cream: #f3e6c8; --cream-2: #fff6df; --navy: #1d2a4a; --tomato: #e0452b; --teal: #1f8a84; --mustard: #e8b23a; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #000; }
+  .screen { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--cream); color: var(--navy); font-family: "Rubik", sans-serif; }
+  [lang="he"] { direction: rtl; }
+  .halftone { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .border { position: absolute; inset: 22px; border: 9px solid var(--navy); border-radius: 30px; }
+  .border::after { content: ""; position: absolute; inset: 8px; border: 2.5px solid var(--tomato); border-radius: 20px; }
+  .content { position: absolute; inset: 0; padding: 66px 70px 0; display: flex; flex-direction: column; align-items: center; }
+
+  .logo { display: flex; align-items: center; gap: 18px; }
+  .logo .name { font-weight: 900; font-size: 52px; letter-spacing: .04em; text-shadow: 3px 3px 0 var(--tomato); }
+  .logo .sub { background: var(--teal); color: var(--cream-2); font-weight: 700; font-size: 15px; letter-spacing: .32em; padding: 9px 14px 9px 18px; border-radius: 99px; }
+
+  .visual { position: relative; border-radius: 34px; overflow: hidden; border: 8px solid var(--navy); background: radial-gradient(circle at 50% 45%, #fff3d4 0%, #f4d58d 100%); }
+  .visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .visual .art { position: absolute; inset: 7%; }
+  .visual .art svg { width: 100%; height: 100%; }
+  .shadowed { position: relative; }
+  .shadowed::before { content: ""; position: absolute; inset: 0; transform: translate(18px, 18px); border-radius: 34px; background: var(--tomato); border: 8px solid var(--navy); }
+
+  .burst { position: absolute; width: 190px; height: 190px; }
+  .burst svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .burst .n { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 900; font-size: 54px; color: var(--navy); transform: rotate(-12deg); }
+  .burst .n small { font-size: .5em; }
+
+  /* one dish */
+  .hero .shadowed { margin-top: 44px; width: 900px; height: 1080px; transform: rotate(-1.8deg); }
+  .hero .visual { width: 100%; height: 100%; }
+  .hero .burst { right: -40px; top: -50px; transform: rotate(12deg); }
+  .hero h1 { margin-top: 60px; font-weight: 900; font-size: 94px; line-height: .98; text-transform: uppercase; text-align: center; color: var(--tomato); text-shadow: 6px 6px 0 var(--navy); }
+  .hero .he-name { margin-top: 14px; font-weight: 800; font-size: 54px; color: var(--teal); }
+  .hero .desc { margin-top: 22px; text-align: center; display: grid; gap: 6px; max-width: 900px; }
+  .hero .desc .fr { font-weight: 600; font-size: 29px; }
+  .hero .desc .en { font-style: italic; font-size: 28px; color: #3c4766; }
+  .hero .desc .he { font-weight: 600; font-size: 30px; }
+  .price { margin-top: 22px; background: var(--navy); color: var(--mustard); font-weight: 900; font-size: 42px; padding: 8px 34px; border-radius: 99px; }
+
+  /* several dishes */
+  .grid-title { margin-top: 30px; text-align: center; }
+  .grid-title .fr { font-weight: 900; font-size: 84px; line-height: 1; text-transform: uppercase; color: var(--tomato); text-shadow: 5px 5px 0 var(--navy); transform: rotate(-2deg); }
+  .grid-title .alt { margin-top: 14px; display: flex; gap: 16px; align-items: center; justify-content: center; }
+  .grid-title .en { font-weight: 800; font-style: italic; font-size: 36px; text-transform: uppercase; }
+  .grid-title .he { font-weight: 800; font-size: 36px; color: var(--teal); }
+  .star { width: 22px; height: 22px; }
+  .cards { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px 36px; width: 920px; }
+  .card { border: 6px solid var(--navy); border-radius: 26px; overflow: hidden; background: var(--cream-2); box-shadow: 10px 10px 0 var(--navy); }
+  .card .visual { border: 0; border-radius: 0; aspect-ratio: 5 / 6; border-bottom: 6px solid var(--navy); }
+  .card .label { padding: 16px 14px 18px; text-align: center; color: var(--cream-2); }
+  .card:nth-child(4n+1) .label { background: var(--teal); }
+  .card:nth-child(4n+2) .label { background: var(--tomato); }
+  .card:nth-child(4n+3) .label { background: var(--mustard); color: var(--navy); }
+  .card:nth-child(4n+4) .label { background: var(--navy); }
+  .card h2 { font-weight: 900; font-size: 34px; line-height: 1.02; text-transform: uppercase; }
+  .card .he-name { margin-top: 4px; font-weight: 700; font-size: 30px; }
+  .card .price { display: inline-block; margin-top: 8px; font-size: 26px; padding: 4px 18px; }
+
+  .signoff { position: absolute; left: 50%; bottom: 17px; transform: translateX(-50%); background: var(--cream); padding: 0 16px; white-space: nowrap; display: flex; align-items: center; gap: 14px; font-weight: 800; font-size: 15px; letter-spacing: .4em; }
+  .seal { width: 32px; height: 32px; background: var(--tomato); color: var(--cream-2); display: grid; place-items: center; font-family: "Shippori"; font-size: 21px; letter-spacing: 0; border-radius: 5px; }
+</style>
+</head>
+<body>
+<div class="screen" id="screen">
+  <svg class="halftone" aria-hidden="true">
+    <pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="7" cy="7" r="2.8" fill="#e0452b"/></pattern>
+    <radialGradient id="corners" cx="50%" cy="45%" r="75%"><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".9"/></radialGradient>
+    <mask id="cornerMask"><rect width="100%" height="100%" fill="url(#corners)"/></mask>
+    <rect width="100%" height="100%" fill="url(#dots)" opacity=".28" mask="url(#cornerMask)"/>
+  </svg>
+  <div class="border"></div>
+  <div class="content" id="content"></div>
+  <div class="signoff"><span class="seal">運</span><span>YOKO ONO · ASIAN KITCHEN</span></div>
+</div>
+
+<script src="plates.js"></script>
+<script src="dishes.js"></script>
+<script>
+(() => {
+  const { layout, dishes } = slideFromUrl();
+  const content = document.getElementById("content");
+  const logo = `<header class="logo"><div class="name">YOKO ONO</div><div class="sub">ASIAN KITCHEN</div></header>`;
+  const price = d => d.price ? `<div class="price">${d.price}</div>` : "";
+  const star = `<svg class="star" viewBox="-10 -10 20 20"><path d="M0-10 2.4-2.4 10 0 2.4 2.4 0 10-2.4 2.4-10 0-2.4-2.4Z" fill="#e8b23a" stroke="#1d2a4a" stroke-width="1.4"/></svg>`;
+  const burst = n => {
+    const pts = Array.from({ length: 32 }, (_, i) => {
+      const r = i % 2 ? 41 : 49, a = (i / 32) * Math.PI * 2;
+      return `${(r * Math.cos(a)).toFixed(2)},${(r * Math.sin(a)).toFixed(2)}`;
+    }).join(" ");
+    return `<div class="burst"><svg viewBox="-50 -50 100 100"><polygon points="${pts}" fill="#e8b23a" stroke="#1d2a4a" stroke-width="2.5" stroke-linejoin="round"/></svg><div class="n"><span><small>N°</small>${n}</span></div></div>`;
+  };
+
+  if (layout === "grid") {
+    content.classList.add("grid");
+    content.innerHTML = logo + `
+      <div class="grid-title"><div class="fr">Nos signatures !</div>
+        <div class="alt"><span class="en">Our signatures</span>${star}<span class="he" lang="he">המנות שלנו</span></div></div>
+      <div class="cards">${dishes.map(d => `
+        <div class="card"><div class="visual">${dishVisual(d)}</div>
+          <div class="label"><h2>${d.name}</h2><div class="he-name" lang="he">${d.he}</div>${price(d)}</div></div>`).join("")}
+      </div>`;
+  } else {
+    const d = dishes[0];
+    content.classList.add("hero");
+    content.innerHTML = logo + `
+      <div class="shadowed"><div class="visual">${dishVisual(d)}</div>${burst(d.index)}</div>
+      <h1>${d.name}</h1>
+      <div class="he-name" lang="he">${d.he}</div>
+      <div class="desc"><span class="fr">${d.fr}</span><span class="en">${d.en}</span><span class="he" lang="he">${d.heDesc}</span></div>
+      ${price(d)}`;
+  }
+})();
+</script>
+</body>
+</html>

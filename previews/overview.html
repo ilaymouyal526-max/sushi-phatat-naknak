@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Yoko Ono — Design options</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1b1a19; color: #efe8dc; font-family: "Montserrat", "Heebo", sans-serif; }
+  .sheet { padding: 56px 60px 64px; width: max-content; }
+  h1 { font-weight: 800; font-size: 40px; letter-spacing: .02em; }
+  .lead { margin-top: 8px; font-size: 18px; color: #b9ad9b; }
+  .cols { margin-top: 36px; display: grid; gap: 40px; }
+  .posters .cols { grid-template-columns: repeat(3, 600px); }
+  .opt img { display: block; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,.5); }
+  .opt h2 { margin-top: 20px; font-weight: 800; font-size: 26px; }
+  .opt h2 span { color: #c9a36b; margin-right: 10px; }
+  .opt p { margin-top: 8px; font-size: 16px; line-height: 1.45; color: #d8cdbb; }
+  .opt p b { color: #efe8dc; }
+  .screens .row { display: grid; grid-template-columns: 300px repeat(3, 405px); gap: 26px; align-items: start; margin-top: 34px; }
+  .screens .row img { width: 405px; display: block; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+  .screens .row .opt h2 { margin-top: 0; }
+  .note { margin-top: 30px; font-size: 15px; color: #a3947f; }
+</style>
+</head>
+<body>
+<div class="sheet" id="sheet"></div>
+<script>
+const OPTIONS = [
+  { key: "noir", name: "Noir & Or", look: "Black and bronze-gold with a red sun disc, in the colours of the Yoko Ono logo. Continues the current poster style.",
+    good: "the premium look, and it matches the restaurant's brand and interior.", watch: "dark ink coverage costs a little more to print, and small text gets hard to read if it is printed smaller than A3.",
+    screenGood: "making food photos glow on a dark screen. It looks premium.", screenWatch: "dark or badly lit photos disappear into the black." },
+  { key: "washi", name: "Washi", look: "Cream paper, Mount Fuji, mist bands and waves, inspired by Japanese woodblock prints, in Prussian blue and vermilion.",
+    good: "the most instantly Japanese look. It is light, warm and easy to read.", watch: "it is the most traditional option, and the busiest picture.",
+    screenGood: "a warm, light screen that is easy to read from across the room.", screenWatch: "the round frame crops the photo corners, so dishes must be centred in the shot." },
+  { key: "showa", name: "Showa Pop", look: "1960s Japanese retro: chunky type, bold colours and thick outlines, plus coupon-style prizes and rule icons on the poster.",
+    good: "the most eye-catching option, with game-show energy. The icons explain the rules even without reading.", watch: "it is the least premium option, and loud next to an elegant interior.",
+    screenGood: "catching eyes from the street or the queue.", screenWatch: "it is the least premium option. Bright frames can compete with colourful food photos." },
+];
+const sheet = new URLSearchParams(location.search).get("sheet") || "posters";
+const root = document.getElementById("sheet");
+const text = (o, i, screen = false) => `<h2><span>${i + 1}</span>${o.name}</h2><p>${o.look}</p>
+  <p><b>Good for:</b> ${screen ? o.screenGood : o.good}</p><p><b>Watch out:</b> ${screen ? o.screenWatch : o.watch}</p>`;
+if (sheet === "posters") {
+  root.className = "sheet posters";
+  root.innerHTML = `<h1>Le Grand Jeu: 3 poster designs in French, English and Hebrew</h1>
+    <div class="lead">A3 print, same rules on all three. Pick one, or mix (for example the Washi layout in Noir colours).</div>
+    <div class="cols">${OPTIONS.map((o, i) => `<div class="opt"><img src="../poster-dice-game/out/yoko-ono-grand-jeu-FR-EN-HE-${o.key}-A3.png">${text(o, i)}</div>`).join("")}</div>`;
+} else {
+  root.className = "sheet screens";
+  root.innerHTML = `<h1>Dish screen: 3 designs for the portrait TV (1080 × 1920)</h1>
+    <div class="lead">Each style has a one-dish slide and a four-dish menu slide. The drawings are placeholders, and your real dish photos go in their place.</div>
+    ${OPTIONS.map((o, i) => `<div class="row"><div class="opt">${text(o, i, true)}</div>${["dish-01-red-dragon-tataki", "dish-05-poke-bowl", "menu-1"].map(f =>
+      `<img src="../display-screen/out/sample/${o.key}/${f}.png">`).join("")}</div>`).join("")}
+    <div class="note">Sample dishes: Red Dragon Tataki and Sushi Push Pop are from your ad. The other dishes, the descriptions and the Hebrew names are placeholders until you send the real menu.</div>`;
+}
+</script>
+</body>
+</html>

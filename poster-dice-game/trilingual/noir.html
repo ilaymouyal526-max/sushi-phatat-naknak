@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yoko Ono — Le Grand Jeu · Noir & Or</title>
+<link rel="stylesheet" href="../../fonts/fonts.css">
+<style>
+  :root {
+    --ink: #14110e;
+    --ivory: #f4ecdf;
+    --ivory-dim: #d8cdbb;
+    --muted: #a3947f;
+    --gold: #c9a36b;
+    --gold-light: #e2c590;
+    --red: #b8322a;
+    --line: rgba(201,163,107,.28);
+  }
+  @page { size: 297mm 420mm; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #2a2622; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @media print { html, body { background: var(--ink); } }
+  b { font-weight: 700; color: var(--ivory); }
+  [lang="he"] { font-family: "Heebo", sans-serif; }
+
+  .poster {
+    position: relative; width: 297mm; height: 420mm; margin: 0 auto; overflow: hidden;
+    background: radial-gradient(ellipse 70% 40% at 50% 22%, #2a221b 0%, var(--ink) 70%);
+    color: var(--ivory); font-family: "Montserrat", "Heebo", sans-serif;
+  }
+  .bg-pattern { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .frame { position: absolute; inset: 26px; border: 1.5px solid var(--gold); }
+  .frame::after { content: ""; position: absolute; inset: 7px; border: .75px solid rgba(201,163,107,.55); }
+  .corner { position: absolute; width: 34px; height: 34px; }
+  .corner svg { width: 100%; height: 100%; display: block; }
+  .c-tl { top: 18px; left: 18px; } .c-tr { top: 18px; right: 18px; transform: scaleX(-1); }
+  .c-bl { bottom: 18px; left: 18px; transform: scaleY(-1); } .c-br { bottom: 18px; right: 18px; transform: scale(-1,-1); }
+
+  .content { position: absolute; inset: 0; padding: 56px 74px 46px; display: flex; flex-direction: column; align-items: center; }
+  .content > * { flex-shrink: 0; }
+
+  .logo { text-align: center; line-height: 1; }
+  .logo .name { font-weight: 800; font-size: 56px; letter-spacing: .05em; color: var(--gold); }
+  .logo .sub { margin-top: 9px; font-size: 15px; letter-spacing: .52em; padding-left: .52em; color: var(--ivory-dim); }
+
+  .hero { position: relative; width: 975px; height: 292px; margin-top: 6px; }
+  .hero > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .vertical-jp { position: absolute; left: 4px; top: 34px; writing-mode: vertical-rl; font-family: "Shippori", serif; font-weight: 800; font-size: 40px; letter-spacing: .16em; color: var(--gold); }
+  .badge-new {
+    position: absolute; left: 200px; top: 12px; width: 112px; height: 112px; border-radius: 50%;
+    border: 1.5px solid var(--gold); background: var(--ink); display: grid; place-items: center; text-align: center; transform: rotate(-12deg);
+  }
+  .badge-new::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; border: .75px dashed rgba(201,163,107,.7); }
+  .badge-new .fr { display: block; font-weight: 800; font-size: 14.5px; letter-spacing: .12em; padding-left: .12em; text-transform: uppercase; }
+  .badge-new .en { display: block; font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 20px; line-height: 1; color: var(--gold-light); }
+  .badge-new .he { display: block; font-weight: 700; font-size: 17px; line-height: 1.1; color: var(--gold-light); }
+
+  .kicker { margin-top: 8px; display: flex; align-items: center; gap: 14px; color: var(--gold); }
+  .kicker i { width: 40px; height: 1px; background: var(--gold); opacity: .7; }
+  .kicker .fr { font-weight: 600; font-size: 14px; letter-spacing: .4em; text-transform: uppercase; }
+  .kicker .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 21px; color: var(--gold-light); }
+  .kicker .he { font-weight: 600; font-size: 17px; color: var(--gold-light); }
+  .diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); flex: none; }
+
+  h1 { margin-top: 6px; font-weight: 900; font-size: 94px; line-height: .95; color: var(--ivory); text-transform: uppercase; }
+  .title-alt { margin-top: 8px; display: flex; align-items: center; gap: 22px; color: var(--gold-light); }
+  .title-alt .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 46px; line-height: 1; }
+  .title-alt .he { font-family: "Frank Ruhl", serif; font-weight: 700; font-size: 40px; line-height: 1; }
+
+  .prizes { margin-top: 26px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  .prize { position: relative; padding: 20px 24px 18px; text-align: center; border: 1.5px solid var(--gold); background: rgba(20,17,14,.75); }
+  .prize .label { font-weight: 800; font-size: 16px; letter-spacing: .28em; padding-left: .28em; text-transform: uppercase; }
+  .dice-row { display: flex; justify-content: center; gap: 16px; margin-top: 10px; }
+  .dice-row .pair { display: flex; gap: 4px; }
+  .dice-row svg { width: 24px; height: 24px; display: block; }
+  .prize .big { font-weight: 900; font-size: 84px; line-height: .9; margin-top: 10px; letter-spacing: -.02em; }
+  .prize .big small { font-size: .6em; letter-spacing: 0; }
+  .prize .lines { margin-top: 10px; display: grid; gap: 3px; }
+  .prize .lines .fr { font-weight: 600; font-size: 16px; }
+  .prize .lines .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 20px; line-height: 1.1; }
+  .prize .lines .he { font-weight: 600; font-size: 17px; }
+
+  .prize.half .label { color: var(--gold); }
+  .prize.half .big { color: var(--gold-light); }
+  .prize.half .lines .fr, .prize.half .lines .he { color: var(--ivory); }
+  .prize.half .lines .en { color: var(--muted); }
+  .prize.free { background: linear-gradient(160deg, #d9b67c 0%, var(--gold) 55%, #b48c55 100%); border-color: var(--gold-light); color: var(--ink); }
+  .prize.free .lines .en { color: #4a3a27; }
+  .ribbon { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--red); color: var(--ivory); padding: 6px 16px; white-space: nowrap; display: flex; gap: 12px; align-items: center; }
+  .ribbon .fr { font-weight: 800; font-size: 13px; letter-spacing: .3em; text-transform: uppercase; }
+  .ribbon .he { font-weight: 800; font-size: 14px; }
+
+  .section-head { margin-top: 24px; width: 100%; display: flex; align-items: center; gap: 16px; }
+  .section-head > i { flex: 1; height: 1px; background: var(--gold); opacity: .55; }
+  .section-head .fr { font-weight: 800; font-size: 18px; letter-spacing: .3em; text-transform: uppercase; }
+  .section-head .en { font-family: "Cormorant"; font-style: italic; font-weight: 600; font-size: 23px; color: var(--gold-light); }
+  .section-head .he { font-weight: 700; font-size: 19px; color: var(--gold-light); }
+
+  .table { width: 100%; margin-top: 12px; }
+  .row { display: grid; grid-template-columns: 50px 1fr 1fr 1fr; column-gap: 24px; padding: 10px 0; border-top: 1px solid var(--line); }
+  .row.head { border-top: 0; padding: 0 0 6px; }
+  .row.head span { font-weight: 700; font-size: 10.5px; letter-spacing: .34em; color: var(--muted); text-transform: uppercase; }
+  .row.head span[lang="he"] { font-size: 12px; letter-spacing: .05em; text-align: right; }
+  .num { font-family: "Cormorant"; font-style: italic; font-weight: 700; font-size: 38px; line-height: .9; color: var(--gold); }
+  .cell h3 { font-weight: 800; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-light); }
+  .cell p { margin-top: 4px; font-size: 13px; line-height: 1.42; color: var(--ivory-dim); }
+  .cell[lang="he"] { text-align: right; }
+  .cell[lang="he"] h3 { font-size: 15px; letter-spacing: 0; }
+  .cell[lang="he"] p { font-size: 14px; line-height: 1.38; }
+  .row.note .cell h3 { font-size: 11px; color: var(--gold); }
+  .row.note .cell[lang="he"] h3 { font-size: 13.5px; }
+  .row.note .cell p { font-size: 11.5px; line-height: 1.4; }
+  .row.note .cell[lang="he"] p { font-size: 12.5px; }
+  .row.note .icon { width: 30px; height: 30px; color: var(--gold); margin-top: 2px; }
+
+  .signoff { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); background: var(--ink); padding: 0 18px; white-space: nowrap; display: flex; justify-content: center; align-items: center; gap: 16px; color: var(--gold); font-weight: 700; font-size: 12px; letter-spacing: .48em; }
+  .seal { width: 26px; height: 26px; background: var(--red); color: var(--ivory); display: grid; place-items: center; font-family: "Shippori"; font-size: 17px; letter-spacing: 0; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="poster" id="poster">
+  <svg class="bg-pattern" aria-hidden="true">
+    <defs>
+      <pattern id="seigaiha" width="64" height="32" patternUnits="userSpaceOnUse">
+        <g fill="#14110e" stroke="#c9a36b" stroke-width="1">
+          <g id="wave"><circle r="31"/><circle r="23" fill="none"/><circle r="15" fill="none"/><circle r="7" fill="none"/></g>
+          <use href="#wave" x="64"/><use href="#wave" x="32" y="16"/><use href="#wave" y="32"/><use href="#wave" x="64" y="32"/>
+        </g>
+      </pattern>
+      <radialGradient id="fade" cx="50%" cy="22%" r="75%">
+        <stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".45" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity="1"/>
+      </radialGradient>
+      <mask id="fadeMask"><rect width="100%" height="100%" fill="url(#fade)"/></mask>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#seigaiha)" opacity=".1" mask="url(#fadeMask)"/>
+  </svg>
+
+  <div class="frame"></div>
+  <div class="corner c-tl"><svg viewBox="0 0 34 34"><path d="M2 32V2h30M8 32V8h24" fill="none" stroke="#c9a36b" stroke-width="1.5"/><rect x="13" y="13" width="6" height="6" transform="rotate(45 16 16)" fill="#c9a36b"/></svg></div>
+  <div class="corner c-tr"><svg viewBox="0 0 34 34"><path d="M2 32V2h30M8 32V8h24" fill="none" stroke="#c9a36b" stroke-width="1.5"/><rect x="13" y="13" width="6" height="6" transform="rotate(45 16 16)" fill="#c9a36b"/></svg></div>
+  <div class="corner c-bl"><svg viewBox="0 0 34 34"><path d="M2 32V2h30M8 32V8h24" fill="none" stroke="#c9a36b" stroke-width="1.5"/><rect x="13" y="13" width="6" height="6" transform="rotate(45 16 16)" fill="#c9a36b"/></svg></div>
+  <div class="corner c-br"><svg viewBox="0 0 34 34"><path d="M2 32V2h30M8 32V8h24" fill="none" stroke="#c9a36b" stroke-width="1.5"/><rect x="13" y="13" width="6" height="6" transform="rotate(45 16 16)" fill="#c9a36b"/></svg></div>
+
+  <div class="content">
+    <header class="logo">
+      <div class="name">YOKO ONO</div>
+      <div class="sub">ASIAN KITCHEN</div>
+    </header>
+
+    <section class="hero">
+      <svg id="hero" viewBox="0 0 975 312" aria-label="Deux dés lancés devant un soleil rouge"></svg>
+      <div class="vertical-jp">運試し</div>
+      <div class="badge-new"><div><span class="fr" data-t="new.fr"></span><span class="en" data-t="new.en"></span><span class="he" data-t="new.he"></span></div></div>
+    </section>
+
+    <div class="kicker"><i></i><span class="fr" data-t="kicker.fr"></span><b class="diamond"></b><span class="en" data-t="kicker.en"></span><b class="diamond"></b><span class="he" data-t="kicker.he"></span><i></i></div>
+    <h1 data-t="title.fr"></h1>
+    <div class="title-alt"><span class="en" data-t="title.en"></span><b class="diamond"></b><span class="he" data-t="title.he"></span></div>
+
+    <section class="prizes">
+      <div class="prize half">
+        <div class="label" data-t="half.label.fr"></div>
+        <div class="dice-row" data-dice="1,2,3"></div>
+        <div class="big">−50<small>%</small></div>
+        <div class="lines"><span class="fr" data-t="half.fr"></span><span class="en" data-t="half.en"></span><span class="he" data-t="half.he"></span></div>
+      </div>
+      <div class="prize free">
+        <div class="ribbon"><span class="fr" data-t="free.ribbon.fr"></span><span class="he" data-t="free.ribbon.he"></span></div>
+        <div class="label" data-t="free.label.fr"></div>
+        <div class="dice-row dark" data-dice="4,5,6"></div>
+        <div class="big">100<small>%</small></div>
+        <div class="lines"><span class="fr" data-t="free.fr"></span><span class="en" data-t="free.en"></span><span class="he" data-t="free.he"></span></div>
+      </div>
+    </section>
+
+    <div class="section-head"><i></i><span class="fr" data-t="rulesTitle.fr"></span><b class="diamond"></b><span class="en" data-t="rulesTitle.en"></span><b class="diamond"></b><span class="he" data-t="rulesTitle.he"></span><i></i></div>
+
+    <section class="table" id="table">
+      <div class="row head"><span></span><span>Français</span><span>English</span><span lang="he" dir="rtl">עברית</span></div>
+    </section>
+  </div>
+
+  <div class="signoff"><span class="seal">運</span><span>YOKO ONO · ASIAN KITCHEN</span></div>
+</div>
+
+<script src="../../shared/dice.js"></script>
+<script src="copy.js"></script>
+<script>
+(() => {
+  const { el, isoDie } = window.Dice;
+  const table = document.getElementById("table");
+  const ICONS = [
+    '<svg class="icon" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="17" cy="17" r="15.5"/><path d="M11 21c1.5 2.3 3.6 3.4 6 3.4s4.5-1.1 6-3.4M12 13.5h.01M22 13.5h.01" stroke-linecap="round" stroke-width="2"/></svg>',
+    '<svg class="icon" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="10" width="21" height="15" rx="2"/><path d="M23 15.5l9-5v14l-9-5z" stroke-linejoin="round"/><circle cx="7.5" cy="14.5" r="1.4" fill="currentColor" stroke="none"/></svg>',
+  ];
+  const row = (lead, path, cls = "") => {
+    const r = document.createElement("div");
+    r.className = "row " + cls;
+    r.innerHTML = `<div>${lead}</div>` + ["fr", "en", "he"].map(l =>
+      `<div class="cell" lang="${l}"><h3 data-t="${path}.${l}.t"></h3><p data-t="${path}.${l}.d"></p></div>`).join("");
+    table.appendChild(r);
+  };
+  COPY.rules.forEach((_, i) => row(`<div class="num">0${i + 1}</div>`, `rules.${i}`));
+  COPY.notes.forEach((_, i) => row(ICONS[i], `notes.${i}`, "note"));
+  fillCopy();
+  for (const c of document.querySelectorAll('.cell[lang="he"]')) c.dir = "rtl";
+
+  Dice.fillDoubles(document.querySelector(".half"), {});
+  Dice.fillDoubles(document.querySelector(".free"), { body: "#14110e", pip: "#f4ecdf" });
+
+  // Hero: red sun, two dice, and the throw bouncing off the opposite wall
+  const svg = document.getElementById("hero");
+  el("defs", {}, svg).innerHTML = `
+    <radialGradient id="sun" cx="42%" cy="38%" r="70%"><stop offset="0" stop-color="#cf4034"/><stop offset=".7" stop-color="#b8322a"/><stop offset="1" stop-color="#982821"/></radialGradient>
+    <filter id="dieShadow" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#000" flood-opacity=".45"/></filter>`;
+  const CX = 487, CY = 156;
+  el("circle", { cx: CX, cy: CY, r: 150, fill: "none", stroke: "#c9a36b", "stroke-width": 1.2, opacity: .8 }, svg);
+  el("circle", { cx: CX, cy: CY, r: 158, fill: "none", stroke: "#c9a36b", "stroke-width": .7, "stroke-dasharray": "2 6", opacity: .7 }, svg);
+  el("circle", { cx: CX, cy: CY, r: 134, fill: "url(#sun)" }, svg);
+
+  const WALL = 812;
+  el("path", { d: `M${WALL} 36 V280`, stroke: "#c9a36b", "stroke-width": 3, "stroke-linecap": "round" }, svg);
+  for (let y = 46; y <= 272; y += 16) el("path", { d: `M${WALL} ${y} l11 -9`, stroke: "#c9a36b", "stroke-width": 1.2, opacity: .7 }, svg);
+  const traj = { fill: "none", stroke: "#e2c590", "stroke-width": 2, "stroke-dasharray": "3 9", "stroke-linecap": "round" };
+  el("path", { ...traj, d: `M150 296 C 300 90, 600 40, ${WALL - 4} 118` }, svg);
+  el("path", { ...traj, d: `M${WALL - 4} 118 C 760 128, 720 138, 650 152` }, svg);
+  el("path", { ...traj, d: `M178 288 C 330 120, 600 80, ${WALL - 4} 160` }, svg);
+  el("path", { ...traj, d: `M${WALL - 4} 160 C 740 172, 620 205, 548 222` }, svg);
+  for (const y of [118, 160])
+    for (const [dx, dy] of [[-14, -10], [-18, 0], [-14, 10]])
+      el("path", { d: `M${WALL - 6} ${y} l${dx} ${dy}`, stroke: "#e2c590", "stroke-width": 2, "stroke-linecap": "round" }, svg);
+  const label = el("text", { x: WALL + 24, y: 158, fill: "#a3947f", "font-family": "Montserrat, Heebo", "font-weight": 600, "font-size": 9, "letter-spacing": "1.6", "text-anchor": "middle", transform: `rotate(90 ${WALL + 24} 158)` }, svg);
+  label.textContent = `${COPY.wall.fr} · ${COPY.wall.en} · ${COPY.wall.he}`.toUpperCase();
+
+  isoDie(svg, { cx: 430, cy: 172, s: 84, rot: -12, top: 6, left: 4, right: 2, filter: "url(#dieShadow)" });
+  isoDie(svg, { cx: 558, cy: 140, s: 74, rot: 14, top: 6, left: 3, right: 5, filter: "url(#dieShadow)" });
+})();
+</script>
+</body>
+</html>
