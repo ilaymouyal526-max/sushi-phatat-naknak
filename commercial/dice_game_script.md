@@ -14,7 +14,7 @@
 
 ## Look
 It's the same campaign as the dice posters, so it uses the same "Noir élégant" system.
-- **Colour:** black and ink (#000, #14110e), gold #c9a36b, light gold #e2c590 and ivory #f4ecdf. Red #b8322a is an accent only, for the red dice pips, the Jackpot ribbon and the seal.
+- **Colour:** black and ink (#000, #14110e), gold #c9a36b, light gold #e2c590 and ivory #f4ecdf. Red #b8322a appears only in the dice, the Jackpot ribbon and the seal.
 - **The dice table (`reference/dice_table.jpg`):**
   - It's the restaurant's real table: a rectangular walnut frame with felt-lined inner walls and green casino felt.
   - The gold logo is printed on the felt near the far end.
@@ -34,7 +34,11 @@ It's the same campaign as the dice posters, so it uses the same "Noir élégant"
   - A red 運 ("luck") hanko seal.
   - Vertical 運試し ("test of luck") down the right edge.
   - Sumi ink-brush wipes between scenes.
-- **The dice:** Asian ivory dice where the 1 and 4 pips are red, as drawn by `shared/dice.js`. Double 4 shows red pips, which ties it to the seal and the ribbon. That's why the end card lands on it.
+- **The dice (`reference/dice_on_table.jpg`):**
+  - They're the restaurant's real dice: translucent red casino dice with white pips and sharp edges.
+  - Light passes through them, so every dice shot gets a red glow on the felt.
+  - Their red matches the seal and the Jackpot ribbon.
+  - In the table video, the dice come to rest right on the logo. The jackpot and the end card use that same spot.
 - **People:** simple gold line-art figures with no faces: guests, the roller and a waiter in a black apron. This keeps the look premium and lets any guest see themselves in it.
 
 ## Run of show
@@ -58,7 +62,7 @@ It's the same campaign as the dice posters, so it uses the same "Noir élégant"
 ## Script
 
 ### 1 · Hook (0:00.0–0:02.5)
-**Picture:** Pure black. On beat 1, two ivory dice tumble toward camera out of the dark in slow motion. A red pip catches the light. On beat 3 they freeze mid-air, with gold dust hanging around them.
+**Picture:** Pure black. On beat 1, the two translucent red dice tumble toward camera out of the dark in slow motion, with a light glowing through them. On beat 3 they freeze mid-air, with gold dust hanging around them.
 **Text:** none.
 **VO:**
 - FR: Un seul lancer… et votre addition peut disparaître.
@@ -180,7 +184,7 @@ It's the same campaign as the dice posters, so it uses the same "Noir élégant"
 
 ### 7 · Double 1 · 2 · 3: −50% (0:31.3–0:36.3)
 **Picture:**
-- On the green felt, the dice from the valid throw spin in place like a slot machine, flashing one double per beat: double 1 (red pips), double 2, double 3.
+- On the green felt, the dice from the valid throw spin in place like a slot machine, flashing one double per beat: double 1, double 2, double 3.
 - Cut to the bill folder opening.
 - A gold yanagiba sushi knife slices the receipt clean down the middle, and one half falls away.
 - **−50%** rises up in light gold.
@@ -200,8 +204,8 @@ The receipt shows no prices, so it works in any currency.
 
 ### 8 · Double 4 · 5 · 6: Jackpot (0:36.3–0:41.3)
 **Picture:**
-- On the felt, the dice flash double 6, then double 5.
-- They land on **double 4**, with red pips on both dice, right under the gold logo.
+- On the felt, the dice flash double 4, then double 5.
+- They come to rest on **double 6**, right on the gold logo, as in the table video.
 - Hard cut to full gold. The red ribbon swings in, and the whole receipt bursts into gold leaf and cherry-blossom petals, the same blossoms as in the logo.
 - **100%** fills the screen, and the guests' line-art figures jump up.
 
@@ -266,7 +270,7 @@ Later, real winner clips filmed at the table replace this shot. That's what this
 ### 12 · End card (0:52.5–0:58.8)
 **Picture:**
 - The ink-mountain painting rises behind black. Its ridge redraws itself as the mountain line of the logo.
-- The dice tumble across one last time and land on double 4, with the red pips, under the logo.
+- The red dice tumble across one last time and land on double 6, under the logo.
 - The gold frame and the red seal come in.
 - The last taiko hit lands on beat 1 of the final bar, the seal stamp lands on the last beat, then fade out.
 
@@ -300,5 +304,5 @@ Later, real winner clips filmed at the table replace this shot. That's what this
 | 0:12.5–0:15.0 | End card, with HAPPY HOUR 16h–18h and "Règles au restaurant · *Rules in the restaurant* · החוקים במסעדה" |
 
 ## Still open
-1. **The dice:** the video uses ivory Asian dice with red 1 and 4 pips, as on the posters. If the dice on the table look different, the animation should match them.
-2. **A clean logo file:** the felt photo works as a reference, but the final render needs a sharp vector. It can be traced from the photo, or the original file can come from whoever printed the felt.
+1. **A clean logo file:** the felt photo works as a reference, but the final render needs a sharp vector. It can be traced from the photo, or the original file can come from whoever printed the felt.
+2. **Real footage (optional):** the table video came through WhatsApp at 848×478 in landscape. That's fine as a reference but too small for a 9:16 frame. If someone films the table vertically and sends the original file (as a document, not as a video), the hook or the cutdown could open on the real table.
