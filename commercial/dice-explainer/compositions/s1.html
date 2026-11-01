@@ -1,0 +1,45 @@
+<template>
+  <style>
+    @font-face { font-family: "Cormorant"; font-style: normal; font-weight: 500 700; font-display: block; src: url('assets/fonts/cormorant-upright-normal-latin.woff2') format('woff2'); }
+    @font-face { font-family: "Cormorant"; font-style: italic; font-weight: 500 700; font-display: block; src: url('assets/fonts/cormorant-italic-latin.woff2') format('woff2'); }
+    @font-face { font-family: "Frank Ruhl"; font-weight: 300 900; font-display: block; src: url('assets/fonts/frankruhl-normal-latin.woff2') format('woff2'); }
+    @font-face { font-family: "Frank Ruhl"; font-weight: 300 900; font-display: block; src: url('assets/fonts/frankruhl-normal-hebrew.woff2') format('woff2'); unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+    #root { position: absolute; inset: 0; overflow: hidden; font-variant-numeric: lining-nums; background: radial-gradient(ellipse 85% 55% at 50% 58%, #2c1a11 0%, #0b0907 72%); }
+    .fr { font-family: "Cormorant", serif; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: #f4ecdf; line-height: 1; }
+    .en { font-family: "Cormorant", serif; font-style: italic; font-weight: 600; color: #e2c590; line-height: 1.1; }
+    .he { font-family: "Frank Ruhl", serif; font-weight: 500; color: #ddd2c0; line-height: 1.15; }
+    .w { display: inline-block; }
+    #s1-text { position: absolute; left: 108px; right: 108px; top: 236px; text-align: center; }
+    #s1-fr { font-size: 92px; }
+    #s1-en { margin-top: 24px; font-size: 62px; }
+    #s1-he { margin-top: 8px; font-size: 56px; }
+    .s1-die { position: absolute; width: 380px; height: 408px; }
+    #s1-dA { left: 96px; top: 760px; }
+    #s1-dB { left: 590px; top: 900px; }
+  </style>
+  <div id="root" data-composition-id="s1" data-width="1080" data-height="1920">
+    <div id="s1-text">
+      <div id="s1-fr" class="fr"><span class="w">Un</span> <span class="w">seul</span> <span class="w">lancer…</span></div>
+      <div id="s1-en" class="en">One roll…</div>
+      <div id="s1-he" class="he" dir="rtl" lang="he">הטלה אחת…</div>
+    </div>
+    <div id="s1-dA" class="die s1-die" data-face="5"></div>
+    <div id="s1-dB" class="die s1-die" data-face="2"></div>
+  </div>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      DiceKit.mount(["#s1-dA", "#s1-dB"]);
+      // Frame 0 is the hook: the line and both dice are already on screen.
+      // Slow-motion tumble for three beats, a freeze on double 6, then the dice whip out.
+      tl.fromTo("#s1-dA", { rotation: -26, y: 30 }, { rotation: 20, y: -36, duration: 1.875, ease: "none" }, 0);
+      tl.fromTo("#s1-dB", { rotation: 32, y: 40 }, { rotation: -10, y: -60, duration: 1.875, ease: "none" }, 0);
+      DiceKit.tumble(tl, "#s1-dA", 0, 1.875, 6, 0.25, 0);
+      DiceKit.tumble(tl, "#s1-dB", 0, 1.875, 6, 0.25, 3);
+      tl.fromTo("#s1-text", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, 2.16);
+      tl.fromTo("#s1-dA", { filter: "blur(0px)" }, { y: -1500, filter: "blur(14px)", duration: 0.38, ease: "power3.in", immediateRender: false }, 2.08);
+      tl.fromTo("#s1-dB", { filter: "blur(0px)" }, { y: -1500, filter: "blur(14px)", duration: 0.38, ease: "power3.in", immediateRender: false }, 2.12);
+      window.__timelines["s1"] = tl;
+    })();
+  </script>
+</template>
