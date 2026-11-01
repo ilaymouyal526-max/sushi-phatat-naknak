@@ -7,22 +7,22 @@
 <link rel="stylesheet" href="../../fonts/fonts.css">
 <link rel="stylesheet" href="../trilingual/noir-elegant.css">
 <style>
-  .logo-svg { display: block; width: 250px; height: auto; color: var(--gold); --logo-bg: var(--black); }
-  .kicker { margin-top: 18px; }
+  .logo-svg { display: block; width: 172px; height: auto; color: var(--gold); }
+  .kicker { margin-top: 12px; }
 
   .hook { margin-top: 16px; text-align: center; line-height: 1; }
   .hook .en { display: block; font-weight: 600; font-size: 112px; letter-spacing: .03em; text-transform: uppercase; color: var(--ivory); white-space: nowrap; }
   .hook .he { display: block; margin-top: 14px; font-weight: 700; font-size: 74px; color: var(--gold-light); }
 
   /* The Blender render of the table; its edges fade into the black page */
-  .shot { position: absolute; left: 0; right: 0; top: 430px; height: 800px; overflow: hidden;
+  .shot { position: absolute; left: 0; right: 0; top: 456px; height: 790px; overflow: hidden;
     --fade-y: linear-gradient(to bottom, transparent 0%, #000 16%, #000 66%, transparent 92%);
     --fade-x: radial-gradient(ellipse 66% 75% at 50% 50%, #000 58%, transparent 100%);
     -webkit-mask-image: var(--fade-y), var(--fade-x); -webkit-mask-composite: source-in;
             mask-image: var(--fade-y), var(--fade-x); mask-composite: intersect; }
-  .shot img { position: absolute; left: 50%; top: 50%; width: 1240px; height: auto; transform: translate(-50%, -50%); display: block; }
+  .shot img { position: absolute; left: 50%; top: 50%; width: 1240px; height: auto; transform: translate(-50%, -59%); display: block; }
 
-  .badge-new { position: absolute; right: 116px; top: 520px; width: 132px; height: 132px; border-radius: 50%; background: var(--red); color: var(--ivory);
+  .badge-new { position: absolute; right: 116px; top: 556px; width: 132px; height: 132px; border-radius: 50%; background: var(--red); color: var(--ivory);
     display: grid; place-items: center; text-align: center; transform: rotate(10deg); box-shadow: 0 10px 30px rgba(0,0,0,.5); }
   .badge-new::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; border: 1px dashed rgba(244,236,223,.6); }
   .badge-new .en { display: block; font-weight: 700; font-size: 30px; letter-spacing: .14em; padding-left: .14em; text-transform: uppercase; line-height: 1; }
@@ -57,7 +57,7 @@
 </head>
 <body>
 <div class="poster" id="poster">
-  <div class="shot"><img src="../photo/table-hero.jpg" alt="Two red dice on the Yoko Ono dice table"></div>
+  <div class="shot"><img src="../blender/out/table-preview.png" alt="Two red dice on the Yoko Ono dice table"></div>
   <div class="frame"></div>
 
   <div class="content">
@@ -82,6 +82,7 @@
   <div class="signoff"><span class="seal">運</span><span>YOKO ONO · ASIAN KITCHEN</span></div>
 </div>
 
+<script src="../../shared/logo-path.js"></script>
 <script src="../../shared/logo.js"></script>
 <script src="../../shared/dice.js"></script>
 <script src="../trilingual/copy.js"></script>

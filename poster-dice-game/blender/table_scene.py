@@ -93,13 +93,14 @@ def felt_material(with_logo=False):
         # Gold print: the logo mask, placed by the floor's own coordinates, mixes metallic gold over the felt
         gold = principled(nt, **{"Base Color": (0.95, 0.72, 0.40, 1), "Metallic": 0.45, "Roughness": 0.42})
         nt.links.new(bump.outputs["Normal"], gold.inputs["Normal"])
-        logo_h = LOGO_W * 608 / 1012
+        img = nt.nodes.new("ShaderNodeTexImage")
+        img.image = bpy.data.images.load(os.path.join(HERE, "logo-mask.png"))
+        mask_w, mask_h = img.image.size
+        logo_h = LOGO_W * mask_h / mask_w
         mapping = nt.nodes.new("ShaderNodeMapping")
         mapping.inputs["Scale"].default_value = (1 / LOGO_W, 1 / logo_h, 1)
         mapping.inputs["Location"].default_value = (0.5, 0.5 - LOGO_Y / logo_h, 0)
         nt.links.new(tex.outputs["Object"], mapping.inputs["Vector"])
-        img = nt.nodes.new("ShaderNodeTexImage")
-        img.image = bpy.data.images.load(os.path.join(HERE, "logo-mask.png"))
         img.image.colorspace_settings.name = "Non-Color"
         img.extension = "CLIP"
         nt.links.new(mapping.outputs["Vector"], img.inputs["Vector"])
@@ -273,7 +274,7 @@ def lights_and_camera(scene):
     cam.rotation_euler = (target - cam.location).to_track_quat("-Z", "Y").to_euler()
     cam.data.lens = 32
     cam.data.dof.use_dof = True
-    cam.data.dof.focus_distance = (Vector((0, 0.05, 0.01)) - cam.location).length
+    cam.data.dof.focus_distance = (Vector((0, 0.03, 0.01)) - cam.location).length
     cam.data.dof.aperture_fstop = 8
     scene.camera = cam
 
@@ -284,8 +285,8 @@ def main():
     body, paint = dice_material(), pip_material()
     build_table(felt, floor, walnut)
     # Double six, in front of the logo (the logo sits behind the dice from the camera)
-    die("Die left", (-0.036, 0.040, DIE / 2), 18, body, paint)
-    die("Die right", (0.034, 0.026, DIE / 2), -14, body, paint)
+    die("Die left", (-0.036, 0.000, DIE / 2), 18, body, paint)
+    die("Die right", (0.034, -0.012, DIE / 2), -14, body, paint)
     lights_and_camera(scene)
     os.makedirs(os.path.join(HERE, "out"), exist_ok=True)
     target = os.path.join(HERE, "out", "table-preview.png") if PREVIEW else os.path.join(HERE, "..", "photo", "table-hero.png")
