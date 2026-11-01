@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yoko Ono — Roll the dice · EN/HE</title>
+<link rel="stylesheet" href="../../fonts/fonts.css">
+<link rel="stylesheet" href="../trilingual/noir-elegant.css">
+<style>
+  .logo-svg { display: block; width: 250px; height: auto; color: var(--gold); --logo-bg: var(--black); }
+  .kicker { margin-top: 18px; }
+
+  .hook { margin-top: 16px; text-align: center; line-height: 1; }
+  .hook .en { display: block; font-weight: 600; font-size: 112px; letter-spacing: .03em; text-transform: uppercase; color: var(--ivory); white-space: nowrap; }
+  .hook .he { display: block; margin-top: 14px; font-weight: 700; font-size: 74px; color: var(--gold-light); }
+
+  /* The Blender render of the table; its edges fade into the black page */
+  .shot { position: absolute; left: 0; right: 0; top: 430px; height: 800px; overflow: hidden;
+    --fade-y: linear-gradient(to bottom, transparent 0%, #000 16%, #000 66%, transparent 92%);
+    --fade-x: radial-gradient(ellipse 66% 75% at 50% 50%, #000 58%, transparent 100%);
+    -webkit-mask-image: var(--fade-y), var(--fade-x); -webkit-mask-composite: source-in;
+            mask-image: var(--fade-y), var(--fade-x); mask-composite: intersect; }
+  .shot img { position: absolute; left: 50%; top: 50%; width: 1240px; height: auto; transform: translate(-50%, -50%); display: block; }
+
+  .badge-new { position: absolute; right: 116px; top: 520px; width: 132px; height: 132px; border-radius: 50%; background: var(--red); color: var(--ivory);
+    display: grid; place-items: center; text-align: center; transform: rotate(10deg); box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+  .badge-new::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; border: 1px dashed rgba(244,236,223,.6); }
+  .badge-new .en { display: block; font-weight: 700; font-size: 30px; letter-spacing: .14em; padding-left: .14em; text-transform: uppercase; line-height: 1; }
+  .badge-new .he { display: block; font-weight: 700; font-size: 30px; line-height: 1.15; }
+
+  .prize { margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 22px; position: relative; }
+  .big { font-weight: 700; font-size: 250px; line-height: .8; letter-spacing: -.02em;
+    background: linear-gradient(180deg, #f3dcaa 0%, #d9b67c 45%, #b48c55 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 6px 24px rgba(0,0,0,.85)); }
+  .big small { font-size: .55em; }
+  .off { display: flex; flex-direction: column; gap: 6px; text-align: left; }
+  .off .en { font-weight: 700; font-size: 84px; line-height: .9; letter-spacing: .04em; text-transform: uppercase; color: var(--ivory); }
+  .off .he { font-weight: 700; font-size: 62px; line-height: 1; color: var(--gold-light); }
+
+  .sub { margin-top: 26px; text-align: center; display: grid; gap: 8px; }
+  .sub .en { font-style: italic; font-weight: 500; font-size: 34px; line-height: 1.2; color: var(--ivory-dim); }
+  .sub .he { font-weight: 400; font-size: 32px; line-height: 1.3; color: var(--ivory-dim); }
+  .sub b { font-weight: 700; color: var(--gold-light); }
+
+  .detail { margin-top: 24px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 24px; padding: 14px 20px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .detail .dice-row { display: flex; gap: 12px; }
+  .detail .dice-row .pair { display: flex; gap: 3px; }
+  .detail .dice-row svg { width: 26px; height: 26px; display: block; }
+  .detail .txt { display: grid; gap: 4px; }
+  .detail .en { font-weight: 700; font-size: 24px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); }
+  .detail .he { font-weight: 500; font-size: 24px; color: var(--gold-light); }
+
+  .rules { margin-top: 16px; display: flex; gap: 16px; align-items: center; color: var(--muted); }
+  .rules .en { font-style: italic; font-weight: 600; font-size: 24px; }
+  .rules .he { font-size: 23px; }
+</style>
+</head>
+<body>
+<div class="poster" id="poster">
+  <div class="shot"><img src="../blender/out/table-preview.png" alt="Two red dice on the Yoko Ono dice table"></div>
+  <div class="frame"></div>
+
+  <div class="content">
+    <div id="logo"></div>
+    <div class="kicker"><i></i><span class="en" data-t="kicker.en"></span><b class="diamond"></b><span class="he" data-t="kicker.he"></span><i></i></div>
+    <h1 class="hook"><span class="en" data-t="hook.en"></span><span class="he" data-t="hook.he"></span></h1>
+
+    <div class="badge-new"><div><span class="en" data-t="new.en"></span><span class="he" data-t="new.he"></span></div></div>
+
+    <div class="prize">
+      <div class="big">100<small>%</small></div>
+      <div class="off"><span class="en" data-t="off.en"></span><span class="he" data-t="off.he"></span></div>
+    </div>
+    <div class="sub"><span class="en" data-t="sub.en"></span><span class="he" data-t="sub.he"></span></div>
+    <div class="detail">
+      <div class="dice-row" data-dice="4,5,6"></div>
+      <div class="txt"><span class="en" data-t="detail.en"></span><span class="he" data-t="detail.he"></span></div>
+    </div>
+    <div class="rules"><span class="en" data-t="rules.en"></span><b class="diamond"></b><span class="he" data-t="rules.he"></span></div>
+  </div>
+
+  <div class="signoff"><span class="seal">運</span><span>YOKO ONO · ASIAN KITCHEN</span></div>
+</div>
+
+<script src="../../shared/logo.js"></script>
+<script src="../../shared/dice.js"></script>
+<script src="../trilingual/copy.js"></script>
+<script src="copy.js"></script>
+<script>
+(() => {
+  document.getElementById("logo").outerHTML = Logo.svg();
+  fillCopy();
+  Dice.fillDoubles(document.querySelector(".detail"), { body: "#c8102e", pip: "#fff", red: "#fff" });
+})();
+</script>
+</body>
+</html>
