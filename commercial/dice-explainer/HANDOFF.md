@@ -1,6 +1,6 @@
 # HANDOFF: Yoko Ono dice-game video
 
-Updated after every step. Last update: stage 5b (realistic props), stopped at the user's request before the snapshot.
+Updated after every step. Last update: stage 5b props committed (`bc3685b`), not yet snapshot-reviewed.
 
 ## What this is
 An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at **Yoko Ono Asian Kitchen** (Ahuza 124, Ra'anana).
@@ -78,7 +78,8 @@ ffmpeg -i renders/x.mp4 -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +fasts
    - **5b, realistic props (free, in progress).**
      - Rendered: translucent dice (6 faces + 12 rolls), receipt, coin, knife.
      - DiceKit now uses the dice images. Cards 7 (receipt, knife) and 10 (coins) use the renders.
-     - **Uncommitted. Not yet snapshotted or checked.**
+     - **Committed in `bc3685b`.** Lint: 0 errors, 1 warning, not yet looked at.
+     - **Not yet snapshot-reviewed.**
 
 ## Next steps
 1. Snapshot the props cards (s3b ≈ 21 s, s4 ≈ 25 s, s7 ≈ 43 s, s8 ≈ 48 s, s10 ≈ 55 s, s12 ≈ 64 s). Check that the dice and receipt look right, then run `lint`/`check`. Commit and push.
