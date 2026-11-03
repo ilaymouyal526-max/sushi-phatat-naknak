@@ -550,84 +550,6 @@ for c in CARDS:
     c["start"] = round(c["start"] + INTRO, 4)
 SFX = [(f, round(t + INTRO, 3), v) for f, t, v in SFX]
 
-CAST = {  # skin highlight, skin, skin shadow, hair, outfit
-    "man":     ("#f0c39b", "#d6a27a", "#a8734f", "#2a1b14", "#25222a"),
-    "woman":   ("#fbd6b3", "#e8bc96", "#c08a66", "#6a3420", "#7a1f2b"),
-    "cashier": ("#e6b087", "#c99068", "#93603f", "#1a1210", "#efe8dc"),
-}
-
-
-def avatar(id_, kind, x, y, scale, arms=("down", "down"), card=False):
-    """Pixar-lite waist-up character, 400x560 local units. Named groups for the rig:
-    #id-head (pivot 200,255), #id-eyes (blink), #id-brows, #id-m0/m1/m2 (mouth), #id-armL / #id-armR (pivot at the shoulders)."""
-    hi, sk, sh, hair, cloth = CAST[kind]
-    d = f"""<defs>
-  <radialGradient id="{id_}-skin" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="{hi}"/><stop offset=".55" stop-color="{sk}"/><stop offset="1" stop-color="{sh}"/></radialGradient>
-  <linearGradient id="{id_}-cloth" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stop-color="{cloth}"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></linearGradient>
-  <radialGradient id="{id_}-hair" cx=".35" cy=".25" r=".9"><stop offset="0" stop-color="#ffffff" stop-opacity=".22"/><stop offset=".4" stop-color="{hair}" stop-opacity="0"/></radialGradient>
-</defs>"""
-    back_hair = ""
-    if kind == "woman":
-        back_hair = f'<path d="M100 170 C92 90 150 58 200 60 C262 58 312 96 300 180 C306 250 312 300 296 360 L104 360 C88 300 96 240 100 170 Z" fill="{hair}"/>'
-    torso = f'<path d="M48 560 C48 372 104 300 200 300 C296 300 352 372 352 560 Z" fill="{cloth}"/><path d="M48 560 C48 372 104 300 200 300 C296 300 352 372 352 560 Z" fill="url(#{id_}-cloth)"/>'
-    if kind == "cashier":
-        torso += (f'<path d="M110 400 L290 400 L304 560 L96 560 Z" fill="#15110e"/>'
-                  f'<path d="M150 400 L132 312 M250 400 L268 312" stroke="#15110e" stroke-width="16"/>'
-                  f'<g transform="translate(200 470) scale(.34)" fill="none" stroke="{GOLD}" stroke-width="7"><path d="M-50 40 V-40 A50 50 0 0 1 50 -40 V40"/><polyline points="-30,-6 -8,-40 6,-22 22,-48 40,-6"/></g>')
-    if kind == "woman":
-        torso += f'<path d="M150 312 Q200 362 250 312" fill="none" stroke="{GOLD}" stroke-width="4"/><circle cx="200" cy="350" r="7" fill="{GOLD}"/>'
-    if kind == "man":
-        torso += f'<path d="M172 300 L200 352 L228 300" fill="#3a3540"/>'
-
-    def arm(side, pose):
-        sx = 92 if side == "L" else 308
-        sleeve = SLEEVE if kind == "man" else ("#efe8dc" if kind == "cashier" else cloth)
-        cuff = f'<rect x="{sx - 34}" y="480" width="68" height="16" rx="6" fill="{GOLD}"/>' if kind == "man" else ""
-        finger = (f'<rect x="{sx - 7}" y="520" width="14" height="52" rx="7" fill="url(#{id_}-skin)" transform="rotate(0 {sx} 530)"/>'
-                  if (kind == "cashier" and side == "R") else "")
-        holding = (f'<g transform="translate({sx - 46} 512) rotate(-12)"><rect width="92" height="58" rx="8" fill="#14110e" stroke="{GOLD}" stroke-width="3"/><rect x="10" y="14" width="18" height="14" rx="3" fill="{GOLD}"/></g>'
-                   if (card and side == "L") else "")
-        return (f'<g id="{id_}-arm{side}"><path d="M{sx - 32} 330 L{sx + 32} 330 L{sx + 30} 490 L{sx - 30} 490 Z" fill="{sleeve}"/>'
-                f'<path d="M{sx - 32} 330 L{sx + 32} 330 L{sx + 30} 490 L{sx - 30} 490 Z" fill="url(#{id_}-cloth)" opacity=".6"/>{cuff}'
-                f'{finger}<ellipse cx="{sx}" cy="520" rx="32" ry="36" fill="url(#{id_}-skin)"/>{holding}</g>')
-
-    if kind == "man":
-        front_hair = f'<path d="M110 150 C104 82 158 56 206 60 C262 62 300 92 292 152 C278 118 250 104 214 112 C182 96 140 108 110 150 Z" fill="{hair}"/>'
-    elif kind == "woman":
-        front_hair = f'<path d="M106 168 C100 92 156 62 204 64 C256 64 300 98 296 168 C276 120 232 100 196 104 C160 108 124 132 106 168 Z" fill="{hair}"/>'
-    else:
-        front_hair = (f'<circle cx="200" cy="58" r="40" fill="{hair}"/>'
-                      f'<path d="M108 160 C104 92 156 70 200 70 C248 70 298 96 292 160 C270 116 232 108 200 108 C168 108 130 116 108 160 Z" fill="{hair}"/>')
-
-    head = f"""<g id="{id_}-head">
-  <ellipse cx="108" cy="186" rx="17" ry="24" fill="{sk}"/><ellipse cx="292" cy="186" rx="17" ry="24" fill="{sk}"/>
-  <rect x="176" y="236" width="48" height="74" rx="22" fill="{sh}"/>
-  <ellipse cx="200" cy="176" rx="94" ry="104" fill="url(#{id_}-skin)"/>
-  <path d="M276 108 C302 140 304 210 278 250" fill="none" stroke="#ffd69a" stroke-opacity=".55" stroke-width="6" stroke-linecap="round"/>
-  <ellipse cx="146" cy="214" rx="20" ry="12" fill="#e8806e" opacity=".22"/><ellipse cx="254" cy="214" rx="20" ry="12" fill="#e8806e" opacity=".22"/>
-  <g id="{id_}-eyes">
-    <ellipse cx="164" cy="180" rx="21" ry="24" fill="#fffaf2"/><ellipse cx="236" cy="180" rx="21" ry="24" fill="#fffaf2"/>
-    <g id="{id_}-iris"><circle cx="166" cy="183" r="13.5" fill="#4a2a18"/><circle cx="238" cy="183" r="13.5" fill="#4a2a18"/>
-    <circle cx="166" cy="183" r="6.5" fill="#120a06"/><circle cx="238" cy="183" r="6.5" fill="#120a06"/>
-    <circle cx="161" cy="177" r="4.2" fill="#fff"/><circle cx="233" cy="177" r="4.2" fill="#fff"/></g>
-  </g>
-  <g id="{id_}-brows" fill="none" stroke="{hair}" stroke-width="7" stroke-linecap="round"><path d="M142 146 Q164 136 186 146"/><path d="M214 146 Q236 136 258 146"/></g>
-  <path d="M196 196 Q190 214 200 218 Q208 216 206 210" fill="none" stroke="{sh}" stroke-width="4" stroke-linecap="round"/>
-  <path id="{id_}-m0" d="M180 236 Q200 252 220 236" fill="none" stroke="#7a2e24" stroke-width="5" stroke-linecap="round"/>
-  <g id="{id_}-m1" opacity="0"><path d="M180 232 Q200 262 220 232 Z" fill="#5a1e1a"/><path d="M186 234 L214 234 L211 240 L189 240 Z" fill="#fff"/></g>
-  <ellipse id="{id_}-m2" cx="200" cy="240" rx="10" ry="13" fill="#5a1e1a" opacity="0"/>
-  {front_hair}<ellipse cx="200" cy="100" rx="96" ry="60" fill="url(#{id_}-hair)"/>
-</g>"""
-    return (f'<g id="{id_}" transform="translate({x} {y}) scale({scale})">{d}'
-            f'<ellipse cx="200" cy="560" rx="170" ry="20" fill="#000" opacity=".35"/>{back_hair}{torso}{arm("L", arms[0])}{arm("R", arms[1])}{head}</g>')
-
-
-def rig_js(id_, x, y, s):
-    """Pivot points in scene coordinates for an avatar placed at translate(x y) scale(s)."""
-    return {"head": f"{x + 200 * s:.0f} {y + 255 * s:.0f}", "eyes": f"{x + 200 * s:.0f} {y + 180 * s:.0f}",
-            "armL": f"{x + 92 * s:.0f} {y + 330 * s:.0f}", "armR": f"{x + 308 * s:.0f} {y + 330 * s:.0f}"}
-
-
 def bubble(id_, text, top, size, tail_x, tail_up=False):
     tail = f"left:{tail_x}px;{'top:-22px' if tail_up else 'bottom:-22px'}"
     return (f'<div id="{id_}" style="position:absolute;left:96px;right:96px;top:{top}px;text-align:center">'
@@ -636,118 +558,57 @@ def bubble(id_, text, top, size, tail_x, tail_up=False):
             f'<span style="position:absolute;{tail};width:40px;height:40px;background:{IVORY};border-right:4px solid {GOLD};border-bottom:4px solid {GOLD};rotate:{225 if tail_up else 45}deg"></span></div></div>')
 
 
-SUNSET_BG = f"""<defs>
-  <linearGradient id="@-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a1d1a"/><stop offset=".45" stop-color="#b8502c"/><stop offset=".7" stop-color="#f0a24e"/><stop offset="1" stop-color="#2a1610"/></linearGradient>
-  <radialGradient id="@-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe2a0"/><stop offset=".5" stop-color="#ffb35a" stop-opacity=".8"/><stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/></radialGradient>
-  <filter id="@-blur"><feGaussianBlur stdDeviation="7"/></filter>
-</defs>
-<g filter="url(#@-blur)">
-  <rect width="1080" height="1920" fill="url(#@-sky)"/>
-  <circle cx="760" cy="1040" r="260" fill="url(#@-sun)"/>
-  <path d="M0 1120 L180 980 L320 1060 L470 900 L640 1050 L800 960 L1080 1100 L1080 1300 L0 1300 Z" fill="#3a1c14" opacity=".8"/>
-  {''.join(f'<rect x="{x}" y="420" width="10" height="900" fill="#c9a36b" opacity=".55"/>' for x in range(40, 1080, 150))}
-  <rect x="0" y="400" width="1080" height="16" fill="#c9a36b" opacity=".6"/>
-  {''.join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#ffd28a" opacity="{o}"/>' for x, y, r, o in [(120, 560, 26, .5), (300, 520, 18, .45), (520, 600, 30, .35), (880, 540, 22, .5), (980, 700, 34, .3), (210, 760, 20, .35)])}
-</g>"""
-
-TABLE_FG = f"""<rect x="0" y="1250" width="1080" height="670" fill="#3a2414"/>
-<rect x="0" y="1250" width="1080" height="670" fill="url(#@-wood)"/>
-<rect x="0" y="1244" width="1080" height="14" fill="#c9a36b" opacity=".7"/>
-<defs><linearGradient id="@-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3820"/><stop offset="1" stop-color="#1a0f08"/></linearGradient></defs>
-<ellipse cx="300" cy="1370" rx="150" ry="46" fill="#efe6d6"/><ellipse cx="300" cy="1366" rx="112" ry="32" fill="none" stroke="#c9a36b" stroke-width="3"/>
-<ellipse cx="770" cy="1380" rx="150" ry="46" fill="#efe6d6"/><ellipse cx="770" cy="1376" rx="112" ry="32" fill="none" stroke="#c9a36b" stroke-width="3"/>
-<line x1="430" y1="1330" x2="560" y2="1420" stroke="#c9a36b" stroke-width="7" stroke-linecap="round"/><line x1="446" y1="1322" x2="576" y2="1412" stroke="#c9a36b" stroke-width="7" stroke-linecap="round"/>"""
-
-M_P1, W_P1 = (90, 700, 1.25), (560, 730, 1.2)
-R_M1, R_W1 = rig_js("p1m", *M_P1), rig_js("p1w", *W_P1)
+# The 3D actors live in one canvas composition (a3d, assets/avatars3d.js); p1-p3 are transparent overlays on top.
+OVERLAY_CSS = "#root { background: transparent; }"
 INTRO_CARDS = []
-INTRO_CARDS.append(dict(id="p1", start=0, dur=3.125, css="", body=f"""
-<svg class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
-  <g id="p1-bg">{SUNSET_BG.replace('@', 'p1')}</g>
-  <g id="p1-cast">{avatar("p1m", "man", *M_P1)}{avatar("p1w", "woman", *W_P1)}</g>
-  <g id="p1-fg">{TABLE_FG.replace('@', 'p1')}</g>
-</svg>
-{bubble("p1-say", "אפשר חשבון?", 250, 74, 200)}
-""", js=f"""
-tl.fromTo("#p1-bg", {{ scale: 1.04, svgOrigin: "540 960" }}, {{ scale: 1.0, svgOrigin: "540 960", duration: 3.125, ease: "none" }}, 0);
-tl.fromTo("#p1-cast", {{ x: -14 }}, {{ x: 10, duration: 3.125, ease: "none" }}, 0);
-tl.fromTo("#p1m-armL", {{ rotation: 0, transformOrigin: "50% 4%" }}, {{ rotation: 150, transformOrigin: "50% 4%", duration: 0.45, ease: "back.out(1.6)" }}, 0.35);
-tl.fromTo("#p1m-head", {{ rotation: 0, transformOrigin: "50% 92%" }}, {{ rotation: -7, transformOrigin: "50% 92%", duration: 0.4, ease: "power2.out" }}, 0.3);
-tl.fromTo("#p1-say", {{ opacity: 0, scale: 0.6 }}, {{ opacity: 1, scale: 1, duration: 0.25, ease: "back.out(1.8)" }}, 0.55);
-tl.set("#p1m-m0", {{ opacity: 0 }}, 0.6); for (let k = 0; k < 6; k++) tl.set("#p1m-m1", {{ opacity: k % 2 ? 0 : 1 }}, 0.6 + k * 0.11); tl.set("#p1m-m0", {{ opacity: 1 }}, 1.26);
-tl.fromTo("#p1w-head", {{ rotation: 0, transformOrigin: "50% 92%" }}, {{ rotation: 6, transformOrigin: "50% 92%", duration: 0.5, ease: "power2.inOut" }}, 1.4);
-tl.fromTo("#p1w-eyes", {{ scaleY: 1, transformOrigin: "50% 50%" }}, {{ scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.06, yoyo: true, repeat: 1 }}, 0.9);
-tl.fromTo("#p1m-eyes", {{ scaleY: 1, transformOrigin: "50% 50%" }}, {{ scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.06, yoyo: true, repeat: 1 }}, 2.2);
+INTRO_CARDS.append(dict(id="p1", start=0, dur=3.125, css=OVERLAY_CSS, body=f"""
+{bubble("p1-say", "אפשר חשבון?", 250, 74, 230)}
+""", js="""
+tl.fromTo("#p1-say", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(1.8)" }, 0.55);
 """))
-
-C_P2 = (300, 700, 1.3)
-R_C2 = rig_js("p2c", *C_P2)
-INTRO_CARDS.append(dict(id="p2", start=3.125, dur=3.75, css="", body=f"""
-<svg class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
-  <defs><filter id="p2-blur"><feGaussianBlur stdDeviation="6"/></filter>
-    <radialGradient id="p2-wall" cx=".5" cy=".4" r=".8"><stop offset="0" stop-color="#4a2c1a"/><stop offset="1" stop-color="#140d09"/></radialGradient>
-    <radialGradient id="p2-felt" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#2fa35e"/><stop offset="1" stop-color="#0f4526"/></radialGradient>
-    <linearGradient id="p2-counter" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a2e1a"/><stop offset="1" stop-color="#120a06"/></linearGradient></defs>
-  <g id="p2-bg" filter="url(#p2-blur)">
-    <rect width="1080" height="1920" fill="url(#p2-wall)"/>
-    {''.join(f'<g><line x1="{x}" y1="0" x2="{x}" y2="380" stroke="#2a1c12" stroke-width="4"/><path d="M{x - 60} 380 Q{x} 330 {x + 60} 380 Z" fill="#c9a36b"/><ellipse cx="{x}" cy="392" rx="70" ry="24" fill="#ffd28a" opacity=".55"/></g>' for x in (220, 540, 860))}
-    <g id="p2-dicetable"><polygon points="690,930 1010,930 1060,1190 640,1190" fill="#7a4b2a"/><polygon points="710,946 990,946 1032,1172 668,1172" fill="url(#p2-felt)"/>
-      <ellipse cx="850" cy="1060" rx="220" ry="120" fill="#4fe08c" opacity=".18"/></g>
-  </g>
-  <g id="p2-cast">{avatar("p2c", "cashier", *C_P2, arms=("down", "down"))}</g>
-  <rect x="0" y="1330" width="1080" height="590" fill="url(#p2-counter)"/><rect x="0" y="1322" width="1080" height="14" fill="#c9a36b" opacity=".8"/>
-  <g transform="translate(720 1220)"><rect width="150" height="120" rx="14" fill="#1b1714" stroke="#c9a36b" stroke-width="3"/><rect x="18" y="16" width="114" height="44" rx="6" fill="#2f6b4a"/></g>
-  <g id="p2-guest" transform="translate(0 150)"><g id="p2-guest-in"><path d="M-40 1290 L250 1170 L270 1220 L-20 1360 Z" fill="{SLEEVE}"/><rect x="226" y="1150" width="22" height="80" rx="6" fill="{GOLD}" transform="rotate(-24 237 1190)"/>
-    <ellipse cx="292" cy="1170" rx="44" ry="38" fill="#d6a27a"/>
-    <g transform="translate(300 1094) rotate(-14)"><rect width="128" height="80" rx="10" fill="#14110e" stroke="{GOLD}" stroke-width="3"/><rect x="14" y="20" width="24" height="18" rx="3" fill="{GOLD}"/></g></g></g>
-</svg>
+INTRO_CARDS.append(dict(id="p2", start=3.125, dur=3.75, css=OVERLAY_CSS, body=f"""
 {bubble("p2-say", "לא, לא, לא…<br>קודם מטילים את הקוביות!", 230, 64, 640)}
-""", js=f"""
-tl.fromTo("#p2-guest", {{ x: -260, y: 60 }}, {{ x: 0, y: 0, duration: 0.6, ease: "power3.out" }}, 0);
-tl.fromTo("#p2c-armR", {{ rotation: 0, transformOrigin: "50% 4%" }}, {{ rotation: -158, transformOrigin: "50% 4%", duration: 0.4, ease: "back.out(1.5)" }}, 0.45);
-for (let k = 0; k < 4; k++) tl.to("#p2c-armR", {{ rotation: k % 2 ? -150 : -168, transformOrigin: "50% 4%", duration: 0.16, ease: "sine.inOut" }}, 0.85 + k * 0.16);
-tl.to("#p2c-armR", {{ rotation: -100, transformOrigin: "50% 4%", duration: 0.45, ease: "power3.inOut" }}, 2.0);
-tl.fromTo("#p2c-head", {{ rotation: 0, transformOrigin: "50% 92%" }}, {{ rotation: -8, transformOrigin: "50% 92%", duration: 0.3, ease: "power2.out" }}, 0.6);
-for (let k = 0; k < 4; k++) tl.to("#p2c-head", {{ rotation: k % 2 ? -8 : 6, transformOrigin: "50% 92%", duration: 0.16, ease: "sine.inOut" }}, 0.9 + k * 0.16);
-tl.to("#p2c-head", {{ rotation: 10, transformOrigin: "50% 92%", duration: 0.4, ease: "power2.inOut" }}, 2.05);
-tl.fromTo("#p2c-brows", {{ y: 0 }}, {{ y: -10, duration: 0.2, ease: "power2.out" }}, 0.7);
-tl.fromTo("#p2-say", {{ opacity: 0, scale: 0.6 }}, {{ opacity: 1, scale: 1, duration: 0.25, ease: "back.out(1.8)" }}, 0.7);
-tl.set("#p2c-m0", {{ opacity: 0 }}, 0.75); for (let k = 0; k < 14; k++) tl.set(k % 3 === 2 ? "#p2c-m2" : "#p2c-m1", {{ opacity: 1 }}, 0.75 + k * 0.1), tl.set(k % 3 === 2 ? "#p2c-m2" : "#p2c-m1", {{ opacity: 0 }}, 0.75 + k * 0.1 + 0.08);
-tl.set("#p2c-m0", {{ opacity: 1 }}, 2.2);
-tl.fromTo("#p2-dicetable", {{ opacity: 1 }}, {{ opacity: 1, duration: 0.01 }}, 0);
-tl.fromTo("#p2c-eyes", {{ scaleY: 1, transformOrigin: "50% 50%" }}, {{ scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.06, yoyo: true, repeat: 1 }}, 2.6);
+""", js="""
+tl.fromTo("#p2-say", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(1.8)" }, 0.7);
 """))
-
-M_P3, W_P3 = (-150, 560, 1.7), (560, 600, 1.65)
-R_M3, R_W3 = rig_js("p3m", *M_P3), rig_js("p3w", *W_P3)
-INTRO_CARDS.append(dict(id="p3", start=6.875, dur=2.5, css="", body=f"""
-<div id="p3-a" style="position:absolute;inset:0">
+INTRO_CARDS.append(dict(id="p3", start=6.875, dur=2.5, css=OVERLAY_CSS, body=f"""
 <svg class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
-  <g>{SUNSET_BG.replace('@', 'p3')}</g>
-  <g id="p3-cast">{avatar("p3m", "man", *M_P3)}{avatar("p3w", "woman", *W_P3)}</g>
-  <text id="p3-q1" x="250" y="560" font-family="Frank Ruhl, serif" font-weight="900" font-size="120" fill="{GOLD_HI}" direction="ltr">?!</text>
-  <text id="p3-q2" x="760" y="590" font-family="Frank Ruhl, serif" font-weight="900" font-size="110" fill="{GOLD_HI}" direction="ltr">?</text>
+  <text id="p3-q1" x="200" y="520" font-family="Frank Ruhl, serif" font-weight="900" font-size="130" fill="#fff4dc" stroke="#c9a36b" stroke-width="4" direction="ltr">?!</text>
+  <text id="p3-q2" x="790" y="540" font-family="Frank Ruhl, serif" font-weight="900" font-size="120" fill="#fff4dc" stroke="#c9a36b" stroke-width="4" direction="ltr">?</text>
 </svg>
-</div>
 <div id="p3-b" style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% 45%, #2a9a58 0%, #1a6b3c 45%, #0b3a20 100%)">
   {logo_svg("p3-felt-logo", 360, 300, 360, stroke="#d6b26e")}
   {die("p3-dA", 6, 330, 900, 220)}{die("p3-dB", 4, 560, 930, 220)}
   {hand_svg("p3-hand", 340, 1500, 440, "open")}
 </div>
 """, js="""
-tl.fromTo("#p3m-head", { rotation: 0, transformOrigin: "50% 92%" }, { rotation: 8, transformOrigin: "50% 92%", duration: 0.3, ease: "back.out(1.6)" }, 0.05);
-tl.fromTo("#p3w-head", { rotation: 0, transformOrigin: "50% 92%" }, { rotation: -8, transformOrigin: "50% 92%", duration: 0.3, ease: "back.out(1.6)" }, 0.12);
-tl.fromTo(["#p3m-brows", "#p3w-brows"], { y: 0 }, { y: -14, duration: 0.2, ease: "power2.out" }, 0.15);
-tl.set(["#p3m-m0", "#p3w-m0"], { opacity: 0 }, 0.2); tl.set(["#p3m-m2", "#p3w-m2"], { opacity: 1 }, 0.2);
 tl.fromTo(["#p3-q1", "#p3-q2"], { opacity: 0, scale: 0.4, transformOrigin: "50% 100%" }, { opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2)", stagger: 0.08 }, 0.3);
-tl.fromTo("#p3-cast", { scale: 1, svgOrigin: "540 1000" }, { scale: 1.06, svgOrigin: "540 1000", duration: 1.25, ease: "none" }, 0);
 tl.set("#p3-b", { opacity: 0 }, 0); tl.set("#p3-b", { opacity: 1 }, 1.25);
 tl.fromTo("#p3-hand", { y: 420 }, { y: -560, duration: 0.42, ease: "power3.out" }, 1.25);
 DiceKit.pose(tl, "#p3-hand", "open", 0); DiceKit.pose(tl, "#p3-hand", "release", 1.62); DiceKit.pose(tl, "#p3-hand", "fist", 1.7);
 tl.to(["#p3-dA", "#p3-dB"], { scale: 0.3, opacity: 0, duration: 0.1, ease: "power2.in" }, 1.68);
 tl.to("#p3-hand", { y: 300, duration: 0.7, ease: "power2.in" }, 1.8);
-""".replace("@HM", R_M3["head"]).replace("@HW", R_W3["head"])))
+"""))
 
+A3D = """<template>
+  <style>
+    #root { position: absolute; inset: 0; background: #f6a36c; }
+    #a3d-canvas { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+  </style>
+  <div id="root" data-composition-id="a3d" data-width="1080" data-height="1920">
+    <canvas id="a3d-canvas" width="1080" height="1920" data-layout-ignore></canvas>
+  </div>
+  <script>
+    (() => {
+      // The 3D actors: every frame is drawn from timeline time (hf-seek), so renders are deterministic.
+      const actors = Avatars3D.build(document.getElementById("a3d-canvas"));
+      window.addEventListener("hf-seek", (e) => actors.renderAt(e.detail.time));
+      actors.renderAt(0);
+      window.__timelines["a3d"] = gsap.timeline({ paused: true });
+    })();
+  </script>
+</template>
+"""
 CARDS[:0] = INTRO_CARDS
 SFX = [("pop", 0.58, .7), ("click-soft", 3.2, .8), ("pop", 3.83, .8), ("pop", 7.18, .6), ("whoosh-short", 8.13, .6), ("click", 8.58, .8)] + SFX
 
@@ -794,6 +655,8 @@ def index():
     <meta name="viewport" content="width=1080, height=1920" />
     <script src="assets/vendor/gsap.min.js"></script>
     <script src="assets/dice-kit.js"></script>
+    <script src="assets/vendor/three.min.js"></script>
+    <script src="assets/avatars3d.js"></script>
     <style>
       * {{ margin: 0; padding: 0; box-sizing: border-box; }}
       html, body {{ margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: {INK}; }}
@@ -803,6 +666,7 @@ def index():
   <body>
     <!-- Generated by build.py: 14 finished Noir & Or cards, Hebrew only. Edit build.py, not this file. -->
     <div id="root" data-composition-id="main" data-start="0" data-duration="{TOTAL}" data-width="1080" data-height="1920" data-fps="24">
+      <div id="a3d" style="z-index:0" data-composition-id="a3d" data-composition-src="compositions/a3d.html" data-start="0" data-duration="8.125" data-track-index="0" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
 {hosts}
 {audio}
       <div id="frame" style="z-index:50" data-composition-id="frame" data-composition-src="compositions/frame.html" data-start="{INTRO}" data-duration="{TOTAL - INTRO}" data-track-index="20" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
@@ -853,5 +717,6 @@ if __name__ == "__main__":
     for c in CARDS:
         (ROOT / "compositions" / f'{c["id"]}.html').write_text(composition(c))
     (ROOT / "compositions" / "frame.html").write_text(FRAME)
+    (ROOT / "compositions" / "a3d.html").write_text(A3D)
     (ROOT / "index.html").write_text(index())
     print(f"built {len(CARDS)} cards, {TOTAL}s")
