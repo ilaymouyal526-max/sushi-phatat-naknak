@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מסך מנות</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;700&family=Heebo:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/*
+  Restaurant dish screen: a 16:9 slideshow that loops forever.
+  Open in Chrome on the screen's computer and press F for fullscreen.
+  Edit the CONFIG block at the bottom of this file to change dishes and highlights.
+*/
+:root{
+  --black:#050505;
+  --gold:#D6B26E;
+  --gold-hi:#F1D9A0;
+  --ink:#F4EFE6;
+  --muted:#B9AE9B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--black);overflow:hidden;cursor:none}
+body{font-family:"Heebo","Assistant","Arial Hebrew",Arial,sans-serif;color:var(--ink)}
+
+/* Fixed 1920x1080 stage, scaled to fit any screen */
+#stage{position:absolute;width:1920px;height:1080px;left:50%;top:50%;transform-origin:center;background:var(--black);overflow:hidden}
+
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1.6s ease}
+.slide.on{opacity:1}
+
+/* ---- Dish slide ---- */
+.photo{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.04)}
+.slide.on .photo{animation:kb var(--dur,9s) linear forwards}
+@keyframes kb{from{transform:scale(1.04) translate(0,0)}to{transform:scale(1.14) translate(-1.5%,-1%)}}
+.slide.alt.on .photo{animation-name:kb2}
+@keyframes kb2{from{transform:scale(1.14) translate(1.5%,0)}to{transform:scale(1.04) translate(0,0)}}
+
+/* readability gradient on the text side (right, for Hebrew) */
+.shade{position:absolute;inset:0;background:
+  linear-gradient(270deg,rgba(0,0,0,.88) 0%,rgba(0,0,0,.55) 30%,rgba(0,0,0,0) 55%),
+  linear-gradient(0deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,0) 25%)}
+
+.card{position:absolute;right:140px;top:50%;transform:translateY(-50%);width:640px;text-align:right}
+.kicker{font-size:26px;letter-spacing:.35em;color:var(--gold);font-weight:300}
+.rule{height:2px;width:0;background:linear-gradient(270deg,var(--gold-hi),var(--gold) 60%,transparent);margin:26px 0 30px auto;transition:width 1.4s .5s ease}
+.slide.on .rule{width:420px}
+.name{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:104px;line-height:1.05;color:var(--ink);
+  opacity:0;transform:translateY(24px);transition:all 1.1s .35s ease}
+.desc{font-size:36px;line-height:1.5;color:var(--muted);font-weight:300;margin-top:22px;
+  opacity:0;transform:translateY(18px);transition:all 1.1s .7s ease}
+.price{display:inline-block;margin-top:40px;font-size:44px;color:var(--gold-hi);font-weight:600;border:1.5px solid var(--gold);padding:8px 30px;
+  opacity:0;transition:opacity 1s 1.1s ease}
+.slide.on .name,.slide.on .desc{opacity:1;transform:none}
+.slide.on .price{opacity:1}
+.price:empty{display:none}
+
+/* ---- Highlight slide ---- */
+.hl{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  background:radial-gradient(ellipse at 50% 0%,#1d1a14 0%,#070707 60%,#000 100%)}
+.hl .marble{position:absolute;inset:0;opacity:.35;background:
+  linear-gradient(115deg,transparent 46%,rgba(214,178,110,.55) 46.3%,transparent 46.8%),
+  linear-gradient(118deg,transparent 58%,rgba(214,178,110,.35) 58.2%,transparent 58.5%),
+  linear-gradient(62deg,transparent 30%,rgba(255,255,255,.05) 34%,transparent 40%)}
+.hl .icon{font-size:110px;line-height:1;color:var(--gold);opacity:0;transform:scale(.85);transition:all 1s .3s ease}
+.hl .big{font-family:"Frank Ruhl Libre",serif;font-size:120px;font-weight:700;margin-top:30px;color:var(--ink);opacity:0;transition:opacity 1.1s .6s ease}
+.hl .small{font-size:42px;color:var(--muted);font-weight:300;margin-top:18px;opacity:0;transition:opacity 1.1s 1s ease}
+.hl .rule{margin:34px auto 0}
+.slide.on.hl .icon{opacity:1;transform:none}
+.slide.on.hl .big,.slide.on.hl .small{opacity:1}
+
+/* ---- Brand slide ---- */
+.brand .big{font-size:150px;letter-spacing:.06em}
+
+/* ---- Bottom ticker with restaurant highlights (always on) ---- */
+#ticker{position:absolute;left:0;right:0;bottom:0;height:78px;background:rgba(0,0,0,.82);border-top:1.5px solid var(--gold);overflow:hidden;z-index:5}
+#ticker .track{position:absolute;top:0;height:78px;display:flex;align-items:center;white-space:nowrap;will-change:transform}
+#ticker span{font-size:32px;color:var(--ink);padding:0 34px;font-weight:400}
+#ticker i{font-style:normal;color:var(--gold);font-size:22px}
+#logo{position:absolute;top:44px;left:60px;z-index:5;font-family:"Frank Ruhl Libre",serif;font-size:40px;color:var(--gold);letter-spacing:.12em}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="logo"></div>
+  <div id="slides"></div>
+  <div id="ticker"><div class="track"></div></div>
+</div>
+
+<script>
+/* ================== CONFIG: edit this part ================== */
+const CONFIG = {
+  restaurantName: "שם המסעדה",          // TODO: restaurant name
+  dishSeconds: 9,                       // how long each dish stays on screen
+  highlightSeconds: 6,                  // how long each highlight card stays on screen
+  showHighlightCards: true,             // full-screen highlight cards between the dishes
+  showTicker: true,                     // bottom strip that runs the highlights all the time
+
+  // Swap image paths for the final black-marble photos when they're ready.
+  dishes: [
+    { image: "images/gyoza.jpg",          name: "גיוזה",
+      desc: "כיסונים פריכים מהמחבת, רוטב סויה ושומשום שחור-לבן", price: "" },
+    { image: "images/crispy-chicken.jpg", name: "עוף קריספי",
+      desc: "נתחי עוף פריכים מוקפצים בווק ברוטב מתקתק, בצל ירוק ובצל סגול, לצד אורז ובצל מטוגן", price: "" },
+    { image: "images/chicken-wok.jpg",    name: "מוקפץ עוף ופלפלים",
+      desc: "עוף, פלפלים אדומים וצהובים ונבטים, מוקפץ על אש גבוהה", price: "" },
+  ],
+
+  // TODO: replace with the restaurant's real highlights
+  highlights: [
+    { icon: "✦", big: "הכל טרי, הכל במקום", small: "מוכן מול העיניים, על אש גבוהה בווק" },
+    { icon: "✦", big: "הדגש 2",             small: "טקסט משנה" },
+    { icon: "✦", big: "הדגש 3",             small: "טקסט משנה" },
+  ],
+};
+/* ============================================================ */
+
+const stage = document.getElementById('stage');
+function fit(){ const s = Math.min(innerWidth/1920, innerHeight/1080); stage.style.transform = `translate(-50%,-50%) scale(${s})`; }
+addEventListener('resize', fit); fit();
+
+document.getElementById('logo').textContent = CONFIG.restaurantName;
+
+// Build the playlist: brand → dish → highlight → dish → highlight ...
+const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const box = document.getElementById('slides');
+const list = [];
+
+function brandSlide(){
+  const s = el('div','slide hl brand');
+  s.innerHTML = `<div class="marble"></div><div class="icon">✦</div><div class="big">${esc(CONFIG.restaurantName)}</div><div class="rule"></div>`;
+  return { node: s, secs: CONFIG.highlightSeconds };
+}
+function dishSlide(d, i){
+  const s = el('div', 'slide' + (i % 2 ? ' alt' : ''));
+  s.style.setProperty('--dur', (CONFIG.dishSeconds + 2) + 's');
+  s.innerHTML = `<div class="photo" style="background-image:url('${encodeURI(d.image)}')"></div><div class="shade"></div>
+    <div class="card"><div class="kicker">המנות שלנו</div><div class="rule"></div>
+    <div class="name">${esc(d.name)}</div><div class="desc">${esc(d.desc)}</div><div class="price">${esc(d.price||'')}</div></div>`;
+  return { node: s, secs: CONFIG.dishSeconds };
+}
+function hlSlide(h){
+  const s = el('div','slide hl');
+  s.innerHTML = `<div class="marble"></div><div class="icon">${esc(h.icon||'✦')}</div><div class="big">${esc(h.big)}</div><div class="small">${esc(h.small||'')}</div><div class="rule"></div>`;
+  return { node: s, secs: CONFIG.highlightSeconds };
+}
+
+list.push(brandSlide());
+CONFIG.dishes.forEach((d, i) => {
+  list.push(dishSlide(d, i));
+  const h = CONFIG.highlights[i % CONFIG.highlights.length];
+  if (CONFIG.showHighlightCards && h) list.push(hlSlide(h));
+});
+list.forEach(x => box.appendChild(x.node));
+
+// Preload images so transitions never show a blank frame
+CONFIG.dishes.forEach(d => { const im = new Image(); im.src = d.image; });
+
+let cur = -1, timer;
+function next(){
+  if (cur >= 0) list[cur].node.classList.remove('on');
+  cur = (cur + 1) % list.length;
+  const n = list[cur].node;
+  // restart animations
+  n.querySelectorAll('.photo').forEach(p => { p.style.animation = 'none'; void p.offsetWidth; p.style.animation = ''; });
+  n.classList.add('on');
+  clearTimeout(timer); timer = setTimeout(next, list[cur].secs * 1000);
+}
+next();
+
+// Ticker
+const tk = document.getElementById('ticker');
+if (!CONFIG.showTicker) tk.style.display = 'none';
+else {
+  const track = tk.querySelector('.track');
+  const items = CONFIG.highlights.map(h => `<span>${esc(h.big)}</span><i>✦</i>`).join('') + `<span>${esc(CONFIG.restaurantName)}</span><i>✦</i>`;
+  track.innerHTML = items + items + items + items;
+  let x = 0, last = performance.now();
+  (function run(t){
+    x += (t - last) * 0.07; last = t;
+    const half = track.scrollWidth / 2;
+    if (x >= half) x -= half;
+    track.style.transform = `translateX(${x}px)`;   // RTL: moves left→right
+    track.style.right = '0';
+    requestAnimationFrame(run);
+  })(last);
+}
+
+// Fullscreen with F or a click; keep the screen awake
+const fs = () => { if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(()=>{}); };
+addEventListener('keydown', e => { if (e.key === 'f' || e.key === 'F') fs(); if (e.key === 'ArrowLeft' || e.key === ' ') next(); });
+addEventListener('click', fs);
+async function wake(){ try { await navigator.wakeLock?.request('screen'); } catch(e){} }
+wake(); document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') wake(); });
+
+// Reload every 6 hours so the page stays fresh when it runs all day
+setTimeout(() => location.reload(), 6 * 60 * 60 * 1000);
+</script>
+</body>
+</html>
