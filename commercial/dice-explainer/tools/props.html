@@ -1,0 +1,127 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script src="../assets/vendor/three.min.js"></script></head>
+<body><canvas id="c"></canvas>
+<script>
+// Renders the film's props as transparent PNGs (run by render_props.js). Real 3D: acrylic dice with transmission,
+// paper with fibres, gold coin, steel knife. Light: warm key, cool rim, soft shadow on an invisible catcher.
+const T = THREE;
+const canvas = document.getElementById("c");
+const renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.outputColorSpace = T.SRGBColorSpace;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.PCFSoftShadowMap;
+
+// A small studio environment for reflections and refraction
+function studioEnv() {
+  const s = new T.Scene();
+  s.background = new T.Color("#1a1210");
+  const panel = (w, h, color, x, y, z, ry = 0, rx = 0) => { const m = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshBasicMaterial({ color, side: T.DoubleSide })); m.position.set(x, y, z); m.rotation.set(rx, ry, 0); s.add(m); };
+  panel(6, 3, "#fff6e8", -4, 4, 2, 0.9, -0.6); panel(5, 5, "#fff1dc", 0, 7, 0, 0, Math.PI / 2);
+  panel(4, 2, "#ffd6a8", 4, 3, 3, -0.9, -0.4);
+  panel(8, 1.2, "#bcd2ff", 0, 5, -5, 0, 0.4);
+  panel(10, 10, "#3a2418", 0, -3, 0, 0, Math.PI / 2);
+  const pm = new T.PMREMGenerator(renderer);
+  return pm.fromScene(s, 0.02).texture;
+}
+const env = studioEnv();
+
+function stage(w, h, camPos, look) {
+  renderer.setSize(w, h, false);
+  const scene = new T.Scene(); scene.environment = env;
+  const cam = new T.PerspectiveCamera(30, w / h, 0.05, 50); cam.position.set(...camPos); cam.lookAt(...look);
+  const key = new T.DirectionalLight("#ffe6c8", 2.6); key.position.set(-2.5, 6, 3.5); key.castShadow = true;
+  key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 8; key.shadow.bias = -0.0008; key.shadow.normalBias = 0.02; key.shadow.camera.left = -3; key.shadow.camera.right = 3; key.shadow.camera.top = 3; key.shadow.camera.bottom = -3;
+  scene.add(key);
+  const rim = new T.DirectionalLight("#b8ccff", 1.2); rim.position.set(3, 2, -4); scene.add(rim);
+  scene.add(new T.HemisphereLight("#fff0dd", "#3a2418", 0.5));
+  const catcher = new T.Mesh(new T.PlaneGeometry(20, 20), new T.ShadowMaterial({ opacity: 0.42 })); catcher.rotation.x = -Math.PI / 2; catcher.receiveShadow = true; scene.add(catcher);
+  return { scene, cam };
+}
+
+// Vegas die: sharp-edged translucent red acrylic, flush white pips, side length 1
+const PIPS = { 1: [[0, 0]], 2: [[-1, -1], [1, 1]], 3: [[-1, -1], [0, 0], [1, 1]], 4: [[-1, -1], [1, -1], [-1, 1], [1, 1]], 5: [[-1, -1], [1, -1], [0, 0], [-1, 1], [1, 1]], 6: [[-1, -1], [-1, 0], [-1, 1], [1, -1], [1, 0], [1, 1]] };
+function die() {
+  const g = new T.Group();
+  const body = new T.Mesh(new T.BoxGeometry(1, 1, 1, 1, 1, 1), new T.MeshPhysicalMaterial({
+    color: "#ff2a45", transmission: 0.9, thickness: 0.8, ior: 1.49, roughness: 0.03, clearcoat: 1, clearcoatRoughness: 0.02,
+    attenuationColor: new T.Color("#c4001e"), attenuationDistance: 1.1, specularIntensity: 1, envMapIntensity: 1.1 }));
+  body.castShadow = true; g.add(body);
+  const pipM = new T.MeshStandardMaterial({ color: "#fbfaf7", roughness: 0.35 });
+  // standard die: 1 opposite 6, 2 opposite 5, 3 opposite 4. Faces: +y=1, -y=6, +z=2, -z=5, +x=3, -x=4
+  const faces = [[1, [0, 1, 0]], [6, [0, -1, 0]], [2, [0, 0, 1]], [5, [0, 0, -1]], [3, [1, 0, 0]], [4, [-1, 0, 0]]];
+  for (const [n, nrm] of faces) {
+    for (const [u, v] of PIPS[n]) {
+      const r = n === 1 ? 0.11 : 0.085;
+      const pip = new T.Mesh(new T.CylinderGeometry(r, r, 0.012, 40), pipM);
+      const n3 = new T.Vector3(...nrm);
+      pip.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), n3);
+      // in-face axes
+      const a = Math.abs(n3.y) > 0.5 ? new T.Vector3(1, 0, 0) : new T.Vector3(0, 1, 0);
+      const b = new T.Vector3().crossVectors(n3, a);
+      pip.position.copy(n3.clone().multiplyScalar(0.497)).addScaledVector(a, u * 0.26).addScaledVector(b, v * 0.26);
+      g.add(pip);
+    }
+  }
+  return g;
+}
+// Rotation that brings face n to +y (towards the overhead camera)
+const UP = { 1: [0, 0, 0], 6: [Math.PI, 0, 0], 2: [Math.PI / 2, 0, 0], 5: [-Math.PI / 2, 0, 0], 3: [0, 0, Math.PI / 2], 4: [0, 0, -Math.PI / 2] };
+
+window.renderDie = (face, tumble = null) => {
+  const { scene, cam } = stage(408, 438, [0.35, 4.3, 1.55], [0, 0.45, 0.05]);
+  const d = die(); d.position.y = 0.5;
+  const [x, y, z] = UP[face]; d.rotation.set(x, y, z);
+  if (tumble) { d.rotation.x += tumble[0]; d.rotation.y += tumble[1]; d.rotation.z += tumble[2]; d.position.y = 0.72; }
+  scene.add(d); renderer.render(scene, cam); return canvas.toDataURL("image/png");
+};
+
+function paperTex(w, h, draw) {
+  const c = document.createElement("canvas"); c.width = w; c.height = h; const g = c.getContext("2d");
+  g.fillStyle = "#f5efe3"; g.fillRect(0, 0, w, h);
+  let s = 7; const rnd = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+  for (let i = 0; i < 9000; i++) { g.fillStyle = `rgba(120,100,70,${rnd() * 0.06})`; g.fillRect(rnd() * w, rnd() * h, 1 + rnd() * 2, 1); }
+  for (let i = 0; i < 400; i++) { g.strokeStyle = `rgba(140,120,90,${rnd() * 0.08})`; g.beginPath(); const x = rnd() * w, y = rnd() * h; g.moveTo(x, y); g.lineTo(x + rnd() * 30 - 15, y + rnd() * 6 - 3); g.stroke(); }
+  draw(g, w, h);
+  const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; t.anisotropy = 8; return t;
+}
+window.renderReceipt = () => {
+  const { scene, cam } = stage(760, 1000, [0, 6.2, 0.9], [0, 0, 0.05]);
+  const tex = paperTex(700, 1000, (g, w, h) => {
+    g.fillStyle = "#2b2016"; g.font = "700 64px Georgia"; g.textAlign = "center"; g.fillText("YOKO ONO", w / 2, 110);
+    g.font = "500 26px Georgia"; g.fillText("ASIAN KITCHEN", w / 2, 150);
+    g.fillRect(60, 190, w - 120, 3);
+    for (let i = 0; i < 9; i++) { g.globalAlpha = 0.28; g.fillRect(70, 240 + i * 62, 300 + ((i * 97) % 200), 14); g.fillRect(w - 170, 240 + i * 62, 100, 14); }
+    g.globalAlpha = 1; g.fillRect(60, 830, w - 120, 3); g.globalAlpha = 0.5; g.fillRect(70, 870, 260, 22); g.fillRect(w - 230, 870, 160, 22);
+  });
+  const geo = new T.PlaneGeometry(2.1, 3, 40, 60);
+  const p = geo.attributes.position;
+  for (let i = 0; i < p.count; i++) { const x = p.getX(i), y = p.getY(i); p.setZ(i, 0.05 * Math.sin(y * 1.6) + 0.06 * x * x + (y > 1.2 ? 0.25 * Math.pow((y - 1.2) / 0.3, 2) : 0)); }
+  geo.computeVertexNormals();
+  const paper = new T.Mesh(geo, new T.MeshStandardMaterial({ map: tex, roughness: 0.9, side: T.DoubleSide }));
+  paper.rotation.x = -Math.PI / 2; paper.rotation.z = 0.08; paper.position.y = 0.3; paper.castShadow = true; scene.add(paper);
+  renderer.render(scene, cam); return canvas.toDataURL("image/png");
+};
+window.renderCoin = (tilt = 0) => {
+  const { scene, cam } = stage(400, 300, [0, 2.0, 1.7], [0, 0.05, 0]);
+  const gold = new T.MeshPhysicalMaterial({ color: "#f2c464", metalness: 1, roughness: 0.32, clearcoat: 0.4, envMapIntensity: 1.6 });
+  const coin = new T.Mesh(new T.CylinderGeometry(0.62, 0.62, 0.09, 96), gold); coin.position.y = 0.05 + tilt * 0.3; coin.rotation.z = tilt; coin.castShadow = true; scene.add(coin);
+  const ring = new T.Mesh(new T.TorusGeometry(0.47, 0.02, 12, 96), gold); ring.rotation.x = Math.PI / 2; ring.position.y = 0.1 + tilt * 0.3; ring.rotation.y = tilt; scene.add(ring);
+  renderer.render(scene, cam); return canvas.toDataURL("image/png");
+};
+window.renderKnife = () => {
+  const { scene, cam } = stage(900, 300, [-0.3, 4.6, 1.4], [-0.3, 0, 0]);
+  const sh = new T.Shape(); sh.moveTo(-1.6, 0); sh.lineTo(1.0, 0.0); sh.quadraticCurveTo(1.25, 0.06, 1.2, 0.2); sh.lineTo(-1.6, 0.2); sh.lineTo(-1.6, 0);
+  const blade = new T.Mesh(new T.ExtrudeGeometry(sh, { depth: 0.02, bevelEnabled: true, bevelThickness: 0.01, bevelSize: 0.008, bevelSegments: 2 }),
+    new T.MeshPhysicalMaterial({ color: "#eef1f4", metalness: 0.85, roughness: 0.28, envMapIntensity: 1.6 }));
+  blade.rotation.x = -Math.PI / 2; blade.position.y = 0.05; blade.castShadow = true; scene.add(blade);
+  const handle = new T.Mesh(new T.CapsuleGeometry(0.11, 0.9, 8, 24), new T.MeshPhysicalMaterial({ color: "#3a2416", roughness: 0.5, clearcoat: 0.6 }));
+  handle.rotation.z = Math.PI / 2; handle.position.set(-2.15, 0.12, -0.1); handle.castShadow = true; scene.add(handle);
+  const ferrule = new T.Mesh(new T.CylinderGeometry(0.12, 0.12, 0.08, 32), new T.MeshPhysicalMaterial({ color: "#d8b26a", metalness: 1, roughness: 0.3 }));
+  ferrule.rotation.z = Math.PI / 2; ferrule.position.set(-1.65, 0.12, -0.1); scene.add(ferrule);
+  renderer.render(scene, cam); return canvas.toDataURL("image/png");
+};
+window.ready = true;
+</script></body></html>

@@ -11,30 +11,12 @@
   };
   const ORDER = [1, 5, 3, 6, 2, 4];
 
-  // Vegas casino dice: sharp corners, translucent red acrylic, flush white pips, a tiny gold serial on the one face.
+  // Vegas casino dice, rendered in real 3D by tools/render_props.js: 6 resting faces and 12 tumbling poses.
   function svg() {
-    let s = '<svg viewBox="-8 -8 136 146" width="100%" height="100%" style="display:block;overflow:visible">' +
-      '<defs><radialGradient id="vd-body" cx=".42" cy=".38" r=".75"><stop offset="0" stop-color="#ff3b52"/><stop offset=".55" stop-color="#d0122c"/><stop offset="1" stop-color="#7d0716"/></radialGradient>' +
-      '<linearGradient id="vd-side" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8e0a1b"/><stop offset="1" stop-color="#3f030b"/></linearGradient></defs>' +
-      '<rect x="1" y="13" width="120" height="120" rx="5" fill="url(#vd-side)"/>' +
-      '<rect x="0" y="0" width="120" height="120" rx="5" fill="url(#vd-body)" fill-opacity=".95"/>' +
-      '<rect x="3" y="3" width="114" height="114" rx="3" fill="none" stroke="#ff9aa4" stroke-opacity=".55" stroke-width="2"/>' +
-      '<path d="M5 3 L115 3" stroke="#ffffff" stroke-opacity=".7" stroke-width="2.5" stroke-linecap="round"/>' +
-      '<path d="M3 6 L3 112" stroke="#ffffff" stroke-opacity=".4" stroke-width="2" stroke-linecap="round"/>' +
-      '<polygon points="0,0 46,0 0,46" fill="#ffffff" fill-opacity=".12"/>' +
-      '<polygon points="70,0 92,0 0,92 0,70" fill="#ffffff" fill-opacity=".07"/>';
-    for (let n = 1; n <= 6; n++) {
-      s += `<g class="face f${n}" opacity="0">`;
-      // the opposite face shows faintly through the translucent acrylic
-      for (const [x, y] of PIPS[7 - n]) s += `<circle cx="${x * 1.2 + 7}" cy="${y * 1.2 + 11}" r="8" fill="#ffffff" fill-opacity=".14"/>`;
-      for (const [x, y] of PIPS[n]) {
-        const r = n === 1 ? 14 : 10.5;
-        s += `<circle cx="${x * 1.2}" cy="${y * 1.2}" r="${r}" fill="#c9c2bd"/><circle cx="${x * 1.2 - 0.8}" cy="${y * 1.2 - 0.8}" r="${r - 1.4}" fill="#ffffff"/>`;
-      }
-      if (n === 1) s += '<text x="60" y="108" text-anchor="middle" font-family="Heebo, sans-serif" font-weight="700" font-size="8" letter-spacing="1" fill="#e2c590" fill-opacity=".85">YO-24</text>';
-      s += "</g>";
-    }
-    return s + "</svg>";
+    let s = "";
+    for (let n = 1; n <= 6; n++) s += `<img class="face f${n}" src="assets/img/die-${n}.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0">`;
+    for (let k = 0; k < 12; k++) s += `<img class="face roll" src="assets/img/die-roll-${k}.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0">`;
+    return s;
   }
 
   const resolve = (t) => (typeof t === "string" ? document.querySelector(t) : t);
@@ -43,7 +25,7 @@
     for (const t of targets) {
       const el = resolve(t);
       el.innerHTML = svg();
-      el.querySelector(".f" + (el.dataset.face || 1)).setAttribute("opacity", "1");
+      el.querySelector(".f" + (el.dataset.face || 1)).style.opacity = "1";
     }
   }
 
@@ -53,10 +35,16 @@
     tl.set(faces, { opacity: (i) => (i === face - 1 ? 1 : 0) }, t);
   }
 
+  // Show tumbling pose k (0-11) from time t on.
+  function setRoll(tl, target, k, t) {
+    const faces = resolve(target).querySelectorAll(".face");
+    tl.set(faces, { opacity: (i) => (i === 6 + (k % 12) ? 1 : 0) }, t);
+  }
+
   // Swap faces every `step` seconds between t0 and t1, landing on `final` at t1.
   function tumble(tl, target, t0, t1, final, step = 1 / 12, seed = 0) {
     let k = seed;
-    for (let t = t0; t < t1 - 1e-6; t += step) setFace(tl, target, ORDER[k++ % 6], t);
+    for (let t = t0; t < t1 - 1e-6; t += step) setRoll(tl, target, (k++ * 5) % 12, t);
     setFace(tl, target, final, t1);
   }
 

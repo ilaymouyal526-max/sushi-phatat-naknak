@@ -309,11 +309,7 @@ card("s6b", 25.0, 6.25, f"""
 """, css=FELT_CSS, js=place("s6b", 330, 700, 680, 820))
 
 # 7. Prize: double 1-2-3, 50% off
-RECEIPT = f"""<div style="position:absolute;inset:0;background:#f3eadb;border-radius:6px;box-shadow:0 20px 40px rgba(0,0,0,.5)">
-  <div style="position:absolute;top:26px;left:0;right:0;text-align:center;font-family:Cormorant,serif;font-weight:700;font-size:30px;letter-spacing:.2em;color:#3a2a1c;direction:ltr">YOKO ONO</div>
-  <div style="position:absolute;top:70px;left:40px;right:40px;height:2px;background:#3a2a1c;opacity:.5"></div>
-  {''.join(f'<div style="position:absolute;top:{100+i*40}px;left:40px;right:{90+(i*37)%80}px;height:10px;border-radius:5px;background:#3a2a1c;opacity:.22"></div>' for i in range(6))}
-</div>"""
+RECEIPT = '<img src="assets/img/receipt.png" alt="" style="position:absolute;left:-60px;top:-110px;width:620px;height:auto">'
 card("s7", 31.25, 5.0, f"""
 <div class="h" style="top:206px;font-size:110px">דאבל 1 · 2 · 3</div>
 {die("s7-dA", 3, 392, 360, 130)}{die("s7-dB", 3, 558, 360, 130)}
@@ -321,9 +317,7 @@ card("s7", 31.25, 5.0, f"""
 <div class="sub" style="top:852px;font-size:58px">על כל החשבון של השולחן</div>
 <div id="s7-rcL" style="position:absolute;left:290px;top:960px;width:500px;height:360px;clip-path:polygon(0 0, 52% 0, 46% 100%, 0 100%)">{RECEIPT}</div>
 <div id="s7-rcR" style="position:absolute;left:290px;top:960px;width:500px;height:360px;clip-path:polygon(52% 0, 100% 0, 100% 100%, 46% 100%)">{RECEIPT}</div>
-<svg id="s7-knife" class="art" style="left:620px;top:900px;width:420px;height:120px" viewBox="0 0 420 120" data-layout-ignore>
-  <path d="M10 70 L300 40 Q330 38 330 54 L330 70 Z" fill="#e8e2d6" stroke="{GOLD}" stroke-width="3"/>
-  <rect x="330" y="46" width="84" height="26" rx="8" fill="#2a1d16" stroke="{GOLD}" stroke-width="3"/></svg>
+<img id="s7-knife" class="art" src="assets/img/knife.png" alt="" style="left:560px;top:880px;width:520px;height:auto">
 """, js="""tl.set("#s7-rcL", { x: -34, y: 10, rotation: -5 }, 0); tl.set("#s7-rcR", { x: 34, y: -6, rotation: 4 }, 0); tl.set("#s7-knife", { rotation: -8 }, 0); tl.set("#s7-dA", { rotation: -8 }, 0); tl.set("#s7-dB", { rotation: 7 }, 0);""")
 
 # 8. Prize: double 4-5-6, jackpot
@@ -363,8 +357,8 @@ card("s10", 43.75, 3.75, f"""
 <svg class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
   <ellipse cx="540" cy="1080" rx="300" ry="118" fill="#120e0b" stroke="{GOLD}" stroke-width="5"/>
   <ellipse cx="540" cy="1074" rx="250" ry="88" fill="#1d1612" stroke="rgba(201,163,107,.5)" stroke-width="2"/>
-  {''.join(f'<g><ellipse cx="{x}" cy="{y+10}" rx="62" ry="24" fill="#8a6a35"/><ellipse cx="{x}" cy="{y}" rx="62" ry="24" fill="#e2c590" stroke="#a88545" stroke-width="3"/><ellipse cx="{x}" cy="{y}" rx="42" ry="15" fill="none" stroke="#a88545" stroke-width="2"/></g>' for x, y in [(470, 1070), (600, 1084)])}
-  <g id="s10-drop"><g id="s10-coin"><ellipse cx="540" cy="1056" rx="62" ry="24" fill="#8a6a35"/><ellipse cx="540" cy="1046" rx="62" ry="24" fill="#e2c590" stroke="#a88545" stroke-width="3"/><ellipse cx="540" cy="1046" rx="42" ry="15" fill="none" stroke="#a88545" stroke-width="2"/></g></g>
+  {''.join(f'<image href="assets/img/coin.png" x="{x - 100}" y="{y - 80}" width="200" height="150"/>' for x, y in [(470, 1070), (600, 1084)])}
+  <g id="s10-drop"><g id="s10-coin"><image href="assets/img/coin.png" x="440" y="966" width="200" height="150"/></g></g>
   <path id="s10-glint" d="M500 1036 L560 1036" stroke="#fff6dc" stroke-width="6" stroke-linecap="round" opacity="0"/>
 </svg>
 """)
