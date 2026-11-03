@@ -1,201 +1,218 @@
 <!doctype html>
-<html lang="he" dir="rtl">
+<html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>מסך מנות</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;700&family=Heebo:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Yoko Ono — Écran des plats</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
 <style>
 /*
-  Restaurant dish screen: a 16:9 slideshow that loops forever.
-  Open in Chrome on the screen's computer and press F for fullscreen.
-  Edit the CONFIG block at the bottom of this file to change dishes and highlights.
+  Yoko Ono · Asian Kitchen: dish screen for the portrait TV (1080 x 1920), Noir & Or style.
+  Loops forever: logo → dish → dice game → dish → dice game → ...
+  Open in Chrome on the screen's computer, press F for fullscreen.
+  Dishes and texts live in the CONFIG block at the bottom.
 */
 :root{
-  --black:#050505;
-  --gold:#D6B26E;
-  --gold-hi:#F1D9A0;
-  --ink:#F4EFE6;
-  --muted:#B9AE9B;
+  --ink:#14110e; --ivory:#f4ecdf; --ivory-dim:#d8cdbb; --muted:#a3947f;
+  --gold:#c9a36b; --gold-light:#e2c590; --red:#b8322a;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--black);overflow:hidden;cursor:none}
-body{font-family:"Heebo","Assistant","Arial Hebrew",Arial,sans-serif;color:var(--ink)}
+html,body{height:100%;background:#000;overflow:hidden;cursor:none}
+[lang="he"]{font-family:"Heebo",sans-serif;direction:rtl}
 
-/* Fixed 1920x1080 stage, scaled to fit any screen */
-#stage{position:absolute;width:1920px;height:1080px;left:50%;top:50%;transform-origin:center;background:var(--black);overflow:hidden}
+#screen{position:absolute;left:50%;top:50%;width:1080px;height:1920px;overflow:hidden;transform-origin:center;
+  color:var(--ivory);font-family:"Montserrat","Heebo",sans-serif;
+  background:radial-gradient(ellipse 90% 50% at 50% 40%,#241d17 0%,var(--ink) 75%)}
+.bg{position:absolute;inset:0;width:100%;height:100%}
+.frame{position:absolute;inset:24px;border:2px solid var(--gold);z-index:4;pointer-events:none}
+.frame::after{content:"";position:absolute;inset:9px;border:1px solid rgba(201,163,107,.5)}
+.signoff{position:absolute;left:50%;bottom:13px;transform:translateX(-50%);z-index:5;background:var(--ink);padding:0 20px;white-space:nowrap;
+  display:flex;align-items:center;gap:16px;color:var(--gold);font-weight:700;font-size:16px;letter-spacing:.48em}
+.seal{width:34px;height:34px;background:var(--red);color:var(--ivory);display:grid;place-items:center;font-family:"Shippori";font-size:22px;letter-spacing:0;border-radius:4px}
 
-.slide{position:absolute;inset:0;opacity:0;transition:opacity 1.6s ease}
+.slide{position:absolute;inset:0;padding:66px 72px 0;display:flex;flex-direction:column;align-items:center;opacity:0;transition:opacity 1.4s ease}
 .slide.on{opacity:1}
+.slide>*{flex-shrink:0}
+.up{opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s ease}
+.slide.on .up{opacity:1;transform:none}
+.d1{transition-delay:.35s!important}.d2{transition-delay:.6s!important}.d3{transition-delay:.85s!important}.d4{transition-delay:1.1s!important}
 
-/* ---- Dish slide ---- */
-.photo{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.04)}
-.slide.on .photo{animation:kb var(--dur,9s) linear forwards}
-@keyframes kb{from{transform:scale(1.04) translate(0,0)}to{transform:scale(1.14) translate(-1.5%,-1%)}}
-.slide.alt.on .photo{animation-name:kb2}
-@keyframes kb2{from{transform:scale(1.14) translate(1.5%,0)}to{transform:scale(1.04) translate(0,0)}}
+.logo-sm{width:150px;color:var(--gold)}
+.logo-sm svg,.logo-lg svg{width:100%;height:auto;display:block}
 
-/* readability gradient on the text side (right, for Hebrew) */
-.shade{position:absolute;inset:0;background:
-  linear-gradient(270deg,rgba(0,0,0,.88) 0%,rgba(0,0,0,.55) 30%,rgba(0,0,0,0) 55%),
-  linear-gradient(0deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,0) 25%)}
+/* ---- Dish ---- */
+.visual{position:relative;overflow:hidden;margin-top:24px;width:936px;height:950px;background:#0b0a09}
+.visual .ph{position:absolute;inset:0;background-size:cover;background-position:center}
+.slide.on .visual .ph{animation:kb var(--dur) linear forwards}
+.slide.alt.on .visual .ph{animation-name:kb2}
+@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.12) translateY(-1.5%)}}
+@keyframes kb2{from{transform:scale(1.12) translateX(1.5%)}to{transform:scale(1.02)}}
+.visual::after{content:"";position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 0 1.5px var(--gold),inset 0 0 0 9px var(--ink),inset 0 0 0 10px rgba(201,163,107,.55),inset 0 -120px 120px -60px rgba(0,0,0,.6)}
+.num{margin-top:34px;display:flex;align-items:center;gap:18px;color:var(--gold)}
+.num i{width:70px;height:1px;background:var(--gold);opacity:.7}
+.num span{font-family:"Cormorant";font-style:italic;font-weight:700;font-size:40px}
+h1{margin-top:8px;font-weight:800;font-size:80px;line-height:.98;text-transform:uppercase;text-align:center;letter-spacing:.01em}
+.he-name{margin-top:12px;font-family:"Frank Ruhl",serif;font-weight:700;font-size:54px;color:var(--gold-light)}
+.desc{margin-top:20px;text-align:center;display:grid;gap:8px;max-width:900px}
+.desc .fr{font-size:28px;color:var(--ivory-dim);line-height:1.35}
+.desc .en{font-family:"Cormorant";font-style:italic;font-weight:600;font-size:33px;color:var(--muted);line-height:1.2}
+.desc .he{font-size:29px;color:var(--ivory-dim);line-height:1.4}
+.price{margin-top:24px;padding:10px 34px;border:1.5px solid var(--gold);color:var(--gold-light);font-weight:700;font-size:40px;letter-spacing:.04em}
 
-.card{position:absolute;right:140px;top:50%;transform:translateY(-50%);width:640px;text-align:right}
-.kicker{font-size:26px;letter-spacing:.35em;color:var(--gold);font-weight:300}
-.rule{height:2px;width:0;background:linear-gradient(270deg,var(--gold-hi),var(--gold) 60%,transparent);margin:26px 0 30px auto;transition:width 1.4s .5s ease}
-.slide.on .rule{width:420px}
-.name{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:104px;line-height:1.05;color:var(--ink);
-  opacity:0;transform:translateY(24px);transition:all 1.1s .35s ease}
-.desc{font-size:36px;line-height:1.5;color:var(--muted);font-weight:300;margin-top:22px;
-  opacity:0;transform:translateY(18px);transition:all 1.1s .7s ease}
-.price{display:inline-block;margin-top:40px;font-size:44px;color:var(--gold-hi);font-weight:600;border:1.5px solid var(--gold);padding:8px 30px;
-  opacity:0;transition:opacity 1s 1.1s ease}
-.slide.on .name,.slide.on .desc{opacity:1;transform:none}
-.slide.on .price{opacity:1}
-.price:empty{display:none}
+/* game reminder strip on every dish slide */
+.strip{position:absolute;left:60px;right:60px;bottom:58px;display:flex;align-items:center;justify-content:center;gap:16px;
+  padding:14px 0;border-top:1px solid rgba(201,163,107,.45);color:var(--gold-light);font-size:23px;white-space:nowrap}
+.strip b{color:var(--gold);font-weight:800;letter-spacing:.2em;font-size:19px}
+.strip .he{font-size:24px}
+.diamond{width:7px;height:7px;background:var(--gold);transform:rotate(45deg);flex:none}
 
-/* ---- Highlight slide ---- */
-.hl{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
-  background:radial-gradient(ellipse at 50% 0%,#1d1a14 0%,#070707 60%,#000 100%)}
-.hl .marble{position:absolute;inset:0;opacity:.35;background:
-  linear-gradient(115deg,transparent 46%,rgba(214,178,110,.55) 46.3%,transparent 46.8%),
-  linear-gradient(118deg,transparent 58%,rgba(214,178,110,.35) 58.2%,transparent 58.5%),
-  linear-gradient(62deg,transparent 30%,rgba(255,255,255,.05) 34%,transparent 40%)}
-.hl .icon{font-size:110px;line-height:1;color:var(--gold);opacity:0;transform:scale(.85);transition:all 1s .3s ease}
-.hl .big{font-family:"Frank Ruhl Libre",serif;font-size:120px;font-weight:700;margin-top:30px;color:var(--ink);opacity:0;transition:opacity 1.1s .6s ease}
-.hl .small{font-size:42px;color:var(--muted);font-weight:300;margin-top:18px;opacity:0;transition:opacity 1.1s 1s ease}
-.hl .rule{margin:34px auto 0}
-.slide.on.hl .icon{opacity:1;transform:none}
-.slide.on.hl .big,.slide.on.hl .small{opacity:1}
+/* ---- Brand ---- */
+.brand{justify-content:center;padding-bottom:120px}
+.logo-lg{width:640px;color:var(--gold);filter:drop-shadow(0 0 40px rgba(201,163,107,.18))}
+.brand .tag{margin-top:60px;display:grid;gap:12px;text-align:center}
+.brand .tag .fr{font-weight:600;font-size:26px;letter-spacing:.42em;text-transform:uppercase;color:var(--ivory-dim)}
+.brand .tag .en{font-family:"Cormorant";font-style:italic;font-weight:600;font-size:40px;color:var(--gold-light)}
+.brand .tag .he{font-family:"Frank Ruhl",serif;font-weight:700;font-size:40px;color:var(--gold-light)}
 
-/* ---- Brand slide ---- */
-.brand .big{font-size:150px;letter-spacing:.06em}
-
-/* ---- Bottom ticker with restaurant highlights (always on) ---- */
-#ticker{position:absolute;left:0;right:0;bottom:0;height:78px;background:rgba(0,0,0,.82);border-top:1.5px solid var(--gold);overflow:hidden;z-index:5}
-#ticker .track{position:absolute;top:0;height:78px;display:flex;align-items:center;white-space:nowrap;will-change:transform}
-#ticker span{font-size:32px;color:var(--ink);padding:0 34px;font-weight:400}
-#ticker i{font-style:normal;color:var(--gold);font-size:22px}
-#logo{position:absolute;top:44px;left:60px;z-index:5;font-family:"Frank Ruhl Libre",serif;font-size:40px;color:var(--gold);letter-spacing:.12em}
+/* ---- Dice game ---- */
+.game .photo{margin-top:20px;width:1080px;height:640px;margin-left:-72px;margin-right:-72px;background-size:cover;background-position:center 55%;
+  -webkit-mask-image:linear-gradient(transparent,#000 18%,#000 68%,transparent);mask-image:linear-gradient(transparent,#000 18%,#000 68%,transparent)}
+.slide.on.game .photo{animation:kb 14s linear forwards}
+.kicker{margin-top:-40px;display:flex;align-items:center;gap:16px;color:var(--gold)}
+.kicker i{width:50px;height:1px;background:var(--gold);opacity:.7}
+.kicker .fr{font-weight:600;font-size:22px;letter-spacing:.4em;text-transform:uppercase}
+.game h2{margin-top:10px;font-weight:900;font-size:112px;line-height:.95;text-transform:uppercase;text-align:center}
+.title-alt{margin-top:12px;display:flex;align-items:center;gap:22px;color:var(--gold-light)}
+.title-alt .en{font-family:"Cormorant";font-style:italic;font-weight:600;font-size:50px}
+.title-alt .he{font-family:"Frank Ruhl",serif;font-weight:700;font-size:44px}
+.prizes{margin-top:44px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.prize{padding:24px 20px 22px;text-align:center;border:1.5px solid var(--gold);background:rgba(12,10,8,.85)}
+.prize .label{font-weight:800;font-size:20px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.prize .big{font-weight:900;font-size:110px;line-height:.95;margin-top:12px;color:var(--gold-light);letter-spacing:-.02em}
+.prize .lines{margin-top:12px;display:grid;gap:6px}
+.prize .lines .fr{font-weight:600;font-size:26px}
+.prize .lines .en{font-family:"Cormorant";font-style:italic;font-weight:600;font-size:30px;color:var(--muted)}
+.prize .lines .he{font-weight:600;font-size:27px}
+.prize.free{background:linear-gradient(160deg,#d9b67c 0%,var(--gold) 55%,#b48c55 100%);border-color:var(--gold-light);color:#14110e}
+.prize.free .label,.prize.free .big{color:#14110e}
+.prize.free .lines .en{color:#3b2e1d}
+.game .when{margin-top:36px;display:grid;gap:8px;text-align:center}
+.game .when .fr{font-size:27px;color:var(--ivory-dim)}
+.game .when .en{font-family:"Cormorant";font-style:italic;font-weight:600;font-size:31px;color:var(--muted)}
+.game .when .he{font-size:28px;color:var(--ivory-dim)}
 </style>
 </head>
 <body>
-<div id="stage">
-  <div id="logo"></div>
+<div id="screen">
+  <svg class="bg" aria-hidden="true">
+    <pattern id="seigaiha" width="64" height="32" patternUnits="userSpaceOnUse">
+      <g fill="#14110e" stroke="#c9a36b" stroke-width="1">
+        <g id="wave"><circle r="31"/><circle r="23" fill="none"/><circle r="15" fill="none"/><circle r="7" fill="none"/></g>
+        <use href="#wave" x="64"/><use href="#wave" x="32" y="16"/><use href="#wave" y="32"/><use href="#wave" x="64" y="32"/>
+      </g>
+    </pattern>
+    <rect width="100%" height="100%" fill="url(#seigaiha)" opacity=".07"/>
+  </svg>
   <div id="slides"></div>
-  <div id="ticker"><div class="track"></div></div>
+  <div class="frame"></div>
+  <div class="signoff"><span class="seal">運</span><span>YOKO ONO · ASIAN KITCHEN</span></div>
 </div>
 
+<script src="../shared/logo-path.js"></script>
+<script src="../shared/logo.js"></script>
 <script>
-/* ================== CONFIG: edit this part ================== */
+/* ================== CONFIG ================== */
 const CONFIG = {
-  restaurantName: "שם המסעדה",          // TODO: restaurant name
-  dishSeconds: 9,                       // how long each dish stays on screen
-  highlightSeconds: 6,                  // how long each highlight card stays on screen
-  showHighlightCards: true,             // full-screen highlight cards between the dishes
-  showTicker: true,                     // bottom strip that runs the highlights all the time
-
-  // Swap image paths for the final black-marble photos when they're ready.
+  dishSeconds: 10,
+  gameSeconds: 9,
+  brandSeconds: 7,
+  gameEvery: 1,            // show the dice-game slide after every N dishes
   dishes: [
-    { image: "images/gyoza.jpg",          name: "גיוזה",
-      desc: "כיסונים פריכים מהמחבת, רוטב סויה ושומשום שחור-לבן", price: "" },
-    { image: "images/crispy-chicken.jpg", name: "עוף קריספי",
-      desc: "נתחי עוף פריכים מוקפצים בווק ברוטב מתקתק, בצל ירוק ובצל סגול, לצד אורז ובצל מטוגן", price: "" },
-    { image: "images/chicken-wok.jpg",    name: "מוקפץ עוף ופלפלים",
-      desc: "עוף, פלפלים אדומים וצהובים ונבטים, מוקפץ על אש גבוהה", price: "" },
-  ],
-
-  // TODO: replace with the restaurant's real highlights
-  highlights: [
-    { icon: "✦", big: "הכל טרי, הכל במקום", small: "מוכן מול העיניים, על אש גבוהה בווק" },
-    { icon: "✦", big: "הדגש 2",             small: "טקסט משנה" },
-    { icon: "✦", big: "הדגש 3",             small: "טקסט משנה" },
+    { photo: "images/gyoza.jpg",
+      name: "Gyoza", he: "גיוזה",
+      fr: "Raviolis japonais grillés, sauce soja et sésame",
+      en: "Pan-fried dumplings, soy sauce and sesame",
+      heDesc: "כיסוני גיוזה צרובים, רוטב סויה ושומשום", price: null },
+    { photo: "images/crispy-chicken.jpg",
+      name: "Poulet croustillant", he: "עוף קריספי",
+      fr: "Sauté au wok, sauce laquée, riz et oignons frits",
+      en: "Wok-tossed in a glossy sauce, with rice and crispy shallots",
+      heDesc: "מוקפץ בווק ברוטב מבריק, לצד אורז ובצל מטוגן", price: null },
+    { photo: "images/chicken-wok.jpg",
+      name: "Poulet sauté au wok", he: "מוקפץ עוף",
+      fr: "Poivrons rouges et jaunes, pousses de soja, à feu vif",
+      en: "Red and yellow peppers and bean sprouts, over high heat",
+      heDesc: "פלפלים אדומים וצהובים ונבטים, על אש גבוהה", price: null },
   ],
 };
-/* ============================================================ */
+/* ============================================ */
 
-const stage = document.getElementById('stage');
-function fit(){ const s = Math.min(innerWidth/1920, innerHeight/1080); stage.style.transform = `translate(-50%,-50%) scale(${s})`; }
+const S = document.getElementById('screen');
+const fit = () => { const k = Math.min(innerWidth / 1080, innerHeight / 1920); S.style.transform = `translate(-50%,-50%) scale(${k})`; };
 addEventListener('resize', fit); fit();
 
-document.getElementById('logo').textContent = CONFIG.restaurantName;
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pip = n => { const P = {1:[[50,50]],2:[[28,28],[72,72]],3:[[26,26],[50,50],[74,74]],4:[[28,28],[72,28],[28,72],[72,72]],5:[[26,26],[74,26],[50,50],[26,74],[74,74]],6:[[28,24],[72,24],[28,50],[72,50],[28,76],[72,76]]}[n];
+  return `<svg viewBox="0 0 100 100" width="26" height="26"><rect x="4" y="4" width="92" height="92" rx="18" fill="none" stroke="currentColor" stroke-width="7"/>${P.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="9" fill="currentColor"/>`).join('')}</svg>`; };
 
-// Build the playlist: brand → dish → highlight → dish → highlight ...
-const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
-const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const box = document.getElementById('slides');
 const list = [];
+const add = (html, cls, secs) => { const n = document.createElement('div'); n.className = 'slide ' + cls; n.innerHTML = html; box.appendChild(n); list.push({ n, secs }); return n; };
 
-function brandSlide(){
-  const s = el('div','slide hl brand');
-  s.innerHTML = `<div class="marble"></div><div class="icon">✦</div><div class="big">${esc(CONFIG.restaurantName)}</div><div class="rule"></div>`;
-  return { node: s, secs: CONFIG.highlightSeconds };
+function brand(){
+  add(`<div class="logo-lg up">${Logo.svg()}</div>
+    <div class="tag up d2"><span class="fr">Cuisine asiatique</span><span class="en">Asian kitchen</span><span class="he" lang="he">מטבח אסייתי</span></div>`, 'brand', CONFIG.brandSeconds);
 }
-function dishSlide(d, i){
-  const s = el('div', 'slide' + (i % 2 ? ' alt' : ''));
-  s.style.setProperty('--dur', (CONFIG.dishSeconds + 2) + 's');
-  s.innerHTML = `<div class="photo" style="background-image:url('${encodeURI(d.image)}')"></div><div class="shade"></div>
-    <div class="card"><div class="kicker">המנות שלנו</div><div class="rule"></div>
-    <div class="name">${esc(d.name)}</div><div class="desc">${esc(d.desc)}</div><div class="price">${esc(d.price||'')}</div></div>`;
-  return { node: s, secs: CONFIG.dishSeconds };
+function dish(d, i){
+  const n = add(`<div class="logo-sm">${Logo.svg()}</div>
+    <div class="visual"><div class="ph" style="background-image:url('${encodeURI(d.photo)}')"></div></div>
+    <div class="num up d1"><i></i><span>N° ${String(i + 1).padStart(2, '0')}</span><i></i></div>
+    <h1 class="up d1">${esc(d.name)}</h1>
+    <div class="he-name up d2" lang="he">${esc(d.he)}</div>
+    <div class="desc up d3"><span class="fr">${esc(d.fr)}</span><span class="en">${esc(d.en)}</span><span class="he" lang="he">${esc(d.heDesc)}</span></div>
+    ${d.price ? `<div class="price up d4">${esc(d.price)}</div>` : ''}
+    <div class="strip up d4"><b>LE GRAND JEU</b><b class="diamond"></b><span>Un double = −50% ou offert</span><b class="diamond"></b><span class="he" lang="he">דאבל = 50% הנחה או הכל עלינו</span></div>`,
+    i % 2 ? 'alt' : '', CONFIG.dishSeconds);
+  n.style.setProperty('--dur', (CONFIG.dishSeconds + 2) + 's');
 }
-function hlSlide(h){
-  const s = el('div','slide hl');
-  s.innerHTML = `<div class="marble"></div><div class="icon">${esc(h.icon||'✦')}</div><div class="big">${esc(h.big)}</div><div class="small">${esc(h.small||'')}</div><div class="rule"></div>`;
-  return { node: s, secs: CONFIG.highlightSeconds };
+function game(){
+  add(`<div class="logo-sm">${Logo.svg()}</div>
+    <div class="photo" style="background-image:url('images/dice.jpg')"></div>
+    <div class="kicker up"><i></i><span class="fr">Le grand jeu</span><i></i></div>
+    <h2 class="up d1">Lancez<br>les dés</h2>
+    <div class="title-alt up d2"><span class="en">Roll the dice</span><b class="diamond"></b><span class="he" lang="he">הטילו את הקוביות</span></div>
+    <div class="prizes up d3">
+      <div class="prize half"><div class="label">Double 1 · 2 · 3</div><div class="big">−50%</div>
+        <div class="lines"><span class="fr">sur toute l'addition</span><span class="en">off the whole bill</span><span class="he" lang="he">על כל החשבון</span></div></div>
+      <div class="prize free"><div class="label">Double 4 · 5 · 6</div><div class="big">100%</div>
+        <div class="lines"><span class="fr">Repas offert !</span><span class="en">On the house!</span><span class="he" lang="he">הכל עלינו!</span></div></div>
+    </div>
+    <div class="when up d4"><span class="fr">À la fin du repas · un seul lancer par table</span><span class="en">At the end of your meal · one roll per table</span><span class="he" lang="he">בסוף הארוחה · הטלה אחת לשולחן</span></div>`,
+    'game', CONFIG.gameSeconds);
 }
 
-list.push(brandSlide());
-CONFIG.dishes.forEach((d, i) => {
-  list.push(dishSlide(d, i));
-  const h = CONFIG.highlights[i % CONFIG.highlights.length];
-  if (CONFIG.showHighlightCards && h) list.push(hlSlide(h));
-});
-list.forEach(x => box.appendChild(x.node));
-
-// Preload images so transitions never show a blank frame
-CONFIG.dishes.forEach(d => { const im = new Image(); im.src = d.image; });
+brand();
+CONFIG.dishes.forEach((d, i) => { dish(d, i); if ((i + 1) % CONFIG.gameEvery === 0) game(); });
+CONFIG.dishes.forEach(d => { const im = new Image(); im.src = d.photo; });
 
 let cur = -1, timer;
 function next(){
-  if (cur >= 0) list[cur].node.classList.remove('on');
+  if (cur >= 0) list[cur].n.classList.remove('on');
   cur = (cur + 1) % list.length;
-  const n = list[cur].node;
-  // restart animations
-  n.querySelectorAll('.photo').forEach(p => { p.style.animation = 'none'; void p.offsetWidth; p.style.animation = ''; });
+  const n = list[cur].n;
+  n.querySelectorAll('.ph,.photo').forEach(p => { p.style.animation = 'none'; void p.offsetWidth; p.style.animation = ''; });
   n.classList.add('on');
   clearTimeout(timer); timer = setTimeout(next, list[cur].secs * 1000);
 }
-next();
+document.fonts.ready.then(next);
 
-// Ticker
-const tk = document.getElementById('ticker');
-if (!CONFIG.showTicker) tk.style.display = 'none';
-else {
-  const track = tk.querySelector('.track');
-  const items = CONFIG.highlights.map(h => `<span>${esc(h.big)}</span><i>✦</i>`).join('') + `<span>${esc(CONFIG.restaurantName)}</span><i>✦</i>`;
-  track.innerHTML = items + items + items + items;
-  let x = 0, last = performance.now();
-  (function run(t){
-    x += (t - last) * 0.07; last = t;
-    const half = track.scrollWidth / 2;
-    if (x >= half) x -= half;
-    track.style.transform = `translateX(${x}px)`;   // RTL: moves left→right
-    track.style.right = '0';
-    requestAnimationFrame(run);
-  })(last);
-}
-
-// Fullscreen with F or a click; keep the screen awake
-const fs = () => { if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(()=>{}); };
-addEventListener('keydown', e => { if (e.key === 'f' || e.key === 'F') fs(); if (e.key === 'ArrowLeft' || e.key === ' ') next(); });
+const fs = () => { if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {}); };
+addEventListener('keydown', e => { if (e.key === 'f' || e.key === 'F') fs(); if (e.key === 'ArrowRight' || e.key === ' ') next(); });
 addEventListener('click', fs);
-async function wake(){ try { await navigator.wakeLock?.request('screen'); } catch(e){} }
+async function wake(){ try { await navigator.wakeLock?.request('screen'); } catch (e) {} }
 wake(); document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') wake(); });
-
-// Reload every 6 hours so the page stays fresh when it runs all day
-setTimeout(() => location.reload(), 6 * 60 * 60 * 1000);
+setTimeout(() => location.reload(), 6 * 60 * 60 * 1000);   // fresh reload every 6 hours
 </script>
 </body>
 </html>
