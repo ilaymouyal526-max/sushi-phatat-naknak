@@ -1,0 +1,114 @@
+<template>
+  <style>
+@font-face { font-family: "Frank Ruhl"; font-weight: 300 900; font-display: block; src: url('assets/fonts/frankruhl-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Frank Ruhl"; font-weight: 300 900; font-display: block; src: url('assets/fonts/frankruhl-normal-hebrew.woff2') format('woff2'); unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Heebo"; font-weight: 100 900; font-display: block; src: url('assets/fonts/heebo-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Heebo"; font-weight: 100 900; font-display: block; src: url('assets/fonts/heebo-normal-hebrew.woff2') format('woff2'); unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Cormorant"; font-weight: 500 700; font-display: block; src: url('assets/fonts/cormorant-upright-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Shippori"; font-weight: 800; font-display: block; src: url('assets/fonts/shippori-jp-subset.woff2') format('woff2'); }
+
+#root { position: absolute; inset: 0; overflow: hidden; direction: rtl; font-variant-numeric: lining-nums;
+  background: radial-gradient(ellipse 85% 55% at 50% 52%, #24160e 0%, #0b0907 72%); }
+.h { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 800; color: #f4ecdf; line-height: 1.04; }
+.sub { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 500; color: #e2c590; line-height: 1.28; }
+.kick { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Heebo", sans-serif; font-weight: 500; letter-spacing: .12em; color: #c9a36b; }
+.big { position: absolute; left: 60px; right: 60px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 700; line-height: .9; }
+.num { position: absolute; left: 500px; width: 80px; height: 80px; border-radius: 50%; border: 2px solid #c9a36b; display: grid; place-items: center;
+  font-family: "Frank Ruhl", serif; font-weight: 700; font-size: 50px; color: #c9a36b; line-height: 1; }
+.die { position: absolute; }
+.art { position: absolute; overflow: visible; }
+.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+.foil { background: linear-gradient(100deg, #a8814a 0%, #e9c98a 30%, #c9a36b 42%, #fff1c9 50%, #c9a36b 58%, #e9c98a 70%, #a8814a 100%);
+  background-size: 300% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; }
+</style>
+  <div id="root" data-composition-id="p1" data-width="1080" data-height="1920" dir="rtl" lang="he">
+
+<svg class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
+  <g id="p1-bg"><defs>
+  <linearGradient id="p1-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a1d1a"/><stop offset=".45" stop-color="#b8502c"/><stop offset=".7" stop-color="#f0a24e"/><stop offset="1" stop-color="#2a1610"/></linearGradient>
+  <radialGradient id="p1-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe2a0"/><stop offset=".5" stop-color="#ffb35a" stop-opacity=".8"/><stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/></radialGradient>
+  <filter id="p1-blur"><feGaussianBlur stdDeviation="7"/></filter>
+</defs>
+<g filter="url(#p1-blur)">
+  <rect width="1080" height="1920" fill="url(#p1-sky)"/>
+  <circle cx="760" cy="1040" r="260" fill="url(#p1-sun)"/>
+  <path d="M0 1120 L180 980 L320 1060 L470 900 L640 1050 L800 960 L1080 1100 L1080 1300 L0 1300 Z" fill="#3a1c14" opacity=".8"/>
+  <rect x="40" y="420" width="10" height="900" fill="#c9a36b" opacity=".55"/><rect x="190" y="420" width="10" height="900" fill="#c9a36b" opacity=".55"/><rect x="340" y="420" width="10" height="900" fill="#c9a36b" opacity=".55"/><rect x="490" y="420" width="10" height="900" fill="#c9a36b" opacity=".55"/><rect x="640" y="420" width="10" height="900" fill="#c9a36b" opacity=".55"/><rect x="790" y="420" width="10" height="900" fill="#c9a36b" opacity=".55"/><rect x="940" y="420" width="10" height="900" fill="#c9a36b" opacity=".55"/>
+  <rect x="0" y="400" width="1080" height="16" fill="#c9a36b" opacity=".6"/>
+  <circle cx="120" cy="560" r="26" fill="#ffd28a" opacity="0.5"/><circle cx="300" cy="520" r="18" fill="#ffd28a" opacity="0.45"/><circle cx="520" cy="600" r="30" fill="#ffd28a" opacity="0.35"/><circle cx="880" cy="540" r="22" fill="#ffd28a" opacity="0.5"/><circle cx="980" cy="700" r="34" fill="#ffd28a" opacity="0.3"/><circle cx="210" cy="760" r="20" fill="#ffd28a" opacity="0.35"/>
+</g></g>
+  <g id="p1-cast"><g id="p1m" transform="translate(90 700) scale(1.25)"><defs>
+  <radialGradient id="p1m-skin" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#f0c39b"/><stop offset=".55" stop-color="#d6a27a"/><stop offset="1" stop-color="#a8734f"/></radialGradient>
+  <linearGradient id="p1m-cloth" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stop-color="#25222a"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></linearGradient>
+  <radialGradient id="p1m-hair" cx=".35" cy=".25" r=".9"><stop offset="0" stop-color="#ffffff" stop-opacity=".22"/><stop offset=".4" stop-color="#2a1b14" stop-opacity="0"/></radialGradient>
+</defs><ellipse cx="200" cy="560" rx="170" ry="20" fill="#000" opacity=".35"/><path d="M48 560 C48 372 104 300 200 300 C296 300 352 372 352 560 Z" fill="#25222a"/><path d="M48 560 C48 372 104 300 200 300 C296 300 352 372 352 560 Z" fill="url(#p1m-cloth)"/><path d="M172 300 L200 352 L228 300" fill="#3a3540"/><g id="p1m-armL"><path d="M60 330 L124 330 L122 490 L62 490 Z" fill="#17120f"/><path d="M60 330 L124 330 L122 490 L62 490 Z" fill="url(#p1m-cloth)" opacity=".6"/><rect x="58" y="480" width="68" height="16" rx="6" fill="#c9a36b"/><ellipse cx="92" cy="520" rx="32" ry="36" fill="url(#p1m-skin)"/></g><g id="p1m-armR"><path d="M276 330 L340 330 L338 490 L278 490 Z" fill="#17120f"/><path d="M276 330 L340 330 L338 490 L278 490 Z" fill="url(#p1m-cloth)" opacity=".6"/><rect x="274" y="480" width="68" height="16" rx="6" fill="#c9a36b"/><ellipse cx="308" cy="520" rx="32" ry="36" fill="url(#p1m-skin)"/></g><g id="p1m-head">
+  <ellipse cx="108" cy="186" rx="17" ry="24" fill="#d6a27a"/><ellipse cx="292" cy="186" rx="17" ry="24" fill="#d6a27a"/>
+  <rect x="176" y="236" width="48" height="74" rx="22" fill="#a8734f"/>
+  <ellipse cx="200" cy="176" rx="94" ry="104" fill="url(#p1m-skin)"/>
+  <path d="M276 108 C302 140 304 210 278 250" fill="none" stroke="#ffd69a" stroke-opacity=".55" stroke-width="6" stroke-linecap="round"/>
+  <ellipse cx="146" cy="214" rx="20" ry="12" fill="#e8806e" opacity=".22"/><ellipse cx="254" cy="214" rx="20" ry="12" fill="#e8806e" opacity=".22"/>
+  <g id="p1m-eyes">
+    <ellipse cx="164" cy="180" rx="21" ry="24" fill="#fffaf2"/><ellipse cx="236" cy="180" rx="21" ry="24" fill="#fffaf2"/>
+    <g id="p1m-iris"><circle cx="166" cy="183" r="13.5" fill="#4a2a18"/><circle cx="238" cy="183" r="13.5" fill="#4a2a18"/>
+    <circle cx="166" cy="183" r="6.5" fill="#120a06"/><circle cx="238" cy="183" r="6.5" fill="#120a06"/>
+    <circle cx="161" cy="177" r="4.2" fill="#fff"/><circle cx="233" cy="177" r="4.2" fill="#fff"/></g>
+  </g>
+  <g id="p1m-brows" fill="none" stroke="#2a1b14" stroke-width="7" stroke-linecap="round"><path d="M142 146 Q164 136 186 146"/><path d="M214 146 Q236 136 258 146"/></g>
+  <path d="M196 196 Q190 214 200 218 Q208 216 206 210" fill="none" stroke="#a8734f" stroke-width="4" stroke-linecap="round"/>
+  <path id="p1m-m0" d="M180 236 Q200 252 220 236" fill="none" stroke="#7a2e24" stroke-width="5" stroke-linecap="round"/>
+  <g id="p1m-m1" opacity="0"><path d="M180 232 Q200 262 220 232 Z" fill="#5a1e1a"/><path d="M186 234 L214 234 L211 240 L189 240 Z" fill="#fff"/></g>
+  <ellipse id="p1m-m2" cx="200" cy="240" rx="10" ry="13" fill="#5a1e1a" opacity="0"/>
+  <path d="M110 150 C104 82 158 56 206 60 C262 62 300 92 292 152 C278 118 250 104 214 112 C182 96 140 108 110 150 Z" fill="#2a1b14"/><ellipse cx="200" cy="100" rx="96" ry="60" fill="url(#p1m-hair)"/>
+</g></g><g id="p1w" transform="translate(560 730) scale(1.2)"><defs>
+  <radialGradient id="p1w-skin" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#fbd6b3"/><stop offset=".55" stop-color="#e8bc96"/><stop offset="1" stop-color="#c08a66"/></radialGradient>
+  <linearGradient id="p1w-cloth" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stop-color="#7a1f2b"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></linearGradient>
+  <radialGradient id="p1w-hair" cx=".35" cy=".25" r=".9"><stop offset="0" stop-color="#ffffff" stop-opacity=".22"/><stop offset=".4" stop-color="#6a3420" stop-opacity="0"/></radialGradient>
+</defs><ellipse cx="200" cy="560" rx="170" ry="20" fill="#000" opacity=".35"/><path d="M100 170 C92 90 150 58 200 60 C262 58 312 96 300 180 C306 250 312 300 296 360 L104 360 C88 300 96 240 100 170 Z" fill="#6a3420"/><path d="M48 560 C48 372 104 300 200 300 C296 300 352 372 352 560 Z" fill="#7a1f2b"/><path d="M48 560 C48 372 104 300 200 300 C296 300 352 372 352 560 Z" fill="url(#p1w-cloth)"/><path d="M150 312 Q200 362 250 312" fill="none" stroke="#c9a36b" stroke-width="4"/><circle cx="200" cy="350" r="7" fill="#c9a36b"/><g id="p1w-armL"><path d="M60 330 L124 330 L122 490 L62 490 Z" fill="#7a1f2b"/><path d="M60 330 L124 330 L122 490 L62 490 Z" fill="url(#p1w-cloth)" opacity=".6"/><ellipse cx="92" cy="520" rx="32" ry="36" fill="url(#p1w-skin)"/></g><g id="p1w-armR"><path d="M276 330 L340 330 L338 490 L278 490 Z" fill="#7a1f2b"/><path d="M276 330 L340 330 L338 490 L278 490 Z" fill="url(#p1w-cloth)" opacity=".6"/><ellipse cx="308" cy="520" rx="32" ry="36" fill="url(#p1w-skin)"/></g><g id="p1w-head">
+  <ellipse cx="108" cy="186" rx="17" ry="24" fill="#e8bc96"/><ellipse cx="292" cy="186" rx="17" ry="24" fill="#e8bc96"/>
+  <rect x="176" y="236" width="48" height="74" rx="22" fill="#c08a66"/>
+  <ellipse cx="200" cy="176" rx="94" ry="104" fill="url(#p1w-skin)"/>
+  <path d="M276 108 C302 140 304 210 278 250" fill="none" stroke="#ffd69a" stroke-opacity=".55" stroke-width="6" stroke-linecap="round"/>
+  <ellipse cx="146" cy="214" rx="20" ry="12" fill="#e8806e" opacity=".22"/><ellipse cx="254" cy="214" rx="20" ry="12" fill="#e8806e" opacity=".22"/>
+  <g id="p1w-eyes">
+    <ellipse cx="164" cy="180" rx="21" ry="24" fill="#fffaf2"/><ellipse cx="236" cy="180" rx="21" ry="24" fill="#fffaf2"/>
+    <g id="p1w-iris"><circle cx="166" cy="183" r="13.5" fill="#4a2a18"/><circle cx="238" cy="183" r="13.5" fill="#4a2a18"/>
+    <circle cx="166" cy="183" r="6.5" fill="#120a06"/><circle cx="238" cy="183" r="6.5" fill="#120a06"/>
+    <circle cx="161" cy="177" r="4.2" fill="#fff"/><circle cx="233" cy="177" r="4.2" fill="#fff"/></g>
+  </g>
+  <g id="p1w-brows" fill="none" stroke="#6a3420" stroke-width="7" stroke-linecap="round"><path d="M142 146 Q164 136 186 146"/><path d="M214 146 Q236 136 258 146"/></g>
+  <path d="M196 196 Q190 214 200 218 Q208 216 206 210" fill="none" stroke="#c08a66" stroke-width="4" stroke-linecap="round"/>
+  <path id="p1w-m0" d="M180 236 Q200 252 220 236" fill="none" stroke="#7a2e24" stroke-width="5" stroke-linecap="round"/>
+  <g id="p1w-m1" opacity="0"><path d="M180 232 Q200 262 220 232 Z" fill="#5a1e1a"/><path d="M186 234 L214 234 L211 240 L189 240 Z" fill="#fff"/></g>
+  <ellipse id="p1w-m2" cx="200" cy="240" rx="10" ry="13" fill="#5a1e1a" opacity="0"/>
+  <path d="M106 168 C100 92 156 62 204 64 C256 64 300 98 296 168 C276 120 232 100 196 104 C160 108 124 132 106 168 Z" fill="#6a3420"/><ellipse cx="200" cy="100" rx="96" ry="60" fill="url(#p1w-hair)"/>
+</g></g></g>
+  <g id="p1-fg"><rect x="0" y="1250" width="1080" height="670" fill="#3a2414"/>
+<rect x="0" y="1250" width="1080" height="670" fill="url(#p1-wood)"/>
+<rect x="0" y="1244" width="1080" height="14" fill="#c9a36b" opacity=".7"/>
+<defs><linearGradient id="p1-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3820"/><stop offset="1" stop-color="#1a0f08"/></linearGradient></defs>
+<ellipse cx="300" cy="1370" rx="150" ry="46" fill="#efe6d6"/><ellipse cx="300" cy="1366" rx="112" ry="32" fill="none" stroke="#c9a36b" stroke-width="3"/>
+<ellipse cx="770" cy="1380" rx="150" ry="46" fill="#efe6d6"/><ellipse cx="770" cy="1376" rx="112" ry="32" fill="none" stroke="#c9a36b" stroke-width="3"/>
+<line x1="430" y1="1330" x2="560" y2="1420" stroke="#c9a36b" stroke-width="7" stroke-linecap="round"/><line x1="446" y1="1322" x2="576" y2="1412" stroke="#c9a36b" stroke-width="7" stroke-linecap="round"/></g>
+</svg>
+<div id="p1-say" style="position:absolute;left:96px;right:96px;top:250px;text-align:center"><div style="position:relative;display:inline-block;padding:26px 46px 30px;background:#f4ecdf;border:4px solid #c9a36b;border-radius:44px;box-shadow:0 18px 40px rgba(0,0,0,.45);font-family:Heebo,sans-serif;font-weight:800;font-size:74px;line-height:1.2;color:#14110e">אפשר חשבון?<span style="position:absolute;left:200px;bottom:-22px;width:40px;height:40px;background:#f4ecdf;border-right:4px solid #c9a36b;border-bottom:4px solid #c9a36b;rotate:45deg"></span></div></div>
+
+  </div>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      
+      
+tl.fromTo("#p1-bg", { scale: 1.04, svgOrigin: "540 960" }, { scale: 1.0, svgOrigin: "540 960", duration: 3.125, ease: "none" }, 0);
+tl.fromTo("#p1-cast", { x: -14 }, { x: 10, duration: 3.125, ease: "none" }, 0);
+tl.fromTo("#p1m-armL", { rotation: 0, transformOrigin: "50% 4%" }, { rotation: 150, transformOrigin: "50% 4%", duration: 0.45, ease: "back.out(1.6)" }, 0.35);
+tl.fromTo("#p1m-head", { rotation: 0, transformOrigin: "50% 92%" }, { rotation: -7, transformOrigin: "50% 92%", duration: 0.4, ease: "power2.out" }, 0.3);
+tl.fromTo("#p1-say", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(1.8)" }, 0.55);
+tl.set("#p1m-m0", { opacity: 0 }, 0.6); for (let k = 0; k < 6; k++) tl.set("#p1m-m1", { opacity: k % 2 ? 0 : 1 }, 0.6 + k * 0.11); tl.set("#p1m-m0", { opacity: 1 }, 1.26);
+tl.fromTo("#p1w-head", { rotation: 0, transformOrigin: "50% 92%" }, { rotation: 6, transformOrigin: "50% 92%", duration: 0.5, ease: "power2.inOut" }, 1.4);
+tl.fromTo("#p1w-eyes", { scaleY: 1, transformOrigin: "50% 50%" }, { scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.06, yoyo: true, repeat: 1 }, 0.9);
+tl.fromTo("#p1m-eyes", { scaleY: 1, transformOrigin: "50% 50%" }, { scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.06, yoyo: true, repeat: 1 }, 2.2);
+
+      window.__timelines["p1"] = tl;
+    })();
+  </script>
+</template>
