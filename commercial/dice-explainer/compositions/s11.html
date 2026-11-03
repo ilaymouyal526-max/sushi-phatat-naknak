@@ -18,6 +18,8 @@
 .die { position: absolute; }
 .art { position: absolute; overflow: visible; }
 .ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+.foil { background: linear-gradient(100deg, #a8814a 0%, #e9c98a 30%, #c9a36b 42%, #fff1c9 50%, #c9a36b 58%, #e9c98a 70%, #a8814a 100%);
+  background-size: 300% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; }
 </style>
   <div id="root" data-composition-id="s11" data-width="1080" data-height="1920" dir="rtl" lang="he">
 
@@ -26,7 +28,7 @@
 <div style="position:absolute;left:300px;top:556px;width:480px;height:770px;border-radius:56px;background:#0f0d0c;box-shadow:inset 0 0 0 4px #c9a36b, 0 24px 50px rgba(0,0,0,.6)"></div>
 <div style="position:absolute;left:320px;top:590px;width:440px;height:700px;border-radius:38px;overflow:hidden;background:radial-gradient(ellipse 80% 60% at 50% 60%, #4a2c18 0%, #1c120c 80%)">
   <svg class="art" style="left:-300px;top:-590px;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
-    <rect x="300" y="1150" width="480" height="200" fill="#1a6b3c"/><g transform="translate(390 1040)"><path d="M-70 120 Q-70 20 0 20 Q70 20 70 120 Z" fill="#7a2e2a"/>
+    <rect x="300" y="1150" width="480" height="200" fill="#1a6b3c"/><g id="s11-figs"><g transform="translate(390 1040)"><path d="M-70 120 Q-70 20 0 20 Q70 20 70 120 Z" fill="#7a2e2a"/>
 <path d="M-50 40 L-96 -60" stroke="#7a2e2a" stroke-width="30" stroke-linecap="round"/><path d="M50 40 L96 -60" stroke="#7a2e2a" stroke-width="30" stroke-linecap="round"/>
 <circle cx="-98" cy="-66" r="17" fill="#d9a77c"/><circle cx="98" cy="-66" r="17" fill="#d9a77c"/>
 <circle cx="0" cy="-20" r="44" fill="#d9a77c"/><path d="M-44 -26 Q-40 -72 0 -70 Q40 -72 44 -26 Q30 -50 0 -50 Q-30 -50 -44 -26 Z" fill="#2a1d16"/>
@@ -38,9 +40,10 @@
 <path d="M-50 40 L-96 -60" stroke="#5b4433" stroke-width="30" stroke-linecap="round"/><path d="M50 40 L96 -60" stroke="#5b4433" stroke-width="30" stroke-linecap="round"/>
 <circle cx="-98" cy="-66" r="17" fill="#e3b98f"/><circle cx="98" cy="-66" r="17" fill="#e3b98f"/>
 <circle cx="0" cy="-20" r="44" fill="#e3b98f"/><path d="M-44 -26 Q-40 -72 0 -70 Q40 -72 44 -26 Q30 -50 0 -50 Q-30 -50 -44 -26 Z" fill="#4a3020"/>
-<path d="M-16 -8 Q0 6 16 -8" fill="none" stroke="#5a3424" stroke-width="5" stroke-linecap="round"/></g>
+<path d="M-16 -8 Q0 6 16 -8" fill="none" stroke="#5a3424" stroke-width="5" stroke-linecap="round"/></g></g>
     <rect x="300" y="1150" width="480" height="12" fill="#9a6539"/></svg>
-  <div style="position:absolute;top:24px;left:26px;direction:ltr;font-family:Heebo,sans-serif;font-weight:700;font-size:30px;color:#f4ecdf"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:#e23b2e;margin-right:10px;vertical-align:-1px"></span>REC</div>
+  <div id="s11-flash" style="position:absolute;inset:0;background:#fff8e8;opacity:0"></div>
+  <div style="position:absolute;top:24px;left:26px;direction:ltr;font-family:Heebo,sans-serif;font-weight:700;font-size:30px;color:#f4ecdf"><span id="s11-dot" style="display:inline-block;width:20px;height:20px;border-radius:50%;background:#e23b2e;margin-right:10px;vertical-align:-1px"></span>REC</div>
 </div>
 <div id="s11-dA" class="die" data-face="6" style="left:452px;top:1176px;width:70px;height:75px"></div><div id="s11-dB" class="die" data-face="6" style="left:548px;top:1182px;width:70px;height:75px"></div>
 
@@ -50,6 +53,16 @@
       const tl = gsap.timeline({ paused: true });
       DiceKit.mount(["#s11-dA", "#s11-dB"]);
       
+tl.fromTo("#s11-flash", { opacity: 0 }, { opacity: 0.9, duration: 0.05, ease: "none" }, 0.625);
+tl.to("#s11-flash", { opacity: 0, duration: 0.4, ease: "power2.out" }, 0.68);
+tl.fromTo("#s11-figs", { y: 0 }, { y: -46, duration: 0.3, ease: "power2.out" }, 0.7);
+tl.to("#s11-figs", { y: 0, duration: 0.35, ease: "bounce.out" }, 1.0);
+for (let k = 0; k < 10; k++) tl.set("#s11-dot", { opacity: k % 2 ? 0.15 : 1 }, k * 0.5);
+tl.fromTo("#s11-flash", { opacity: 0 }, { opacity: 0.85, duration: 0.05, ease: "none", immediateRender: false }, 3.125);
+tl.to("#s11-flash", { opacity: 0, duration: 0.4, ease: "power2.out" }, 3.18);
+tl.to("#s11-figs", { y: -40, duration: 0.3, ease: "power2.out" }, 3.2);
+tl.to("#s11-figs", { y: 0, duration: 0.35, ease: "bounce.out" }, 3.5);
+
       window.__timelines["s11"] = tl;
     })();
   </script>

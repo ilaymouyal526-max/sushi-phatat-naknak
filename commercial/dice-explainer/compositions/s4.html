@@ -18,12 +18,14 @@
 .die { position: absolute; }
 .art { position: absolute; overflow: visible; }
 .ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+.foil { background: linear-gradient(100deg, #a8814a 0%, #e9c98a 30%, #c9a36b 42%, #fff1c9 50%, #c9a36b 58%, #e9c98a 70%, #a8814a 100%);
+  background-size: 300% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; }
 </style>
   <div id="root" data-composition-id="s4" data-width="1080" data-height="1920" dir="rtl" lang="he">
 
 <div class="num" style="top:196px">2</div>
 <div class="h" style="top:300px;font-size:120px">הזדמנות אחת</div>
-<div class="big" style="top:470px;font-size:400px;color:#c9a36b"><span class="ltr">×1</span></div>
+<div class="big foil" id="s4-x1" style="top:470px;font-size:400px"><span class="ltr">×1</span></div>
 <div class="sub" style="top:900px;font-size:56px">ניסיון אחד ויחיד לכל השולחן</div>
 <div id="s4-dA" class="die" data-face="4" style="left:300px;top:1030px;width:220px;height:236px"></div><div id="s4-dB" class="die" data-face="2" style="left:560px;top:1040px;width:220px;height:236px"></div>
 
@@ -33,6 +35,10 @@
       const tl = gsap.timeline({ paused: true });
       DiceKit.mount(["#s4-dA", "#s4-dB"]);
       tl.set("#s4-dA", { rotation: -12 }, 0); tl.set("#s4-dB", { rotation: 10 }, 0);
+tl.fromTo("#s4-dA", { rotation: -12 }, { rotation: 78, duration: 3.75, ease: "none" }, 0);
+tl.fromTo("#s4-dB", { rotation: 10 }, { rotation: -80, duration: 3.75, ease: "none" }, 0);
+tl.fromTo("#s4-x1", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.6, ease: "power2.inOut" }, 0.3);
+
       window.__timelines["s4"] = tl;
     })();
   </script>

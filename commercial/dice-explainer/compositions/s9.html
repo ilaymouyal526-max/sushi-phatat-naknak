@@ -18,6 +18,8 @@
 .die { position: absolute; }
 .art { position: absolute; overflow: visible; }
 .ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+.foil { background: linear-gradient(100deg, #a8814a 0%, #e9c98a 30%, #c9a36b 42%, #fff1c9 50%, #c9a36b 58%, #e9c98a 70%, #a8814a 100%);
+  background-size: 300% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; }
 </style>
   <div id="root" data-composition-id="s9" data-width="1080" data-height="1920" dir="rtl" lang="he">
 
@@ -35,6 +37,10 @@
       const tl = gsap.timeline({ paused: true });
       DiceKit.mount(["#s9-dA", "#s9-dB"]);
       tl.set("#s9-dA", { rotation: -14 }, 0); tl.set("#s9-dB", { rotation: 11 }, 0);
+tl.fromTo("#s9-dA", { x: -560, rotation: -560 }, { x: 0, rotation: -14, duration: 1.1, ease: "expo.out" }, 0);
+tl.fromTo("#s9-dB", { x: 560, rotation: 520 }, { x: 0, rotation: 11, duration: 1.15, ease: "expo.out" }, 0.05);
+DiceKit.tumble(tl, "#s9-dA", 0, 0.75, 3, 1 / 12, 0); DiceKit.tumble(tl, "#s9-dB", 0.05, 0.8, 5, 1 / 12, 2);
+
       window.__timelines["s9"] = tl;
     })();
   </script>

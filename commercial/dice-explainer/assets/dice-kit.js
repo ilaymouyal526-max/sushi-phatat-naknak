@@ -52,3 +52,12 @@
 
   window.DiceKit = { mount, setFace, tumble };
 })();
+
+// Hand poses (fist, release, open) drawn by build.py's hand_svg(); show `name` from time t on.
+(function () {
+  const NAMES = ["fist", "release", "open"];
+  window.DiceKit.pose = function (tl, target, name, t) {
+    const el = document.querySelector(target);
+    for (const n of NAMES) tl.set(el.querySelector(".pose-" + n), { opacity: n === name ? 1 : 0 }, t);
+  };
+})();

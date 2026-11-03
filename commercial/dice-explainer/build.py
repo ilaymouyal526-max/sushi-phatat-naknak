@@ -32,6 +32,8 @@ BASE_CSS = f"""
 .die {{ position: absolute; }}
 .art {{ position: absolute; overflow: visible; }}
 .ltr {{ direction: ltr; unicode-bidi: isolate; display: inline-block; }}
+.foil {{ background: linear-gradient(100deg, #a8814a 0%, #e9c98a 30%, #c9a36b 42%, #fff1c9 50%, #c9a36b 58%, #e9c98a 70%, #a8814a 100%);
+  background-size: 300% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; }}
 """
 
 
@@ -55,27 +57,32 @@ def logo_svg(id_, x, y, w, stroke=GOLD, extra=""):
 
 
 def hand_svg(id_, x, y, w, pose="open"):
-    """A right hand seen from the back, fingers up, black sleeve with a gold cuff. Poses: open, release, fist."""
-    fingers = {
+    """A right hand seen from the back, fingers up, black sleeve with a gold cuff.
+    All three poses (fist, release, open) are drawn; DiceKit.pose() switches between them on the timeline."""
+    FINGERS = {
         "open":    [((150, 300), (126, 106), 46), ((196, 292), (192, 66), 48), ((240, 294), (254, 88), 46), ((280, 306), (308, 158), 40)],
         "release": [((150, 300), (140, 168), 46), ((196, 292), (196, 150), 48), ((240, 294), (246, 160), 46), ((280, 306), (290, 200), 40)],
         "fist":    [((150, 300), (150, 250), 50), ((196, 292), (196, 240), 52), ((240, 294), (240, 246), 50), ((280, 306), (278, 266), 44)],
-    }[pose]
-    thumb = {"open": ((132, 420), (54, 300)), "release": ((132, 420), (74, 318)), "fist": ((132, 420), (170, 330))}[pose]
+    }
+    THUMB = {"open": ((132, 420), (54, 300)), "release": ((132, 420), (74, 318)), "fist": ((132, 420), (170, 330))}
 
     def stroke(a, b, wd, color):
         return f'<line x1="{a[0]}" y1="{a[1]}" x2="{b[0]}" y2="{b[1]}" stroke="{color}" stroke-width="{wd}" stroke-linecap="round"/>'
 
-    parts = [stroke(*thumb, 58, SKIN_LN), stroke(*thumb, 52, SKIN)]
-    parts += [stroke(a, b, wd + 6, SKIN_LN) for a, b, wd in fingers]
-    parts += [stroke(a, b, wd, SKIN) for a, b, wd in fingers]
-    parts += [f'<path d="M118 500 C104 430 102 360 120 300 Q200 268 290 300 C306 360 302 430 290 500 Z" fill="{SKIN}" stroke="{SKIN_LN}" stroke-width="3"/>',
-              f'<path d="M140 330 Q200 312 270 330" fill="none" stroke="{SKIN_SH}" stroke-width="6" stroke-linecap="round"/>',
-              f'<path d="M150 420 Q170 455 150 495" fill="none" stroke="{SKIN_SH}" stroke-width="5" stroke-linecap="round"/>',
-              f'<rect x="92" y="500" width="224" height="150" rx="18" fill="{SLEEVE}"/>',
-              f'<rect x="92" y="494" width="224" height="24" rx="6" fill="{GOLD}"/>']
+    groups = []
+    for name in ("fist", "release", "open"):
+        th, fi = THUMB[name], FINGERS[name]
+        parts = [stroke(*th, 58, SKIN_LN), stroke(*th, 52, SKIN)]
+        parts += [stroke(a, b, wd + 6, SKIN_LN) for a, b, wd in fi]
+        parts += [stroke(a, b, wd, SKIN) for a, b, wd in fi]
+        groups.append(f'<g class="pose-{name}" opacity="{1 if name == pose else 0}">{"".join(parts)}</g>')
+    body = [f'<path d="M118 500 C104 430 102 360 120 300 Q200 268 290 300 C306 360 302 430 290 500 Z" fill="{SKIN}" stroke="{SKIN_LN}" stroke-width="3"/>',
+            f'<path d="M140 330 Q200 312 270 330" fill="none" stroke="{SKIN_SH}" stroke-width="6" stroke-linecap="round"/>',
+            f'<path d="M150 420 Q170 455 150 495" fill="none" stroke="{SKIN_SH}" stroke-width="5" stroke-linecap="round"/>',
+            f'<rect x="92" y="500" width="224" height="150" rx="18" fill="{SLEEVE}"/>',
+            f'<rect x="92" y="494" width="224" height="24" rx="6" fill="{GOLD}"/>']
     return (f'<svg id="{id_}" class="art" style="left:{x}px;top:{y}px;width:{w}px;height:{w*1.6:.0f}px" viewBox="0 0 400 640" data-layout-ignore>'
-            + "".join(parts) + "</svg>")
+            + "".join(groups) + "".join(body) + "</svg>")
 
 
 def die(id_, face, x, y, size):
@@ -133,7 +140,7 @@ card("s1", 0, 2.5, f"""
 <div class="h" style="top:250px;font-size:150px">הטלה אחת…</div>
 <div class="sub" style="top:440px;font-size:64px">…והחשבון יכול להיעלם</div>
 {die("s1-dA", 6, 170, 650, 300)}{die("s1-dB", 5, 600, 760, 300)}
-{hand_svg("s1-hand", 330, 1190, 420, "open")}
+{hand_svg("s1-hand", 330, 1190, 420, "fist")}
 """, js="""tl.set("#s1-dA", { rotation: -18 }, 0); tl.set("#s1-dB", { rotation: 24 }, 0); tl.set("#s1-hand", { rotation: -10 }, 0);""")
 
 # 2. The brand and the name
@@ -142,27 +149,76 @@ card("s2", 2.5, 3.75, f"""
 <div id="s2-jp" style="position:absolute;right:86px;top:230px;font-family:Shippori,serif;font-weight:800;font-size:56px;letter-spacing:.16em;color:{GOLD};writing-mode:vertical-rl">運試し</div>
 <div id="s2-badge" style="position:absolute;left:84px;top:600px;width:170px;height:170px;border-radius:50%;border:2px solid {GOLD};background:{INK};display:grid;place-items:center;font-family:'Frank Ruhl',serif;font-weight:800;font-size:58px;color:{GOLD_HI}">חדש</div>
 <div class="kick" style="top:836px;font-size:46px">המשחק הגדול</div>
-<div class="h" style="top:906px;font-size:104px">הטילו את הקוביות</div>
+<div class="h foil" id="s2-title" style="top:906px;font-size:104px">הטילו את הקוביות</div>
 {die("s2-dA", 6, 378, 1080, 140)}{die("s2-dB", 6, 560, 1092, 140)}
 <div id="s2-seal" style="position:absolute;left:502px;top:1262px;width:76px;height:76px;border-radius:4px;background:{RED};color:{IVORY};display:grid;place-items:center;font-family:Shippori,serif;font-weight:800;font-size:48px">運</div>
 """, js="""tl.set("#s2-badge", { rotation: -12 }, 0); tl.set("#s2-dA", { rotation: -14 }, 0); tl.set("#s2-dB", { rotation: 9 }, 0);""")
 
-# 3a. When: happy hour, 16:00-18:00
+# 3a. When: happy hour, 16:00-18:00. A gold dress-watch dial: the hour hand sweeps 4 -> 6 o'clock across the lit
+# happy-hour sector while, in the aperture above the pivot, the red sun sets behind ink mountains.
+import math
+CX, CY = 540, 990
+
+
+def polar(r, deg):  # deg clockwise from 12 o'clock
+    a = math.radians(deg - 90)
+    return CX + r * math.cos(a), CY + r * math.sin(a)
+
+
+GUILLOCHE = "".join(f'<line x1="{CX}" y1="{CY}" x2="{polar(318, d)[0]:.1f}" y2="{polar(318, d)[1]:.1f}"/>' for d in range(0, 360, 3))
+INDICES = "".join(
+    (f'<line x1="{polar(296, d)[0]:.1f}" y1="{polar(296, d)[1]:.1f}" x2="{polar(258 if d % 90 == 0 else 270, d)[0]:.1f}" y2="{polar(258 if d % 90 == 0 else 270, d)[1]:.1f}" '
+     f'stroke-width="{9 if d % 90 == 0 else 5}"/>')
+    for d in range(0, 360, 30))
+MINUTES = "".join(f'<circle cx="{polar(306, d)[0]:.1f}" cy="{polar(306, d)[1]:.1f}" r="2.2"/>' for d in range(0, 360, 6) if d % 30)
+SECTOR = (f'M{CX} {CY} L{polar(318, 120)[0]:.1f} {polar(318, 120)[1]:.1f} A318 318 0 0 1 {polar(318, 180)[0]:.1f} {polar(318, 180)[1]:.1f} Z')
+L16, L18 = polar(232, 120), polar(232, 180)
 card("s3a", 6.25, 3.75, f"""
-<div class="h" style="top:220px;font-size:132px">האפי האוור</div>
-<div class="big" style="top:392px;font-size:140px;color:{IVORY}"><span class="ltr">16:00–18:00</span></div>
-<div class="sub" style="top:560px;font-size:58px">בואו בין ארבע לשש</div>
-<svg id="s3a-dial" class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
-  <path d="M160 1250 A380 380 0 0 1 920 1250" fill="none" stroke="{GOLD}" stroke-width="3"/>
-  <g stroke="{GOLD}" stroke-width="4" stroke-linecap="round"><line x1="196" y1="1048" x2="222" y2="1063"/><line x1="540" y1="856" x2="540" y2="886"/><line x1="904" y1="1080" x2="876" y2="1093"/></g>
-  <g fill="{GOLD_HI}" font-family="Frank Ruhl, serif" font-weight="700" font-size="40" text-anchor="middle" direction="ltr">
-    <text x="296" y="1110">16:00</text><text x="540" y="836">17:00</text><text x="786" y="1136">18:00</text></g>
-  <g id="s3a-sunrig"><circle cx="160" cy="1250" r="56" fill="{RED}"/></g>
-  <polyline points="160,1250 390,1090 480,1146 620,1050 870,1250 920,1250" fill="none" stroke="{GOLD}" stroke-width="4" stroke-linejoin="round"/>
-  <rect x="0" y="1253" width="1080" height="667" fill="{INK}"/>
-  <line x1="120" y1="1251" x2="960" y2="1251" stroke="{GOLD}" stroke-width="3"/>
+<div class="h foil" id="s3a-title" style="top:206px;font-size:128px">האפי האוור</div>
+<div class="big" style="top:356px;font-size:126px;color:{IVORY}"><span class="ltr">16:00–18:00</span></div>
+<div class="sub" style="top:500px;font-size:56px">בואו בין ארבע לשש</div>
+<svg id="s3a-watch" class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
+  <defs>
+    <linearGradient id="s3a-bezel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6e2a8"/><stop offset=".35" stop-color="#c9a36b"/><stop offset=".55" stop-color="#8a6534"/><stop offset=".8" stop-color="#e7c98a"/><stop offset="1" stop-color="#a8814a"/></linearGradient>
+    <radialGradient id="s3a-face" cx=".5" cy=".42" r=".7"><stop offset="0" stop-color="#2a1d12"/><stop offset=".7" stop-color="#140f0b"/><stop offset="1" stop-color="#0b0907"/></radialGradient>
+    <linearGradient id="s3a-sky" x1="0" y1="0" x2="0" y2="1"><stop id="s3a-skytop" offset="0" stop-color="#f3c66f"/><stop id="s3a-skybot" offset="1" stop-color="#e98b3a"/></linearGradient>
+    <clipPath id="s3a-ap"><circle cx="{CX}" cy="{CY - 150}" r="104"/></clipPath>
+    <linearGradient id="s3a-hand" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f6e2a8"/><stop offset=".5" stop-color="#c9a36b"/><stop offset="1" stop-color="#8a6534"/></linearGradient>
+  </defs>
+  <circle cx="{CX}" cy="{CY + 14}" r="352" fill="#000" opacity=".55"/>
+  <circle cx="{CX}" cy="{CY}" r="350" fill="url(#s3a-bezel)"/>
+  <circle cx="{CX}" cy="{CY}" r="330" fill="#1a130d"/>
+  <circle cx="{CX}" cy="{CY}" r="320" fill="url(#s3a-face)"/>
+  <g stroke="{GOLD}" stroke-opacity=".10" stroke-width="1.2">{GUILLOCHE}</g>
+  <path d="{SECTOR}" fill="{GOLD}" opacity=".26"/>
+  <path d="M{polar(312, 120)[0]:.1f} {polar(312, 120)[1]:.1f} A312 312 0 0 1 {polar(312, 180)[0]:.1f} {polar(312, 180)[1]:.1f}" fill="none" stroke="{GOLD_HI}" stroke-width="10" stroke-linecap="round"/>
+  <g stroke="{GOLD_HI}" stroke-linecap="round">{INDICES}</g>
+  <g fill="{GOLD}">{MINUTES}</g>
+  <g fill="{GOLD_HI}" font-family="Frank Ruhl, serif" font-weight="800" font-size="44" text-anchor="middle" direction="ltr">
+    <text x="{L16[0]:.0f}" y="{L16[1] + 15:.0f}">16</text><text x="{L18[0]:.0f}" y="{L18[1] + 15:.0f}">18</text></g>
+  <g clip-path="url(#s3a-ap)">
+    <rect x="{CX - 110}" y="{CY - 260}" width="220" height="220" fill="url(#s3a-sky)"/>
+    <circle id="s3a-sun" cx="{CX}" cy="{CY - 170}" r="44" fill="{RED}"/>
+    <path d="M{CX - 110} {CY - 104} L{CX - 60} {CY - 150} L{CX - 30} {CY - 126} L{CX + 14} {CY - 172} L{CX + 70} {CY - 118} L{CX + 110} {CY - 140} L{CX + 110} {CY - 40} L{CX - 110} {CY - 40} Z" fill="#120d0a"/>
+    <path d="M{CX - 110} {CY - 84} L{CX - 40} {CY - 118} L{CX + 30} {CY - 96} L{CX + 110} {CY - 112} L{CX + 110} {CY - 40} L{CX - 110} {CY - 40} Z" fill="#070504"/>
+  </g>
+  <circle cx="{CX}" cy="{CY - 150}" r="104" fill="none" stroke="url(#s3a-bezel)" stroke-width="7"/>
+  <g id="s3a-min"><path d="M{CX - 5} {CY + 34} L{CX} {CY - 296} L{CX + 5} {CY + 34} Z" fill="url(#s3a-hand)"/></g>
+  <g id="s3a-hr"><path d="M{CX} {CY + 40} L{CX - 16} {CY - 40} L{CX} {CY - 206} L{CX + 16} {CY - 40} Z" fill="url(#s3a-hand)" stroke="#5a4020" stroke-width="2"/>
+    <circle cx="{CX}" cy="{CY - 120}" r="9" fill="{INK}" stroke="{GOLD_HI}" stroke-width="3"/></g>
+  <circle cx="{CX}" cy="{CY}" r="20" fill="url(#s3a-bezel)"/><circle cx="{CX}" cy="{CY}" r="7" fill="{INK}"/>
+  <path id="s3a-glint" d="M{CX - 300} {CY - 160} A350 350 0 0 1 {CX - 120} {CY - 330}" fill="none" stroke="#fff6dc" stroke-width="6" stroke-linecap="round" opacity=".55"/>
 </svg>
-""", js="""tl.set("#s3a-sunrig", { rotation: 150, svgOrigin: "540 1250" }, 0);""")
+""", js="""
+tl.fromTo("#s3a-hr", { rotation: 120, svgOrigin: "540 990" }, { rotation: 180, svgOrigin: "540 990", duration: 3.75, ease: "power1.inOut" }, 0);
+tl.fromTo("#s3a-min", { rotation: 0, svgOrigin: "540 990" }, { rotation: 720, svgOrigin: "540 990", duration: 3.75, ease: "power1.inOut" }, 0);
+tl.fromTo("#s3a-sun", { attr: { cy: 820 } }, { attr: { cy: 900 }, duration: 3.75, ease: "power1.in" }, 0);
+tl.fromTo("#s3a-skytop", { attr: { "stop-color": "#f3c66f" } }, { attr: { "stop-color": "#c0492f" }, duration: 3.75, ease: "none" }, 0);
+tl.fromTo("#s3a-skybot", { attr: { "stop-color": "#e98b3a" } }, { attr: { "stop-color": "#4a1a1a" }, duration: 3.75, ease: "none" }, 0);
+tl.fromTo("#s3a-glint", { rotation: 0, svgOrigin: "540 990", opacity: 0 }, { rotation: 300, svgOrigin: "540 990", opacity: .55, duration: 1.6, ease: "power2.inOut" }, 0.4);
+tl.to("#s3a-glint", { opacity: 0, duration: 0.3, ease: "power1.in" }, 2.0);
+tl.fromTo("#s3a-title", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.4, ease: "power2.inOut" }, 0.2);
+""")
 
 # 3b. Rule 1: the moment of truth
 TABLE_CSS = """
@@ -192,7 +248,7 @@ card("s3b", 10.0, 3.75, f"""
 card("s4", 13.75, 3.75, f"""
 <div class="num" style="top:196px">2</div>
 <div class="h" style="top:300px;font-size:120px">הזדמנות אחת</div>
-<div class="big" style="top:470px;font-size:400px;color:{GOLD}"><span class="ltr">×1</span></div>
+<div class="big foil" id="s4-x1" style="top:470px;font-size:400px"><span class="ltr">×1</span></div>
 <div class="sub" style="top:900px;font-size:56px">ניסיון אחד ויחיד לכל השולחן</div>
 {die("s4-dA", 4, 300, 1030, 220)}{die("s4-dB", 2, 560, 1040, 220)}
 """, js="""tl.set("#s4-dA", { rotation: -12 }, 0); tl.set("#s4-dB", { rotation: 10 }, 0);""")
@@ -210,7 +266,7 @@ card("s5", 17.5, 3.75, f"""
   <circle cx="540" cy="960" r="250" fill="none" stroke="rgba(0,0,0,.35)" stroke-width="30"/>
   {''.join(f'<circle cx="{x}" cy="{y}" r="54" fill="#1b130d" stroke="{GOLD}" stroke-width="2.5"/>' for x, y in [(540, 760), (340, 960), (540, 1160), (740, 960)])}
   {diners}
-  <circle cx="848" cy="960" r="132" fill="rgba(201,163,107,.16)" stroke="{GOLD}" stroke-width="6"/>
+  <circle id="s5-ring" cx="848" cy="960" r="132" fill="rgba(201,163,107,.16)" stroke="{GOLD}" stroke-width="6"/>
   <g transform="translate(848 960) rotate(-90)"><ellipse cx="0" cy="34" rx="104" ry="58" fill="#5b4433"/><circle cx="0" cy="-6" r="46" fill="#2a1d16"/></g>
 </svg>
 {die("s5-dA", 1, 664, 880, 84)}{die("s5-dB", 6, 664, 980, 84)}
@@ -219,9 +275,9 @@ card("s5", 17.5, 3.75, f"""
 # 6a. Rule 4: the throw that doesn't count
 MISS_PATHS = f"""<svg class="art" style="left:0;top:0;width:1000px;height:2600px" viewBox="0 0 1000 2600" data-layout-ignore>
   <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="430,2350 400,128 362,520" stroke="{IVORY}" stroke-width="7" stroke-dasharray="2 22" opacity=".85"/>
-    <polyline points="590,2380 565,905 575,830" stroke="{IVORY}" stroke-width="7" stroke-dasharray="2 22" opacity=".85"/>
-    <circle cx="575" cy="830" r="118" stroke="{RED}" stroke-width="10"/></g></svg>"""
+    <polyline class="s6a-miss" points="430,2350 400,128 362,520" stroke="{IVORY}" stroke-width="7" stroke-dasharray="2 22" opacity=".85"/>
+    <polyline class="s6a-miss" points="590,2380 565,905 575,830" stroke="{IVORY}" stroke-width="7" stroke-dasharray="2 22" opacity=".85"/>
+    <circle class="s6a-miss" cx="575" cy="830" r="118" stroke="{RED}" stroke-width="10"/></g></svg>"""
 card("s6a", 21.25, 3.75, f"""
 <div id="s6a-all" style="position:absolute;inset:0;background:radial-gradient(ellipse 90% 30% at 50% 18%, #22150d 0%, {INK} 75%)">
 {felt("s6a", 4, 2, MISS_PATHS)}
@@ -230,25 +286,26 @@ card("s6a", 21.25, 3.75, f"""
 <div class="h" style="top:276px;font-size:108px">ההטלה המושלמת</div>
 <div class="kick" style="top:420px;font-size:46px;letter-spacing:.04em;font-weight:700">הקיר שממול ⌄</div>
 {stamp("s6a-x", "✕&nbsp; לא נחשב", 1040, "#e0574b", -5)}
-<div class="h" style="top:1190px;font-size:76px;color:{GOLD_HI}">מטילים שוב!</div>
-{hand_svg("s6a-hand", 360, 1480, 360, "open")}
+<div class="h" id="s6a-again" style="top:1190px;font-size:76px;color:{GOLD_HI}">מטילים שוב!</div>
+{hand_svg("s6a-hand", 360, 1480, 360, "fist")}
 """, css=FELT_CSS, js=place("s6a", 362, 520, 575, 830))
 
 # 6b. Rule 4: the perfect throw
 OK_PATHS = f"""<svg class="art" style="left:0;top:0;width:1000px;height:2600px" viewBox="0 0 1000 2600" data-layout-ignore>
   <g fill="none" stroke="{GOLD_HI}" stroke-opacity=".8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M430 2350 L380 128 L330 700"/><path d="M590 2380 L610 128 L680 820"/></g></svg>"""
+    <path id="s6b-pa" pathLength="1" stroke-dasharray="1 1.2" stroke-dashoffset="1.1" d="M430 2350 L380 128 L330 700"/><path id="s6b-pb" pathLength="1" stroke-dasharray="1 1.2" stroke-dashoffset="1.1" d="M590 2380 L610 128 L680 820"/></g></svg>"""
 card("s6b", 25.0, 6.25, f"""
 <div id="s6b-all" style="position:absolute;inset:0;background:radial-gradient(ellipse 90% 30% at 50% 18%, #22150d 0%, {INK} 75%)">
 {felt("s6b", 3, 5, OK_PATHS)}
 </div>
 <div class="num" style="top:176px">4</div>
-<div class="h" style="top:276px;font-size:108px">ההטלה המושלמת</div>
+<div class="h foil" id="s6b-title" style="top:276px;font-size:108px">ההטלה המושלמת</div>
 <div class="sub" style="top:410px;font-size:50px">שתי הקוביות חייבות לפגוע בקיר</div>
+<div id="s6b-glow" style="position:absolute;left:330px;top:1080px;width:420px;height:300px;border-radius:50%;background:radial-gradient(ellipse at 50% 50%, rgba(226,197,144,.45) 0%, rgba(226,197,144,0) 70%);opacity:0"></div>
 <svg id="s6b-ok" class="art" style="left:465px;top:1150px;width:150px;height:150px" viewBox="0 0 140 140" data-layout-ignore>
   <circle cx="70" cy="70" r="62" fill="{INK}" stroke="{GOLD}" stroke-width="5"/>
   <path d="M40 72 L62 94 L102 50" fill="none" stroke="{GOLD_HI}" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/></svg>
-{hand_svg("s6b-hand", 360, 1480, 360, "open")}
+{hand_svg("s6b-hand", 360, 1480, 360, "fist")}
 """, css=FELT_CSS, js=place("s6b", 330, 700, 680, 820))
 
 # 7. Prize: double 1-2-3, 50% off
@@ -260,7 +317,7 @@ RECEIPT = f"""<div style="position:absolute;inset:0;background:#f3eadb;border-ra
 card("s7", 31.25, 5.0, f"""
 <div class="h" style="top:206px;font-size:110px">דאבל 1 · 2 · 3</div>
 {die("s7-dA", 3, 392, 360, 130)}{die("s7-dB", 3, 558, 360, 130)}
-<div class="big" style="top:540px;font-size:300px;color:{GOLD_HI}"><span class="ltr">−50%*</span></div>
+<div class="big foil" id="s7-pct" style="top:540px;font-size:300px"><span class="ltr">−50%*</span></div>
 <div class="sub" style="top:852px;font-size:58px">על כל החשבון של השולחן</div>
 <div id="s7-rcL" style="position:absolute;left:290px;top:960px;width:500px;height:360px;clip-path:polygon(0 0, 52% 0, 46% 100%, 0 100%)">{RECEIPT}</div>
 <div id="s7-rcR" style="position:absolute;left:290px;top:960px;width:500px;height:360px;clip-path:polygon(52% 0, 100% 0, 100% 100%, 46% 100%)">{RECEIPT}</div>
@@ -279,12 +336,12 @@ LEAF = "".join(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="3" fill="#f3
                for x, y, w, h, r in [(220, 1140, 70, 46, -18), (760, 1150, 60, 40, 22), (180, 470, 50, 34, 30), (880, 560, 64, 42, -26), (640, 1300, 54, 36, 12)])
 card("s8", 36.25, 5.0, f"""
 <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 45%, #ecd29a 0%, #d6b273 50%, #a8814a 100%)"></div>
-<svg class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>{LEAF}{PETALS}</svg>
+<svg id="s8-burst" class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore><g id="s8-leaf">{LEAF}</g><g id="s8-petals">{PETALS}</g></svg>
 <div id="s8-ribbon" style="position:absolute;left:250px;top:196px;width:580px;height:118px;background:{RED};clip-path:polygon(0 0, 100% 0, 94% 50%, 100% 100%, 0 100%, 6% 50%);display:grid;place-items:center;
   font-family:'Frank Ruhl',serif;font-weight:900;font-size:76px;color:{IVORY};line-height:1">ג'קפוט!</div>
 <div class="h" style="top:348px;font-size:100px;color:#14110e">דאבל 4 · 5 · 6</div>
 <div class="big" style="top:476px;font-size:320px;color:#14110e"><span class="ltr">100%*</span></div>
-<div class="h" style="top:808px;font-size:84px;color:#14110e">כל הארוחה עלינו</div>
+<div class="h" id="s8-title" style="top:808px;font-size:84px;color:#14110e;background:linear-gradient(100deg,#14110e 0%,#14110e 42%,#7a2a20 50%,#14110e 58%,#14110e 100%);background-size:300% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">כל הארוחה עלינו</div>
 {die("s8-dA", 6, 330, 990, 200)}{die("s8-dB", 6, 560, 1004, 200)}
 """, js="""tl.set("#s8-dA", { rotation: -10 }, 0); tl.set("#s8-dB", { rotation: 8 }, 0);""")
 
@@ -301,12 +358,14 @@ card("s9", 41.25, 2.5, f"""
 
 # 10. The service: the tip isn't included
 card("s10", 43.75, 3.75, f"""
-<div class="h" style="top:240px;font-size:132px">השירות</div>
+<div class="h foil" id="s10-title" style="top:240px;font-size:132px">השירות</div>
 <div class="sub" style="top:416px;font-size:62px">הטיפ לא כלול בהטבה</div>
 <svg class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
   <ellipse cx="540" cy="1080" rx="300" ry="118" fill="#120e0b" stroke="{GOLD}" stroke-width="5"/>
   <ellipse cx="540" cy="1074" rx="250" ry="88" fill="#1d1612" stroke="rgba(201,163,107,.5)" stroke-width="2"/>
-  {''.join(f'<g><ellipse cx="{x}" cy="{y+10}" rx="62" ry="24" fill="#8a6a35"/><ellipse cx="{x}" cy="{y}" rx="62" ry="24" fill="#e2c590" stroke="#a88545" stroke-width="3"/><ellipse cx="{x}" cy="{y}" rx="42" ry="15" fill="none" stroke="#a88545" stroke-width="2"/></g>' for x, y in [(470, 1070), (600, 1084), (540, 1046)])}
+  {''.join(f'<g><ellipse cx="{x}" cy="{y+10}" rx="62" ry="24" fill="#8a6a35"/><ellipse cx="{x}" cy="{y}" rx="62" ry="24" fill="#e2c590" stroke="#a88545" stroke-width="3"/><ellipse cx="{x}" cy="{y}" rx="42" ry="15" fill="none" stroke="#a88545" stroke-width="2"/></g>' for x, y in [(470, 1070), (600, 1084)])}
+  <g id="s10-drop"><g id="s10-coin"><ellipse cx="540" cy="1056" rx="62" ry="24" fill="#8a6a35"/><ellipse cx="540" cy="1046" rx="62" ry="24" fill="#e2c590" stroke="#a88545" stroke-width="3"/><ellipse cx="540" cy="1046" rx="42" ry="15" fill="none" stroke="#a88545" stroke-width="2"/></g></g>
+  <path id="s10-glint" d="M500 1036 L560 1036" stroke="#fff6dc" stroke-width="6" stroke-linecap="round" opacity="0"/>
 </svg>
 """)
 
@@ -324,9 +383,10 @@ card("s11", 47.5, 5.0, f"""
 <div style="position:absolute;left:300px;top:556px;width:480px;height:770px;border-radius:56px;background:#0f0d0c;box-shadow:inset 0 0 0 4px {GOLD}, 0 24px 50px rgba(0,0,0,.6)"></div>
 <div style="position:absolute;left:320px;top:590px;width:440px;height:700px;border-radius:38px;overflow:hidden;background:radial-gradient(ellipse 80% 60% at 50% 60%, #4a2c18 0%, #1c120c 80%)">
   <svg class="art" style="left:-300px;top:-590px;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
-    <rect x="300" y="1150" width="480" height="200" fill="#1a6b3c"/>{figs}
+    <rect x="300" y="1150" width="480" height="200" fill="#1a6b3c"/><g id="s11-figs">{figs}</g>
     <rect x="300" y="1150" width="480" height="12" fill="#9a6539"/></svg>
-  <div style="position:absolute;top:24px;left:26px;direction:ltr;font-family:Heebo,sans-serif;font-weight:700;font-size:30px;color:{IVORY}"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:#e23b2e;margin-right:10px;vertical-align:-1px"></span>REC</div>
+  <div id="s11-flash" style="position:absolute;inset:0;background:#fff8e8;opacity:0"></div>
+  <div style="position:absolute;top:24px;left:26px;direction:ltr;font-family:Heebo,sans-serif;font-weight:700;font-size:30px;color:{IVORY}"><span id="s11-dot" style="display:inline-block;width:20px;height:20px;border-radius:50%;background:#e23b2e;margin-right:10px;vertical-align:-1px"></span>REC</div>
 </div>
 {die("s11-dA", 6, 452, 1176, 70)}{die("s11-dB", 6, 548, 1182, 70)}
 """)
@@ -337,12 +397,152 @@ card("s12", 52.5, 6.25, f"""
   <path d="M0 980 L180 700 L300 840 L470 560 L640 820 L760 680 L1080 980 L1080 1920 L0 1920 Z" fill="{GOLD}"/></svg>
 {logo_svg("s12-logo", 330, 150, 420)}
 {die("s12-dA", 6, 418, 712, 110)}{die("s12-dB", 6, 552, 718, 110)}
-<div class="h" style="top:862px;font-size:96px">הטילו את הקוביות</div>
+<div class="h foil" id="s12-title" style="top:862px;font-size:96px">הטילו את הקוביות</div>
 <div class="sub" style="top:978px;font-size:54px">האפי האוור · <span class="ltr">16:00–18:00</span></div>
 <div style="position:absolute;left:0;right:0;top:1064px;text-align:center"><span style="display:inline-block;padding:10px 54px;border:3px solid {GOLD};border-radius:999px;font-family:Heebo,sans-serif;font-weight:700;font-size:48px;color:{IVORY}">הזמינו שולחן</span></div>
 <div style="position:absolute;left:96px;right:96px;top:1160px;text-align:center;font-family:Heebo,sans-serif;font-weight:400;font-size:40px;color:#ddd2c0">אחוזה 124, רעננה · <span class="ltr">@[instagram]</span></div>
 <div style="position:absolute;left:80px;right:80px;top:1236px;text-align:center;font-family:Heebo,sans-serif;font-weight:400;font-size:34px;line-height:1.3;color:{GOLD}">בכפוף לתקנון. את התקנון המלא אפשר לבקש מהמלצר.</div>
+{hand_svg("s12-hand", 640, 1380, 340, "fist")}
 """, js="""tl.set("#s12-dA", { rotation: -10 }, 0); tl.set("#s12-dB", { rotation: 8 }, 0);""")
+
+# ---------- motion: only the action moves ----------
+MOTION = {
+"s1": """
+DiceKit.pose(tl, "#s1-hand", "fist", 0); DiceKit.pose(tl, "#s1-hand", "release", 0.34); DiceKit.pose(tl, "#s1-hand", "open", 0.46);
+tl.fromTo("#s1-hand", { y: 160, rotation: -4 }, { y: 0, rotation: -14, duration: 0.42, ease: "power3.out" }, 0);
+tl.to("#s1-hand", { y: 520, rotation: -24, duration: 1.2, ease: "power2.in" }, 0.9);
+tl.fromTo("#s1-dA", { x: 200, y: 430, scale: 0.28, rotation: -120 }, { x: 0, y: 0, scale: 1, rotation: -18, duration: 1.1, ease: "power3.out" }, 0.34);
+tl.fromTo("#s1-dB", { x: -190, y: 330, scale: 0.28, rotation: 140 }, { x: 0, y: 0, scale: 1, rotation: 24, duration: 1.15, ease: "power3.out" }, 0.38);
+tl.to("#s1-dA", { x: -120, y: -60, scale: 1.55, rotation: -40, duration: 1.06, ease: "power1.in" }, 1.44);
+tl.to("#s1-dB", { x: 120, y: 40, scale: 1.55, rotation: 50, duration: 0.97, ease: "power1.in" }, 1.53);
+DiceKit.tumble(tl, "#s1-dA", 0.34, 1.3, 6, 1 / 12, 0); DiceKit.tumble(tl, "#s1-dB", 0.38, 1.34, 5, 1 / 12, 3);
+""",
+"s2": """
+tl.fromTo("#s2-dA", { y: -980, rotation: -260 }, { y: 0, rotation: -14, duration: 0.95, ease: "bounce.out" }, 0);
+tl.fromTo("#s2-dB", { y: -1040, rotation: 300 }, { y: 0, rotation: 9, duration: 1.0, ease: "bounce.out" }, 0.06);
+DiceKit.tumble(tl, "#s2-dA", 0, 0.6, 6, 1 / 12, 2); DiceKit.tumble(tl, "#s2-dB", 0.06, 0.66, 6, 1 / 12, 4);
+tl.fromTo("#s2-title", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.5, ease: "power2.inOut" }, 1.1);
+""",
+"s3b": """
+tl.fromTo(["#s3b-folder", "#s3b-hand"], { x: 760 }, { x: 0, duration: 1.0, ease: "power3.out" }, 0);
+tl.to("#s3b-hand", { x: 760, duration: 0.7, ease: "power2.in" }, 1.55);
+""",
+"s4": """
+tl.fromTo("#s4-dA", { rotation: -12 }, { rotation: 78, duration: 3.75, ease: "none" }, 0);
+tl.fromTo("#s4-dB", { rotation: 10 }, { rotation: -80, duration: 3.75, ease: "none" }, 0);
+tl.fromTo("#s4-x1", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.6, ease: "power2.inOut" }, 0.3);
+""",
+"s5": """
+tl.fromTo(["#s5-dA", "#s5-dB"], { x: -360, rotation: -200 }, { x: 0, rotation: (i) => (i ? 12 : -8), duration: 1.3, ease: "power3.out", stagger: 0.08 }, 0.1);
+DiceKit.tumble(tl, "#s5-dA", 0.1, 1.0, 1, 1 / 10, 1); DiceKit.tumble(tl, "#s5-dB", 0.18, 1.08, 6, 1 / 10, 3);
+tl.fromTo("#s5-ring", { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, transformOrigin: "50% 50%", duration: 0.5, ease: "back.out(1.6)" }, 1.25);
+""",
+"s6a": """
+DiceKit.pose(tl, "#s6a-hand", "fist", 0); DiceKit.pose(tl, "#s6a-hand", "release", 0.3); DiceKit.pose(tl, "#s6a-hand", "open", 0.4);
+tl.fromTo("#s6a-hand", { y: 120 }, { y: -40, duration: 0.4, ease: "power3.out" }, 0);
+tl.to("#s6a-hand", { y: 520, duration: 0.9, ease: "power2.in" }, 0.75);
+tl.fromTo(["#s6a-dA", "#s6a-shA"], { x: 430, y: 2350 }, { x: 400, y: 128, duration: 0.9, ease: "power1.out" }, 0.3);
+tl.to(["#s6a-dA", "#s6a-shA"], { x: 362, y: 520, duration: 0.6, ease: "expo.out" }, 1.2);
+tl.fromTo("#s6a-dA", { z: 0 }, { z: 240, duration: 0.42, ease: "power2.out" }, 0.3); tl.to("#s6a-dA", { z: 0, duration: 0.48, ease: "power2.in" }, 0.72);
+tl.fromTo(["#s6a-dB", "#s6a-shB"], { x: 590, y: 2380 }, { x: 565, y: 905, duration: 0.85, ease: "power2.out" }, 0.3);
+tl.to(["#s6a-dB", "#s6a-shB"], { x: 575, y: 830, duration: 0.35, ease: "power2.out" }, 1.15);
+tl.fromTo("#s6a-dB", { z: 0 }, { z: 190, duration: 0.36, ease: "power2.out" }, 0.3); tl.to("#s6a-dB", { z: 0, duration: 0.48, ease: "power2.in" }, 0.66);
+tl.fromTo("#s6a-dA", { rotation: 0 }, { rotation: 600, duration: 1.5, ease: "power2.out" }, 0.3);
+tl.fromTo("#s6a-dB", { rotation: 0 }, { rotation: -450, duration: 1.2, ease: "power2.out" }, 0.3);
+DiceKit.tumble(tl, "#s6a-dA", 0.3, 1.6, 4, 1 / 12, 0); DiceKit.tumble(tl, "#s6a-dB", 0.3, 1.3, 2, 1 / 12, 2);
+tl.fromTo(".s6a-miss", { opacity: 0 }, { opacity: 0.85, duration: 0.2, ease: "power1.out" }, 1.75);
+tl.fromTo("#s6a-x", { opacity: 0, scale: 1.7 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power3.in" }, 1.95);
+tl.fromTo("#s6a-again", { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power3.in" }, 2.6);
+""",
+"s6b": """
+DiceKit.pose(tl, "#s6b-hand", "fist", 0); DiceKit.pose(tl, "#s6b-hand", "release", 0.3); DiceKit.pose(tl, "#s6b-hand", "open", 0.4);
+tl.fromTo("#s6b-hand", { y: 120 }, { y: -40, duration: 0.4, ease: "power3.out" }, 0);
+tl.to("#s6b-hand", { y: 520, duration: 0.9, ease: "power2.in" }, 0.8);
+tl.fromTo(["#s6b-dA", "#s6b-shA"], { x: 430, y: 2350 }, { x: 380, y: 128, duration: 0.95, ease: "power1.out" }, 0.3);
+tl.to(["#s6b-dA", "#s6b-shA"], { x: 330, y: 700, duration: 0.75, ease: "expo.out" }, 1.25);
+tl.fromTo("#s6b-dA", { z: 0 }, { z: 250, duration: 0.45, ease: "power2.out" }, 0.3); tl.to("#s6b-dA", { z: 0, duration: 0.5, ease: "power2.in" }, 0.75);
+tl.fromTo(["#s6b-dB", "#s6b-shB"], { x: 590, y: 2380 }, { x: 610, y: 128, duration: 1.575, ease: "power1.out" }, 0.3);
+tl.to(["#s6b-dB", "#s6b-shB"], { x: 680, y: 820, duration: 0.8, ease: "expo.out" }, 1.875);
+tl.fromTo("#s6b-dB", { z: 0 }, { z: 220, duration: 0.7, ease: "power2.out" }, 0.3); tl.to("#s6b-dB", { z: 0, duration: 0.875, ease: "power2.in" }, 1.0);
+tl.fromTo("#s6b-dA", { rotation: 0 }, { rotation: 640, duration: 1.7, ease: "power2.out" }, 0.3);
+tl.fromTo("#s6b-dB", { rotation: 0 }, { rotation: -700, duration: 2.3, ease: "power2.out" }, 0.3);
+DiceKit.tumble(tl, "#s6b-dA", 0.3, 1.8, 3, 1 / 12, 1); DiceKit.tumble(tl, "#s6b-dB", 0.3, 2.4, 5, 1 / 12, 4);
+tl.fromTo("#s6b-pa", { strokeDashoffset: 1.1 }, { strokeDashoffset: 0.25, duration: 0.95, ease: "power1.out" }, 0.3);
+tl.to("#s6b-pa", { strokeDashoffset: 0, duration: 0.75, ease: "expo.out" }, 1.25);
+tl.fromTo("#s6b-pb", { strokeDashoffset: 1.1 }, { strokeDashoffset: 0.25, duration: 1.575, ease: "power1.out" }, 0.3);
+tl.to("#s6b-pb", { strokeDashoffset: 0, duration: 0.8, ease: "expo.out" }, 1.875);
+tl.fromTo("#s6b-ok", { opacity: 0, scale: 1.7 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power3.in" }, 3.0);
+tl.fromTo("#s6b-title", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.8, ease: "power2.inOut" }, 3.4);
+tl.fromTo("#s6b-glow", { opacity: 0 }, { opacity: 0.6, duration: 0.6, ease: "power2.out" }, 4.4);
+tl.to("#s6b-glow", { opacity: 0.2, duration: 1.0, ease: "power2.inOut" }, 5.0);
+""",
+"s7": """
+for (const [i, f] of [[0, 1], [1, 2], [2, 3]]) {
+  DiceKit.setFace(tl, "#s7-dA", f, i * 0.625); DiceKit.setFace(tl, "#s7-dB", f, i * 0.625);
+  tl.fromTo(["#s7-dA", "#s7-dB"], { scale: 1.25 }, { scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: i === 0 }, i * 0.625);
+}
+tl.fromTo("#s7-knife", { x: 520, y: -40, rotation: -8 }, { x: -760, y: 60, rotation: -14, duration: 0.55, ease: "power3.in" }, 1.85);
+tl.fromTo("#s7-rcL", { x: 0, y: 0, rotation: 0 }, { x: -34, y: 10, rotation: -5, duration: 0.6, ease: "expo.out" }, 2.25);
+tl.fromTo("#s7-rcR", { x: 0, y: 0, rotation: 0 }, { x: 34, y: -6, rotation: 4, duration: 0.6, ease: "expo.out" }, 2.25);
+tl.fromTo("#s7-pct", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.4, ease: "power2.inOut" }, 2.3);
+""",
+"s8": """
+for (const [i, f] of [[0, 4], [1, 5], [2, 6]]) {
+  DiceKit.setFace(tl, "#s8-dA", f, i * 0.625); DiceKit.setFace(tl, "#s8-dB", f, i * 0.625);
+  tl.fromTo(["#s8-dA", "#s8-dB"], { scale: 1.25 }, { scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: i === 0 }, i * 0.625);
+}
+tl.fromTo("#s8-leaf rect", { x: 0, y: 0, opacity: 0, rotation: 0 }, { x: (i) => [-260, 240, -330, 300, 60][i], y: (i) => [-220, -260, 180, 160, 260][i], rotation: (i) => [-60, 70, 90, -80, 40][i], opacity: 0.9, duration: 1.2, ease: "expo.out", svgOrigin: "540 1100" }, 1.3);
+tl.fromTo("#s8-petals", { y: -160 }, { y: 260, duration: 5, ease: "none" }, 0);
+tl.fromTo("#s8-title", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.4, ease: "power2.inOut" }, 2.6);
+tl.fromTo("#s8-petals", { opacity: 0.0 }, { opacity: 1, duration: 0.2, ease: "power1.out" }, 1.3);
+""",
+"s9": """
+tl.fromTo("#s9-dA", { x: -560, rotation: -560 }, { x: 0, rotation: -14, duration: 1.1, ease: "expo.out" }, 0);
+tl.fromTo("#s9-dB", { x: 560, rotation: 520 }, { x: 0, rotation: 11, duration: 1.15, ease: "expo.out" }, 0.05);
+DiceKit.tumble(tl, "#s9-dA", 0, 0.75, 3, 1 / 12, 0); DiceKit.tumble(tl, "#s9-dB", 0.05, 0.8, 5, 1 / 12, 2);
+""",
+"s10": """
+tl.fromTo("#s10-drop", { y: -620 }, { y: 0, duration: 0.7, ease: "power2.in" }, 0.25);
+tl.fromTo("#s10-coin", { scaleY: 1, transformOrigin: "50% 100%" }, { scaleY: 0.8, duration: 0.07, ease: "power1.out", yoyo: true, repeat: 1 }, 0.95);
+tl.fromTo("#s10-glint", { opacity: 0, x: -60 }, { opacity: 0.9, x: 60, duration: 0.6, ease: "power2.inOut" }, 1.2);
+tl.to("#s10-glint", { opacity: 0, duration: 0.25, ease: "power1.in" }, 1.8);
+tl.fromTo("#s10-title", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.5, ease: "power2.inOut" }, 2.0);
+""",
+"s11": """
+tl.fromTo("#s11-flash", { opacity: 0 }, { opacity: 0.9, duration: 0.05, ease: "none" }, 0.625);
+tl.to("#s11-flash", { opacity: 0, duration: 0.4, ease: "power2.out" }, 0.68);
+tl.fromTo("#s11-figs", { y: 0 }, { y: -46, duration: 0.3, ease: "power2.out" }, 0.7);
+tl.to("#s11-figs", { y: 0, duration: 0.35, ease: "bounce.out" }, 1.0);
+for (let k = 0; k < 10; k++) tl.set("#s11-dot", { opacity: k % 2 ? 0.15 : 1 }, k * 0.5);
+tl.fromTo("#s11-flash", { opacity: 0 }, { opacity: 0.85, duration: 0.05, ease: "none", immediateRender: false }, 3.125);
+tl.to("#s11-flash", { opacity: 0, duration: 0.4, ease: "power2.out" }, 3.18);
+tl.to("#s11-figs", { y: -40, duration: 0.3, ease: "power2.out" }, 3.2);
+tl.to("#s11-figs", { y: 0, duration: 0.35, ease: "bounce.out" }, 3.5);
+""",
+"s12": """
+DiceKit.pose(tl, "#s12-hand", "fist", 0); DiceKit.pose(tl, "#s12-hand", "release", 0.32); DiceKit.pose(tl, "#s12-hand", "open", 0.42);
+tl.fromTo("#s12-hand", { y: 200, rotation: 8 }, { y: 0, rotation: -6, duration: 0.4, ease: "power3.out" }, 0);
+tl.to("#s12-hand", { y: 640, duration: 0.8, ease: "power2.in" }, 0.85);
+tl.fromTo("#s12-dA", { x: 300, y: 720, scale: 0.6, rotation: 300 }, { x: 0, y: 0, scale: 1, rotation: -10, duration: 1.0, ease: "power3.out" }, 0.32);
+tl.fromTo("#s12-dB", { x: 180, y: 740, scale: 0.6, rotation: -320 }, { x: 0, y: 0, scale: 1, rotation: 8, duration: 1.05, ease: "power3.out" }, 0.36);
+DiceKit.tumble(tl, "#s12-dA", 0.32, 1.1, 6, 1 / 12, 1); DiceKit.tumble(tl, "#s12-dB", 0.36, 1.15, 6, 1 / 12, 3);
+tl.fromTo("#s12-title", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.6, ease: "power2.inOut" }, 1.4);
+""",
+}
+for c in CARDS:
+    c["js"] += MOTION.get(c["id"], "")
+
+# ---------- sound: effects on the visible actions only (Pixabay, bundled with HyperFrames) ----------
+SFX = [  # (file, time in s, volume)
+    ("whoosh", 0.36, .8), ("whoosh-cinematic", 1.9, .7), ("click-soft", 3.05, .9), ("click", 3.12, .7),
+    ("sparkle", 6.75, .5), ("whoosh-short", 10.05, .7), ("pop", 14.1, .5), ("whoosh-short", 17.65, .6), ("pop", 18.85, .6),
+    ("whoosh", 21.55, .8), ("click-soft", 22.4, .9), ("click", 22.47, .9), ("impact-bass-2", 23.22, .8), ("pop", 23.88, .8),
+    ("whoosh", 25.55, .8), ("click", 26.27, 1.0), ("click", 26.9, 1.0), ("impact-bass-1", 28.27, .8),
+    ("pop", 31.3, .6), ("pop", 31.92, .6), ("pop", 32.55, .6), ("whoosh-short", 33.12, .8), ("impact-bass-2", 33.52, .8),
+    ("riser", 34.6, .6), ("pop", 36.3, .6), ("pop", 36.92, .6), ("impact-bass-1", 37.55, 1.0), ("sparkle", 37.6, .6),
+    ("whoosh-short", 41.3, .7), ("click-soft", 42.1, .9), ("click", 44.72, .9), ("sparkle", 44.98, .5),
+    ("click", 48.17, .9), ("click", 50.67, .9), ("whoosh", 52.86, .8), ("click-soft", 53.55, .9), ("impact-bass-1", 54.0, .7), ("sparkle", 54.0, .5),
+]
 
 TOTAL = 58.75
 
@@ -372,6 +572,9 @@ def composition(c):
 
 
 def index():
+    audio = "\n".join(
+        f'      <audio id="sfx-{i:02d}" class="clip" src="assets/sfx/{f}.mp3" data-start="{t}" data-track-index="{40 + i % 6}" data-volume="{v}"></audio>'
+        for i, (f, t, v) in enumerate(SFX))
     hosts = "\n".join(
         f'      <div id="{c["id"]}" style="z-index:{i + 1}" data-composition-id="{c["id"]}" data-composition-src="compositions/{c["id"]}.html" '
         f'data-start="{c["start"]}" data-duration="{c["dur"]}" data-track-index="{i + 1}" data-track-kind="graphics" data-width="1080" data-height="1920"></div>'
@@ -393,6 +596,7 @@ def index():
     <!-- Generated by build.py: 14 finished Noir & Or cards, Hebrew only. Edit build.py, not this file. -->
     <div id="root" data-composition-id="main" data-start="0" data-duration="{TOTAL}" data-width="1080" data-height="1920" data-fps="24">
 {hosts}
+{audio}
       <div id="frame" style="z-index:50" data-composition-id="frame" data-composition-src="compositions/frame.html" data-start="0" data-duration="{TOTAL}" data-track-index="20" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
     </div>
     <script>
@@ -419,10 +623,19 @@ FRAME = f"""<template>
       <rect x="24" y="24" width="1032" height="1872" fill="none" stroke="{GOLD}" stroke-width="2"/>
       <rect x="33" y="33" width="1014" height="1854" fill="none" stroke="{GOLD}" stroke-opacity=".5" stroke-width="1"/>
     </svg>
+    <svg id="frame-grain" viewBox="0 0 540 960" preserveAspectRatio="none" data-layout-ignore style="position:absolute;inset:0;width:100%;height:100%;opacity:.13;mix-blend-mode:overlay">
+      <filter id="frame-noise"><feTurbulence id="frame-turb" type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="1"/><feColorMatrix type="saturate" values="0"/></filter>
+      <rect width="540" height="960" filter="url(#frame-noise)"/>
+    </svg>
     <div id="frame-legal" data-layout-allow-caption-zone><span>*בכפוף לתקנון</span></div>
   </div>
   <script>
-    window.__timelines["frame"] = gsap.timeline({{ paused: true }});
+    (() => {{
+      const tl = gsap.timeline({{ paused: true }});
+      const turb = document.getElementById("frame-turb");
+      for (let k = 0; k < {int(TOTAL * 12)}; k++) tl.set(turb, {{ attr: {{ seed: (k * 7) % 97 + 1 }} }}, k / 12);
+      window.__timelines["frame"] = tl;
+    }})();
   </script>
 </template>
 """

@@ -18,6 +18,8 @@
 .die { position: absolute; }
 .art { position: absolute; overflow: visible; }
 .ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+.foil { background: linear-gradient(100deg, #a8814a 0%, #e9c98a 30%, #c9a36b 42%, #fff1c9 50%, #c9a36b 58%, #e9c98a 70%, #a8814a 100%);
+  background-size: 300% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; }
 </style>
   <div id="root" data-composition-id="s2" data-width="1080" data-height="1920" dir="rtl" lang="he">
 
@@ -37,7 +39,7 @@
 <div id="s2-jp" style="position:absolute;right:86px;top:230px;font-family:Shippori,serif;font-weight:800;font-size:56px;letter-spacing:.16em;color:#c9a36b;writing-mode:vertical-rl">運試し</div>
 <div id="s2-badge" style="position:absolute;left:84px;top:600px;width:170px;height:170px;border-radius:50%;border:2px solid #c9a36b;background:#0b0907;display:grid;place-items:center;font-family:'Frank Ruhl',serif;font-weight:800;font-size:58px;color:#e2c590">חדש</div>
 <div class="kick" style="top:836px;font-size:46px">המשחק הגדול</div>
-<div class="h" style="top:906px;font-size:104px">הטילו את הקוביות</div>
+<div class="h foil" id="s2-title" style="top:906px;font-size:104px">הטילו את הקוביות</div>
 <div id="s2-dA" class="die" data-face="6" style="left:378px;top:1080px;width:140px;height:150px"></div><div id="s2-dB" class="die" data-face="6" style="left:560px;top:1092px;width:140px;height:150px"></div>
 <div id="s2-seal" style="position:absolute;left:502px;top:1262px;width:76px;height:76px;border-radius:4px;background:#b8322a;color:#f4ecdf;display:grid;place-items:center;font-family:Shippori,serif;font-weight:800;font-size:48px">運</div>
 
@@ -47,6 +49,11 @@
       const tl = gsap.timeline({ paused: true });
       DiceKit.mount(["#s2-dA", "#s2-dB"]);
       tl.set("#s2-badge", { rotation: -12 }, 0); tl.set("#s2-dA", { rotation: -14 }, 0); tl.set("#s2-dB", { rotation: 9 }, 0);
+tl.fromTo("#s2-dA", { y: -980, rotation: -260 }, { y: 0, rotation: -14, duration: 0.95, ease: "bounce.out" }, 0);
+tl.fromTo("#s2-dB", { y: -1040, rotation: 300 }, { y: 0, rotation: 9, duration: 1.0, ease: "bounce.out" }, 0.06);
+DiceKit.tumble(tl, "#s2-dA", 0, 0.6, 6, 1 / 12, 2); DiceKit.tumble(tl, "#s2-dB", 0.06, 0.66, 6, 1 / 12, 4);
+tl.fromTo("#s2-title", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.5, ease: "power2.inOut" }, 1.1);
+
       window.__timelines["s2"] = tl;
     })();
   </script>

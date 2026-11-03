@@ -18,12 +18,14 @@
 .die { position: absolute; }
 .art { position: absolute; overflow: visible; }
 .ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+.foil { background: linear-gradient(100deg, #a8814a 0%, #e9c98a 30%, #c9a36b 42%, #fff1c9 50%, #c9a36b 58%, #e9c98a 70%, #a8814a 100%);
+  background-size: 300% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; }
 </style>
   <div id="root" data-composition-id="s7" data-width="1080" data-height="1920" dir="rtl" lang="he">
 
 <div class="h" style="top:206px;font-size:110px">דאבל 1 · 2 · 3</div>
 <div id="s7-dA" class="die" data-face="3" style="left:392px;top:360px;width:130px;height:140px"></div><div id="s7-dB" class="die" data-face="3" style="left:558px;top:360px;width:130px;height:140px"></div>
-<div class="big" style="top:540px;font-size:300px;color:#e2c590"><span class="ltr">−50%*</span></div>
+<div class="big foil" id="s7-pct" style="top:540px;font-size:300px"><span class="ltr">−50%*</span></div>
 <div class="sub" style="top:852px;font-size:58px">על כל החשבון של השולחן</div>
 <div id="s7-rcL" style="position:absolute;left:290px;top:960px;width:500px;height:360px;clip-path:polygon(0 0, 52% 0, 46% 100%, 0 100%)"><div style="position:absolute;inset:0;background:#f3eadb;border-radius:6px;box-shadow:0 20px 40px rgba(0,0,0,.5)">
   <div style="position:absolute;top:26px;left:0;right:0;text-align:center;font-family:Cormorant,serif;font-weight:700;font-size:30px;letter-spacing:.2em;color:#3a2a1c;direction:ltr">YOKO ONO</div>
@@ -45,6 +47,15 @@
       const tl = gsap.timeline({ paused: true });
       DiceKit.mount(["#s7-dA", "#s7-dB"]);
       tl.set("#s7-rcL", { x: -34, y: 10, rotation: -5 }, 0); tl.set("#s7-rcR", { x: 34, y: -6, rotation: 4 }, 0); tl.set("#s7-knife", { rotation: -8 }, 0); tl.set("#s7-dA", { rotation: -8 }, 0); tl.set("#s7-dB", { rotation: 7 }, 0);
+for (const [i, f] of [[0, 1], [1, 2], [2, 3]]) {
+  DiceKit.setFace(tl, "#s7-dA", f, i * 0.625); DiceKit.setFace(tl, "#s7-dB", f, i * 0.625);
+  tl.fromTo(["#s7-dA", "#s7-dB"], { scale: 1.25 }, { scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: i === 0 }, i * 0.625);
+}
+tl.fromTo("#s7-knife", { x: 520, y: -40, rotation: -8 }, { x: -760, y: 60, rotation: -14, duration: 0.55, ease: "power3.in" }, 1.85);
+tl.fromTo("#s7-rcL", { x: 0, y: 0, rotation: 0 }, { x: -34, y: 10, rotation: -5, duration: 0.6, ease: "expo.out" }, 2.25);
+tl.fromTo("#s7-rcR", { x: 0, y: 0, rotation: 0 }, { x: 34, y: -6, rotation: 4, duration: 0.6, ease: "expo.out" }, 2.25);
+tl.fromTo("#s7-pct", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.4, ease: "power2.inOut" }, 2.3);
+
       window.__timelines["s7"] = tl;
     })();
   </script>
