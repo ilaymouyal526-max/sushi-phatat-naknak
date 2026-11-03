@@ -1,0 +1,46 @@
+<template>
+  <style>
+@font-face { font-family: "Frank Ruhl"; font-weight: 300 900; font-display: block; src: url('assets/fonts/frankruhl-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Frank Ruhl"; font-weight: 300 900; font-display: block; src: url('assets/fonts/frankruhl-normal-hebrew.woff2') format('woff2'); unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Heebo"; font-weight: 100 900; font-display: block; src: url('assets/fonts/heebo-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Heebo"; font-weight: 100 900; font-display: block; src: url('assets/fonts/heebo-normal-hebrew.woff2') format('woff2'); unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Cormorant"; font-weight: 500 700; font-display: block; src: url('assets/fonts/cormorant-upright-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Shippori"; font-weight: 800; font-display: block; src: url('assets/fonts/shippori-jp-subset.woff2') format('woff2'); }
+
+#root { position: absolute; inset: 0; overflow: hidden; direction: rtl; font-variant-numeric: lining-nums;
+  background: radial-gradient(ellipse 85% 55% at 50% 52%, #24160e 0%, #0b0907 72%); }
+.h { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 800; color: #f4ecdf; line-height: 1.04; }
+.sub { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 500; color: #e2c590; line-height: 1.28; }
+.kick { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Heebo", sans-serif; font-weight: 500; letter-spacing: .12em; color: #c9a36b; }
+.big { position: absolute; left: 60px; right: 60px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 700; line-height: .9; }
+.num { position: absolute; left: 500px; width: 80px; height: 80px; border-radius: 50%; border: 2px solid #c9a36b; display: grid; place-items: center;
+  font-family: "Frank Ruhl", serif; font-weight: 700; font-size: 50px; color: #c9a36b; line-height: 1; }
+.die { position: absolute; }
+.art { position: absolute; overflow: visible; }
+.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+</style>
+  <div id="root" data-composition-id="s5" data-width="1080" data-height="1920" dir="rtl" lang="he">
+
+<div class="num" style="top:196px">3</div>
+<div class="h" style="top:300px;font-size:128px">שחקן אחד</div>
+<div class="sub" style="top:452px;font-size:56px">רק אחד מטיל, בשביל כולם</div>
+<svg class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
+  <circle cx="540" cy="960" r="276" fill="#3e2616" stroke="rgba(201,163,107,.6)" stroke-width="3"/>
+  <circle cx="540" cy="960" r="250" fill="none" stroke="rgba(0,0,0,.35)" stroke-width="30"/>
+  <circle cx="540" cy="760" r="54" fill="#1b130d" stroke="#c9a36b" stroke-width="2.5"/><circle cx="340" cy="960" r="54" fill="#1b130d" stroke="#c9a36b" stroke-width="2.5"/><circle cx="540" cy="1160" r="54" fill="#1b130d" stroke="#c9a36b" stroke-width="2.5"/><circle cx="740" cy="960" r="54" fill="#1b130d" stroke="#c9a36b" stroke-width="2.5"/>
+  <g transform="translate(540 640) rotate(180)"><ellipse cx="0" cy="34" rx="104" ry="58" fill="#3a3530"/><circle cx="0" cy="-6" r="46" fill="#1d1916"/></g><g transform="translate(232 960) rotate(90)"><ellipse cx="0" cy="34" rx="104" ry="58" fill="#4a3326"/><circle cx="0" cy="-6" r="46" fill="#2a1d16"/></g><g transform="translate(540 1286) rotate(0)"><ellipse cx="0" cy="34" rx="104" ry="58" fill="#2f3340"/><circle cx="0" cy="-6" r="46" fill="#1a1712"/></g>
+  <circle cx="848" cy="960" r="132" fill="rgba(201,163,107,.16)" stroke="#c9a36b" stroke-width="6"/>
+  <g transform="translate(848 960) rotate(-90)"><ellipse cx="0" cy="34" rx="104" ry="58" fill="#5b4433"/><circle cx="0" cy="-6" r="46" fill="#2a1d16"/></g>
+</svg>
+<div id="s5-dA" class="die" data-face="1" style="left:664px;top:880px;width:84px;height:90px"></div><div id="s5-dB" class="die" data-face="6" style="left:664px;top:980px;width:84px;height:90px"></div>
+
+  </div>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      DiceKit.mount(["#s5-dA", "#s5-dB"]);
+      tl.set("#s5-dA", { rotation: -8 }, 0); tl.set("#s5-dB", { rotation: 12 }, 0);
+      window.__timelines["s5"] = tl;
+    })();
+  </script>
+</template>

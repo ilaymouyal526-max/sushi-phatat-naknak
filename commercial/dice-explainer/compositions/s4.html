@@ -1,0 +1,39 @@
+<template>
+  <style>
+@font-face { font-family: "Frank Ruhl"; font-weight: 300 900; font-display: block; src: url('assets/fonts/frankruhl-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Frank Ruhl"; font-weight: 300 900; font-display: block; src: url('assets/fonts/frankruhl-normal-hebrew.woff2') format('woff2'); unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Heebo"; font-weight: 100 900; font-display: block; src: url('assets/fonts/heebo-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Heebo"; font-weight: 100 900; font-display: block; src: url('assets/fonts/heebo-normal-hebrew.woff2') format('woff2'); unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Cormorant"; font-weight: 500 700; font-display: block; src: url('assets/fonts/cormorant-upright-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Shippori"; font-weight: 800; font-display: block; src: url('assets/fonts/shippori-jp-subset.woff2') format('woff2'); }
+
+#root { position: absolute; inset: 0; overflow: hidden; direction: rtl; font-variant-numeric: lining-nums;
+  background: radial-gradient(ellipse 85% 55% at 50% 52%, #24160e 0%, #0b0907 72%); }
+.h { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 800; color: #f4ecdf; line-height: 1.04; }
+.sub { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 500; color: #e2c590; line-height: 1.28; }
+.kick { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Heebo", sans-serif; font-weight: 500; letter-spacing: .12em; color: #c9a36b; }
+.big { position: absolute; left: 60px; right: 60px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 700; line-height: .9; }
+.num { position: absolute; left: 500px; width: 80px; height: 80px; border-radius: 50%; border: 2px solid #c9a36b; display: grid; place-items: center;
+  font-family: "Frank Ruhl", serif; font-weight: 700; font-size: 50px; color: #c9a36b; line-height: 1; }
+.die { position: absolute; }
+.art { position: absolute; overflow: visible; }
+.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+</style>
+  <div id="root" data-composition-id="s4" data-width="1080" data-height="1920" dir="rtl" lang="he">
+
+<div class="num" style="top:196px">2</div>
+<div class="h" style="top:300px;font-size:120px">הזדמנות אחת</div>
+<div class="big" style="top:470px;font-size:400px;color:#c9a36b"><span class="ltr">×1</span></div>
+<div class="sub" style="top:900px;font-size:56px">ניסיון אחד ויחיד לכל השולחן</div>
+<div id="s4-dA" class="die" data-face="4" style="left:300px;top:1030px;width:220px;height:236px"></div><div id="s4-dB" class="die" data-face="2" style="left:560px;top:1040px;width:220px;height:236px"></div>
+
+  </div>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      DiceKit.mount(["#s4-dA", "#s4-dB"]);
+      tl.set("#s4-dA", { rotation: -12 }, 0); tl.set("#s4-dB", { rotation: 10 }, 0);
+      window.__timelines["s4"] = tl;
+    })();
+  </script>
+</template>

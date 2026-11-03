@@ -1,0 +1,76 @@
+<template>
+  <style>
+@font-face { font-family: "Frank Ruhl"; font-weight: 300 900; font-display: block; src: url('assets/fonts/frankruhl-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Frank Ruhl"; font-weight: 300 900; font-display: block; src: url('assets/fonts/frankruhl-normal-hebrew.woff2') format('woff2'); unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Heebo"; font-weight: 100 900; font-display: block; src: url('assets/fonts/heebo-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Heebo"; font-weight: 100 900; font-display: block; src: url('assets/fonts/heebo-normal-hebrew.woff2') format('woff2'); unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Cormorant"; font-weight: 500 700; font-display: block; src: url('assets/fonts/cormorant-upright-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Shippori"; font-weight: 800; font-display: block; src: url('assets/fonts/shippori-jp-subset.woff2') format('woff2'); }
+
+#root { position: absolute; inset: 0; overflow: hidden; direction: rtl; font-variant-numeric: lining-nums;
+  background: radial-gradient(ellipse 85% 55% at 50% 52%, #24160e 0%, #0b0907 72%); }
+.h { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 800; color: #f4ecdf; line-height: 1.04; }
+.sub { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 500; color: #e2c590; line-height: 1.28; }
+.kick { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Heebo", sans-serif; font-weight: 500; letter-spacing: .12em; color: #c9a36b; }
+.big { position: absolute; left: 60px; right: 60px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 700; line-height: .9; }
+.num { position: absolute; left: 500px; width: 80px; height: 80px; border-radius: 50%; border: 2px solid #c9a36b; display: grid; place-items: center;
+  font-family: "Frank Ruhl", serif; font-weight: 700; font-size: 50px; color: #c9a36b; line-height: 1; }
+.die { position: absolute; }
+.art { position: absolute; overflow: visible; }
+.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+
+.plane { position: absolute; left: 40px; top: -530px; width: 1000px; height: 2600px; transform-origin: 50% 100%; transform: perspective(2500px) rotateX(30deg); transform-style: preserve-3d;
+  background: linear-gradient(90deg, #6f4426 0%, #9a6539 18%, #7f4f2c 50%, #9a6539 82%, #6f4426 100%); border-radius: 26px; }
+.wallband { position: absolute; inset: 44px; border-radius: 10px; background: #11512d; box-shadow: inset 0 0 40px rgba(0,0,0,.6); }
+.felt { position: absolute; inset: 88px; border-radius: 6px; background: radial-gradient(ellipse 75% 45% at 50% 38%, #217d47 0%, #1a6b3c 45%, #0f4526 100%); }
+.wallhi { position: absolute; left: 44px; right: 44px; top: 44px; height: 46px; background: #c9a36b; opacity: .35; }
+.pdie { position: absolute; left: -75px; top: -81px; width: 150px; height: 162px; }
+.sh { position: absolute; left: -70px; top: -30px; width: 170px; height: 120px; border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.55) 0%, rgba(120,8,22,.35) 42%, rgba(0,0,0,0) 70%); }
+</style>
+  <div id="root" data-composition-id="s6a" data-width="1080" data-height="1920" dir="rtl" lang="he">
+
+<div id="s6a-all" style="position:absolute;inset:0;background:radial-gradient(ellipse 90% 30% at 50% 18%, #22150d 0%, #0b0907 75%)">
+
+<div class="plane" data-layout-allow-overflow>
+  <div class="wallband"></div><div class="felt"></div><div class="wallhi"></div>
+  <svg id="s6a-felt-logo" class="art" style="left:320px;top:430px;width:360px;height:468px" viewBox="0 0 200 260" data-layout-ignore >
+  <g fill="none" stroke="#d6b26e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 127 V68 A50 50 0 0 1 150 68 V127 M50 168 V192 A50 50 0 0 0 150 192 V168"/>
+    <path d="M54 50 Q74 60 92 70 M146 50 Q126 60 108 70"/>
+    <g><circle cx="64.0" cy="51.4" r="3.1"/><circle cx="68.4" cy="54.6" r="3.1"/><circle cx="66.7" cy="59.7" r="3.1"/><circle cx="61.3" cy="59.7" r="3.1"/><circle cx="59.6" cy="54.6" r="3.1"/><circle cx="80.0" cy="61.4" r="3.1"/><circle cx="84.4" cy="64.6" r="3.1"/><circle cx="82.7" cy="69.7" r="3.1"/><circle cx="77.3" cy="69.7" r="3.1"/><circle cx="75.6" cy="64.6" r="3.1"/><circle cx="74.0" cy="37.4" r="3.1"/><circle cx="78.4" cy="40.6" r="3.1"/><circle cx="76.7" cy="45.7" r="3.1"/><circle cx="71.3" cy="45.7" r="3.1"/><circle cx="69.6" cy="40.6" r="3.1"/><circle cx="136.0" cy="51.4" r="3.1"/><circle cx="140.4" cy="54.6" r="3.1"/><circle cx="138.7" cy="59.7" r="3.1"/><circle cx="133.3" cy="59.7" r="3.1"/><circle cx="131.6" cy="54.6" r="3.1"/><circle cx="120.0" cy="61.4" r="3.1"/><circle cx="124.4" cy="64.6" r="3.1"/><circle cx="122.7" cy="69.7" r="3.1"/><circle cx="117.3" cy="69.7" r="3.1"/><circle cx="115.6" cy="64.6" r="3.1"/><circle cx="126.0" cy="37.4" r="3.1"/><circle cx="130.4" cy="40.6" r="3.1"/><circle cx="128.7" cy="45.7" r="3.1"/><circle cx="123.3" cy="45.7" r="3.1"/><circle cx="121.6" cy="40.6" r="3.1"/></g>
+    <polyline points="62,124 86,90 99,106 113,80 138,124"/>
+    <polyline points="80,99 84,103 88,98 92,102"/><polyline points="105,92 109,97 113,92 117,97 120,94"/>
+    <path d="M78 182 L122 182 Q120 204 100 204 Q80 204 78 182 Z M99 181 L110 169 M105 182 L117 171"/>
+    <path d="M70 230 Q100 208 130 230 M78 236 Q100 220 122 236 M86 240 Q100 230 114 240"/>
+  </g>
+  <text x="100" y="151" text-anchor="middle" direction="ltr" fill="#d6b26e" font-family="Cormorant, serif" font-weight="600" font-size="29" letter-spacing="2.6">YOKO ONO</text>
+  <text x="100" y="163" text-anchor="middle" direction="ltr" fill="#d6b26e" font-family="Cormorant, serif" font-weight="700" font-size="8.6" letter-spacing="1.9">ASIAN KITCHEN</text>
+</svg>
+  <svg class="art" style="left:0;top:0;width:1000px;height:2600px" viewBox="0 0 1000 2600" data-layout-ignore>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="430,2350 400,128 362,520" stroke="#f4ecdf" stroke-width="7" stroke-dasharray="2 22" opacity=".85"/>
+    <polyline points="590,2380 565,905 575,830" stroke="#f4ecdf" stroke-width="7" stroke-dasharray="2 22" opacity=".85"/>
+    <circle cx="575" cy="830" r="118" stroke="#b8322a" stroke-width="10"/></g></svg>
+  <div id="s6a-shA" class="sh"></div><div id="s6a-shB" class="sh"></div>
+  <div id="s6a-dA" class="pdie" data-face="4"></div><div id="s6a-dB" class="pdie" data-face="2"></div>
+</div>
+</div>
+<div class="num" style="top:176px">4</div>
+<div class="h" style="top:276px;font-size:108px">ההטלה המושלמת</div>
+<div class="kick" style="top:420px;font-size:46px;letter-spacing:.04em;font-weight:700">הקיר שממול ⌄</div>
+<div id="s6a-x" style="position:absolute;left:0;right:0;top:1040px;text-align:center"><span style="display:inline-block;padding:14px 46px;border:6px solid #e0574b;border-radius:16px;color:#e0574b;font-family:Heebo,sans-serif;font-weight:800;font-size:68px;line-height:1.1;background:rgba(11,9,7,.78);rotate:-5deg">✕&nbsp; לא נחשב</span></div>
+<div class="h" style="top:1190px;font-size:76px;color:#e2c590">מטילים שוב!</div>
+<svg id="s6a-hand" class="art" style="left:360px;top:1480px;width:360px;height:576px" viewBox="0 0 400 640" data-layout-ignore><line x1="132" y1="420" x2="54" y2="300" stroke="#8d5f3e" stroke-width="58" stroke-linecap="round"/><line x1="132" y1="420" x2="54" y2="300" stroke="#d9a77c" stroke-width="52" stroke-linecap="round"/><line x1="150" y1="300" x2="126" y2="106" stroke="#8d5f3e" stroke-width="52" stroke-linecap="round"/><line x1="196" y1="292" x2="192" y2="66" stroke="#8d5f3e" stroke-width="54" stroke-linecap="round"/><line x1="240" y1="294" x2="254" y2="88" stroke="#8d5f3e" stroke-width="52" stroke-linecap="round"/><line x1="280" y1="306" x2="308" y2="158" stroke="#8d5f3e" stroke-width="46" stroke-linecap="round"/><line x1="150" y1="300" x2="126" y2="106" stroke="#d9a77c" stroke-width="46" stroke-linecap="round"/><line x1="196" y1="292" x2="192" y2="66" stroke="#d9a77c" stroke-width="48" stroke-linecap="round"/><line x1="240" y1="294" x2="254" y2="88" stroke="#d9a77c" stroke-width="46" stroke-linecap="round"/><line x1="280" y1="306" x2="308" y2="158" stroke="#d9a77c" stroke-width="40" stroke-linecap="round"/><path d="M118 500 C104 430 102 360 120 300 Q200 268 290 300 C306 360 302 430 290 500 Z" fill="#d9a77c" stroke="#8d5f3e" stroke-width="3"/><path d="M140 330 Q200 312 270 330" fill="none" stroke="#b9845c" stroke-width="6" stroke-linecap="round"/><path d="M150 420 Q170 455 150 495" fill="none" stroke="#b9845c" stroke-width="5" stroke-linecap="round"/><rect x="92" y="500" width="224" height="150" rx="18" fill="#17120f"/><rect x="92" y="494" width="224" height="24" rx="6" fill="#c9a36b"/></svg>
+
+  </div>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      DiceKit.mount(["#s6a-dA", "#s6a-dB"]);
+      tl.set(["#s6a-dA", "#s6a-shA"], { x: 362, y: 520 }, 0);
+tl.set(["#s6a-dB", "#s6a-shB"], { x: 575, y: 830 }, 0);
+      window.__timelines["s6a"] = tl;
+    })();
+  </script>
+</template>

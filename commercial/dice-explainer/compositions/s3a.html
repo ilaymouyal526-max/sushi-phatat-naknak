@@ -1,0 +1,47 @@
+<template>
+  <style>
+@font-face { font-family: "Frank Ruhl"; font-weight: 300 900; font-display: block; src: url('assets/fonts/frankruhl-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Frank Ruhl"; font-weight: 300 900; font-display: block; src: url('assets/fonts/frankruhl-normal-hebrew.woff2') format('woff2'); unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Heebo"; font-weight: 100 900; font-display: block; src: url('assets/fonts/heebo-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Heebo"; font-weight: 100 900; font-display: block; src: url('assets/fonts/heebo-normal-hebrew.woff2') format('woff2'); unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Cormorant"; font-weight: 500 700; font-display: block; src: url('assets/fonts/cormorant-upright-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Shippori"; font-weight: 800; font-display: block; src: url('assets/fonts/shippori-jp-subset.woff2') format('woff2'); }
+
+#root { position: absolute; inset: 0; overflow: hidden; direction: rtl; font-variant-numeric: lining-nums;
+  background: radial-gradient(ellipse 85% 55% at 50% 52%, #24160e 0%, #0b0907 72%); }
+.h { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 800; color: #f4ecdf; line-height: 1.04; }
+.sub { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 500; color: #e2c590; line-height: 1.28; }
+.kick { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Heebo", sans-serif; font-weight: 500; letter-spacing: .12em; color: #c9a36b; }
+.big { position: absolute; left: 60px; right: 60px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 700; line-height: .9; }
+.num { position: absolute; left: 500px; width: 80px; height: 80px; border-radius: 50%; border: 2px solid #c9a36b; display: grid; place-items: center;
+  font-family: "Frank Ruhl", serif; font-weight: 700; font-size: 50px; color: #c9a36b; line-height: 1; }
+.die { position: absolute; }
+.art { position: absolute; overflow: visible; }
+.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+</style>
+  <div id="root" data-composition-id="s3a" data-width="1080" data-height="1920" dir="rtl" lang="he">
+
+<div class="h" style="top:220px;font-size:132px">האפי האוור</div>
+<div class="big" style="top:392px;font-size:140px;color:#f4ecdf"><span class="ltr">16:00–18:00</span></div>
+<div class="sub" style="top:560px;font-size:58px">בואו בין ארבע לשש</div>
+<svg id="s3a-dial" class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
+  <path d="M160 1250 A380 380 0 0 1 920 1250" fill="none" stroke="#c9a36b" stroke-width="3"/>
+  <g stroke="#c9a36b" stroke-width="4" stroke-linecap="round"><line x1="196" y1="1048" x2="222" y2="1063"/><line x1="540" y1="856" x2="540" y2="886"/><line x1="904" y1="1080" x2="876" y2="1093"/></g>
+  <g fill="#e2c590" font-family="Frank Ruhl, serif" font-weight="700" font-size="40" text-anchor="middle" direction="ltr">
+    <text x="296" y="1110">16:00</text><text x="540" y="836">17:00</text><text x="786" y="1136">18:00</text></g>
+  <g id="s3a-sunrig"><circle cx="160" cy="1250" r="56" fill="#b8322a"/></g>
+  <polyline points="160,1250 390,1090 480,1146 620,1050 870,1250 920,1250" fill="none" stroke="#c9a36b" stroke-width="4" stroke-linejoin="round"/>
+  <rect x="0" y="1253" width="1080" height="667" fill="#0b0907"/>
+  <line x1="120" y1="1251" x2="960" y2="1251" stroke="#c9a36b" stroke-width="3"/>
+</svg>
+
+  </div>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      
+      tl.set("#s3a-sunrig", { rotation: 150, svgOrigin: "540 1250" }, 0);
+      window.__timelines["s3a"] = tl;
+    })();
+  </script>
+</template>
