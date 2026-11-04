@@ -114,7 +114,10 @@ ffmpeg -i renders/x.mp4 -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +fasts
 
    F4 (the hand scooping the dice) stays in code.
 3. ~~Integrate the clips~~ (done; lint 0/0). Draft v5 (`renders/draft-v5.mp4`) was rendered, freezedetect found no freezes, and the preview was sent. **Waiting on the user's feedback.**
-4. Make the hand and the characters in cards 1, 5, 6a, 6b, 11 and 12 match the new realistic style.
+4. ~~Characters in cards 5 and 11~~ (done). The user approved 2 more stills at 0.25 each, 0.5 in all; the balance is now 1155.75.
+   - `assets/hf/S5.png` (job `8ed8d89f-a83f-4032-bab4-f937244d1d3b`): four friends point at the man holding the dice. It sits in a gold frame (900×1080) with a slow push-in.
+   - `assets/hf/S11.png` (job `59180353-76ea-41a9-a4dd-05286936674f`): the couple celebrate a double six. It sits inside the enlarged phone with a punch-in on each flash.
+   - The old drawn diners and figures were removed. Lint is 0/0 and `check` passes.
 5. Rewrite `../dice_game_script.md` and `SPEC.md` in Hebrew only for the current film.
 6. Final renders: the Reels master, a silent loop for the restaurant screen, and a 15 s cutdown.
 

@@ -233,24 +233,16 @@ card("s4", 13.75, 3.75, f"""
 {die("s4-dA", 4, 300, 1030, 220)}{die("s4-dB", 2, 560, 1040, 220)}
 """, js="""tl.set("#s4-dA", { rotation: -12 }, 0); tl.set("#s4-dB", { rotation: 10 }, 0);""")
 
-# 5. Rule 3: one player
-DINER = """<g transform="translate({x} {y}) rotate({r})"><ellipse cx="0" cy="34" rx="104" ry="58" fill="{c}"/><circle cx="0" cy="-6" r="46" fill="{hair}"/></g>"""
-diners = "".join(DINER.format(x=x, y=y, r=r, c=c, hair=h) for x, y, r, c, h in [
-    (540, 640, 180, "#3a3530", "#1d1916"), (232, 960, 90, "#4a3326", "#2a1d16"), (540, 1286, 0, "#2f3340", "#1a1712")])
+# 5. Rule 3: one player. A Higgsfield still (assets/hf/S5.png): the friends point at the man holding the dice.
 card("s5", 17.5, 3.75, f"""
 <div class="num" style="top:196px">3</div>
 <div class="h" style="top:300px;font-size:128px">שחקן אחד</div>
 <div class="sub" style="top:452px;font-size:56px">רק אחד מטיל, בשביל כולם</div>
-<svg class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
-  <circle cx="540" cy="960" r="276" fill="#3e2616" stroke="rgba(201,163,107,.6)" stroke-width="3"/>
-  <circle cx="540" cy="960" r="250" fill="none" stroke="rgba(0,0,0,.35)" stroke-width="30"/>
-  {''.join(f'<circle cx="{x}" cy="{y}" r="54" fill="#1b130d" stroke="{GOLD}" stroke-width="2.5"/>' for x, y in [(540, 760), (340, 960), (540, 1160), (740, 960)])}
-  {diners}
-  <circle id="s5-ring" cx="848" cy="960" r="132" fill="rgba(201,163,107,.16)" stroke="{GOLD}" stroke-width="6"/>
-  <g transform="translate(848 960) rotate(-90)"><ellipse cx="0" cy="34" rx="104" ry="58" fill="#5b4433"/><circle cx="0" cy="-6" r="46" fill="#2a1d16"/></g>
-</svg>
-{die("s5-dA", 1, 664, 880, 84)}{die("s5-dB", 6, 664, 980, 84)}
-""", js="""tl.set("#s5-dA", { rotation: -8 }, 0); tl.set("#s5-dB", { rotation: 12 }, 0);""")
+<div style="position:absolute;left:90px;top:560px;width:900px;height:1080px;border-radius:36px;overflow:hidden;box-shadow:inset 0 0 0 4px {GOLD}, 0 24px 50px rgba(0,0,0,.55)">
+  <img id="s5-img" src="assets/hf/S5.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%">
+  <div style="position:absolute;inset:0;border-radius:36px;box-shadow:inset 0 0 0 4px {GOLD}"></div>
+</div>
+""")
 
 # 6a. Rule 4: the throw that doesn't count
 MISS_PATHS = f"""<svg class="art" style="left:0;top:0;width:1000px;height:2600px" viewBox="0 0 1000 2600" data-layout-ignore>
@@ -343,26 +335,16 @@ card("s10", 43.75, 3.75, f"""
 </svg>
 """)
 
-# 11. Smile, you're on camera
-FIG = """<g transform="translate({x} {y})"><path d="M-70 120 Q-70 20 0 20 Q70 20 70 120 Z" fill="{c}"/>
-<path d="M-50 40 L-96 -60" stroke="{c}" stroke-width="30" stroke-linecap="round"/><path d="M50 40 L96 -60" stroke="{c}" stroke-width="30" stroke-linecap="round"/>
-<circle cx="-98" cy="-66" r="17" fill="{s}"/><circle cx="98" cy="-66" r="17" fill="{s}"/>
-<circle cx="0" cy="-20" r="44" fill="{s}"/><path d="M-44 -26 Q-40 -72 0 -70 Q40 -72 44 -26 Q30 -50 0 -50 Q-30 -50 -44 -26 Z" fill="{h}"/>
-<path d="M-16 -8 Q0 6 16 -8" fill="none" stroke="#5a3424" stroke-width="5" stroke-linecap="round"/></g>"""
-figs = "".join(FIG.format(x=x, y=y, c=c, s=s, h=h) for x, y, c, s, h in [
-    (390, 1040, "#7a2e2a", SKIN, "#2a1d16"), (540, 1000, "#2f3340", "#c38d63", "#1a1712"), (690, 1040, "#5b4433", "#e3b98f", "#4a3020")])
+# 11. Smile, you're on camera. The winners still (assets/hf/S11.png) inside the phone, a punch-in on each flash.
 card("s11", 47.5, 5.0, f"""
 <div class="h" style="top:200px;font-size:110px">חייכו,<br>אתם מצולמים!</div>
 <div class="sub" style="top:446px;font-size:52px">רגעי הזכייה עולים לרשתות שלנו</div>
-<div style="position:absolute;left:300px;top:556px;width:480px;height:770px;border-radius:56px;background:#0f0d0c;box-shadow:inset 0 0 0 4px {GOLD}, 0 24px 50px rgba(0,0,0,.6)"></div>
-<div style="position:absolute;left:320px;top:590px;width:440px;height:700px;border-radius:38px;overflow:hidden;background:radial-gradient(ellipse 80% 60% at 50% 60%, #4a2c18 0%, #1c120c 80%)">
-  <svg class="art" style="left:-300px;top:-590px;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
-    <rect x="300" y="1150" width="480" height="200" fill="#1a6b3c"/><g id="s11-figs">{figs}</g>
-    <rect x="300" y="1150" width="480" height="12" fill="#9a6539"/></svg>
+<div style="position:absolute;left:225px;top:556px;width:630px;height:1100px;border-radius:64px;background:#0f0d0c;box-shadow:inset 0 0 0 4px {GOLD}, 0 24px 50px rgba(0,0,0,.6)"></div>
+<div style="position:absolute;left:247px;top:592px;width:586px;height:1028px;border-radius:44px;overflow:hidden;background:radial-gradient(ellipse 80% 60% at 50% 60%, #4a2c18 0%, #1c120c 80%)">
+  <img id="s11-img" src="assets/hf/S11.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
   <div id="s11-flash" style="position:absolute;inset:0;background:#fff8e8;opacity:0"></div>
   <div style="position:absolute;top:24px;left:26px;direction:ltr;font-family:Heebo,sans-serif;font-weight:700;font-size:30px;color:{IVORY}"><span id="s11-dot" style="display:inline-block;width:20px;height:20px;border-radius:50%;background:#e23b2e;margin-right:10px;vertical-align:-1px"></span>REC</div>
 </div>
-{die("s11-dA", 6, 452, 1176, 70)}{die("s11-dB", 6, 548, 1182, 70)}
 """)
 
 # 12. End card
@@ -407,9 +389,7 @@ tl.fromTo("#s4-dB", { rotation: 10 }, { rotation: -80, duration: 3.75, ease: "no
 tl.fromTo("#s4-x1", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.6, ease: "power2.inOut" }, 0.3);
 """,
 "s5": """
-tl.fromTo(["#s5-dA", "#s5-dB"], { x: -360, rotation: -200 }, { x: 0, rotation: (i) => (i ? 12 : -8), duration: 1.3, ease: "power3.out", stagger: 0.08 }, 0.1);
-DiceKit.tumble(tl, "#s5-dA", 0.1, 1.0, 1, 1 / 10, 1); DiceKit.tumble(tl, "#s5-dB", 0.18, 1.08, 6, 1 / 10, 3);
-tl.fromTo("#s5-ring", { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, transformOrigin: "50% 50%", duration: 0.5, ease: "back.out(1.6)" }, 1.25);
+tl.fromTo("#s5-img", { scale: 1, transformOrigin: "47% 30%" }, { scale: 1.12, transformOrigin: "47% 30%", duration: 3.75, ease: "power1.inOut" }, 0);
 """,
 "s6a": """
 DiceKit.pose(tl, "#s6a-hand", "fist", 0); DiceKit.pose(tl, "#s6a-hand", "release", 0.3); DiceKit.pose(tl, "#s6a-hand", "open", 0.4);
@@ -485,13 +465,13 @@ tl.fromTo("#s10-title", { backgroundPosition: "100% 0" }, { backgroundPosition: 
 "s11": """
 tl.fromTo("#s11-flash", { opacity: 0 }, { opacity: 0.9, duration: 0.05, ease: "none" }, 0.625);
 tl.to("#s11-flash", { opacity: 0, duration: 0.4, ease: "power2.out" }, 0.68);
-tl.fromTo("#s11-figs", { y: 0 }, { y: -46, duration: 0.3, ease: "power2.out" }, 0.7);
-tl.to("#s11-figs", { y: 0, duration: 0.35, ease: "bounce.out" }, 1.0);
+tl.fromTo("#s11-img", { scale: 1 }, { scale: 1.07, duration: 0.3, ease: "power2.out" }, 0.66);
+tl.to("#s11-img", { scale: 1.02, duration: 2.1, ease: "power1.inOut" }, 0.96);
 for (let k = 0; k < 10; k++) tl.set("#s11-dot", { opacity: k % 2 ? 0.15 : 1 }, k * 0.5);
 tl.fromTo("#s11-flash", { opacity: 0 }, { opacity: 0.85, duration: 0.05, ease: "none", immediateRender: false }, 3.125);
 tl.to("#s11-flash", { opacity: 0, duration: 0.4, ease: "power2.out" }, 3.18);
-tl.to("#s11-figs", { y: -40, duration: 0.3, ease: "power2.out" }, 3.2);
-tl.to("#s11-figs", { y: 0, duration: 0.35, ease: "bounce.out" }, 3.5);
+tl.to("#s11-img", { scale: 1.09, duration: 0.3, ease: "power2.out" }, 3.16);
+tl.to("#s11-img", { scale: 1.04, duration: 1.5, ease: "power1.inOut" }, 3.46);
 """,
 "s12": """
 DiceKit.pose(tl, "#s12-hand", "fist", 0); DiceKit.pose(tl, "#s12-hand", "release", 0.32); DiceKit.pose(tl, "#s12-hand", "open", 0.42);
