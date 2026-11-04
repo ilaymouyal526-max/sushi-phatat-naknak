@@ -1,6 +1,6 @@
 # HANDOFF: Yoko Ono dice-game video
 
-Updated after every step. Last update: the 3 Kling clips are generated (15 credits, approved; balance 1156.25) and wired in place of the 3D opening. Draft v5 is rendered (68.125 s, no freezes) and sent to the user.
+Updated after every step. Last update: final deliverables rendered: the Reels master, the screen loop and the 15 s cut. The script is in Hebrew and SPEC is at v5. Waiting on the user's feedback and the Instagram handle.
 
 ## What this is
 An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at **Yoko Ono Asian Kitchen** (Ahuza 124, Ra'anana).
@@ -118,8 +118,13 @@ ffmpeg -i renders/x.mp4 -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +fasts
    - `assets/hf/S5.png` (job `8ed8d89f-a83f-4032-bab4-f937244d1d3b`): four friends point at the man holding the dice. It sits in a gold frame (900×1080) with a slow push-in.
    - `assets/hf/S11.png` (job `59180353-76ea-41a9-a4dd-05286936674f`): the couple celebrate a double six. It sits inside the enlarged phone with a punch-in on each flash.
    - The old drawn diners and figures were removed. Lint is 0/0 and `check` passes.
-5. Rewrite `../dice_game_script.md` and `SPEC.md` in Hebrew only for the current film.
-6. Final renders: the Reels master, a silent loop for the restaurant screen, and a 15 s cutdown.
+5. ~~Rewrite `../dice_game_script.md` (Hebrew only) and `SPEC.md` (v5)~~ (done).
+6. ~~Final renders~~ (done; `renders/` is gitignored, so re-render to get them back):
+   - `yoko-dice-reels-master.mp4`: delivery quality, 68.125 s, −16.1 LUFS, peak −1.6 dBFS, no freezes.
+   - `tools/derive.sh` → `yoko-dice-screen-loop.mp4`: silent.
+   - `tools/derive.sh` → `yoko-dice-15s.mp4`: the chef, the perfect throw, −50%, the jackpot and the end card.
+   - The `*-send.mp4` files are compressed copies for chat.
+7. When the user sends the Instagram handle: replace `@[instagram]` in `build.py` (card s12), then re-render the master and run `tools/derive.sh`.
 
 ## Still open with the user
 - The Instagram handle for the end card (currently `@[instagram]`). The user will upload the restaurant's site.
