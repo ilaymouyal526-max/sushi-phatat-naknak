@@ -1,6 +1,6 @@
 # HANDOFF: Yoko Ono dice-game video
 
-Updated after every step. Last update: the 3 Kling clips are generated (15 credits, approved; balance 1156.25) and wired in place of the 3D opening. Draft v5 is rendering.
+Updated after every step. Last update: the 3 Kling clips are generated (15 credits, approved; balance 1156.25) and wired in place of the 3D opening. Draft v5 is rendered (68.125 s, no freezes) and sent to the user.
 
 ## What this is
 An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at **Yoko Ono Asian Kitchen** (Ahuza 124, Ra'anana).
@@ -113,7 +113,7 @@ ffmpeg -i renders/x.mp4 -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +fasts
    - Kling std clips P1 3 s (4.5), P2 4 s (6), P3 3 s (4.5).
 
    F4 (the hand scooping the dice) stays in code.
-3. ~~Integrate the clips~~ (done; lint 0/0). **Now:** draft v5 (`renders/draft-v5.mp4`), freezedetect, send to the user.
+3. ~~Integrate the clips~~ (done; lint 0/0). Draft v5 (`renders/draft-v5.mp4`) was rendered, freezedetect found no freezes, and the preview was sent. **Waiting on the user's feedback.**
 4. Make the hand and the characters in cards 1, 5, 6a, 6b, 11 and 12 match the new realistic style.
 5. Rewrite `../dice_game_script.md` and `SPEC.md` in Hebrew only for the current film.
 6. Final renders: the Reels master, a silent loop for the restaurant screen, and a 15 s cutdown.
