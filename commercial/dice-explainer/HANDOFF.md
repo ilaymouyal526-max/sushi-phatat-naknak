@@ -1,6 +1,6 @@
 # HANDOFF: Yoko Ono dice-game video
 
-Updated after every step. Last update: F3 generated (0.25, approved); the 3 Kling std clips approved (15 credits) and being generated.
+Updated after every step. Last update: the 3 Kling clips are generated (15 credits, approved; balance 1156.25) and wired in place of the 3D opening. Draft v5 is rendering.
 
 ## What this is
 An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at **Yoko Ono Asian Kitchen** (Ahuza 124, Ra'anana).
@@ -24,7 +24,7 @@ An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at
 ## Structure
 | Time | Part | File(s) |
 |---|---|---|
-| 0–9.375 s | Opening with characters (P1 asking for the bill, P2 cashier "לא, לא, לא… קודם מטילים את הקוביות!", P3 surprise, then the hand scoops the dice) | `compositions/a3d.html` (Three.js canvas), `p1`/`p2`/`p3` overlays (bubbles, the "?!" marks, the felt close-up) |
+| 0–9.375 s | Opening with characters (P1 asking for the bill, P2 cashier "לא, לא, לא… קודם מטילים את הקוביות!", P3 surprise, then the hand scoops the dice) | 3 Higgsfield clips as `<video>` in `index.html` (`CLIPS` in `build.py`: `assets/hf/P1-3-fit.mp4`), plus the `p1`/`p2`/`p3` overlays (bubbles, the "?!" marks, the felt close-up from 8.125 s) |
 | 9.375–68.125 s | 14 explainer cards (s1 hook … s12 end card), shifted by `INTRO` | `compositions/s1…s12.html` |
 | 9.375 s on | Gold frame, grain, "*בכפוף לתקנון" footer | `compositions/frame.html` |
 
@@ -37,7 +37,12 @@ An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at
 - `assets/dice-kit.js`:
   - `DiceKit.mount`, `setFace`, `setRoll` (12 tumbling poses), `tumble`, `pose` (the hand: fist, release, open).
   - The dice are now `<img>` renders from `assets/img/`.
-- `assets/avatars3d.js`: the current 3D characters in Three.js (Pixar-lite primitives, a warm terrace and café). **These will be replaced** by the Higgsfield characters (below).
+- `assets/hf/`: the Higgsfield stills (`F1-3.png`) and the opening clips fitted to 1080×1920 at 24 fps (`P1-3-fit.mp4`; P1 is stretched to 3.125 s, P2 is trimmed to 3.75 s, and only the first 1.25 s of P3 is used). The raw Kling outputs are in `sources/`.
+  - Clip jobs:
+    - P1 `86a65910-b2c0-498e-aafb-11419ca2362f`;
+    - P2 `cff585d6-4677-4b7b-917f-1495b7e486d1`;
+    - P3 `8ffc6d23-3712-4572-ac75-576dab9e4cfe`.
+  - The old Three.js opening (`avatars3d.js`, `a3d.html`) has been removed.
 - `tools/props.html` + `tools/render_props.js`: realistic props rendered once with Three.js + Playwright into `assets/img/`: `die-1..6.png`, `die-roll-0..11.png`, `receipt.png`, `coin.png`, `knife.png`, `hand-fist/release/open.png`. Run it with `node tools/render_props.js`.
 - `assets/vendor/`: `gsap.min.js` 3.15.0 and `three.min.js` r159. Both are local, because jsdelivr is blocked.
 - `assets/sfx/`: Pixabay SFX bundled with HyperFrames, plus `manifest.json` (lengths).
@@ -108,7 +113,7 @@ ffmpeg -i renders/x.mp4 -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +fasts
    - Kling std clips P1 3 s (4.5), P2 4 s (6), P3 3 s (4.5).
 
    F4 (the hand scooping the dice) stays in code.
-3. Integrate the clips: a `<video muted>` sub-composition replaces `a3d`; the bubbles stay as overlays; the cut to card 1 still goes through the hand.
+3. ~~Integrate the clips~~ (done; lint 0/0). **Now:** draft v5 (`renders/draft-v5.mp4`), freezedetect, send to the user.
 4. Make the hand and the characters in cards 1, 5, 6a, 6b, 11 and 12 match the new realistic style.
 5. Rewrite `../dice_game_script.md` and `SPEC.md` in Hebrew only for the current film.
 6. Final renders: the Reels master, a silent loop for the restaurant screen, and a 15 s cutdown.

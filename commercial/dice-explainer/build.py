@@ -532,23 +532,24 @@ def bubble(id_, text, top, size, tail_x, tail_up=False):
             f'<span style="position:absolute;{tail};width:40px;height:40px;background:{IVORY};border-right:4px solid {GOLD};border-bottom:4px solid {GOLD};rotate:{225 if tail_up else 45}deg"></span></div></div>')
 
 
-# The 3D actors live in one canvas composition (a3d, assets/avatars3d.js); p1-p3 are transparent overlays on top.
+# The opening actors are three Higgsfield clips (assets/hf/P1-3-fit.mp4, Kling from the F1-F3 stills) mounted in index();
+# p1-p3 are transparent overlays on top (speech bubbles, the "?!", then the felt close-up in code).
 OVERLAY_CSS = "#root { background: transparent; }"
 INTRO_CARDS = []
 INTRO_CARDS.append(dict(id="p1", start=0, dur=3.125, css=OVERLAY_CSS, body=f"""
-{bubble("p1-say", "אפשר חשבון?", 250, 74, 230)}
+{bubble("p1-say", "אפשר חשבון?", 1150, 74, 90, tail_up=True)}
 """, js="""
 tl.fromTo("#p1-say", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(1.8)" }, 0.55);
 """))
 INTRO_CARDS.append(dict(id="p2", start=3.125, dur=3.75, css=OVERLAY_CSS, body=f"""
-{bubble("p2-say", "לא, לא, לא…<br>קודם מטילים את הקוביות!", 230, 64, 640)}
+{bubble("p2-say", "לא, לא, לא…<br>קודם מטילים את הקוביות!", 700, 64, 560, tail_up=True)}
 """, js="""
 tl.fromTo("#p2-say", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(1.8)" }, 0.7);
 """))
 INTRO_CARDS.append(dict(id="p3", start=6.875, dur=2.5, css=OVERLAY_CSS, body=f"""
 <svg class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
-  <text id="p3-q1" x="200" y="520" font-family="Frank Ruhl, serif" font-weight="900" font-size="130" fill="#fff4dc" stroke="#c9a36b" stroke-width="4" direction="ltr">?!</text>
-  <text id="p3-q2" x="790" y="540" font-family="Frank Ruhl, serif" font-weight="900" font-size="120" fill="#fff4dc" stroke="#c9a36b" stroke-width="4" direction="ltr">?</text>
+  <text id="p3-q1" x="60" y="290" font-family="Frank Ruhl, serif" font-weight="900" font-size="130" fill="#fff4dc" stroke="#c9a36b" stroke-width="4" direction="ltr">?!</text>
+  <text id="p3-q2" x="900" y="300" font-family="Frank Ruhl, serif" font-weight="900" font-size="120" fill="#fff4dc" stroke="#c9a36b" stroke-width="4" direction="ltr">?</text>
 </svg>
 <div id="p3-b" style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% 45%, #2a9a58 0%, #1a6b3c 45%, #0b3a20 100%)">
   {logo_svg("p3-felt-logo", 360, 300, 360, stroke="#d6b26e")}
@@ -564,25 +565,8 @@ tl.to(["#p3-dA", "#p3-dB"], { scale: 0.3, opacity: 0, duration: 0.1, ease: "powe
 tl.to("#p3-hand", { y: 300, duration: 0.7, ease: "power2.in" }, 1.8);
 """))
 
-A3D = """<template>
-  <style>
-    #root { position: absolute; inset: 0; background: #f6a36c; }
-    #a3d-canvas { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
-  </style>
-  <div id="root" data-composition-id="a3d" data-width="1080" data-height="1920">
-    <canvas id="a3d-canvas" width="1080" height="1920" data-layout-ignore></canvas>
-  </div>
-  <script>
-    (() => {
-      // The 3D actors: every frame is drawn from timeline time (hf-seek), so renders are deterministic.
-      const actors = Avatars3D.build(document.getElementById("a3d-canvas"));
-      window.addEventListener("hf-seek", (e) => actors.renderAt(e.detail.time));
-      actors.renderAt(0);
-      window.__timelines["a3d"] = gsap.timeline({ paused: true });
-    })();
-  </script>
-</template>
-"""
+# (start, duration, file) of the three opening clips, already fitted to 1080x1920 at 24 fps.
+CLIPS = [(0, 3.125, "P1-fit.mp4"), (3.125, 3.75, "P2-fit.mp4"), (6.875, 1.25, "P3-fit.mp4")]
 CARDS[:0] = INTRO_CARDS
 SFX = [("pop", 0.58, .7), ("click-soft", 3.2, .8), ("pop", 3.83, .8), ("pop", 7.18, .6), ("whoosh-short", 8.13, .6), ("click", 8.58, .8)] + SFX
 
@@ -618,6 +602,10 @@ def index():
     audio = "\n".join(
         f'      <audio id="sfx-{i:02d}" class="clip" src="assets/sfx/{f}.mp3" data-start="{t}" data-duration="{SFX_LEN[f]}" data-track-index="{40 + i}" data-volume="{v}"></audio>'
         for i, (f, t, v) in enumerate(SFX))
+    clips = "\n".join(
+        f'      <video id="clip-{k + 1}" class="clip" src="assets/hf/{f}" muted playsinline data-start="{t}" data-duration="{d}" data-track-index="{30 + k}" '
+        f'style="z-index:0;position:absolute;inset:0;width:1080px;height:1920px;object-fit:cover"></video>'
+        for k, (t, d, f) in enumerate(CLIPS))
     hosts = "\n".join(
         f'      <div id="{c["id"]}" style="z-index:{i + 1}" data-composition-id="{c["id"]}" data-composition-src="compositions/{c["id"]}.html" '
         f'data-start="{c["start"]}" data-duration="{c["dur"]}" data-track-index="{i + 1}" data-track-kind="graphics" data-width="1080" data-height="1920"></div>'
@@ -629,8 +617,6 @@ def index():
     <meta name="viewport" content="width=1080, height=1920" />
     <script src="assets/vendor/gsap.min.js"></script>
     <script src="assets/dice-kit.js"></script>
-    <script src="assets/vendor/three.min.js"></script>
-    <script src="assets/avatars3d.js"></script>
     <style>
       * {{ margin: 0; padding: 0; box-sizing: border-box; }}
       html, body {{ margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: {INK}; }}
@@ -640,7 +626,7 @@ def index():
   <body>
     <!-- Generated by build.py: 14 finished Noir & Or cards, Hebrew only. Edit build.py, not this file. -->
     <div id="root" data-composition-id="main" data-start="0" data-duration="{TOTAL}" data-width="1080" data-height="1920" data-fps="24">
-      <div id="a3d" style="z-index:0" data-composition-id="a3d" data-composition-src="compositions/a3d.html" data-start="0" data-duration="8.125" data-track-index="0" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
+{clips}
 {hosts}
 {audio}
       <div id="frame" style="z-index:50" data-composition-id="frame" data-composition-src="compositions/frame.html" data-start="{INTRO}" data-duration="{TOTAL - INTRO}" data-track-index="20" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
@@ -691,6 +677,5 @@ if __name__ == "__main__":
     for c in CARDS:
         (ROOT / "compositions" / f'{c["id"]}.html').write_text(composition(c))
     (ROOT / "compositions" / "frame.html").write_text(FRAME)
-    (ROOT / "compositions" / "a3d.html").write_text(A3D)
     (ROOT / "index.html").write_text(index())
     print(f"built {len(CARDS)} cards, {TOTAL}s")
