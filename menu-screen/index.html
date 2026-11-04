@@ -41,7 +41,7 @@ html,body{height:100%;background:#000;overflow:hidden;cursor:none}
 .logo-sm svg,.logo-lg svg{width:100%;height:auto;display:block}
 
 /* ---- Dish ---- */
-.visual{position:relative;overflow:hidden;margin-top:24px;width:936px;height:950px;background:#0b0a09}
+.visual{position:relative;overflow:hidden;margin-top:22px;width:936px;height:880px;background:#0b0a09}
 .visual .ph{position:absolute;inset:0;background-size:cover;background-position:center}
 .visual .ph{animation:kb var(--dur) linear forwards}
 .slide.alt .visual .ph{animation-name:kb2}
@@ -58,7 +58,7 @@ h1{margin-top:8px;font-weight:800;font-size:80px;line-height:.98;text-transform:
 .desc .fr{font-size:28px;color:var(--ivory-dim);line-height:1.35}
 .desc .en{font-family:"Cormorant";font-style:italic;font-weight:600;font-size:33px;color:var(--muted);line-height:1.2}
 .desc .he{font-size:29px;color:var(--ivory-dim);line-height:1.4}
-.price{margin-top:24px;padding:10px 34px;border:1.5px solid var(--gold);color:var(--gold-light);font-weight:700;font-size:40px;letter-spacing:.04em}
+.price{margin-top:20px;padding:8px 30px;direction:rtl;font-family:"Heebo",sans-serif;border:1.5px solid var(--gold);color:var(--gold-light);font-weight:700;font-size:36px;letter-spacing:.02em}
 
 /* game reminder strip on every dish slide */
 .strip{position:absolute;left:60px;right:60px;bottom:58px;display:flex;align-items:center;justify-content:center;gap:16px;
@@ -128,22 +128,26 @@ const CONFIG = {
   gameSeconds: 9,
   brandSeconds: 7,
   gameEvery: 1,            // show the dice-game slide after every N dishes
+  // Names, descriptions and prices from the restaurant menu (MENU_FINAL_HEBSP.pdf)
   dishes: [
     { photo: "images/gyoza-marble.jpg",
-      name: "Gyoza", he: "גיוזה",
-      fr: "Raviolis japonais grillés, sauce soja et sésame",
-      en: "Pan-fried dumplings, soy sauce and sesame",
-      heDesc: "כיסוני גיוזה צרובים, רוטב סויה ושומשום", price: null },
+      name: "Gyoza", he: "גיוזה עוף · בקר",
+      fr: "4 raviolis frits au poulet ou au bœuf, salade thaïe",
+      en: "4 fried dumplings, chicken or beef, with Thai salad",
+      heDesc: "ארבעה כיסונים עדינים מטוגנים במילוי עוף או בקר, מוגש עם סלט תאילנדי",
+      price: "עוף 55 ₪ · בקר 59 ₪" },
     { photo: "images/crispy-chicken-marble.jpg",
-      name: "Poulet croustillant", he: "עוף קריספי",
-      fr: "Sauté au wok, sauce laquée, riz et oignons frits",
-      en: "Wok-tossed in a glossy sauce, with rice and crispy shallots",
-      heDesc: "מוקפץ בווק ברוטב מבריק, לצד אורז ובצל מטוגן", price: null },
+      name: "Poulet caramel tempura", he: "עוף קרמל בטמפורה",
+      fr: "Sauce caramel, oignons caramélisés et sésame, servi avec du riz",
+      en: "Caramel sauce, caramelised onions and sesame, served with rice",
+      heDesc: "ברוטב קרמל עם בצלים מקורמלים, מצופה שומשום, מוגש עם אורז",
+      price: "72 ₪" },
     { photo: "images/chicken-wok-marble.jpg",
-      name: "Poulet sauté au wok", he: "מוקפץ עוף",
-      fr: "Poivrons rouges et jaunes, pousses de soja, à feu vif",
-      en: "Red and yellow peppers and bean sprouts, over high heat",
-      heDesc: "פלפלים אדומים וצהובים ונבטים, על אש גבוהה", price: null },
+      name: "Nouilles sautées au wok", he: "נודלס הבית מוקפץ בווק",
+      fr: "Nouilles fraîches, poivron, chou, carotte, soja et cacahuètes",
+      en: "Fresh noodles, peppers, cabbage, carrot, sprouts and peanuts",
+      heDesc: "אטריות טריות, גמבה, כרוב, גזר, נבטי סויה ובוטנים ברוטב ווק מתקתק",
+      price: "עוף 69 ₪ · טמפורה 72 ₪ · צמחוני 59 ₪" },
   ],
 };
 /* ============================================ */
