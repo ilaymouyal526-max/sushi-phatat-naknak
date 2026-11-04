@@ -45,9 +45,11 @@ function stage(w, h, camPos, look) {
 const PIPS = { 1: [[0, 0]], 2: [[-1, -1], [1, 1]], 3: [[-1, -1], [0, 0], [1, 1]], 4: [[-1, -1], [1, -1], [-1, 1], [1, 1]], 5: [[-1, -1], [1, -1], [0, 0], [-1, 1], [1, 1]], 6: [[-1, -1], [-1, 0], [-1, 1], [1, -1], [1, 0], [1, 1]] };
 function die() {
   const g = new T.Group();
-  const body = new T.Mesh(new T.BoxGeometry(1, 1, 1, 1, 1, 1), new T.MeshPhysicalMaterial({
-    color: "#ff2a45", transmission: 0.9, thickness: 0.8, ior: 1.49, roughness: 0.03, clearcoat: 1, clearcoatRoughness: 0.02,
-    attenuationColor: new T.Color("#c4001e"), attenuationDistance: 1.1, specularIntensity: 1, envMapIntensity: 1.1 }));
+  // A real cube with slightly rounded edges (like the casino dice on the table photo). Dense red acrylic: just
+  // enough transmission to glow, not enough for the far pips to smear into blobs.
+  const body = new T.Mesh(roundedBox(1, 1, 1, 0.06, 10), new T.MeshPhysicalMaterial({
+    color: "#e0102e", transmission: 0.35, thickness: 1.2, ior: 1.49, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.05,
+    attenuationColor: new T.Color("#8a0014"), attenuationDistance: 0.5, specularIntensity: 0.8, envMapIntensity: 0.9 }));
   body.castShadow = true; g.add(body);
   const pipM = new T.MeshStandardMaterial({ color: "#fbfaf7", roughness: 0.35 });
   // standard die: 1 opposite 6, 2 opposite 5, 3 opposite 4. Faces: +y=1, -y=6, +z=2, -z=5, +x=3, -x=4
@@ -55,13 +57,13 @@ function die() {
   for (const [n, nrm] of faces) {
     for (const [u, v] of PIPS[n]) {
       const r = n === 1 ? 0.11 : 0.085;
-      const pip = new T.Mesh(new T.CylinderGeometry(r, r, 0.012, 40), pipM);
+      const pip = new T.Mesh(new T.CylinderGeometry(r, r, 0.014, 40), pipM);
       const n3 = new T.Vector3(...nrm);
       pip.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), n3);
       // in-face axes
       const a = Math.abs(n3.y) > 0.5 ? new T.Vector3(1, 0, 0) : new T.Vector3(0, 1, 0);
       const b = new T.Vector3().crossVectors(n3, a);
-      pip.position.copy(n3.clone().multiplyScalar(0.497)).addScaledVector(a, u * 0.26).addScaledVector(b, v * 0.26);
+      pip.position.copy(n3.clone().multiplyScalar(0.499)).addScaledVector(a, u * 0.26).addScaledVector(b, v * 0.26);
       g.add(pip);
     }
   }
@@ -71,10 +73,10 @@ function die() {
 const UP = { 1: [0, 0, 0], 6: [Math.PI, 0, 0], 2: [Math.PI / 2, 0, 0], 5: [-Math.PI / 2, 0, 0], 3: [0, 0, Math.PI / 2], 4: [0, 0, -Math.PI / 2] };
 
 window.renderDie = (face, tumble = null) => {
-  const { scene, cam } = stage(408, 438, [0.22, 3.05, 1.1], [0, 0.5, 0.08]);
+  const { scene, cam } = stage(408, 438, [0.32, 4.3, 1.55], [0, 0.48, 0.1]);
   const d = die(); d.position.y = 0.5;
   const [x, y, z] = UP[face]; d.rotation.set(x, y, z);
-  if (tumble) { d.rotation.x += tumble[0]; d.rotation.y += tumble[1]; d.rotation.z += tumble[2]; d.position.y = 0.72; }
+  if (tumble) { d.rotation.x += tumble[0]; d.rotation.y += tumble[1]; d.rotation.z += tumble[2]; d.position.y = 0.62; }
   scene.add(d); renderer.render(scene, cam); return canvas.toDataURL("image/png");
 };
 
@@ -109,18 +111,6 @@ window.renderCoin = (tilt = 0) => {
   const gold = new T.MeshPhysicalMaterial({ color: "#f2c464", metalness: 1, roughness: 0.32, clearcoat: 0.4, envMapIntensity: 1.6 });
   const coin = new T.Mesh(new T.CylinderGeometry(0.62, 0.62, 0.09, 96), gold); coin.position.y = 0.05 + tilt * 0.3; coin.rotation.z = tilt; coin.castShadow = true; scene.add(coin);
   const ring = new T.Mesh(new T.TorusGeometry(0.47, 0.02, 12, 96), gold); ring.rotation.x = Math.PI / 2; ring.position.y = 0.1 + tilt * 0.3; ring.rotation.y = tilt; scene.add(ring);
-  renderer.render(scene, cam); return canvas.toDataURL("image/png");
-};
-window.renderKnife = () => {
-  const { scene, cam } = stage(900, 300, [-0.3, 4.6, 1.4], [-0.3, 0, 0]);
-  const sh = new T.Shape(); sh.moveTo(-1.6, 0); sh.lineTo(1.0, 0.0); sh.quadraticCurveTo(1.25, 0.06, 1.2, 0.2); sh.lineTo(-1.6, 0.2); sh.lineTo(-1.6, 0);
-  const blade = new T.Mesh(new T.ExtrudeGeometry(sh, { depth: 0.02, bevelEnabled: true, bevelThickness: 0.01, bevelSize: 0.008, bevelSegments: 2 }),
-    new T.MeshPhysicalMaterial({ color: "#eef1f4", metalness: 0.85, roughness: 0.28, envMapIntensity: 1.6 }));
-  blade.rotation.x = -Math.PI / 2; blade.position.y = 0.05; blade.castShadow = true; scene.add(blade);
-  const handle = new T.Mesh(new T.CapsuleGeometry(0.11, 0.9, 8, 24), new T.MeshPhysicalMaterial({ color: "#3a2416", roughness: 0.5, clearcoat: 0.6 }));
-  handle.rotation.z = Math.PI / 2; handle.position.set(-2.15, 0.12, -0.1); handle.castShadow = true; scene.add(handle);
-  const ferrule = new T.Mesh(new T.CylinderGeometry(0.12, 0.12, 0.08, 32), new T.MeshPhysicalMaterial({ color: "#d8b26a", metalness: 1, roughness: 0.3 }));
-  ferrule.rotation.z = Math.PI / 2; ferrule.position.set(-1.65, 0.12, -0.1); scene.add(ferrule);
   renderer.render(scene, cam); return canvas.toDataURL("image/png");
 };
 // The thrower's right hand, seen from the back, fingers up: the man from img 1 (navy blazer, white shirt cuff,

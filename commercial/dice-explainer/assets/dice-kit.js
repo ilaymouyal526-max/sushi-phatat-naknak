@@ -14,8 +14,8 @@
   // Vegas casino dice, rendered in real 3D by tools/render_props.js: 6 resting faces and 12 tumbling poses.
   function svg() {
     let s = "";
-    for (let n = 1; n <= 6; n++) s += `<img class="face f${n}" src="assets/img/die-${n}.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0">`;
-    for (let k = 0; k < 12; k++) s += `<img class="face roll" src="assets/img/die-roll-${k}.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0">`;
+    for (let n = 1; n <= 6; n++) s += `<img class="face f${n}" src="assets/img/die-${n}.png" alt="" style="position:absolute;left:-22%;top:-22%;width:144%;height:144%;opacity:0">`;
+    for (let k = 0; k < 12; k++) s += `<img class="face roll" src="assets/img/die-roll-${k}.png" alt="" style="position:absolute;left:-22%;top:-22%;width:144%;height:144%;opacity:0">`;
     return s;
   }
 

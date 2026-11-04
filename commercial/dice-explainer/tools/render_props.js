@@ -18,7 +18,6 @@ const OUT = path.join(__dirname, "..", "assets", "img");
   for (let k = 0; k < 12; k++) await save(`die-roll-${k}.png`, `renderDie(${(k % 6) + 1}, [${(0.35 + 0.22 * k).toFixed(2)}, ${(0.5 * k).toFixed(2)}, ${(0.6 - 0.17 * k).toFixed(2)}])`);
   await save("receipt.png", "renderReceipt()");
   await save("coin.png", "renderCoin(0)");
-  await save("knife.png", "renderKnife()");
   for (const p of ["fist", "release", "open"]) await save(`hand-${p}.png`, `renderHand("${p}")`);
   await browser.close();
 })();

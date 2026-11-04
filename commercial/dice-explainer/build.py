@@ -281,16 +281,13 @@ card("s6b", 25.0, 6.25, f"""
 """, css=FELT_CSS, js=place("s6b", 330, 700, 680, 820))
 
 # 7. Prize: double 1-2-3, 50% off
-RECEIPT = '<img src="assets/img/receipt.png" alt="" style="position:absolute;left:-60px;top:-110px;width:620px;height:auto">'
 card("s7", 31.25, 5.0, f"""
 <div class="h" style="top:206px;font-size:110px">דאבל 1 · 2 · 3</div>
 {die("s7-dA", 3, 392, 360, 130)}{die("s7-dB", 3, 558, 360, 130)}
 <div class="big foil" id="s7-pct" style="top:540px;font-size:300px"><span class="ltr">−50%*</span></div>
 <div class="sub" style="top:852px;font-size:58px">על כל החשבון של השולחן</div>
-<div id="s7-rcL" style="position:absolute;left:290px;top:960px;width:500px;height:360px;clip-path:polygon(0 0, 52% 0, 46% 100%, 0 100%)">{RECEIPT}</div>
-<div id="s7-rcR" style="position:absolute;left:290px;top:960px;width:500px;height:360px;clip-path:polygon(52% 0, 100% 0, 100% 100%, 46% 100%)">{RECEIPT.replace('receipt.png', 'receipt.png#right-half')}</div>
-<img id="s7-knife" class="art" src="assets/img/knife.png" alt="" style="left:560px;top:880px;width:520px;height:auto">
-""", js="""tl.set("#s7-rcL", { x: -34, y: 10, rotation: -5 }, 0); tl.set("#s7-rcR", { x: 34, y: -6, rotation: 4 }, 0); tl.set("#s7-knife", { rotation: -8 }, 0); tl.set("#s7-dA", { rotation: -8 }, 0); tl.set("#s7-dB", { rotation: 7 }, 0);""")
+<img id="s7-rc" class="art" src="assets/img/receipt.png" alt="" style="left:325px;top:930px;width:430px;height:auto">
+""", js="""tl.set("#s7-rc", { rotation: -3 }, 0); tl.set("#s7-dA", { rotation: -8 }, 0); tl.set("#s7-dB", { rotation: 7 }, 0);""")
 
 # 8. Prize: double 4-5-6, jackpot
 PETALS = "".join(
@@ -435,9 +432,6 @@ for (const [i, f] of [[0, 1], [1, 2], [2, 3]]) {
   DiceKit.setFace(tl, "#s7-dA", f, i * 0.625); DiceKit.setFace(tl, "#s7-dB", f, i * 0.625);
   tl.fromTo(["#s7-dA", "#s7-dB"], { scale: 1.25 }, { scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: i === 0 }, i * 0.625);
 }
-tl.fromTo("#s7-knife", { x: 520, y: -40, rotation: -8 }, { x: -760, y: 60, rotation: -14, duration: 0.55, ease: "power3.in" }, 1.85);
-tl.fromTo("#s7-rcL", { x: 0, y: 0, rotation: 0 }, { x: -34, y: 10, rotation: -5, duration: 0.6, ease: "expo.out" }, 2.25);
-tl.fromTo("#s7-rcR", { x: 0, y: 0, rotation: 0 }, { x: 34, y: -6, rotation: 4, duration: 0.6, ease: "expo.out" }, 2.25);
 tl.fromTo("#s7-pct", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.4, ease: "power2.inOut" }, 2.3);
 """,
 "s8": """
@@ -492,8 +486,7 @@ SFX = [  # (file, time in s, volume)
     ("sparkle", 6.75, .5), ("whoosh-short", 10.05, .7), ("pop", 14.1, .5), ("whoosh-short", 17.65, .6), ("pop", 18.85, .6),
     ("whoosh", 21.55, .8), ("click-soft", 22.4, .9), ("click", 22.47, .9), ("impact-bass-2", 23.22, .8), ("pop", 23.88, .8),
     ("whoosh", 25.55, .8), ("click", 26.27, 1.0), ("click", 26.9, 1.0), ("impact-bass-1", 28.27, .8),
-    ("pop", 31.3, .6), ("pop", 31.92, .6), ("pop", 32.55, .6), ("whoosh-short", 33.12, .8), ("impact-bass-2", 33.52, .8),
-    ("riser", 34.6, .6), ("pop", 36.3, .6), ("pop", 36.92, .6), ("impact-bass-1", 37.55, 1.0), ("sparkle", 37.6, .6),
+    ("pop", 31.3, .6), ("pop", 31.92, .6), ("pop", 32.55, .6), ("riser", 34.6, .6), ("pop", 36.3, .6), ("pop", 36.92, .6), ("impact-bass-1", 37.55, 1.0), ("sparkle", 37.6, .6),
     ("whoosh-short", 41.3, .7), ("click-soft", 42.1, .9), ("click", 44.72, .9), ("sparkle", 44.98, .5),
     ("click", 48.17, .9), ("click", 50.67, .9), ("whoosh", 52.86, .8), ("click-soft", 53.55, .9), ("impact-bass-1", 54.0, .7), ("sparkle", 54.0, .5),
 ]

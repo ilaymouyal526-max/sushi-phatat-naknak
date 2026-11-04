@@ -1,6 +1,6 @@
 # HANDOFF: Yoko Ono dice-game video
 
-Updated after every step. Last update: final deliverables rendered: the Reels master, the screen loop and the 15 s cut. The script is in Hebrew and SPEC is at v5. Waiting on the user's feedback and the Instagram handle.
+Updated after every step. Last update: user feedback round after the finals: knife/cut removed from card 7, dice rebuilt as clean rounded cubes. The hand in Kling is priced and waiting for approval; the user is asking the owner for feedback.
 
 ## What this is
 An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at **Yoko Ono Asian Kitchen** (Ahuza 124, Ra'anana).
@@ -125,6 +125,11 @@ ffmpeg -i renders/x.mp4 -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +fasts
    - `tools/derive.sh` → `yoko-dice-15s.mp4`: the chef, the perfect throw, −50%, the jackpot and the end card.
    - The `*-send.mp4` files are compressed copies for chat.
 7. When the user sends the Instagram handle: replace `@[instagram]` in `build.py` (card s12), then re-render the master and run `tools/derive.sh`.
+
+## Feedback round 1 (after the finals)
+- **Card 7:** the knife moved sideways while the receipt split top to bottom, which looked odd. The user asked to drop it. The knife, the split and their two SFX are removed; the whole receipt now sits under the subline (430 px wide). `knife.png` and `renderKnife` are deleted.
+- **Dice:** they "didn't look like dice". There were two causes: the camera was framed too tight, so the die was cut off at the image edges, and the high transmission refracted the far pips into blobs. Fixed with a rounded cube (r 0.06), denser acrylic (transmission 0.35), a wider camera ([0.32, 4.3, 1.55]) and tumble height 0.62. DiceKit draws each image at 144% so the dice keep their size on screen.
+- **Hand:** the user wants the hand scene made in Kling too. Priced: still 0.25 + Kling std 3 s clip 4.5. **Not generated; waiting for a yes.**
 
 ## Still open with the user
 - The Instagram handle for the end card (currently `@[instagram]`). The user will upload the restaurant's site.
