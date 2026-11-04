@@ -316,7 +316,7 @@ card("s7", 31.25, 5.0, f"""
 <div class="big foil" id="s7-pct" style="top:540px;font-size:300px"><span class="ltr">−50%*</span></div>
 <div class="sub" style="top:852px;font-size:58px">על כל החשבון של השולחן</div>
 <div id="s7-rcL" style="position:absolute;left:290px;top:960px;width:500px;height:360px;clip-path:polygon(0 0, 52% 0, 46% 100%, 0 100%)">{RECEIPT}</div>
-<div id="s7-rcR" style="position:absolute;left:290px;top:960px;width:500px;height:360px;clip-path:polygon(52% 0, 100% 0, 100% 100%, 46% 100%)">{RECEIPT}</div>
+<div id="s7-rcR" style="position:absolute;left:290px;top:960px;width:500px;height:360px;clip-path:polygon(52% 0, 100% 0, 100% 100%, 46% 100%)">{RECEIPT.replace('receipt.png', 'receipt.png#right-half')}</div>
 <img id="s7-knife" class="art" src="assets/img/knife.png" alt="" style="left:560px;top:880px;width:520px;height:auto">
 """, js="""tl.set("#s7-rcL", { x: -34, y: 10, rotation: -5 }, 0); tl.set("#s7-rcR", { x: 34, y: -6, rotation: 4 }, 0); tl.set("#s7-knife", { rotation: -8 }, 0); tl.set("#s7-dA", { rotation: -8 }, 0); tl.set("#s7-dB", { rotation: 7 }, 0);""")
 

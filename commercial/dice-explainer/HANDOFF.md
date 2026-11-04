@@ -1,6 +1,6 @@
 # HANDOFF: Yoko Ono dice-game video
 
-Updated after every step. Last update: stage 5b props committed (`bc3685b`), not yet snapshot-reviewed.
+Updated after every step. Last update: stage 5b step 1 done (props reviewed and tuned). Next: a realistic hand.
 
 ## What this is
 An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at **Yoko Ono Asian Kitchen** (Ahuza 124, Ra'anana).
@@ -78,11 +78,14 @@ ffmpeg -i renders/x.mp4 -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +fasts
    - **5b, realistic props (free, in progress).**
      - Rendered: translucent dice (6 faces + 12 rolls), receipt, coin, knife.
      - DiceKit now uses the dice images. Cards 7 (receipt, knife) and 10 (coins) use the renders.
-     - **Committed in `bc3685b`.** Lint: 0 errors, 1 warning, not yet looked at.
-     - **Not yet snapshot-reviewed.**
+     - **Reviewed and tuned:**
+       - tighter die framing, soft shadow (radius 18);
+       - the receipt's right half uses `receipt.png#right-half` to clear lint's duplicate-media warning.
+     - Lint 0/0. Snapshots look right on s1, s2, s3b, s4, s7, s8, s11 and s12.
 
 ## Next steps
-1. Snapshot the props cards (s3b ≈ 21 s, s4 ≈ 25 s, s7 ≈ 43 s, s8 ≈ 48 s, s10 ≈ 55 s, s12 ≈ 64 s). Check that the dice and receipt look right, then run `lint`/`check`. Commit and push.
+1. ~~Snapshot and tune the props~~ (done).
+1b. **Now:** a realistic hand in `tools/props.html`, rendered with three.js in 3 poses (fist, release, open). Navy blazer sleeve and a white shirt cuff, to match the man in img 1. It goes into `assets/img/hand-*.png`, and `DiceKit.pose` + `hand_svg` in `build.py` switch to it.
 2. When the designer subagent reports, show the user the **exact cost table** and wait for "yes". Then generate **sample stills only** (F1 and F2) and wait for approval. Then F3, F4 and the clips, each priced and approved separately.
 3. Integrate the clips: a `<video muted>` sub-composition replaces `a3d`; the bubbles stay as overlays; the cut to card 1 still goes through the hand.
 4. Make the hand and the characters in cards 1, 5, 6a, 6b, 11 and 12 match the new realistic style.

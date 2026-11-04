@@ -33,11 +33,11 @@ function stage(w, h, camPos, look) {
   const scene = new T.Scene(); scene.environment = env;
   const cam = new T.PerspectiveCamera(30, w / h, 0.05, 50); cam.position.set(...camPos); cam.lookAt(...look);
   const key = new T.DirectionalLight("#ffe6c8", 2.6); key.position.set(-2.5, 6, 3.5); key.castShadow = true;
-  key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 8; key.shadow.bias = -0.0008; key.shadow.normalBias = 0.02; key.shadow.camera.left = -3; key.shadow.camera.right = 3; key.shadow.camera.top = 3; key.shadow.camera.bottom = -3;
+  key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 18; key.shadow.blurSamples = 24; key.shadow.bias = -0.0008; key.shadow.normalBias = 0.02; key.shadow.camera.left = -3; key.shadow.camera.right = 3; key.shadow.camera.top = 3; key.shadow.camera.bottom = -3;
   scene.add(key);
   const rim = new T.DirectionalLight("#b8ccff", 1.2); rim.position.set(3, 2, -4); scene.add(rim);
   scene.add(new T.HemisphereLight("#fff0dd", "#3a2418", 0.5));
-  const catcher = new T.Mesh(new T.PlaneGeometry(20, 20), new T.ShadowMaterial({ opacity: 0.42 })); catcher.rotation.x = -Math.PI / 2; catcher.receiveShadow = true; scene.add(catcher);
+  const catcher = new T.Mesh(new T.PlaneGeometry(20, 20), new T.ShadowMaterial({ opacity: 0.3 })); catcher.rotation.x = -Math.PI / 2; catcher.receiveShadow = true; scene.add(catcher);
   return { scene, cam };
 }
 
@@ -71,7 +71,7 @@ function die() {
 const UP = { 1: [0, 0, 0], 6: [Math.PI, 0, 0], 2: [Math.PI / 2, 0, 0], 5: [-Math.PI / 2, 0, 0], 3: [0, 0, Math.PI / 2], 4: [0, 0, -Math.PI / 2] };
 
 window.renderDie = (face, tumble = null) => {
-  const { scene, cam } = stage(408, 438, [0.35, 4.3, 1.55], [0, 0.45, 0.05]);
+  const { scene, cam } = stage(408, 438, [0.22, 3.05, 1.1], [0, 0.5, 0.08]);
   const d = die(); d.position.y = 0.5;
   const [x, y, z] = UP[face]; d.rotation.set(x, y, z);
   if (tumble) { d.rotation.x += tumble[0]; d.rotation.y += tumble[1]; d.rotation.z += tumble[2]; d.position.y = 0.72; }
