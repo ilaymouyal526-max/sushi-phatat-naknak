@@ -1,6 +1,6 @@
 # Yoko Ono: dish screen (portrait TV, 1080×1920)
 
-Loop: logo, then each dish followed by the dice game ("Le Grand Jeu"). The text is in French, English and Hebrew. One loop takes 64 seconds.
+Loop: logo, then each dish followed by the dice game. The text is mainly in English, with Hebrew underneath. One loop takes 64 seconds.
 
 ## Two ways to run it on the screen
 - **USB / smart TV:** play `out/yoko-ono-screen-loop.mp4` on repeat (H.264, 1080×1920, 30fps).

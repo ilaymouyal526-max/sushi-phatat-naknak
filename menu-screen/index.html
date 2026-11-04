@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Yoko Ono — Écran des plats</title>
+<title>Yoko Ono — Dish Screen</title>
 <link rel="stylesheet" href="../fonts/fonts.css">
 <style>
 /*
@@ -55,10 +55,9 @@ html,body{height:100%;background:#000;overflow:hidden;cursor:none}
 h1{margin-top:8px;font-weight:800;font-size:80px;line-height:.98;text-transform:uppercase;text-align:center;letter-spacing:.01em}
 .he-name{margin-top:12px;font-family:"Frank Ruhl",serif;font-weight:700;font-size:54px;color:var(--gold-light)}
 .desc{margin-top:20px;text-align:center;display:grid;gap:8px;max-width:900px}
-.desc .fr{font-size:28px;color:var(--ivory-dim);line-height:1.35}
-.desc .en{font-family:"Cormorant";font-style:italic;font-weight:600;font-size:33px;color:var(--muted);line-height:1.2}
+.desc .en{font-size:30px;color:var(--ivory-dim);line-height:1.35}
 .desc .he{font-size:29px;color:var(--ivory-dim);line-height:1.4}
-.price{margin-top:20px;padding:8px 30px;direction:rtl;font-family:"Heebo",sans-serif;border:1.5px solid var(--gold);color:var(--gold-light);font-weight:700;font-size:36px;letter-spacing:.02em}
+.price{margin-top:20px;padding:8px 30px;border:1.5px solid var(--gold);color:var(--gold-light);font-weight:700;font-size:36px;letter-spacing:.02em}
 
 /* game reminder strip on every dish slide */
 .strip{position:absolute;left:60px;right:60px;bottom:58px;display:flex;align-items:center;justify-content:center;gap:16px;
@@ -71,8 +70,7 @@ h1{margin-top:8px;font-weight:800;font-size:80px;line-height:.98;text-transform:
 .brand{justify-content:center;padding-bottom:120px}
 .logo-lg{width:640px;color:var(--gold);filter:drop-shadow(0 0 40px rgba(201,163,107,.18))}
 .brand .tag{margin-top:60px;display:grid;gap:12px;text-align:center}
-.brand .tag .fr{font-weight:600;font-size:26px;letter-spacing:.42em;text-transform:uppercase;color:var(--ivory-dim)}
-.brand .tag .en{font-family:"Cormorant";font-style:italic;font-weight:600;font-size:40px;color:var(--gold-light)}
+.brand .tag .en{font-weight:600;font-size:28px;letter-spacing:.42em;text-transform:uppercase;color:var(--ivory-dim)}
 .brand .tag .he{font-family:"Frank Ruhl",serif;font-weight:700;font-size:40px;color:var(--gold-light)}
 
 /* ---- Dice game ---- */
@@ -81,25 +79,21 @@ h1{margin-top:8px;font-weight:800;font-size:80px;line-height:.98;text-transform:
 .game .photo{animation:kb 14s linear forwards}
 .kicker{margin-top:-40px;display:flex;align-items:center;gap:16px;color:var(--gold)}
 .kicker i{width:50px;height:1px;background:var(--gold);opacity:.7}
-.kicker .fr{font-weight:600;font-size:22px;letter-spacing:.4em;text-transform:uppercase}
+.kicker .en{font-weight:600;font-size:22px;letter-spacing:.4em;text-transform:uppercase}
 .game h2{margin-top:10px;font-weight:900;font-size:112px;line-height:.95;text-transform:uppercase;text-align:center}
 .title-alt{margin-top:12px;display:flex;align-items:center;gap:22px;color:var(--gold-light)}
-.title-alt .en{font-family:"Cormorant";font-style:italic;font-weight:600;font-size:50px}
 .title-alt .he{font-family:"Frank Ruhl",serif;font-weight:700;font-size:44px}
 .prizes{margin-top:44px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:30px}
 .prize{padding:24px 20px 22px;text-align:center;border:1.5px solid var(--gold);background:rgba(12,10,8,.85)}
 .prize .label{font-weight:800;font-size:20px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
 .prize .big{font-weight:900;font-size:110px;line-height:.95;margin-top:12px;color:var(--gold-light);letter-spacing:-.02em}
 .prize .lines{margin-top:12px;display:grid;gap:6px}
-.prize .lines .fr{font-weight:600;font-size:26px}
-.prize .lines .en{font-family:"Cormorant";font-style:italic;font-weight:600;font-size:30px;color:var(--muted)}
+.prize .lines .en{font-weight:600;font-size:28px}
 .prize .lines .he{font-weight:600;font-size:27px}
 .prize.free{background:linear-gradient(160deg,#d9b67c 0%,var(--gold) 55%,#b48c55 100%);border-color:var(--gold-light);color:#14110e}
 .prize.free .label,.prize.free .big{color:#14110e}
-.prize.free .lines .en{color:#3b2e1d}
 .game .when{margin-top:36px;display:grid;gap:8px;text-align:center}
-.game .when .fr{font-size:27px;color:var(--ivory-dim)}
-.game .when .en{font-family:"Cormorant";font-style:italic;font-weight:600;font-size:31px;color:var(--muted)}
+.game .when .en{font-size:28px;color:var(--ivory-dim)}
 .game .when .he{font-size:28px;color:var(--ivory-dim)}
 </style>
 </head>
@@ -132,22 +126,19 @@ const CONFIG = {
   dishes: [
     { photo: "images/gyoza-marble.jpg",
       name: "Gyoza", he: "גיוזה עוף · בקר",
-      fr: "4 raviolis frits au poulet ou au bœuf, salade thaïe",
-      en: "4 fried dumplings, chicken or beef, with Thai salad",
+      en: "4 crispy fried dumplings, chicken or beef, with Thai salad",
       heDesc: "ארבעה כיסונים עדינים מטוגנים במילוי עוף או בקר, מוגש עם סלט תאילנדי",
-      price: "עוף 55 ₪ · בקר 59 ₪" },
+      price: "Chicken 55 ₪ · Beef 59 ₪" },
     { photo: "images/crispy-chicken-marble.jpg",
-      name: "Poulet caramel tempura", he: "עוף קרמל בטמפורה",
-      fr: "Sauce caramel, oignons caramélisés et sésame, servi avec du riz",
+      name: "Caramel Tempura Chicken", he: "עוף קרמל בטמפורה",
       en: "Caramel sauce, caramelised onions and sesame, served with rice",
       heDesc: "ברוטב קרמל עם בצלים מקורמלים, מצופה שומשום, מוגש עם אורז",
       price: "72 ₪" },
     { photo: "images/chicken-wok-marble.jpg",
-      name: "Nouilles sautées au wok", he: "נודלס הבית מוקפץ בווק",
-      fr: "Nouilles fraîches, poivron, chou, carotte, soja et cacahuètes",
-      en: "Fresh noodles, peppers, cabbage, carrot, sprouts and peanuts",
+      name: "House Wok Noodles", he: "נודלס הבית מוקפץ בווק",
+      en: "Fresh noodles, peppers, cabbage, carrot, bean sprouts and peanuts",
       heDesc: "אטריות טריות, גמבה, כרוב, גזר, נבטי סויה ובוטנים ברוטב ווק מתקתק",
-      price: "עוף 69 ₪ · טמפורה 72 ₪ · צמחוני 59 ₪" },
+      price: "Chicken 69 ₪ · Tempura 72 ₪ · Veggie 59 ₪" },
   ],
 };
 /* ============================================ */
@@ -166,7 +157,7 @@ const add = (html, cls, secs) => { const n = document.createElement('div'); n.cl
 
 function brand(){
   add(`<div class="logo-lg up">${Logo.svg()}</div>
-    <div class="tag up d2"><span class="fr">Cuisine asiatique</span><span class="en">Asian kitchen</span><span class="he" lang="he">מטבח אסייתי</span></div>`, 'brand', CONFIG.brandSeconds);
+    <div class="tag up d2"><span class="en">Asian kitchen</span><span class="he" lang="he">מטבח אסייתי</span></div>`, 'brand', CONFIG.brandSeconds);
 }
 function dish(d, i){
   const n = add(`<div class="logo-sm">${Logo.svg()}</div>
@@ -174,25 +165,25 @@ function dish(d, i){
     <div class="num up d1"><i></i><span>N° ${String(i + 1).padStart(2, '0')}</span><i></i></div>
     <h1 class="up d1">${esc(d.name)}</h1>
     <div class="he-name up d2" lang="he">${esc(d.he)}</div>
-    <div class="desc up d3"><span class="fr">${esc(d.fr)}</span><span class="en">${esc(d.en)}</span><span class="he" lang="he">${esc(d.heDesc)}</span></div>
+    <div class="desc up d3"><span class="en">${esc(d.en)}</span><span class="he" lang="he">${esc(d.heDesc)}</span></div>
     ${d.price ? `<div class="price up d4">${esc(d.price)}</div>` : ''}
-    <div class="strip up d4"><b>LE GRAND JEU</b><b class="diamond"></b><span>Un double = −50% ou offert</span><b class="diamond"></b><span class="he" lang="he">דאבל = 50% הנחה או הכל עלינו</span></div>`,
+    <div class="strip up d4"><b>THE BIG GAME</b><b class="diamond"></b><span>Roll a double = 50% off or it's on us</span><b class="diamond"></b><span class="he" lang="he">דאבל = 50% הנחה או הכל עלינו</span></div>`,
     i % 2 ? 'alt' : '', CONFIG.dishSeconds);
   n.style.setProperty('--dur', (CONFIG.dishSeconds + 2) + 's');
 }
 function game(){
   add(`<div class="logo-sm">${Logo.svg()}</div>
     <div class="photo" style="background-image:url('images/dice.jpg')"></div>
-    <div class="kicker up"><i></i><span class="fr">Le grand jeu</span><i></i></div>
-    <h2 class="up d1">Lancez<br>les dés</h2>
-    <div class="title-alt up d2"><span class="en">Roll the dice</span><b class="diamond"></b><span class="he" lang="he">הטילו את הקוביות</span></div>
+    <div class="kicker up"><i></i><span class="en">The big game</span><i></i></div>
+    <h2 class="up d1">Roll<br>the dice</h2>
+    <div class="title-alt up d2"><span class="he" lang="he">הטילו את הקוביות</span></div>
     <div class="prizes up d3">
       <div class="prize half"><div class="label">Double 1 · 2 · 3</div><div class="big">−50%</div>
-        <div class="lines"><span class="fr">sur toute l'addition</span><span class="en">off the whole bill</span><span class="he" lang="he">על כל החשבון</span></div></div>
+        <div class="lines"><span class="en">off the whole bill</span><span class="he" lang="he">על כל החשבון</span></div></div>
       <div class="prize free"><div class="label">Double 4 · 5 · 6</div><div class="big">100%</div>
-        <div class="lines"><span class="fr">Repas offert !</span><span class="en">On the house!</span><span class="he" lang="he">הכל עלינו!</span></div></div>
+        <div class="lines"><span class="en">On the house!</span><span class="he" lang="he">הכל עלינו!</span></div></div>
     </div>
-    <div class="when up d4"><span class="fr">À la fin du repas · un seul lancer par table</span><span class="en">At the end of your meal · one roll per table</span><span class="he" lang="he">בסוף הארוחה · הטלה אחת לשולחן</span></div>`,
+    <div class="when up d4"><span class="en">At the end of your meal · one roll per table</span><span class="he" lang="he">בסוף הארוחה · הטלה אחת לשולחן</span></div>`,
     'game', CONFIG.gameSeconds);
 }
 
