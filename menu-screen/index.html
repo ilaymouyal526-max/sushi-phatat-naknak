@@ -121,7 +121,8 @@ const CONFIG = {
   dishSeconds: 10,
   gameSeconds: 9,
   brandSeconds: 7,
-  gameEvery: 1,            // show the dice-game slide after every N dishes
+  showGame: false,         // dice-game slide and strip (off: the screen shows dishes only)
+  gameEvery: 1,            // when showGame is on: dice-game slide after every N dishes
   // Names, descriptions and prices from the restaurant menu (MENU_FINAL_HEBSP.pdf)
   dishes: [
     { photo: "images/gyoza-marble.jpg",
@@ -167,7 +168,7 @@ function dish(d, i){
     <div class="he-name up d2" lang="he">${esc(d.he)}</div>
     <div class="desc up d3"><span class="en">${esc(d.en)}</span><span class="he" lang="he">${esc(d.heDesc)}</span></div>
     ${d.price ? `<div class="price up d4">${esc(d.price)}</div>` : ''}
-    <div class="strip up d4"><b>THE BIG GAME</b><b class="diamond"></b><span>Roll a double = 50% off or it's on us</span><b class="diamond"></b><span class="he" lang="he">דאבל = 50% הנחה או הכל עלינו</span></div>`,
+    ${CONFIG.showGame ? `<div class="strip up d4"><b>THE BIG GAME</b><b class="diamond"></b><span>Roll a double = 50% off or it's on us</span><b class="diamond"></b><span class="he" lang="he">דאבל = 50% הנחה או הכל עלינו</span></div>` : ''}`,
     i % 2 ? 'alt' : '', CONFIG.dishSeconds);
   n.style.setProperty('--dur', (CONFIG.dishSeconds + 2) + 's');
 }
@@ -188,7 +189,7 @@ function game(){
 }
 
 brand();
-CONFIG.dishes.forEach((d, i) => { dish(d, i); if ((i + 1) % CONFIG.gameEvery === 0) game(); });
+CONFIG.dishes.forEach((d, i) => { dish(d, i); if (CONFIG.showGame && (i + 1) % CONFIG.gameEvery === 0) game(); });
 CONFIG.dishes.forEach(d => { const im = new Image(); im.src = d.photo; });
 
 let cur = -1, timer;

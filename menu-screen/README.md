@@ -1,12 +1,13 @@
 # Yoko Ono: dish screen (portrait TV, 1080×1920)
 
-Loop: logo, then each dish followed by the dice game. The text is mainly in English, with Hebrew underneath. One loop takes 64 seconds.
+Loop: logo, then the dishes one after another (dishes only). The text is mainly in English, with Hebrew underneath. One loop takes 37 seconds, plus 10 seconds for each dish you add. The dice-game slides are still in the code: set `showGame: true` in `CONFIG` to bring them back.
 
 ## Two ways to run it on the screen
 - **USB / smart TV:** play `out/yoko-ono-screen-loop.mp4` on repeat (H.264, 1080×1920, 30fps).
 - **Computer connected to the screen:** copy the whole repository folder, open `menu-screen/index.html` in Chrome, and press **F** for fullscreen. The page keeps the screen awake and reloads itself every 6 hours.
 
 ## Changing dishes or text
+To add a dish (for example the Sushi Pop), put its photo in `images/` and add one more entry to `dishes` in `CONFIG`.
 Edit the `CONFIG` block at the bottom of `index.html` (photo, names, descriptions, price, slide durations), then re-render the video:
 
 ```
