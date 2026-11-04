@@ -136,3 +136,7 @@ ffmpeg -i renders/x.mp4 -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +fasts
 - Feedback on the new opening characters (after the Higgsfield samples).
 - Music: the user adds a track in the platform editor. Voices and VO: the user records them.
 - Assumed: the chef and the two staff members agreed to appear as characters.
+
+## Shot list for the owner
+- `../yoko-dice-shotlist.pdf` (8 A4 pages, 0.5 MB): 18 shots, each with a thumbnail, the time, the on-screen text, what happens, and boxes for להשאיר / להעיף / לשנות. The last page lists what still needs a decision.
+- To rebuild it from a new draft: `NODE_PATH=$(npm root -g) python3 tools/shotlist.py renders/draft-vN.mp4`, which also runs `tools/shotlist_pdf.js`.
