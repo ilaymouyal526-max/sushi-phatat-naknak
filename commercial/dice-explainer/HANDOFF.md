@@ -1,6 +1,6 @@
 # HANDOFF: Yoko Ono dice-game video
 
-Updated after every step. Last update: Higgsfield sample stills F1 and F2 generated (0.5 credits, approved). Next: user feedback on the samples, then F3 and the clips (each priced and approved).
+Updated after every step. Last update: F3 generated (0.25, approved); the 3 Kling std clips approved (15 credits) and being generated.
 
 ## What this is
 An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at **Yoko Ono Asian Kitchen** (Ahuza 124, Ra'anana).
@@ -86,6 +86,7 @@ ffmpeg -i renders/x.mp4 -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +fasts
      - **Samples generated (approved, 0.25 each):** saved in `assets/hf/`.
        - F1 (job `6f90e3ba-7198-4452-9524-274d056db80c`) → `F1.png`;
        - F2 (job `ba72fdcf-ea0b-4bbf-83a3-dc2b8997d92d`) → `F2.png`.
+       - F3, the couple surprised (job `7f5ea3e2-4055-4783-a85e-f8f6195d0923`) → `F3.png`. It used F1 as a reference so the couple stays identical.
      - **Balance check:** 1183 → 1171.5. The transactions show this session's 2 × 0.25 (15:13 on 4/11), plus 4 GPT Image high 2k spends at 2.75 each, 11 credits in all, made outside this session (3 at 23:04 on 3/11, 1 at 13:43 on 4/11). The user was told.
    - **5b, realistic props (free, in progress).**
      - Rendered: translucent dice (6 faces + 12 rolls), receipt, coin, knife.
