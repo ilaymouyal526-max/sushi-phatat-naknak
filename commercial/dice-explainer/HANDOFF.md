@@ -1,6 +1,6 @@
 # HANDOFF: Yoko Ono dice-game video
 
-Updated after every step. Last update: stage 5b step 2 done (realistic 3D hand in every card). Next: waiting on the designer subagent's price table.
+Updated after every step. Last update: Higgsfield sample stills F1 and F2 generated (0.5 credits, approved). Next: user feedback on the samples, then F3 and the clips (each priced and approved).
 
 ## What this is
 An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at **Yoko Ono Asian Kitchen** (Ahuza 124, Ra'anana).
@@ -74,7 +74,19 @@ ffmpeg -i renders/x.mp4 -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +fasts
      - F3: the couple, surprised.
      - F4: a hand scooping the dice off the felt.
      - Clips on seedance_2_5 or kling3_0. intone for lip-sync, though Hebrew lip-sync probably isn't possible.
-     - **Waiting for its cost table.**
+     - The subagent stopped early because its video price checks were rejected. The main session finished the price checks:
+       - images (`gpt_image_2_5`, 9:16, with refs): low 1k 0.25, medium 0.5, high 1k 1.5, high 2k 2.75;
+       - clips (`kling3_0`): std 3 s 4.5, std 4 s 6, pro 4 s 7; `seedance_2_5`: 720p 28, 1080p 64.
+     - The user chose **the cheapest route**: low-quality stills and Kling std. The whole opening comes to about 15.75 credits.
+     - **Uploads:** `upload.higgsfield.ai` was blocked by the network policy; the user then allowed it. Refs uploaded and confirmed:
+       - img1 man `e333d4b9-5746-42c4-884c-68d064c389bc`;
+       - img2 booth `d692f40a-ec03-45c8-96e0-a9a06d90b57b`;
+       - img3 chef/bar `ad5dadd3-f5f7-4ac2-946d-d7cc8d094cf7`;
+       - img4 staff `7f7d5e29-faae-4fe6-87d8-f3a6884f0ba5`.
+     - **Samples generated (approved, 0.25 each):** saved in `assets/hf/`.
+       - F1 (job `6f90e3ba-7198-4452-9524-274d056db80c`) → `F1.png`;
+       - F2 (job `ba72fdcf-ea0b-4bbf-83a3-dc2b8997d92d`) → `F2.png`.
+     - **Balance check:** the balance read 1171.5 afterwards, versus 1183 on 3/11. The 11.5 gap is bigger than these 0.5 credits; checking the transactions.
    - **5b, realistic props (free, in progress).**
      - Rendered: translucent dice (6 faces + 12 rolls), receipt, coin, knife.
      - DiceKit now uses the dice images. Cards 7 (receipt, knife) and 10 (coins) use the renders.
@@ -90,7 +102,11 @@ ffmpeg -i renders/x.mp4 -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +fasts
     - **Clothing:** white cuff, gold cufflink, navy blazer sleeve.
     - **Output:** renders to `assets/img/hand-{fist,release,open}.png`. `hand_svg()` in `build.py` now stacks those 3 images, and `DiceKit.pose` switches them (same API).
     - Lint 0/0. Snapshots look right in p3, s1, s3b, s6a, s6b and s12.
-2. When the designer subagent reports, show the user the **exact cost table** and wait for "yes". Then generate **sample stills only** (F1 and F2) and wait for approval. Then F3, F4 and the clips, each priced and approved separately.
+2. ~~Cost table, sample stills F1 and F2~~ (done). **Now:** wait for the user's verdict on F1 and F2. Next spends, each with its own approval:
+   - F3 (0.25);
+   - Kling std clips P1 3 s (4.5), P2 4 s (6), P3 3 s (4.5).
+
+   F4 (the hand scooping the dice) stays in code.
 3. Integrate the clips: a `<video muted>` sub-composition replaces `a3d`; the bubbles stay as overlays; the cut to card 1 still goes through the hand.
 4. Make the hand and the characters in cards 1, 5, 6a, 6b, 11 and 12 match the new realistic style.
 5. Rewrite `../dice_game_script.md` and `SPEC.md` in Hebrew only for the current film.
