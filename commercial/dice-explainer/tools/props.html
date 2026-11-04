@@ -38,7 +38,7 @@ function stage(w, h, camPos, look) {
   const rim = new T.DirectionalLight("#b8ccff", 1.2); rim.position.set(3, 2, -4); scene.add(rim);
   scene.add(new T.HemisphereLight("#fff0dd", "#3a2418", 0.5));
   const catcher = new T.Mesh(new T.PlaneGeometry(20, 20), new T.ShadowMaterial({ opacity: 0.3 })); catcher.rotation.x = -Math.PI / 2; catcher.receiveShadow = true; scene.add(catcher);
-  return { scene, cam };
+  return { scene, cam, catcher };
 }
 
 // Vegas die: sharp-edged translucent red acrylic, flush white pips, side length 1
@@ -121,6 +121,73 @@ window.renderKnife = () => {
   handle.rotation.z = Math.PI / 2; handle.position.set(-2.15, 0.12, -0.1); handle.castShadow = true; scene.add(handle);
   const ferrule = new T.Mesh(new T.CylinderGeometry(0.12, 0.12, 0.08, 32), new T.MeshPhysicalMaterial({ color: "#d8b26a", metalness: 1, roughness: 0.3 }));
   ferrule.rotation.z = Math.PI / 2; ferrule.position.set(-1.65, 0.12, -0.1); scene.add(ferrule);
+  renderer.render(scene, cam); return canvas.toDataURL("image/png");
+};
+// The thrower's right hand, seen from the back, fingers up: the man from img 1 (navy blazer, white shirt cuff,
+// gold cufflink). Real joints: each finger is three phalanges; the pose is only joint angles.
+function roundedBox(w, h, d, r, seg = 24) {
+  const g = new T.BoxGeometry(w, h, d, seg, seg, seg), p = g.attributes.position, n = g.attributes.normal;
+  const lo = new T.Vector3(-(w / 2 - r), -(h / 2 - r), -(d / 2 - r)), hi = lo.clone().negate(), v = new T.Vector3();
+  for (let i = 0; i < p.count; i++) {
+    v.fromBufferAttribute(p, i); const c = v.clone().clamp(lo, hi), dir = v.clone().sub(c).normalize();
+    v.copy(c).addScaledVector(dir, r); p.setXYZ(i, v.x, v.y, v.z); n.setXYZ(i, dir.x, dir.y, dir.z);
+  }
+  return g;
+}
+const SKIN = new T.MeshPhysicalMaterial({ color: "#e2a986", roughness: 0.52, sheen: 0.5, sheenRoughness: 0.6, sheenColor: new T.Color("#ffd2b8"),
+  clearcoat: 0.08, emissive: new T.Color("#3a1006"), emissiveIntensity: 0.35, envMapIntensity: 0.8 });
+const NAIL = new T.MeshPhysicalMaterial({ color: "#f0c4b4", roughness: 0.25, clearcoat: 1, clearcoatRoughness: 0.1 });
+const POSES = {
+  open:    { f: [[0.16, -0.06, -0.08, -0.05], [0.03, -0.05, -0.07, -0.05], [-0.1, -0.06, -0.08, -0.05], [-0.24, -0.08, -0.1, -0.06]], th: [0.95, -0.25, -0.15, -0.1] },
+  release: { f: [[0.08, -0.4, -0.55, -0.35], [0.0, -0.36, -0.5, -0.32], [-0.06, -0.42, -0.55, -0.36], [-0.12, -0.5, -0.6, -0.4]], th: [0.65, -0.35, -0.3, -0.2] },
+  fist:    { f: [[0.02, -1.45, -1.75, -1.0], [0.0, -1.45, -1.8, -1.0], [-0.02, -1.42, -1.78, -1.0], [-0.05, -1.38, -1.75, -0.95]], th: [-0.35, -0.75, -0.35, -0.3] },
+};
+function finger(parent, x, y, r, lens, ang, nail = true) {
+  // ang = [splay, flex1, flex2, flex3]; negative flex curls towards the palm (-z). The finger tapers smoothly:
+  // each phalanx is a cone from one joint sphere to the next.
+  const rs = [r, r * 0.93, r * 0.86, r * 0.8];
+  let g = new T.Group(); g.position.set(x, y, 0); g.rotation.z = ang[0]; g.rotation.x = ang[1]; parent.add(g);
+  const ball = (rad, yy, host) => { const m = new T.Mesh(new T.SphereGeometry(rad, 32, 22), SKIN); m.position.y = yy; m.castShadow = m.receiveShadow = true; host.add(m); };
+  ball(r * 1.08, 0, g);
+  for (let k = 0; k < 3; k++) {
+    const c = new T.Mesh(new T.CylinderGeometry(rs[k + 1], rs[k], lens[k], 32, 1, true), SKIN); c.position.y = lens[k] / 2; c.castShadow = c.receiveShadow = true; g.add(c);
+    if (k === 2) {
+      ball(rs[3], lens[2], g);
+      if (nail) { const nl = new T.Mesh(new T.SphereGeometry(1, 24, 16), NAIL); nl.scale.set(rs[3] * 0.82, lens[2] * 0.4, rs[3] * 0.3); nl.position.set(0, lens[2] * 0.74, rs[3] * 0.84); g.add(nl); }
+    } else { const nx = new T.Group(); nx.position.y = lens[k]; nx.rotation.x = ang[k + 2]; g.add(nx); g = nx; ball(rs[k + 1], 0, g); }
+  }
+}
+window.renderHand = (pose) => {
+  const { scene, cam, catcher } = stage(800, 1280, [0.35, 0.75, 6.0], [0, 0.4, 0]);
+  scene.remove(catcher);
+  const P = POSES[pose], hand = new T.Group();
+  // palm: a superellipsoid, wider at the knuckles, arched across the back
+  const pg = new T.SphereGeometry(1, 72, 54), pp = pg.attributes.position, sp = (c, e) => Math.sign(c) * Math.pow(Math.abs(c), e);
+  for (let i = 0; i < pp.count; i++) {
+    const nx = pp.getX(i), ny = pp.getY(i), nz = pp.getZ(i);
+    let x = sp(nx, 0.55) * 0.45, y = sp(ny, 0.6) * 0.55, z = sp(nz, 0.85) * 0.16;
+    x *= 0.86 + 0.14 * (y / 0.55 + 1) / 2; z -= 0.12 * x * x; pp.setXYZ(i, x, y, z);
+  }
+  pg.computeVertexNormals();
+  const palm = new T.Mesh(pg, SKIN); palm.castShadow = palm.receiveShadow = true; hand.add(palm);
+  const F = [[-0.29, 0.42, 0.098, [0.42, 0.25, 0.2]], [-0.09, 0.46, 0.103, [0.46, 0.28, 0.21]], [0.12, 0.43, 0.097, [0.43, 0.26, 0.2]], [0.31, 0.34, 0.085, [0.34, 0.2, 0.17]]];
+  F.forEach(([x, y, r, lens], i) => finger(hand, x, y, r, lens, P.f[i]));
+  // thumb from the lower left of the palm (right hand seen from the back)
+  const tb = new T.Group(); tb.position.set(-0.3, -0.26, -0.03); tb.rotation.z = P.th[0]; tb.rotation.x = P.th[1]; hand.add(tb);
+  const mound = new T.Mesh(new T.SphereGeometry(1, 36, 24), SKIN); mound.scale.set(0.15, 0.3, 0.13); mound.position.y = 0.12; mound.castShadow = mound.receiveShadow = true; tb.add(mound);
+  finger(tb, 0, 0.3, 0.11, [0.24, 0.19, 0.17], [0, P.th[2], P.th[3], -0.1]);
+  // wrist, white cuff, navy blazer sleeve
+  const wrist = new T.Mesh(new T.CylinderGeometry(0.37, 0.32, 0.5, 48), SKIN); wrist.scale.z = 0.5; wrist.position.y = -0.52; wrist.castShadow = true; hand.add(wrist);
+  const cuff = new T.Mesh(new T.CylinderGeometry(0.37, 0.37, 0.28, 64), new T.MeshPhysicalMaterial({ color: "#f3f1ec", roughness: 0.75, sheen: 0.6, sheenColor: new T.Color("#ffffff") }));
+  cuff.scale.z = 0.66; cuff.position.y = -0.8; cuff.castShadow = cuff.receiveShadow = true; hand.add(cuff);
+  const link = new T.Mesh(new T.CylinderGeometry(0.045, 0.045, 0.03, 32), new T.MeshPhysicalMaterial({ color: "#e0b866", metalness: 1, roughness: 0.25 }));
+  link.rotation.x = Math.PI / 2; link.position.set(0.24, -0.8, 0.19); hand.add(link);
+  const sleeve = new T.Mesh(new T.CylinderGeometry(0.45, 0.5, 1.4, 64), new T.MeshPhysicalMaterial({ color: "#1d2a46", roughness: 0.82, sheen: 0.7, sheenRoughness: 0.5, sheenColor: new T.Color("#4a5f8a") }));
+  sleeve.scale.z = 0.72; sleeve.position.y = -1.6; sleeve.castShadow = sleeve.receiveShadow = true; hand.add(sleeve);
+  const hem = new T.Mesh(new T.TorusGeometry(0.45, 0.025, 12, 64), sleeve.material); hem.rotation.x = Math.PI / 2; hem.scale.y = 0.76; hem.position.y = -0.9; hand.add(hem);
+  [0, 1, 2].forEach((k) => { const b = new T.Mesh(new T.CylinderGeometry(0.035, 0.035, 0.02, 24), new T.MeshPhysicalMaterial({ color: "#14100c", roughness: 0.3, clearcoat: 1 }));
+    b.rotation.z = Math.PI / 2; b.position.set(0.45, -1.04 - k * 0.1, 0.12); hand.add(b); });
+  hand.rotation.set(pose === "fist" ? 0.5 : -0.18, 0.3, 0.02); hand.position.x = 0.14; scene.add(hand);
   renderer.render(scene, cam); return canvas.toDataURL("image/png");
 };
 window.ready = true;

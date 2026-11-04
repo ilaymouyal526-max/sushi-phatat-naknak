@@ -51,7 +51,7 @@
   window.DiceKit = { mount, setFace, tumble };
 })();
 
-// Hand poses (fist, release, open) drawn by build.py's hand_svg(); show `name` from time t on.
+// Hand poses (fist, release, open): three stacked 3D renders from build.py's hand_svg(); show `name` from time t on.
 (function () {
   const NAMES = ["fist", "release", "open"];
   window.DiceKit.pose = function (tl, target, name, t) {

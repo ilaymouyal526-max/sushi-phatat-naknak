@@ -1,6 +1,6 @@
 # HANDOFF: Yoko Ono dice-game video
 
-Updated after every step. Last update: stage 5b step 1 done (props reviewed and tuned). Next: a realistic hand.
+Updated after every step. Last update: stage 5b step 2 done (realistic 3D hand in every card). Next: waiting on the designer subagent's price table.
 
 ## What this is
 An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at **Yoko Ono Asian Kitchen** (Ahuza 124, Ra'anana).
@@ -38,7 +38,7 @@ An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at
   - `DiceKit.mount`, `setFace`, `setRoll` (12 tumbling poses), `tumble`, `pose` (the hand: fist, release, open).
   - The dice are now `<img>` renders from `assets/img/`.
 - `assets/avatars3d.js`: the current 3D characters in Three.js (Pixar-lite primitives, a warm terrace and café). **These will be replaced** by the Higgsfield characters (below).
-- `tools/props.html` + `tools/render_props.js`: realistic props rendered once with Three.js + Playwright into `assets/img/`: `die-1..6.png`, `die-roll-0..11.png`, `receipt.png`, `coin.png`, `knife.png`. Run it with `node tools/render_props.js`.
+- `tools/props.html` + `tools/render_props.js`: realistic props rendered once with Three.js + Playwright into `assets/img/`: `die-1..6.png`, `die-roll-0..11.png`, `receipt.png`, `coin.png`, `knife.png`, `hand-fist/release/open.png`. Run it with `node tools/render_props.js`.
 - `assets/vendor/`: `gsap.min.js` 3.15.0 and `three.min.js` r159. Both are local, because jsdelivr is blocked.
 - `assets/sfx/`: Pixabay SFX bundled with HyperFrames, plus `manifest.json` (lengths).
 - `SPEC.md`: the numbers and rules (v2). It needs updating for the opening and the realistic props.
@@ -85,7 +85,11 @@ ffmpeg -i renders/x.mp4 -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +fasts
 
 ## Next steps
 1. ~~Snapshot and tune the props~~ (done).
-1b. **Now:** a realistic hand in `tools/props.html`, rendered with three.js in 3 poses (fist, release, open). Navy blazer sleeve and a white shirt cuff, to match the man in img 1. It goes into `assets/img/hand-*.png`, and `DiceKit.pose` + `hand_svg` in `build.py` switch to it.
+1b. ~~Realistic hand~~ (done): `renderHand(pose)` in `tools/props.html` builds the hand.
+    - **Hand:** a superellipsoid palm; tapered fingers with real joints; nails; a thumb mound.
+    - **Clothing:** white cuff, gold cufflink, navy blazer sleeve.
+    - **Output:** renders to `assets/img/hand-{fist,release,open}.png`. `hand_svg()` in `build.py` now stacks those 3 images, and `DiceKit.pose` switches them (same API).
+    - Lint 0/0. Snapshots look right in p3, s1, s3b, s6a, s6b and s12.
 2. When the designer subagent reports, show the user the **exact cost table** and wait for "yes". Then generate **sample stills only** (F1 and F2) and wait for approval. Then F3, F4 and the clips, each priced and approved separately.
 3. Integrate the clips: a `<video muted>` sub-composition replaces `a3d`; the bubbles stay as overlays; the cut to card 1 still goes through the hand.
 4. Make the hand and the characters in cards 1, 5, 6a, 6b, 11 and 12 match the new realistic style.

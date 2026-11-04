@@ -57,32 +57,12 @@ def logo_svg(id_, x, y, w, stroke=GOLD, extra=""):
 
 
 def hand_svg(id_, x, y, w, pose="open"):
-    """A right hand seen from the back, fingers up, black sleeve with a gold cuff.
-    All three poses (fist, release, open) are drawn; DiceKit.pose() switches between them on the timeline."""
-    FINGERS = {
-        "open":    [((150, 300), (126, 106), 46), ((196, 292), (192, 66), 48), ((240, 294), (254, 88), 46), ((280, 306), (308, 158), 40)],
-        "release": [((150, 300), (140, 168), 46), ((196, 292), (196, 150), 48), ((240, 294), (246, 160), 46), ((280, 306), (290, 200), 40)],
-        "fist":    [((150, 300), (150, 250), 50), ((196, 292), (196, 240), 52), ((240, 294), (240, 246), 50), ((280, 306), (278, 266), 44)],
-    }
-    THUMB = {"open": ((132, 420), (54, 300)), "release": ((132, 420), (74, 318)), "fist": ((132, 420), (170, 330))}
-
-    def stroke(a, b, wd, color):
-        return f'<line x1="{a[0]}" y1="{a[1]}" x2="{b[0]}" y2="{b[1]}" stroke="{color}" stroke-width="{wd}" stroke-linecap="round"/>'
-
-    groups = []
-    for name in ("fist", "release", "open"):
-        th, fi = THUMB[name], FINGERS[name]
-        parts = [stroke(*th, 58, SKIN_LN), stroke(*th, 52, SKIN)]
-        parts += [stroke(a, b, wd + 6, SKIN_LN) for a, b, wd in fi]
-        parts += [stroke(a, b, wd, SKIN) for a, b, wd in fi]
-        groups.append(f'<g class="pose-{name}" opacity="{1 if name == pose else 0}">{"".join(parts)}</g>')
-    body = [f'<path d="M118 500 C104 430 102 360 120 300 Q200 268 290 300 C306 360 302 430 290 500 Z" fill="{SKIN}" stroke="{SKIN_LN}" stroke-width="3"/>',
-            f'<path d="M140 330 Q200 312 270 330" fill="none" stroke="{SKIN_SH}" stroke-width="6" stroke-linecap="round"/>',
-            f'<path d="M150 420 Q170 455 150 495" fill="none" stroke="{SKIN_SH}" stroke-width="5" stroke-linecap="round"/>',
-            f'<rect x="92" y="500" width="224" height="150" rx="18" fill="{SLEEVE}"/>',
-            f'<rect x="92" y="494" width="224" height="24" rx="6" fill="{GOLD}"/>']
-    return (f'<svg id="{id_}" class="art" style="left:{x}px;top:{y}px;width:{w}px;height:{w*1.6:.0f}px" viewBox="0 0 400 640" data-layout-ignore>'
-            + "".join(groups) + "".join(body) + "</svg>")
+    """The thrower's right hand: a real 3D render (tools/props.html) in three poses (fist, release, open), all stacked
+    here; DiceKit.pose() switches between them on the timeline. Navy blazer sleeve, white cuff, like the man in img 1."""
+    imgs = "".join(
+        f'<img class="pose-{n}" src="assets/img/hand-{n}.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:{1 if n == pose else 0}">'
+        for n in ("fist", "release", "open"))
+    return f'<div id="{id_}" class="art" style="left:{x}px;top:{y}px;width:{w}px;height:{w*1.6:.0f}px" data-layout-ignore>{imgs}</div>'
 
 
 def die(id_, face, x, y, size):

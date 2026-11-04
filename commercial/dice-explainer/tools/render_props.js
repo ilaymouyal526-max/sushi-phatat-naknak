@@ -1,6 +1,7 @@
 // Renders the realistic props in tools/props.html to assets/img/*.png. Run: node tools/render_props.js
 const path = require("path"), fs = require("fs");
 const { chromium } = require("playwright");
+const ONLY = process.argv[2];
 const OUT = path.join(__dirname, "..", "assets", "img");
 (async () => {
   const browser = await chromium.launch({ args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
@@ -18,5 +19,6 @@ const OUT = path.join(__dirname, "..", "assets", "img");
   await save("receipt.png", "renderReceipt()");
   await save("coin.png", "renderCoin(0)");
   await save("knife.png", "renderKnife()");
+  for (const p of ["fist", "release", "open"]) await save(`hand-${p}.png`, `renderHand("${p}")`);
   await browser.close();
 })();
