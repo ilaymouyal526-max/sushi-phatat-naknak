@@ -86,7 +86,7 @@ ffmpeg -i renders/x.mp4 -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +fasts
      - **Samples generated (approved, 0.25 each):** saved in `assets/hf/`.
        - F1 (job `6f90e3ba-7198-4452-9524-274d056db80c`) → `F1.png`;
        - F2 (job `ba72fdcf-ea0b-4bbf-83a3-dc2b8997d92d`) → `F2.png`.
-     - **Balance check:** the balance read 1171.5 afterwards, versus 1183 on 3/11. The 11.5 gap is bigger than these 0.5 credits; checking the transactions.
+     - **Balance check:** 1183 → 1171.5. The transactions show this session's 2 × 0.25 (15:13 on 4/11), plus 4 GPT Image high 2k spends at 2.75 each, 11 credits in all, made outside this session (3 at 23:04 on 3/11, 1 at 13:43 on 4/11). The user was told.
    - **5b, realistic props (free, in progress).**
      - Rendered: translucent dice (6 faces + 12 rolls), receipt, coin, knife.
      - DiceKit now uses the dice images. Cards 7 (receipt, knife) and 10 (coins) use the renders.
