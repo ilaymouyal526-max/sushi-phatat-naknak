@@ -64,7 +64,8 @@ def fuji(cx,base_y,w,h):
     # gold ground line + seigaiha water at the foot
     ld.line((cx-w//2-mm(8),base_y,cx+w//2+mm(8),base_y),fill=GOLD+(255,),width=4)
     im.paste(lay,(0,0),lay)
-fuji((mm(8)+mm(80))//2, H-mm(6), mm(60), mm(22))
+from fuji import make_fuji
+_f=make_fuji(mm(70),mm(33)); im.paste(_f,((mm(8)+mm(80))//2-_f.width//2, H-mm(4)-_f.height), _f)
 
 # ---- background pattern zones: seams + transition
 seigaiha((0,0,mm(8),H),mm(4),GOLD_D+(140,))
