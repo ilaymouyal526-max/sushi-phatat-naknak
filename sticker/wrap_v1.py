@@ -66,7 +66,12 @@ def fuji(cx,base_y,w,h):
     im.paste(lay,(0,0),lay)
 import os
 from fuji_hokusai import make_fuji_hokusai
-_f=make_fuji_hokusai(mm(70),mm(31),os.environ.get('FUJI_MODE','clean')); im.paste(_f,((mm(8)+mm(80))//2-_f.width//2, H-mm(4)-_f.height), _f)
+_mode=os.environ.get('FUJI_MODE','clean')
+if _mode=='pagoda':
+    from fuji_pagoda import make_scene; _f=make_scene(mm(70),mm(34))
+else:
+    _f=make_fuji_hokusai(mm(70),mm(31),_mode)
+im.paste(_f,((mm(8)+mm(80))//2-_f.width//2, H-mm(4)-_f.height), _f)
 d.line((mm(8),H-mm(4),mm(80),H-mm(4)),fill=GOLD,width=4)
 
 # ---- background pattern zones: seams + transition
