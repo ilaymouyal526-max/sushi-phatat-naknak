@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 PX=12                                   # px per mm (~305 dpi)
 W,H=200*PX,120*PX
 mm=lambda v:int(v*PX)
-SRC=Image.open('/root/.claude/uploads/8da19ccc-f5ab-50f2-bd41-7c530964c845/5e5b1b3a-image.jpg').convert('RGB')
+SRC=Image.open('boss_base.jpg').convert('RGB')
 BG=(26,26,28); GOLD=(214,178,110); GOLD_D=(120,98,60); CREAM=(235,225,205); RED=(178,34,34)
 F=lambda s,b=True:ImageFont.truetype('/usr/share/fonts/truetype/liberation/LiberationSans-%s.ttf'%('Bold' if b else 'Regular'),s)
 JP=lambda s:ImageFont.truetype('/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf',s)
@@ -33,6 +33,39 @@ def paste_feather(img,pos,feather=10):
     m=Image.new('L',img.size,0); ImageDraw.Draw(m).rectangle((feather,feather,img.size[0]-feather,img.size[1]-feather),fill=255)
     im.paste(img,pos,m.filter(ImageFilter.GaussianBlur(feather/2)))
 
+
+# ---- Mount Fuji backdrop (front, behind the text), drawn as gold line art
+def fuji(cx,base_y,w,h):
+    lay=Image.new('RGBA',(W,H),(0,0,0,0)); ld=ImageDraw.Draw(lay)
+    # rising sun behind the peak
+    sr=int(h*0.42); sx,sy=cx+int(w*0.22),base_y-h+mm(3)
+    ld.ellipse((sx-sr,sy-sr,sx+sr,sy+sr),fill=(150,40,36,80))
+    # far ridge
+    ld.polygon([(cx-w//2-mm(6),base_y),(cx-w//2+mm(10),base_y-int(h*.38)),(cx-w//6,base_y)],fill=(32,32,36,255),outline=GOLD_D+(255,))
+    # main cone with slightly concave flanks
+    L=[]; N=24
+    for i in range(N+1):
+        t=i/N; L.append((cx-w//2+int((w//2-mm(5))*t), base_y-int(h*(t**1.6))))
+    Rr=[(cx+w//2-int((w//2-mm(5))*t), base_y-int(h*(t**1.6))) for t in [i/N for i in range(N,-1,-1)]]
+    cone=L+[(cx-mm(5),base_y-h),(cx+mm(5),base_y-h)]+Rr
+    ld.polygon(cone,fill=(38,38,42,255))
+    ld.line(cone[:N+1]+[(cx-mm(5),base_y-h),(cx+mm(5),base_y-h)]+Rr,fill=GOLD+(255,),width=5)
+    # snow cap with jagged lower edge
+    cap_y=base_y-int(h*0.62)
+    def xat(y,side):
+        t=((base_y-y)/h)**(1/1.6); return cx+side*(w//2-int((w//2-mm(5))*t))
+    jag=[]; xl,xr=xat(cap_y,-1),xat(cap_y,1); n=7
+    for i in range(n+1):
+        x=xl+(xr-xl)*i/n; jag.append((int(x),cap_y+(mm(3.2) if i%2 else 0)))
+    capL=[(int(xat(y,-1)),y) for y in range(cap_y,base_y-h,-6)]
+    capR=[(int(xat(y,1)),y) for y in range(base_y-h,cap_y,6)]
+    cap=[(cx-mm(5),base_y-h),(cx+mm(5),base_y-h)]+capR+jag[::-1]+capL
+    ld.polygon(cap,fill=(226,206,160,255))
+    # gold ground line + seigaiha water at the foot
+    ld.line((cx-w//2-mm(8),base_y,cx+w//2+mm(8),base_y),fill=GOLD+(255,),width=4)
+    im.paste(lay,(0,0),lay)
+fuji((mm(8)+mm(80))//2, H-mm(6), mm(60), mm(22))
+
 # ---- background pattern zones: seams + transition
 seigaiha((0,0,mm(8),H),mm(4),GOLD_D+(140,))
 seigaiha((mm(192),0,W,H),mm(4),GOLD_D+(140,))
@@ -55,12 +88,13 @@ kx=fx0+mm(7)
 for i,ch in enumerate("ヨーコ・オノ"):
     t=Image.new('RGBA',(mm(7),mm(7)),(0,0,0,0)); ImageDraw.Draw(t).text((mm(3.5),mm(3.5)),ch,font=JP(mm(5.5)),fill=GOLD,anchor='mm')
     if ch=='ー': t=t.rotate(90)
-    im.paste(t,(kx-mm(3.5),mm(22)+i*mm(7)),t)
+    im.paste(t,(kx-mm(3.5),mm(20)+i*mm(7)),t)
 # hanko stamp
-hx,hy,hr=fx1-mm(12),H-mm(16),mm(6)
+hx,hy,hr=fx0+mm(7),mm(12),mm(4.5)
 d.rounded_rectangle((hx-hr,hy-hr,hx+hr,hy+hr),mm(1.5),fill=RED)
-d.text((hx,hy),"YO",font=F(mm(5.5)),fill=(250,235,220),anchor='mm')
+d.text((hx,hy),"YO",font=F(mm(4.2)),fill=(250,235,220),anchor='mm')
 # PUSH arrow at bottom of front
+d.rounded_rectangle((fcx-mm(17),H-mm(13.5),fcx+mm(5),H-mm(6.5)),mm(3.5),fill=(20,20,22),outline=GOLD,width=3)
 d.text((fcx-mm(6),H-mm(10)),"PUSH ↑",font=F(mm(4.2)),fill=CREAM,anchor='mm')
 
 # ---- transition band (80..98): soy-sauce clip zone note
