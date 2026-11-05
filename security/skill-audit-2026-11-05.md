@@ -3,7 +3,7 @@
 **תאריך:** 2026-11-05
 **כלי:** NVIDIA SkillSpector v2.12.0 (commit `62c2fe8`), סריקה סטטית בלבד (`--no-llm`, בלי עלות)
 **היקף:** 72 סקילים: 22 סקילים אישיים (synced), `session-start-hook`, ותוספים: Adobe (15), Remotion (12), Canva (6 פעילים + 6 לא פעילים), Design (7), modern-web-guidance (2), וגם `skill-inspector` עצמו.
-**פסק דין כללי:** `APPROVE` ✅ אין שום ממצא זדוני. כל ממצאי ה-HIGH נבדקו מול קוד המקור ונמצאו התראות שווא.
+**פסק דין כללי:** `APPROVE` ✅ אין שום ממצא זדוני. כל ממצאי ה-HIGH וה-CRITICAL נבדקו מול קוד המקור. החריג היחיד הוא `draw-your-font`, שמקבל `CAUTION` ⚠️ בגלל שכפול לא נעול של ריפו חיצוני ותלויות npm עם CVE ידועים (ראו חלק 2).
 
 ## בשורה התחתונה
 
@@ -45,9 +45,57 @@
 
 ## מה לא נסרק
 
-- התוסף `security-guidance` מכיל hooks ולא סקילים, ולכן SkillSpector לא סורק אותו. זה תוסף רשמי של Anthropic. שימו לב שהוא מריץ סקירת LLM (Opus) בסוף כל session, וזה צורך טוקנים מהחשבון.
-- הסקילים המובנים ב-`/mnt/skills` שייכים לסביבה ולא הורדו על ידך.
-- ניתוח LLM סמנטי של SkillSpector לא הורץ, כי הוא עולה כסף. אפשר להריץ אותו אחרי אישור.
+- ניתוח ה-LLM הסמנטי של SkillSpector לא הורץ, כי הוא עולה כסף.
+- בדיקת התוכן של חבילות ה-npm של `draw-your-font` חלקית, בגלל מגבלת הגודל של הכלי. בדיקת ה-CVE מול OSV.dev כן רצה במלואה.
+
+## חלק 2: כל שאר הבדיקות של SkillSpector (חינמיות)
+
+הורצו כל המצבים של הכלי שלא עולים כסף. ניתוח ה-LLM הסמנטי **לא** הורץ, כי הוא בתשלום (כ-2 מיליון טוקנים של קלט לכל מעבר, והמשתמש החליט לוותר).
+
+| בדיקה | מה נבדק | תוצאה |
+|---|---|---|
+| סריקת תיקיות התוספים (plugin root) | `.mcp.json`, `plugin.json`, `hooks.json`, קבצים מחוץ ל-`skills/` | אין ממצא חדש אמיתי (פירוט למטה) |
+| `--transitive` (קישורים חיצוניים) | כל 72 הסקילים. נמשכו 7 יעדים חיצוניים ב-3 סקילים | ⚠️ ממצא אמיתי אחד: `draw-your-font` |
+| `--inspect-dependencies` + OSV.dev | קבצי lockfile של npm | ⚠️ 4 תלויות עם CVE ידועים ב-`draw-your-font` |
+| סקילים מובנים `/mnt/skills` | 43 סקילים (public + examples) | אין ממצא זדוני |
+| עותקי Canva ב-`.cursor/skills` | 6 סקילים | זהים בדיוק ל-`skills/` (בדיקת `diff`) |
+
+### ⚠️ הממצא האמיתי היחיד: `draw-your-font`
+
+**פסק דין:** `CAUTION`. אין קוד זדוני, אבל יש סיכון שרשרת אספקה.
+
+הסקיל מורה ל-Claude להריץ:
+```bash
+git clone --depth 1 https://github.com/danilo-znamerovszkij/draw-your-font.git
+cd draw-your-font && npm install --omit=dev
+node skills/draw-your-font/scripts/resolve-cli.js
+```
+- הריפו שייך למפתח פרטי, והשכפול הוא מה-`main` העדכני, בלי commit נעול. אם הריפו ישתנה, תרוץ גרסה אחרת בלי שאף אחד בדק אותה.
+- `npm install` מריץ את סקריפט ההתקנה של `sharp` (מוריד קובץ libvips מקומפל).
+- נסרק commit `ef367bb` (2026-08-05). הקוד ב-`src/` נקי: אין קריאות רשת, אין `eval`, אין `child_process` חוץ מ-`resolve-cli.js` ובדיקות.
+- תלויות עם פגיעויות ידועות (OSV.dev): `@xmldom/xmldom@0.9.10` (13 CVE), `follow-redirects@1.16.0` (3), `sharp@0.33.5` / `0.34.5` (3, דרך libvips), `phin@2.9.3` (1). הסיכון בשימוש שלך נמוך, כי מעבדים רק תמונות כתב יד שלך באופן מקומי. ניצול של libvips/xmldom דורש קובץ זדוני.
+- בדיקת תוכן חבילות ה-npm עצמן (`--inspect-dependencies`) נעצרה במגבלת הגודל של SkillSpector (124 מתוך 129 חבילות: `total_bytes_limit`), ולכן היא חלקית.
+
+**המלצה:** לנעול את השכפול ל-commit שנבדק:
+```bash
+git clone https://github.com/danilo-znamerovszkij/draw-your-font.git && cd draw-your-font && git checkout ef367bb2193b523a03e313b9219e31055558ae70
+```
+או להשתמש בחלופה שהסקיל עצמו מציע, `site/demo.js`, שלא דורשת `npm install`.
+
+### יעדים חיצוניים אחרים שנבדקו (תקין)
+
+- `remotion-saas`: 4 תבניות רשמיות של `remotion-dev` ב-GitHub. ממצאי `.env` הם הוראות הגדרה ב-README ובקוד.
+- `modern-web-guidance`: `thetarnav/streaming-markdown` ורשימת ה-AAGUID של passkeys (`passkeydeveloper/...combined_aaguid.json`). ממצאי YARA/base64 שם הם אייקונים מקודדים של מנהלי סיסמאות.
+
+### סריקת תיקיות התוספים: בדיקה ידנית
+
+- **`modern-web-guidance`** SC9 "Concealed Executable Artifact" על `.github/img/*.svg`: התראת שווא. אלה לוגואים של `<path>` בלבד, בלי `<script>`, `on*=` או `foreignObject`.
+- **`security-guidance`** (תוסף רשמי של Anthropic, hooks בלבד): ציון 100 עם 12 CRITICAL ו-90 HIGH, כולם התראות שווא. זה עצמו סורק אבטחה, והקוד שלו מלא בתבניות פגיעויות לדוגמה (`shell=True`, `/etc/passwd`, `169.254.169.254`, `.env`) בתוך הפרומפט ובבדיקות. ה-"tainted flows" הם קריאות `git` עם argv כרשימה (בלי shell), ו-`urlopen` שפונה רק ל-`ANTHROPIC_BASE_URL` (ברירת מחדל `api.anthropic.com`) כדי לשלוח diff לסקירה. זו המטרה המתועדת שלו. ⚠️ זה צורך טוקנים מהחשבון.
+- **`design`**: ציון 0. **`canva`**, **`adobe-for-creativity`**: אותם ממצאים כמו בחלק 1, בלי חדשים.
+
+### סקילים מובנים (`/mnt/skills`)
+
+43 סקילים. הציונים הגבוהים (`artifact-emulator`, `mcp-builder`, `skill-creator`, `pptx`, `docx`, `theme-factory`) נובעים מאותם דפוסים שכבר נבדקו: העתקת סביבה לתהליך משנה, קבצי reference גדולים מעבר לתקציב הניתוח, ו-`rm` לפני `zip`. `frontend-design` סומן AR2 על "Errors don't apologize", שזו הנחיית כתיבה לממשק.
 
 ## טבלת תוצאות מלאה
 
