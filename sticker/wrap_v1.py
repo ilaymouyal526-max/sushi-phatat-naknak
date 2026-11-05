@@ -33,47 +33,6 @@ def paste_feather(img,pos,feather=10):
     m=Image.new('L',img.size,0); ImageDraw.Draw(m).rectangle((feather,feather,img.size[0]-feather,img.size[1]-feather),fill=255)
     im.paste(img,pos,m.filter(ImageFilter.GaussianBlur(feather/2)))
 
-
-# ---- Mount Fuji backdrop (front, behind the text), drawn as gold line art
-def fuji(cx,base_y,w,h):
-    lay=Image.new('RGBA',(W,H),(0,0,0,0)); ld=ImageDraw.Draw(lay)
-    # rising sun behind the peak
-    sr=int(h*0.42); sx,sy=cx+int(w*0.22),base_y-h+mm(3)
-    ld.ellipse((sx-sr,sy-sr,sx+sr,sy+sr),fill=(150,40,36,80))
-    # far ridge
-    ld.polygon([(cx-w//2-mm(6),base_y),(cx-w//2+mm(10),base_y-int(h*.38)),(cx-w//6,base_y)],fill=(32,32,36,255),outline=GOLD_D+(255,))
-    # main cone with slightly concave flanks
-    L=[]; N=24
-    for i in range(N+1):
-        t=i/N; L.append((cx-w//2+int((w//2-mm(5))*t), base_y-int(h*(t**1.6))))
-    Rr=[(cx+w//2-int((w//2-mm(5))*t), base_y-int(h*(t**1.6))) for t in [i/N for i in range(N,-1,-1)]]
-    cone=L+[(cx-mm(5),base_y-h),(cx+mm(5),base_y-h)]+Rr
-    ld.polygon(cone,fill=(38,38,42,255))
-    ld.line(cone[:N+1]+[(cx-mm(5),base_y-h),(cx+mm(5),base_y-h)]+Rr,fill=GOLD+(255,),width=5)
-    # snow cap with jagged lower edge
-    cap_y=base_y-int(h*0.62)
-    def xat(y,side):
-        t=((base_y-y)/h)**(1/1.6); return cx+side*(w//2-int((w//2-mm(5))*t))
-    jag=[]; xl,xr=xat(cap_y,-1),xat(cap_y,1); n=7
-    for i in range(n+1):
-        x=xl+(xr-xl)*i/n; jag.append((int(x),cap_y+(mm(3.2) if i%2 else 0)))
-    capL=[(int(xat(y,-1)),y) for y in range(cap_y,base_y-h,-6)]
-    capR=[(int(xat(y,1)),y) for y in range(base_y-h,cap_y,6)]
-    cap=[(cx-mm(5),base_y-h),(cx+mm(5),base_y-h)]+capR+jag[::-1]+capL
-    ld.polygon(cap,fill=(226,206,160,255))
-    # gold ground line + seigaiha water at the foot
-    ld.line((cx-w//2-mm(8),base_y,cx+w//2+mm(8),base_y),fill=GOLD+(255,),width=4)
-    im.paste(lay,(0,0),lay)
-import os
-from fuji_hokusai import make_fuji_hokusai
-_mode=os.environ.get('FUJI_MODE','clean')
-if _mode=='pagoda':
-    from fuji_pagoda import make_scene; _f=make_scene(mm(70),mm(34))
-else:
-    _f=make_fuji_hokusai(mm(70),mm(31),_mode)
-im.paste(_f,((mm(8)+mm(80))//2-_f.width//2, H-mm(4)-_f.height), _f)
-d.line((mm(8),H-mm(4),mm(80),H-mm(4)),fill=GOLD,width=4)
-
 # ---- background pattern zones: seams + transition
 seigaiha((0,0,mm(8),H),mm(4),GOLD_D+(140,))
 seigaiha((mm(192),0,W,H),mm(4),GOLD_D+(140,))
@@ -89,20 +48,23 @@ paste_gold(br,(fx1-mm(25),mm(5)))
 logo=SRC.crop((76,40,312,280)); lw=mm(44); logo=logo.resize((lw,int(lw*logo.size[1]/logo.size[0])),Image.LANCZOS)
 paste_gold(logo,(fcx-lw//2,mm(14)))
 ly=mm(14)+logo.size[1]
-d.text((fcx,ly+mm(10)),"Sushi",font=F(mm(9)),fill=GOLD,anchor='mm')
-d.text((fcx,ly+mm(19)),"push pop",font=F(mm(6.5),False),fill=GOLD,anchor='mm')
+# "SUSHI / PUSH POP" in the same gold brush lettering as the how-to title (cropped from the boss artwork)
+k=mm(56)/(1042-619)
+w1=SRC.crop((346,136,592,232)); w1=w1.resize((int(w1.width*k),int(w1.height*k)),Image.LANCZOS)
+w2=SRC.crop((619,136,1042,232)); w2=w2.resize((int(w2.width*k),int(w2.height*k)),Image.LANCZOS)
+paste_gold(w1,(fcx-w1.width//2,ly+mm(4)),95,150)
+paste_gold(w2,(fcx-w2.width//2,ly+mm(4)+w1.height+mm(1)),95,150)
 # vertical katakana ヨーコ・オノ on the left edge of front
 kx=fx0+mm(7)
 for i,ch in enumerate("ヨーコ・オノ"):
     t=Image.new('RGBA',(mm(7),mm(7)),(0,0,0,0)); ImageDraw.Draw(t).text((mm(3.5),mm(3.5)),ch,font=JP(mm(5.5)),fill=GOLD,anchor='mm')
     if ch=='ー': t=t.rotate(90)
-    im.paste(t,(kx-mm(3.5),mm(20)+i*mm(7)),t)
+    im.paste(t,(kx-mm(3.5),mm(22)+i*mm(7)),t)
 # hanko stamp
-hx,hy,hr=fx0+mm(7),mm(12),mm(4.5)
+hx,hy,hr=fx1-mm(12),H-mm(16),mm(6)
 d.rounded_rectangle((hx-hr,hy-hr,hx+hr,hy+hr),mm(1.5),fill=RED)
-d.text((hx,hy),"YO",font=F(mm(4.2)),fill=(250,235,220),anchor='mm')
+d.text((hx,hy),"YO",font=F(mm(5.5)),fill=(250,235,220),anchor='mm')
 # PUSH arrow at bottom of front
-d.rounded_rectangle((fcx-mm(17),H-mm(13.5),fcx+mm(5),H-mm(6.5)),mm(3.5),fill=(20,20,22),outline=GOLD,width=3)
 d.text((fcx-mm(6),H-mm(10)),"PUSH ↑",font=F(mm(4.2)),fill=CREAM,anchor='mm')
 
 # ---- transition band (80..98): soy-sauce clip zone note
