@@ -64,8 +64,10 @@ def fuji(cx,base_y,w,h):
     # gold ground line + seigaiha water at the foot
     ld.line((cx-w//2-mm(8),base_y,cx+w//2+mm(8),base_y),fill=GOLD+(255,),width=4)
     im.paste(lay,(0,0),lay)
-from fuji import make_fuji
-_f=make_fuji(mm(70),mm(33)); im.paste(_f,((mm(8)+mm(80))//2-_f.width//2, H-mm(4)-_f.height), _f)
+import os
+from fuji_hokusai import make_fuji_hokusai
+_f=make_fuji_hokusai(mm(70),mm(31),os.environ.get('FUJI_MODE','clean')); im.paste(_f,((mm(8)+mm(80))//2-_f.width//2, H-mm(4)-_f.height), _f)
+d.line((mm(8),H-mm(4),mm(80),H-mm(4)),fill=GOLD,width=4)
 
 # ---- background pattern zones: seams + transition
 seigaiha((0,0,mm(8),H),mm(4),GOLD_D+(140,))
