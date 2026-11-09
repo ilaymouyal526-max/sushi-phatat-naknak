@@ -40,8 +40,8 @@ Higgsfield media: dragon_ref `b4483813-2308-42ce-96c6-7bb418afc0fe`, noodles_ref
 ### Gates (price-checked 2026-11-09, balance 1,100.5)
 | Gate | What | Credits |
 |---|---|---|
-| 1a | Cartoon end frame, `gpt_image_2_6` high 2K 9:16, refs dragon_ref + noodles_ref | 2.75 |
-| 1b | Cartoon start frame, `gpt_image_2_6` high 2K 9:16, refs start_frame + noodles_ref | 2.75 |
+| 1a ✅ | Cartoon end frame, job `14e18638-8b82-4833-9e73-988817324edb`, `gpt_image_2_6` high 2K 9:16, refs dragon_ref + noodles_ref | 2.75 |
+| 1b ✅ | Cartoon start frame, job `9575b232-564c-4587-ba1a-ff084ee1072a`, `gpt_image_2_6` high 2K 9:16, refs start_frame + noodles_ref | 2.75 |
 | 2 | 480p draft, `seedance_2_5` omni_reference 10s 9:16 with audio, start = 1b, end = 1a, ref = dragon_ref | 30 |
 | 3 | 1080p finalize of the chosen draft | Price check after the draft (v1 was 160) |
 
@@ -53,4 +53,4 @@ Each gate needs its own explicit "yes" (see CLAUDE.md). Retries and variants are
 | Gold-leaf screen painting (an abandoned style test) | 2.75 |
 | v1 photoreal end frame | 2.75 |
 | v1 480p draft | 30 |
-| v2 cartoon | 0 so far |
+| v2 cartoon start + end frames | 5.5 |
