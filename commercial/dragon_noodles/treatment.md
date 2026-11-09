@@ -42,8 +42,8 @@ Higgsfield media: dragon_ref `b4483813-2308-42ce-96c6-7bb418afc0fe`, noodles_ref
 |---|---|---|
 | 1a ✅ | Cartoon end frame, job `14e18638-8b82-4833-9e73-988817324edb`, `gpt_image_2_6` high 2K 9:16, refs dragon_ref + noodles_ref | 2.75 |
 | 1b ✅ | Cartoon start frame, job `9575b232-564c-4587-ba1a-ff084ee1072a`, `gpt_image_2_6` high 2K 9:16, refs start_frame + noodles_ref | 2.75 |
-| 2 | 480p draft, `seedance_2_5` omni_reference 10s 9:16 with audio, start = 1b, end = 1a, ref = dragon_ref | 30 |
-| 3 | 1080p finalize of the chosen draft | Price check after the draft (v1 was 160) |
+| 2 ✅ | 480p draft, job `c8c4b9ce-a8e4-49a9-9854-34c939646a78`, `seedance_2_5` omni_reference 10s 9:16 with audio, start = 1b, end = 1a, ref = dragon_ref | 30 |
+| 3 | 1080p finalize from `draft_job_id` c8c4b9ce… | 160 (price checked, awaiting approval) |
 
 Each gate needs its own explicit "yes" (see CLAUDE.md). Retries and variants are never automatic.
 
@@ -54,3 +54,12 @@ Each gate needs its own explicit "yes" (see CLAUDE.md). Retries and variants are
 | v1 photoreal end frame | 2.75 |
 | v1 480p draft | 30 |
 | v2 cartoon start + end frames | 5.5 |
+| v2 480p draft | 30 |
+
+## v2 draft result
+All beats landed in order and in one consistent style: the steaming bowl, the swoop and inhale (2.8–3.6s), swirling flames wrapping the bowl (4.4–6s), and the stretchy slurp ending on the end frame.
+Finished with `GRAIN=0 finish.sh` (film grain fights the clean rendered look) to 13.04s, 1080×1920, -16.2 LUFS.
+
+## End card
+The original 540×960 menu card was a frame of the dish screen. `menu_card.js` renders the House Wok Noodles slide of `menu-screen/` (branch `ccr-53cee3cd-iiiipd`) natively at 1080×1920 instead of upscaling it:
+`node menu_card.js <menu-screen dir> menu_card_1080.png 3`

@@ -2,10 +2,12 @@
 # Golden Dragon Wok: finish the generated dragon clip into the 9:16 social master.
 # Grade + grain + vignette on the AI clip, then a crossfade into the real menu card (slow push-in),
 # generated audio faded and loudness-normalised (~-15 LUFS). Free: local ffmpeg only.
-# Usage: finish.sh <dragon_clip.mp4> <menu_card_1080.png> <out.mp4>
+# Usage: [GRAIN=7] finish.sh <dragon_clip.mp4> <menu_card_1080.png> <out.mp4>
+#   GRAIN=0 for the cartoon v2 (keeps the clean rendered look); 7 suits the photoreal v1.
 set -e
 CLIP=$1; CARD=$2; OUT=$3
-FPS=24; XF=0.8; HOLD=3.0
+FPS=24; XF=0.8; HOLD=3.0; GRAIN=${GRAIN:-7}
+NOISE=""; [ "$GRAIN" != 0 ] && NOISE="noise=c0s=$GRAIN:c0f=t,"
 DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$CLIP")
 OFF=$(python3 -c "print(round($DUR - $XF, 3))")
 TOTAL=$(python3 -c "print(round($DUR + $HOLD, 3))")
@@ -13,7 +15,7 @@ HAS_A=$(ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=
 NF=$(python3 -c "print(int(($HOLD + $XF) * $FPS) + 1)")
 F="[0:v]scale=1080:1920:force_original_aspect_ratio=increase:flags=lanczos,crop=1080:1920,fps=$FPS,setsar=1,\
 eq=contrast=1.06:saturation=1.12:gamma=0.98,colorbalance=rs=0.03:bs=0.04:rh=0.04:bh=-0.03,\
-unsharp=5:5:0.5,noise=c0s=7:c0f=t,vignette=angle=PI/5,format=yuv420p[v0];\
+unsharp=5:5:0.5,${NOISE}vignette=angle=PI/5,format=yuv420p[v0];\
 [1:v]scale=2160:3840:flags=lanczos,zoompan=z='1+0.04*on/$NF':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=$NF:s=1080x1920:fps=$FPS,\
 setsar=1,format=yuv420p[v1];\
 [v0][v1]xfade=transition=fade:duration=$XF:offset=$OFF,format=yuv420p[v]"
