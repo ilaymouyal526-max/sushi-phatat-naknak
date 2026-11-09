@@ -25,3 +25,15 @@ Prompt: `push-pop/higgsfield-product-prompt.md`
 2. Re-run the drafts with the real photos as product references. Price check and approval first.
 3. Finals at high, 2K (2.75 credits each), each approved separately.
 4. Composite the real logo and "Sushi push pop" lettering locally.
+
+## 2026-11-09: real logo on the drafts (local, 0 credits)
+- **Logo source:** `shared/logo-path.js` (traced from the restaurant logo), rendered in gold with "ASIAN KITCHEN" in Montserrat.
+- **Method:** cylindrical wrap with the shading taken from the blank label, so the paper grain shows through the foil.
+- **Outputs:** `drafts/a_front_logo.png` and `drafts/b_34_logo.png`
+- **Tools:**
+  - `tools/render_logo.js <dir with logo-path.js + montserrat-latin.woff2>`
+  - `tools/composite_logo.py <draft> <logo_white.png> <out> '<json>'`
+- **Settings used:**
+  - (a): `{"tube_cx":418,"R":129,"lcx":419,"lcy":506,"fit_r":98}`
+  - (b): `{"tube_cx":428,"R":132,"lcx":401,"lcy":512,"fit_r":104}`
+- **Not added yet:** the "Sushi push pop" lettering at the bottom. It needs a crop from a real photo.
