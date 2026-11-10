@@ -116,7 +116,7 @@ vec2 map(vec3 q) {
   if (nail < res.x + 0.002) res = vec2(min(nail, res.x), 2.0);
   float cuff = sdTube(p, vec2(0.40, 0.27), -1.14, -0.84, 0.035);
   if (cuff < res.x) res = vec2(cuff, 3.0);
-  float sleeve = sdTube(p, vec2(0.49, 0.36), -2.8, -1.02, 0.06);
+  float sleeve = sdTube(p, vec2(0.49, 0.36), -4.2, -1.02, 0.06);
   if (sleeve < res.x) res = vec2(sleeve, 4.0);
   // the cufflink: a domed gold disc on the side of the cuff
   vec3 pl = p - vec3(0.33, -0.95, 0.17);
@@ -151,8 +151,8 @@ void main() {
   vec3 fw = normalize(uLook - uCam), rt = normalize(cross(fw, vec3(0, 1, 0))), up = cross(rt, fw);
   vec3 rd = normalize(fw + (uv.x * rt + uv.y * up) * tan(radians(uFov) * 0.5));
   float t = 3.0; vec2 h = vec2(1.0, 0.0);
-  for (int i = 0; i < 220; i++) { h = map(uCam + rd * t); if (h.x < 0.0004 * t || t > 9.0) break; t += h.x * 0.9; }
-  if (t > 9.0) { gl_FragColor = vec4(0.0); return; }
+  for (int i = 0; i < 220; i++) { h = map(uCam + rd * t); if (h.x < 0.0004 * t || t > 10.0) break; t += h.x * 0.9; }
+  if (t > 10.0) { gl_FragColor = vec4(0.0); return; }
   vec3 p = uCam + rd * t, n = normalAt(p), v = -rd;
   vec3 L1 = normalize(vec3(-2.5, 6.0, 3.5)), L2 = normalize(vec3(3.0, 2.0, -4.0)), L3 = normalize(vec3(2.0, 0.5, 3.0));
   float sh = softShadow(p + n * 0.003, L1), occ = ao(p, n);
@@ -212,8 +212,13 @@ const scene = new T.Scene(); scene.add(quad);
 const cam = new T.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
 // Render at ss x the size, then downsample: that is the antialiasing.
-window.renderHand = (pose, w = 800, h = 1280, ss = 2) => {
+// The frame is 800 x 1760: the top 1280 px hold the hand, the rest is sleeve, long enough to run off the screen
+// edge wherever the hand is placed. The camera keeps the scale of an 800 x 1280 frame at 30 degrees.
+window.renderHand = (pose, w = 800, h = 1760, ss = 2) => {
   const r = rig(pose);
+  const t15 = Math.tan(Math.PI / 12), drop = ((h - 1280) / 2) * (2 * 6 * t15 / 1280);
+  mat.uniforms.uFov.value = 2 * Math.atan(t15 * h / 1280) * 180 / Math.PI;
+  mat.uniforms.uCam.value.set(0.20, 0.75 - drop, 6.0); mat.uniforms.uLook.value.set(-0.15, 0.4 - drop, 0);
   Object.assign(mat.uniforms.uP, { value: r.pts }); mat.uniforms.uR.value = r.rad; mat.uniforms.uN.value = r.nails; mat.uniforms.uRot.value = r.rot;
   mat.uniforms.uRes.value.set(w * ss, h * ss);
   renderer.setSize(w * ss, h * ss, false); renderer.render(scene, cam);

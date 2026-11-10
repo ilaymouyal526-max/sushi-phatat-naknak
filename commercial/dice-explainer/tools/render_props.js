@@ -1,6 +1,6 @@
 // Renders the film's props to assets/img/*.png (free, local Three.js + Playwright). Run from commercial/dice-explainer:
 //   node tools/render_props.js            all props
-//   node tools/render_props.js dice       one group: dice | hand | receipt | coin
+//   node tools/render_props.js dice       one group: dice | hand | receipt | coin | table | tex
 // Then it checks every image (and every cell of each tumble strip): nothing may touch the frame edge, so a prop is
 // never cut off on screen. The check decodes the images back in the browser.
 const path = require("path"), fs = require("fs");
@@ -35,10 +35,17 @@ const want = (g) => !ONLY || ONLY === g;
   }
   if (want("hand")) {
     const p = await open("hand.html");
-    for (const pose of ["open", "release", "fist", "flat"]) await save(p, `hand-${pose}.png`, `renderHand("${pose}", 800, 1280, 2)`);
+    for (const pose of ["open", "release", "fist", "flat"]) await save(p, `hand-${pose}.png`, `renderHand("${pose}", 800, 1760, 2)`);
   }
-  if (want("receipt") || want("coin")) {
+  if (want("receipt") || want("coin") || want("table") || want("tex")) {
     const p = await open("props.html");
+    if (want("table")) {
+      await save(p, "plate.png", "renderPlate()"); await save(p, "tray.png", "renderTray()"); await save(p, "folder.png", "renderFolder()");
+    }
+    // flat textures (JPEG): they fill their frame on purpose, so they skip the edge check
+    if (want("tex")) for (const k of ["felt", "walnut", "walnutv", "gold", "noir"]) {
+      const url = await p.evaluate(`renderTex("${k}")`); fs.writeFileSync(path.join(OUT, `tex-${k}.jpg`), Buffer.from(url.split(",")[1], "base64")); console.log("wrote", `tex-${k}.jpg`);
+    }
     if (want("receipt")) await save(p, "receipt.png", "renderReceipt()");
     if (want("coin")) {
       await save(p, "coin.png", "renderCoin(0, 0.3)");

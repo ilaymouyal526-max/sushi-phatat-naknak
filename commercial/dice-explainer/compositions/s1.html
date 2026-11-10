@@ -8,40 +8,50 @@
 @font-face { font-family: "Shippori"; font-weight: 800; font-display: block; src: url('assets/fonts/shippori-jp-subset.woff2') format('woff2'); }
 
 #root { position: absolute; inset: 0; overflow: hidden; direction: rtl; font-variant-numeric: lining-nums;
-  background: radial-gradient(ellipse 85% 55% at 50% 52%, #24160e 0%, #0b0907 72%); }
-.h { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 800; color: #f4ecdf; line-height: 1.04; }
-.sub { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 500; color: #e2c590; line-height: 1.28; }
-.kick { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Heebo", sans-serif; font-weight: 500; letter-spacing: .12em; color: #c9a36b; }
-.big { position: absolute; left: 60px; right: 60px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 700; line-height: .9; }
-.num { position: absolute; left: 500px; width: 80px; height: 80px; border-radius: 50%; border: 2px solid #c9a36b; display: grid; place-items: center;
-  font-family: "Frank Ruhl", serif; font-weight: 700; font-size: 50px; color: #c9a36b; line-height: 1; }
-.die { position: absolute; }
-.art { position: absolute; overflow: visible; }
-.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+  background: radial-gradient(ellipse 92% 44% at 50% var(--glow, 54%), rgba(84,50,22,.66) 0%, rgba(84,50,22,0) 72%), url('assets/img/tex-noir.jpg') center / cover no-repeat, #0b0907; }
+.h { position: absolute; left: 80px; right: 80px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 800; color: #f4ecdf; line-height: 1.04;
+  text-shadow: 0 3px 0 rgba(0,0,0,.6), 0 16px 34px rgba(0,0,0,.6); }
+.sub { position: absolute; left: 90px; right: 90px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 500; color: #e2c590; line-height: 1.28;
+  text-shadow: 0 2px 0 rgba(0,0,0,.55); }
+.kick { position: absolute; left: 90px; right: 90px; text-align: center; font-family: "Heebo", sans-serif; font-weight: 500; letter-spacing: .14em; color: #c9a36b; }
+.big { position: absolute; left: 40px; right: 40px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 700; line-height: .9; }
 .foil { background: linear-gradient(100deg, #a8814a 0%, #e9c98a 30%, #c9a36b 42%, #fff1c9 50%, #c9a36b 58%, #e9c98a 70%, #a8814a 100%);
-  background-size: 300% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; }
-</style>
+  background-size: 300% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none;
+  filter: drop-shadow(0 3px 0 #3a280f) drop-shadow(0 14px 24px rgba(0,0,0,.6)); }
+.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+.rule { position: absolute; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 24px; direction: ltr; }
+.rule b { width: 86px; height: 86px; border-radius: 50%; border: 2px solid #c9a36b; display: grid; place-items: center; line-height: 1;
+  font-family: "Frank Ruhl", serif; font-weight: 700; font-size: 52px; color: #e2c590;
+  background: radial-gradient(circle at 35% 28%, #3a2716 0%, #120c08 70%); box-shadow: inset 0 0 0 5px #0b0907, inset 0 0 0 6px rgba(201,163,107,.6), 0 10px 24px rgba(0,0,0,.6); }
+.rule i { width: 200px; height: 2px; background: linear-gradient(90deg, rgba(201,163,107,0), #c9a36b); }
+.rule i + b + i { background: linear-gradient(90deg, #c9a36b, rgba(201,163,107,0)); }
+.die { position: absolute; }
+.shd { position: absolute; border-radius: 50%; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.72) 0%, rgba(70,4,12,.34) 46%, rgba(0,0,0,0) 70%); }
+.art { position: absolute; overflow: visible; }
+.hand { position: absolute; transform-origin: 56.6% 43.6%; }
+.hand img { position: absolute; inset: 0; width: 100%; height: 100%; }
+#root { --glow: 46%; }</style>
   <div id="root" data-composition-id="s1" data-width="1080" data-height="1920" dir="rtl" lang="he">
 
-<div class="h" style="top:250px;font-size:150px">הטלה אחת…</div>
+<div class="h" style="top:236px;font-size:156px">הטלה אחת…</div>
 <div class="sub" style="top:440px;font-size:64px">…והחשבון יכול להיעלם</div>
-<div id="s1-dA" class="die" data-face="6" style="left:170px;top:650px;width:300px;height:322px"></div><div id="s1-dB" class="die" data-face="5" style="left:600px;top:760px;width:300px;height:322px"></div>
-<div id="s1-hand" class="art" style="left:330px;top:1190px;width:420px;height:672px" data-layout-ignore><img class="pose-fist" src="assets/img/hand-fist.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:1"><img class="pose-release" src="assets/img/hand-release.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"><img class="pose-open" src="assets/img/hand-open.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"></div>
+<div id="s1-dA" class="die" data-faces="6" data-v="a" style="left:185px;top:675px;width:290px;height:290px;rotate:-16deg"></div><div id="s1-dB" class="die" data-faces="5" data-v="b" style="left:603px;top:820px;width:290px;height:290px;rotate:20deg"></div>
+<div id="s1-hand" class="hand" style="left:279px;top:1109px;width:470px;height:1034px;rotate:0deg" data-layout-ignore><img data-pose="open" src="assets/img/hand-open.png" alt="" style="opacity:0"><img data-pose="release" src="assets/img/hand-release.png" alt="" style="opacity:0"><img data-pose="fist" src="assets/img/hand-fist.png" alt="" style="opacity:1"><img data-pose="flat" src="assets/img/hand-flat.png" alt="" style="opacity:0"></div>
 
   </div>
   <script>
     (() => {
       const tl = gsap.timeline({ paused: true });
-      DiceKit.mount(["#s1-dA", "#s1-dB"]);
-      tl.set("#s1-dA", { rotation: -18 }, 0); tl.set("#s1-dB", { rotation: 24 }, 0); tl.set("#s1-hand", { rotation: -10 }, 0);
-DiceKit.pose(tl, "#s1-hand", "fist", 0); DiceKit.pose(tl, "#s1-hand", "release", 0.34); DiceKit.pose(tl, "#s1-hand", "open", 0.46);
-tl.fromTo("#s1-hand", { y: 160, rotation: -4 }, { y: 0, rotation: -14, duration: 0.42, ease: "power3.out" }, 0);
-tl.to("#s1-hand", { y: 520, rotation: -24, duration: 1.2, ease: "power2.in" }, 0.9);
-tl.fromTo("#s1-dA", { x: 200, y: 430, scale: 0.28, rotation: -120 }, { x: 0, y: 0, scale: 1, rotation: -18, duration: 1.1, ease: "power3.out" }, 0.34);
-tl.fromTo("#s1-dB", { x: -190, y: 330, scale: 0.28, rotation: 140 }, { x: 0, y: 0, scale: 1, rotation: 24, duration: 1.15, ease: "power3.out" }, 0.38);
-tl.to("#s1-dA", { x: -120, y: -60, scale: 1.55, rotation: -40, duration: 1.06, ease: "power1.in" }, 1.44);
-tl.to("#s1-dB", { x: 120, y: 40, scale: 1.55, rotation: 50, duration: 0.97, ease: "power1.in" }, 1.53);
-DiceKit.tumble(tl, "#s1-dA", 0.34, 1.3, 6, 1 / 12, 0); DiceKit.tumble(tl, "#s1-dB", 0.38, 1.34, 5, 1 / 12, 3);
+      DiceKit.mount(["#s1-dA","#s1-dB"]);
+      
+DiceKit.pose(tl, "#s1-hand", "fist", 0); DiceKit.pose(tl, "#s1-hand", "release", 0.2917); DiceKit.pose(tl, "#s1-hand", "open", 0.4167);
+tl.fromTo("#s1-hand", { y: 260, rotation: 4 }, { y: -40, rotation: -8, duration: 0.2917, ease: "power3.out" }, 0);
+tl.to("#s1-hand", { y: 30, rotation: -12, duration: 0.7, ease: "power1.out" }, 0.2917);
+tl.to("#s1-hand", { y: 700, rotation: -20, duration: 1.3, ease: "power2.in" }, 0.9917);
+DiceKit.bake(tl,"#s1-dA",0.0000,["x","y","scale","opacity"],[[215,620,0.3,0],[215,620,0.3,0],[215,620,0.3,0],[215,620,0.3,0],[215,620,0.3,0],[215,620,0.3,0],[215,620,0.3,0],[215.0,620.0,0.3,1],[189.2,536.9,0.384,1],[165.6,461.0,0.461,1],[144.0,391.9,0.531,1],[124.4,329.6,0.595,1],[106.7,273.9,0.653,1],[90.7,224.4,0.705,1],[76.4,181.0,0.751,1],[63.7,143.3,0.793,1],[52.5,110.9,0.829,1],[42.7,83.6,0.861,1],[34.2,60.9,0.889,1],[26.9,42.5,0.912,1],[20.7,27.9,0.933,1],[15.6,16.7,0.949,1],[11.3,8.4,0.963,1],[8.0,2.8,0.974,1],[5.3,-0.8,0.983,1],[3.4,-2.7,0.989,1],[1.9,-3.3,0.994,1],[1.0,-3.0,0.997,1],[0.4,-2.1,0.999,1],[0.1,-1.2,1.0,1],[0.0,-0.3,1.0,1],[0.0,0.0,1.0,1],[-1.0,-0.5,1.002,1],[-2.1,-1.0,1.004,1],[-3.1,-1.5,1.006,1],[-4.2,-2.0,1.008,1],[-5.3,-2.5,1.011,1],[-6.4,-3.0,1.013,1],[-7.6,-3.6,1.016,1],[-9.0,-4.2,1.019,1],[-10.4,-4.9,1.023,1],[-12.0,-5.6,1.028,1],[-13.9,-6.5,1.033,1],[-15.9,-7.4,1.039,1],[-18.3,-8.5,1.047,1],[-21.0,-9.8,1.056,1],[-24.1,-11.2,1.067,1],[-27.7,-12.9,1.079,1],[-31.8,-14.8,1.094,1],[-36.4,-17.0,1.111,1],[-41.8,-19.5,1.131,1],[-47.8,-22.3,1.154,1],[-54.7,-25.5,1.181,1],[-62.5,-29.2,1.211,1],[-71.3,-33.3,1.245,1],[-81.1,-37.9,1.284,1],[-92.1,-43.0,1.328,1],[-104.4,-48.7,1.377,1],[-118.1,-55.1,1.432,1],[-133.3,-62.2,1.492,1]]);
+DiceKit.spin(tl,"#s1-dA",0.0000,6,[0,0,0,0,0,0,0,0,1,1,2,3,4,4,5,6,7,7,8,9,10,10,11,12,13,13,14,15,16,16,17,17,17,17,18,18,18,18,19,19,19,19,19,20,20,20,20,20,21,21,21,21,21,22,22,22,22,23,23,23]);
+DiceKit.bake(tl,"#s1-dB",0.0000,["x","y","scale","opacity"],[[-200,480,0.3,0],[-200,480,0.3,0],[-200,480,0.3,0],[-200,480,0.3,0],[-200,480,0.3,0],[-200,480,0.3,0],[-200,480,0.3,0],[-200.0,480.0,0.3,1],[-176.0,413.7,0.384,1],[-154.1,353.1,0.461,1],[-134.0,298.1,0.531,1],[-115.7,248.6,0.595,1],[-99.2,204.4,0.653,1],[-84.4,165.4,0.705,1],[-71.1,131.3,0.751,1],[-59.3,101.8,0.793,1],[-48.8,76.8,0.829,1],[-39.7,55.8,0.861,1],[-31.8,38.7,0.889,1],[-25.0,25.0,0.912,1],[-19.3,14.4,0.933,1],[-14.5,6.5,0.949,1],[-10.5,1.1,0.963,1],[-7.4,-2.4,0.974,1],[-5.0,-4.3,0.983,1],[-3.1,-4.9,0.989,1],[-1.8,-4.5,0.994,1],[-0.9,-3.6,0.997,1],[-0.4,-2.4,0.999,1],[-0.1,-1.2,1.0,1],[-0.0,-0.3,1.0,1],[0.0,0.0,1.0,1],[1.0,0.3,1.002,1],[2.1,0.7,1.004,1],[3.1,1.0,1.006,1],[4.2,1.4,1.008,1],[5.3,1.8,1.011,1],[6.4,2.1,1.013,1],[7.6,2.5,1.016,1],[9.0,3.0,1.019,1],[10.4,3.5,1.023,1],[12.0,4.0,1.028,1],[13.9,4.6,1.033,1],[15.9,5.3,1.039,1],[18.3,6.1,1.047,1],[21.0,7.0,1.056,1],[24.1,8.0,1.067,1],[27.7,9.2,1.079,1],[31.8,10.6,1.094,1],[36.4,12.1,1.111,1],[41.8,13.9,1.131,1],[47.8,15.9,1.154,1],[54.7,18.2,1.181,1],[62.5,20.8,1.211,1],[71.3,23.8,1.245,1],[81.1,27.0,1.284,1],[92.1,30.7,1.328,1],[104.4,34.8,1.377,1],[118.1,39.4,1.432,1],[133.3,44.4,1.492,1]]);
+DiceKit.spin(tl,"#s1-dB",0.0000,5,[0,0,0,0,0,0,0,0,1,1,2,3,4,4,5,6,7,7,8,9,10,10,11,12,13,13,14,15,16,16,17,17,17,17,18,18,18,18,19,19,19,19,19,20,20,20,20,20,21,21,21,21,21,22,22,22,22,23,23,23]);
 
       window.__timelines["s1"] = tl;
     })();

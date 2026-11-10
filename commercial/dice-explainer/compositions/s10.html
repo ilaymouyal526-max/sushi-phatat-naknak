@@ -8,30 +8,40 @@
 @font-face { font-family: "Shippori"; font-weight: 800; font-display: block; src: url('assets/fonts/shippori-jp-subset.woff2') format('woff2'); }
 
 #root { position: absolute; inset: 0; overflow: hidden; direction: rtl; font-variant-numeric: lining-nums;
-  background: radial-gradient(ellipse 85% 55% at 50% 52%, #24160e 0%, #0b0907 72%); }
-.h { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 800; color: #f4ecdf; line-height: 1.04; }
-.sub { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 500; color: #e2c590; line-height: 1.28; }
-.kick { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Heebo", sans-serif; font-weight: 500; letter-spacing: .12em; color: #c9a36b; }
-.big { position: absolute; left: 60px; right: 60px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 700; line-height: .9; }
-.num { position: absolute; left: 500px; width: 80px; height: 80px; border-radius: 50%; border: 2px solid #c9a36b; display: grid; place-items: center;
-  font-family: "Frank Ruhl", serif; font-weight: 700; font-size: 50px; color: #c9a36b; line-height: 1; }
-.die { position: absolute; }
-.art { position: absolute; overflow: visible; }
-.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+  background: radial-gradient(ellipse 92% 44% at 50% var(--glow, 54%), rgba(84,50,22,.66) 0%, rgba(84,50,22,0) 72%), url('assets/img/tex-noir.jpg') center / cover no-repeat, #0b0907; }
+.h { position: absolute; left: 80px; right: 80px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 800; color: #f4ecdf; line-height: 1.04;
+  text-shadow: 0 3px 0 rgba(0,0,0,.6), 0 16px 34px rgba(0,0,0,.6); }
+.sub { position: absolute; left: 90px; right: 90px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 500; color: #e2c590; line-height: 1.28;
+  text-shadow: 0 2px 0 rgba(0,0,0,.55); }
+.kick { position: absolute; left: 90px; right: 90px; text-align: center; font-family: "Heebo", sans-serif; font-weight: 500; letter-spacing: .14em; color: #c9a36b; }
+.big { position: absolute; left: 40px; right: 40px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 700; line-height: .9; }
 .foil { background: linear-gradient(100deg, #a8814a 0%, #e9c98a 30%, #c9a36b 42%, #fff1c9 50%, #c9a36b 58%, #e9c98a 70%, #a8814a 100%);
-  background-size: 300% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; }
-</style>
+  background-size: 300% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none;
+  filter: drop-shadow(0 3px 0 #3a280f) drop-shadow(0 14px 24px rgba(0,0,0,.6)); }
+.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+.rule { position: absolute; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 24px; direction: ltr; }
+.rule b { width: 86px; height: 86px; border-radius: 50%; border: 2px solid #c9a36b; display: grid; place-items: center; line-height: 1;
+  font-family: "Frank Ruhl", serif; font-weight: 700; font-size: 52px; color: #e2c590;
+  background: radial-gradient(circle at 35% 28%, #3a2716 0%, #120c08 70%); box-shadow: inset 0 0 0 5px #0b0907, inset 0 0 0 6px rgba(201,163,107,.6), 0 10px 24px rgba(0,0,0,.6); }
+.rule i { width: 200px; height: 2px; background: linear-gradient(90deg, rgba(201,163,107,0), #c9a36b); }
+.rule i + b + i { background: linear-gradient(90deg, #c9a36b, rgba(201,163,107,0)); }
+.die { position: absolute; }
+.shd { position: absolute; border-radius: 50%; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.72) 0%, rgba(70,4,12,.34) 46%, rgba(0,0,0,0) 70%); }
+.art { position: absolute; overflow: visible; }
+.hand { position: absolute; transform-origin: 56.6% 43.6%; }
+.hand img { position: absolute; inset: 0; width: 100%; height: 100%; }
+#root { --glow: 56%; }</style>
   <div id="root" data-composition-id="s10" data-width="1080" data-height="1920" dir="rtl" lang="he">
 
-<div class="h foil" id="s10-title" style="top:240px;font-size:132px">השירות</div>
+<div class="h foil" id="s10-title" style="top:232px;font-size:138px">השירות</div>
 <div class="sub" style="top:416px;font-size:62px">הטיפ לא כלול בהטבה</div>
+<div style="position:absolute;left:90px;top:1000px;width:900px;height:380px;border-radius:50%;background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.8) 0%, rgba(0,0,0,0) 68%)" data-layout-ignore></div>
+<img class="art" src="assets/img/tray.png" alt="" style="left:20px;top:716px;width:1040px;height:601px" data-layout-ignore>
+<div class="art" style="left:282px;top:907px;width:360px;height:270px;background:url('assets/img/coin.png') center / contain no-repeat" data-layout-ignore></div>
+<div class="art" style="left:448px;top:927px;width:360px;height:270px;background:url('assets/img/coin.png') center / contain no-repeat;rotate:8deg" data-layout-ignore></div>
+<div id="s10-drop" class="art" style="left:366px;top:875px;width:360px;height:270px" data-layout-ignore><img class="s10-set" src="assets/img/coin-settle-0.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:1"><img class="s10-set" src="assets/img/coin-settle-1.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"><img class="s10-set" src="assets/img/coin-settle-2.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"><img class="s10-set" src="assets/img/coin-settle-3.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"><img class="s10-set" src="assets/img/coin-settle-4.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"><img class="s10-set" src="assets/img/coin-settle-5.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"><img class="s10-set" src="assets/img/coin-settle-6.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"><img class="s10-set" src="assets/img/coin-settle-7.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"><img class="s10-set" src="assets/img/coin-settle-8.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"><img class="s10-set" src="assets/img/coin-settle-9.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"><img class="s10-set" src="assets/img/coin-settle-10.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"><img class="s10-set" src="assets/img/coin-settle-11.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"></div>
 <svg class="art" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920" data-layout-ignore>
-  <ellipse cx="540" cy="1080" rx="300" ry="118" fill="#120e0b" stroke="#c9a36b" stroke-width="5"/>
-  <ellipse cx="540" cy="1074" rx="250" ry="88" fill="#1d1612" stroke="rgba(201,163,107,.5)" stroke-width="2"/>
-  <image href="assets/img/coin.png" x="370" y="990" width="200" height="150"/><image href="assets/img/coin.png" x="500" y="1004" width="200" height="150"/>
-  <g id="s10-drop"><g id="s10-coin"><image href="assets/img/coin.png" x="440" y="966" width="200" height="150"/></g></g>
-  <path id="s10-glint" d="M500 1036 L560 1036" stroke="#fff6dc" stroke-width="6" stroke-linecap="round" opacity="0"/>
-</svg>
+  <path class="s10-tw" d="M486 956 Q486 1000 530 1000 Q486 1000 486 1044 Q486 1000 442 1000 Q486 1000 486 956 Z" fill="#fff6dc" opacity="0"/><path class="s10-tw" d="M640 1022 Q640 1052 670 1052 Q640 1052 640 1082 Q640 1052 610 1052 Q640 1052 640 1022 Z" fill="#fff6dc" opacity="0"/><path class="s10-tw" d="M566 1072 Q566 1094 588 1094 Q566 1094 566 1116 Q566 1094 544 1094 Q566 1094 566 1072 Z" fill="#fff6dc" opacity="0"/></svg>
 
   </div>
   <script>
@@ -39,11 +49,13 @@
       const tl = gsap.timeline({ paused: true });
       
       
-tl.fromTo("#s10-drop", { y: -620 }, { y: 0, duration: 0.7, ease: "power2.in" }, 0.25);
-tl.fromTo("#s10-coin", { scaleY: 1, transformOrigin: "50% 100%" }, { scaleY: 0.8, duration: 0.07, ease: "power1.out", yoyo: true, repeat: 1 }, 0.95);
-tl.fromTo("#s10-glint", { opacity: 0, x: -60 }, { opacity: 0.9, x: 60, duration: 0.6, ease: "power2.inOut" }, 1.2);
-tl.to("#s10-glint", { opacity: 0, duration: 0.25, ease: "power1.in" }, 1.8);
-tl.fromTo("#s10-title", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.5, ease: "power2.inOut" }, 2.0);
+tl.fromTo("#s10-drop", { y: -1150 }, { y: 0, duration: 0.6250, ease: "power2.in" }, 0);
+tl.to("#s10-drop", { y: -34, duration: 0.11, ease: "power2.out", yoyo: true, repeat: 1 }, 0.6250);
+const coins = document.querySelectorAll(".s10-set");
+for (let k = 1; k < 12; k++) tl.set(coins, { opacity: (i) => (i === k ? 1 : 0) }, 0.6250 + (k - 1) / 24 - 1e-4);
+tl.fromTo(".s10-tw", { opacity: 0, scale: 0.2, rotation: 0, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, rotation: 45, duration: 0.3, ease: "power2.out", stagger: 0.3125 }, 1.2500);
+tl.to(".s10-tw", { opacity: 0, scale: 0.3, rotation: 90, duration: 0.35, ease: "power2.in", stagger: 0.3125 }, 1.5500);
+tl.fromTo("#s10-title", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.5, ease: "power2.inOut" }, 1.8750);
 
       window.__timelines["s10"] = tl;
     })();

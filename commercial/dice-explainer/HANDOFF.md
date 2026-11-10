@@ -1,13 +1,13 @@
 # HANDOFF: Yoko Ono dice-game video
 
-Updated after every step. **Last update: v6, stage 1 (props) done; waiting for the user's approval before stage 2 (stills).**
+Updated after every step. **Last update: v6, stage 2 (stills) done and sent; waiting for the user's approval before stage 3 (motion polish, sound, draft render).**
 
 ## v6 (current): a quality rebuild
 - **Brief:** `../dice-explainer-v6-brief.md`. Content, rules and structure stay as approved; the goal is quality (cards, type, motion, rhythm, realistic objects, SFX timing).
 - **Branch:** `ccr-56b6f5ef-labe3t`, built on top of v5 (`ccr-a63b5673-0h297p`).
 - **Plan (approved):**
-  1. Props: re-render (free) and show v5 next to v6. **Done; waiting for approval.**
-  2. Stills: a mid-card frame of every card, v6 next to v5. Rewrite `build.py` (layout grid, type scale, textures). Approval before animating.
+  1. Props: re-render (free) and show v5 next to v6. **Done; approved.**
+  2. Stills: a mid-card frame of every card, v6 next to v5. Rewrite `build.py` (layout grid, type scale, textures). **Done; waiting for approval.**
   3. Motion and SFX from one event table, all times in beats. QA: lint 0/0, `check`, freezedetect, frame sheet. Send a draft.
   4. Deliverables: master (about −16 LUFS), silent screen loop, 15 s Stories cut (`tools/derive.sh`), compressed copy. Update script, SPEC and HANDOFF; commit and push.
 - **Not without a "yes":** the hand in Kling (still 0.25 + Kling std 3 s 4.5). The Instagram handle stays `@[instagram]`.
@@ -36,6 +36,38 @@ fails if any prop (or any frame of a tumble strip) touches the frame edge, so no
 - **Coin:** struck gold with a reeded edge (120 reeds), a rim, a bead ring and the logo's mountains and sun in relief. `coin.png` plus `coin-settle-0..11.png` (it lands and wobbles flat).
 - **Removed:** v5's `die-1..6.png` and `die-roll-0..11.png`. The v5 build still references them, so stage 2 rewrites `build.py`.
 - **For review** (gitignored, `review/`): `props-v5-v6.png` and `dice-tumble-v5-v6.mp4`.
+
+### v6 stage 2: stills (done)
+`build.py` is rewritten from scratch (v5's is in git at `7e7a0a6`). Lint is 0/0. `assets/dice-kit.js` is rewritten too.
+- **Timing:** every card length is in beats (`card(id, beats, ...)`); the build asserts each cut is on a beat. The total is still 109 beats = 68.125 s, and the card order and lengths are the same as v5.
+- **Design system** (`BASE_CSS`):
+  - one type scale, embossed gold foil (`.foil`), ivory headlines with a drop shadow;
+  - the rule header is a gold medallion between two hairlines (`rule(n)`);
+  - every die has a shadow under it (`shadow()`);
+  - the ground is a lacquer texture (`tex-noir.jpg`) with a warm glow whose height each card sets (`--glow`);
+  - the frame has stepped corners.
+- **Baked motion:** throws are computed in Python frame by frame and emitted as `DiceKit.bake` / `DiceKit.spin` calls (only `tl.set`, so any seek gives the exact frame). The same code calls `sfx(card, time, file, volume)`, so sound cues come from the picture's own events. `index()` merges cues that land on the same frame.
+- **The dice table (6a, 6b):** `Table` is real CSS 3D: felt, three standing walls lined with felt, walnut rims. The dice are screen-space sprites placed through `Table.proj()`, the same camera. `throw_sim` is a small physics sim (gravity, bounces, wall rebound, rolling friction); `tune_throw` finds the speed that leaves a die at a chosen spot, with or without touching the far wall; the wall hit lands on beat 2.
+- **Tumbles:** `spin_keys(n)` picks the strip frames. A long tumble loops the fast first 10 frames, then plays the last 14 once into the rest pose.
+- **New props** (`node tools/render_props.js table` and `tex`): `plate.png`, `folder.png` (leather bill folder with the logo in gold), `tray.png` (lacquer tip tray), and the textures `tex-felt/walnut/walnutv/gold/noir.jpg`.
+- **Hand:** the frames are now 800×1760, so the sleeve always runs off the screen edge.
+- **Card by card, what changed from v5:**
+  - **Opening felt:** real felt texture, bigger hand, long sleeve.
+  - **1:** bigger dice that hang and turn in front of the lens.
+  - **2:** a red scalloped "חדש" seal.
+  - **3a:** the dial got a crown, a glass highlight and leather strap ends, so it reads as a wristwatch.
+  - **3b:** a walnut table seen from above, with rendered plates, sake cups and the leather bill folder.
+  - **4:** the dice roll in and stop under the ×1.
+  - **5:** a bevelled gold picture frame and a slow spotlight on the roller.
+  - **6a, 6b:** the table has real walls; wall-hit flashes; the trails appear after the dice stop.
+  - **7:** no knife. The whole receipt sits under the subline and a red "−50%" stamp lands on it.
+  - **8:** a gold-leaf ground with rays; the bill bursts into 8 torn pieces on the jackpot beat; petals and gold leaf fall for the whole card.
+  - **9:** a gold bowl with chopsticks and moving steam.
+  - **10:** the lacquer tray, bigger coins, the coin settles frame by frame, then twinkles.
+  - **11:** a gold phone with a recording pill. There is no "REC" text any more (Hebrew only): a white dot and a running timer.
+  - **12:** the same layout, tightened.
+- **For review** (gitignored, `review/`): `stills-v5-v6-1.png`, `-2.png`, `-3.png` (18 shots, v5 next to v6).
+- **Still to do in stage 3:** `check --json`, a draft render with freezedetect, verify the dice strips never drop a frame in the render, tune levels, update `tools/derive.sh` cut points if needed, then SPEC and the script (card 7 without the knife).
 
 ## What this is
 An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at **Yoko Ono Asian Kitchen** (Ahuza 124, Ra'anana).

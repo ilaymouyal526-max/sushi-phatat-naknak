@@ -146,5 +146,98 @@ window.renderCoin = (tilt = 0, spin = 0, W = 600, H = 450) => {
   const c = coin(); c.position.y = 0.05 + Math.abs(Math.sin(tilt)) * 0.6; c.rotation.set(0, spin, tilt); scene.add(c);
   renderer.render(scene, cam); return canvas.toDataURL("image/png");
 };
+// ---------- flat textures for the cards (2D canvas, deterministic) ----------
+function noise2(g, W, H, n, a, col = "0,0,0") { for (let i = 0; i < n; i++) { g.fillStyle = `rgba(${col},${rnd() * a})`; g.fillRect(rnd() * W, rnd() * H, 1 + rnd() * 2, 1 + rnd() * 2); } }
+window.renderTex = (kind) => {
+  if (kind === "walnutv") {  // the same walnut with the grain running down, for the long sides of the dice table
+    return new Promise((ok) => { const i = new Image(); i.onload = () => { const c = document.createElement("canvas"); c.width = i.height; c.height = i.width; const g = c.getContext("2d");
+      g.translate(c.width, 0); g.rotate(Math.PI / 2); g.drawImage(i, 0, 0); ok(c.toDataURL("image/jpeg", 0.9)); }; i.src = window.renderTex("walnut"); });
+  }
+  const size = { felt: [1024, 1024], walnut: [1400, 360], gold: [1080, 1920], noir: [1080, 1920] }[kind];
+  const [W, H] = size, c = document.createElement("canvas"); c.width = W; c.height = H; const g = c.getContext("2d"); seed(kind.length * 7 + 3);
+  if (kind === "felt") {
+    // wool felt: a flat green with short fibres in every direction
+    g.fillStyle = "#1b7a43"; g.fillRect(0, 0, W, H);
+    for (let i = 0; i < 70000; i++) {
+      const x = rnd() * W, y = rnd() * H, a = rnd() * Math.PI, l = 2 + rnd() * 5, light = rnd() > 0.5;
+      g.strokeStyle = light ? `rgba(120,220,150,${0.05 + rnd() * 0.08})` : `rgba(0,40,15,${0.06 + rnd() * 0.1})`; g.lineWidth = 1;
+      g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * l, y + Math.sin(a) * l); g.stroke();
+    }
+  } else if (kind === "walnut") {
+    // walnut: long wavy grain lines over a warm brown, a few darker bands
+    const base = g.createLinearGradient(0, 0, 0, H); base.addColorStop(0, "#8a5a36"); base.addColorStop(0.5, "#774a2a"); base.addColorStop(1, "#8f5f39");
+    g.fillStyle = base; g.fillRect(0, 0, W, H);
+    for (let b = 0; b < 9; b++) { g.fillStyle = `rgba(50,26,10,${0.08 + rnd() * 0.12})`; g.fillRect(0, rnd() * H, W, 10 + rnd() * 50); }
+    for (let i = 0; i < 520; i++) {
+      const y0 = rnd() * H, amp = 2 + rnd() * 7, f = 0.002 + rnd() * 0.006, ph = rnd() * 7, dark = rnd() > 0.35;
+      g.strokeStyle = dark ? `rgba(46,24,10,${0.08 + rnd() * 0.22})` : `rgba(214,160,104,${0.05 + rnd() * 0.12})`; g.lineWidth = 0.6 + rnd() * 1.6;
+      g.beginPath(); for (let x = 0; x <= W; x += 14) { const y = y0 + Math.sin(x * f + ph) * amp + Math.sin(x * f * 3.1 + ph) * amp * 0.3; x ? g.lineTo(x, y) : g.moveTo(x, y); } g.stroke();
+    }
+    noise2(g, W, H, 30000, 0.1, "30,14,4");
+  } else if (kind === "gold") {
+    // gold leaf: a warm metallic ground laid in squares, each a hair different, with fine cracks at the seams
+    const base = g.createRadialGradient(W / 2, H * 0.42, 60, W / 2, H * 0.42, H * 0.75); base.addColorStop(0, "#f3dba3"); base.addColorStop(0.5, "#dcb877"); base.addColorStop(1, "#a9803f");
+    g.fillStyle = base; g.fillRect(0, 0, W, H);
+    const q = 180;
+    for (let y = -20; y < H; y += q) for (let x = -40; x < W; x += q) {
+      const ox = (rnd() - 0.5) * 16, oy = (rnd() - 0.5) * 16, t = rnd();
+      g.fillStyle = t > 0.5 ? `rgba(255,244,205,${(t - 0.5) * 0.22})` : `rgba(120,80,25,${(0.5 - t) * 0.2})`; g.fillRect(x + ox, y + oy, q, q);
+      g.strokeStyle = `rgba(110,74,22,${0.10 + rnd() * 0.14})`; g.lineWidth = 1; g.strokeRect(x + ox + 0.5, y + oy + 0.5, q, q);
+    }
+    for (let i = 0; i < 900; i++) { const x = rnd() * W, y = rnd() * H; g.strokeStyle = `rgba(255,248,220,${rnd() * 0.16})`; g.lineWidth = 1; g.beginPath(); g.moveTo(x, y); g.lineTo(x + (rnd() - 0.5) * 40, y + (rnd() - 0.5) * 8); g.stroke(); }
+    noise2(g, W, H, 60000, 0.07, "90,60,15");
+  } else {
+    // noir: black lacquer with a slow sheen and a vignette (the film adds live grain on top)
+    g.fillStyle = "#0b0907"; g.fillRect(0, 0, W, H);
+    for (let i = 0; i < 26; i++) { const x = rnd() * W, y = rnd() * H, r = 200 + rnd() * 420, gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, `rgba(70,44,24,${0.05 + rnd() * 0.07})`); gr.addColorStop(1, "rgba(70,44,24,0)"); g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2); }
+    for (let i = 0; i < 260; i++) { const y = rnd() * H; g.strokeStyle = `rgba(226,197,144,${rnd() * 0.022})`; g.lineWidth = 1 + rnd() * 2; g.beginPath(); g.moveTo(0, y); g.lineTo(W, y + (rnd() - 0.5) * 60); g.stroke(); }
+    const v = g.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, H * 0.72); v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,.62)"); g.fillStyle = v; g.fillRect(0, 0, W, H);
+  }
+  return c.toDataURL("image/jpeg", 0.9);
+};
+
+// ---------- tableware, seen from straight above ----------
+const lathe = (pts, mat) => { const m = new T.Mesh(new T.LatheGeometry(pts.map(([x, y]) => new T.Vector2(x, y)), 128), mat); m.castShadow = m.receiveShadow = true; return m; };
+// a dark stoneware plate with a gold rim, a few crumbs, and chopsticks resting across it
+window.renderPlate = (W = 520, H = 520) => {
+  const { scene, cam } = stage(W, H, [0, 7.5, 0.01], [0, 0, 0], 22);
+  const glaze = new T.MeshPhysicalMaterial({ color: "#1c1512", roughness: 0.35, clearcoat: 0.8, clearcoatRoughness: 0.25, envMapIntensity: 1.1 });
+  scene.add(lathe([[0, 0.03], [0.62, 0.03], [0.78, 0.07], [1.0, 0.16], [1.02, 0.17], [1.0, 0.19], [0.76, 0.1], [0.6, 0.06], [0, 0.06]], glaze));
+  const rim = new T.Mesh(new T.TorusGeometry(1.01, 0.014, 12, 128), GOLD()); rim.rotation.x = Math.PI / 2; rim.position.y = 0.18; scene.add(rim);
+  seed(5);
+  for (let i = 0; i < 9; i++) { const m = new T.Mesh(new T.SphereGeometry(0.018 + rnd() * 0.02, 10, 8), new T.MeshStandardMaterial({ color: i % 3 ? "#e9dfc9" : "#3f6a36", roughness: 0.8 })); m.position.set((rnd() - 0.5) * 0.8, 0.075, (rnd() - 0.5) * 0.8); m.castShadow = true; scene.add(m); }
+  const wood = new T.MeshStandardMaterial({ color: "#2a1a10", roughness: 0.5 });
+  for (const k of [-1, 1]) { const s = new T.Mesh(new T.CylinderGeometry(0.018, 0.03, 2.3, 16), wood); s.rotation.z = Math.PI / 2; s.rotation.y = 0.5 + k * 0.035; s.position.set(0.05, 0.22, 0.1 + k * 0.045); s.castShadow = true; scene.add(s); }
+  renderer.render(scene, cam); return canvas.toDataURL("image/png");
+};
+// the tip tray: a small black lacquer dish with a gold rim
+window.renderTray = (W = 900, H = 520) => {
+  const { scene, cam } = stage(W, H, [0, 2.9, 3.5], [0, 0.05, 0.1], 30);
+  scene.children.filter((l) => l.isDirectionalLight)[1].color.set("#ffd2a0");  // a warm rim: red-black urushi, not blue
+  const lacquer = new T.MeshPhysicalMaterial({ color: "#1a0c09", roughness: 0.3, clearcoat: 1, clearcoatRoughness: 0.15, envMapIntensity: 0.45 });
+  scene.add(lathe([[0, 0.02], [1.15, 0.02], [1.38, 0.08], [1.5, 0.2], [1.53, 0.2], [1.42, 0.05], [1.2, 0.0], [0, 0.0]].reverse(), lacquer));
+  const dish = lathe([[0, 0.03], [1.12, 0.03], [1.36, 0.09], [1.5, 0.21]], lacquer); dish.material.side = T.DoubleSide; scene.add(dish);
+  const rim = new T.Mesh(new T.TorusGeometry(1.5, 0.018, 12, 160), GOLD()); rim.material.envMap = goldEnv; rim.rotation.x = Math.PI / 2; rim.position.y = 0.21; scene.add(rim);
+  renderer.render(scene, cam); return canvas.toDataURL("image/png");
+};
+// the bill folder: black leather, stitched, the logo stamped in gold
+window.renderFolder = async (W = 760, H = 560) => {
+  const { scene, cam } = stage(W, H, [0, 6.6, 0.01], [0, 0, 0], 26);
+  const fw = 2.5, fh = 1.72;
+  const tc = document.createElement("canvas"); tc.width = 1000; tc.height = 688; const g = tc.getContext("2d"); seed(9);
+  g.fillStyle = "#15100d"; g.fillRect(0, 0, 1000, 688);
+  for (let i = 0; i < 14000; i++) { g.fillStyle = rnd() > 0.5 ? `rgba(255,230,200,${rnd() * 0.035})` : `rgba(0,0,0,${rnd() * 0.25})`; g.beginPath(); g.arc(rnd() * 1000, rnd() * 688, 1 + rnd() * 2.2, 0, 7); g.fill(); }
+  g.strokeStyle = "rgba(201,163,107,.75)"; g.lineWidth = 2.5; g.setLineDash([11, 8]); g.strokeRect(26, 26, 948, 636); g.setLineDash([]);
+  const logo = await loadImg("../assets/img/logo-ink.svg");
+  // stamp the logo in gold: draw it, then tint through source-in
+  const lc = document.createElement("canvas"); lc.width = 300; lc.height = 390; const lg = lc.getContext("2d"); lg.drawImage(logo, 0, 0, 300, 390);
+  lg.globalCompositeOperation = "source-in"; const gg = lg.createLinearGradient(0, 0, 300, 390); gg.addColorStop(0, "#f6e2a8"); gg.addColorStop(0.5, "#c9a36b"); gg.addColorStop(1, "#e7c98a"); lg.fillStyle = gg; lg.fillRect(0, 0, 300, 390);
+  g.drawImage(lc, 500 - 105, 344 - 136, 210, 273);
+  const tex = new T.CanvasTexture(tc); tex.colorSpace = T.SRGBColorSpace; tex.anisotropy = 16;
+  const leather = new T.MeshPhysicalMaterial({ map: tex, bumpMap: tex, bumpScale: 1.2, roughness: 0.55, clearcoat: 0.25, clearcoatRoughness: 0.5 });
+  const side = new T.MeshStandardMaterial({ color: "#0d0907", roughness: 0.6 });
+  const box = new T.Mesh(new T.BoxGeometry(fw, 0.09, fh), [side, side, leather, side, side, side]); box.position.y = 0.045; box.castShadow = true; scene.add(box);
+  renderer.render(scene, cam); return canvas.toDataURL("image/png");
+};
 document.fonts.load("500 30px Heebo").then(() => document.fonts.load("700 30px Heebo")).then(() => { window.ready = true; });
 </script></body></html>

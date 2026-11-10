@@ -8,27 +8,40 @@
 @font-face { font-family: "Shippori"; font-weight: 800; font-display: block; src: url('assets/fonts/shippori-jp-subset.woff2') format('woff2'); }
 
 #root { position: absolute; inset: 0; overflow: hidden; direction: rtl; font-variant-numeric: lining-nums;
-  background: radial-gradient(ellipse 85% 55% at 50% 52%, #24160e 0%, #0b0907 72%); }
-.h { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 800; color: #f4ecdf; line-height: 1.04; }
-.sub { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 500; color: #e2c590; line-height: 1.28; }
-.kick { position: absolute; left: 96px; right: 96px; text-align: center; font-family: "Heebo", sans-serif; font-weight: 500; letter-spacing: .12em; color: #c9a36b; }
-.big { position: absolute; left: 60px; right: 60px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 700; line-height: .9; }
-.num { position: absolute; left: 500px; width: 80px; height: 80px; border-radius: 50%; border: 2px solid #c9a36b; display: grid; place-items: center;
-  font-family: "Frank Ruhl", serif; font-weight: 700; font-size: 50px; color: #c9a36b; line-height: 1; }
-.die { position: absolute; }
-.art { position: absolute; overflow: visible; }
-.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+  background: radial-gradient(ellipse 92% 44% at 50% var(--glow, 54%), rgba(84,50,22,.66) 0%, rgba(84,50,22,0) 72%), url('assets/img/tex-noir.jpg') center / cover no-repeat, #0b0907; }
+.h { position: absolute; left: 80px; right: 80px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 800; color: #f4ecdf; line-height: 1.04;
+  text-shadow: 0 3px 0 rgba(0,0,0,.6), 0 16px 34px rgba(0,0,0,.6); }
+.sub { position: absolute; left: 90px; right: 90px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 500; color: #e2c590; line-height: 1.28;
+  text-shadow: 0 2px 0 rgba(0,0,0,.55); }
+.kick { position: absolute; left: 90px; right: 90px; text-align: center; font-family: "Heebo", sans-serif; font-weight: 500; letter-spacing: .14em; color: #c9a36b; }
+.big { position: absolute; left: 40px; right: 40px; text-align: center; font-family: "Frank Ruhl", serif; font-weight: 700; line-height: .9; }
 .foil { background: linear-gradient(100deg, #a8814a 0%, #e9c98a 30%, #c9a36b 42%, #fff1c9 50%, #c9a36b 58%, #e9c98a 70%, #a8814a 100%);
-  background-size: 300% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; }
-</style>
+  background-size: 300% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none;
+  filter: drop-shadow(0 3px 0 #3a280f) drop-shadow(0 14px 24px rgba(0,0,0,.6)); }
+.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+.rule { position: absolute; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 24px; direction: ltr; }
+.rule b { width: 86px; height: 86px; border-radius: 50%; border: 2px solid #c9a36b; display: grid; place-items: center; line-height: 1;
+  font-family: "Frank Ruhl", serif; font-weight: 700; font-size: 52px; color: #e2c590;
+  background: radial-gradient(circle at 35% 28%, #3a2716 0%, #120c08 70%); box-shadow: inset 0 0 0 5px #0b0907, inset 0 0 0 6px rgba(201,163,107,.6), 0 10px 24px rgba(0,0,0,.6); }
+.rule i { width: 200px; height: 2px; background: linear-gradient(90deg, rgba(201,163,107,0), #c9a36b); }
+.rule i + b + i { background: linear-gradient(90deg, #c9a36b, rgba(201,163,107,0)); }
+.die { position: absolute; }
+.shd { position: absolute; border-radius: 50%; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.72) 0%, rgba(70,4,12,.34) 46%, rgba(0,0,0,0) 70%); }
+.art { position: absolute; overflow: visible; }
+.hand { position: absolute; transform-origin: 56.6% 43.6%; }
+.hand img { position: absolute; inset: 0; width: 100%; height: 100%; }
+#root { --glow: 30%; }</style>
   <div id="root" data-composition-id="s5" data-width="1080" data-height="1920" dir="rtl" lang="he">
 
-<div class="num" style="top:196px">3</div>
-<div class="h" style="top:300px;font-size:128px">שחקן אחד</div>
-<div class="sub" style="top:452px;font-size:56px">רק אחד מטיל, בשביל כולם</div>
-<div style="position:absolute;left:90px;top:560px;width:900px;height:1080px;border-radius:36px;overflow:hidden;box-shadow:inset 0 0 0 4px #c9a36b, 0 24px 50px rgba(0,0,0,.55)">
+<div class="rule" style="top:168px" data-layout-ignore><i></i><b>3</b><i></i></div>
+<div class="h" style="top:284px;font-size:132px">שחקן אחד</div>
+<div class="sub" style="top:444px;font-size:56px">רק אחד מטיל, בשביל כולם</div>
+<div style="position:absolute;left:84px;top:560px;width:912px;height:1090px;border-radius:30px;background:linear-gradient(135deg,#f6e2a8 0%,#c9a36b 30%,#8a6534 52%,#e7c98a 78%,#a8814a 100%);box-shadow:0 30px 60px rgba(0,0,0,.65)" data-layout-ignore></div>
+<div style="position:absolute;left:92px;top:568px;width:896px;height:1074px;border-radius:24px;background:#0b0907" data-layout-ignore></div>
+<div style="position:absolute;left:104px;top:580px;width:872px;height:1050px;border-radius:16px;overflow:hidden" data-layout-ignore>
   <img id="s5-img" src="assets/hf/S5.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%">
-  <div style="position:absolute;inset:0;border-radius:36px;box-shadow:inset 0 0 0 4px #c9a36b"></div>
+  <div style="position:absolute;inset:0;border-radius:16px;box-shadow:inset 0 0 0 2px rgba(226,197,144,.7), inset 0 0 90px rgba(0,0,0,.45)"></div>
+  <div id="s5-spot" style="position:absolute;inset:0;background:radial-gradient(ellipse 46% 40% at 47% 34%, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 62%, rgba(0,0,0,.55) 100%);opacity:0"></div>
 </div>
 
   </div>
@@ -37,7 +50,8 @@
       const tl = gsap.timeline({ paused: true });
       
       
-tl.fromTo("#s5-img", { scale: 1, transformOrigin: "47% 30%" }, { scale: 1.12, transformOrigin: "47% 30%", duration: 3.75, ease: "power1.inOut" }, 0);
+tl.fromTo("#s5-img", { scale: 1, transformOrigin: "47% 30%" }, { scale: 1.14, transformOrigin: "47% 30%", duration: 3.75, ease: "power1.inOut" }, 0);
+tl.fromTo("#s5-spot", { opacity: 0 }, { opacity: 1, duration: 2.5, ease: "power1.inOut" }, 0.625);
 
       window.__timelines["s5"] = tl;
     })();
