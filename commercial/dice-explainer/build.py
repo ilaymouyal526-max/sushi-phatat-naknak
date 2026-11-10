@@ -295,7 +295,7 @@ def table_die(die_id, face, v):
     """A die and its shadow for the table cards: both sit at the screen origin and are moved by the baked throw."""
     c = Table.C
     return (f'<div id="{die_id}-sh" class="shd" style="left:{-c * 0.62:.0f}px;top:{-c * 0.26:.0f}px;width:{c * 1.24:.0f}px;height:{c * 0.52:.0f}px" data-layout-ignore></div>',
-            f'<div id="{die_id}" class="die" data-faces="{face}" data-v="{v}" style="left:{-c / 2:.0f}px;top:{-c / 2:.0f}px;width:{c}px;height:{c}px" data-layout-ignore></div>')
+            f'<div id="{die_id}" class="die" data-faces="{face}" data-v="{v}" style="left:{-c / 2:.0f}px;top:{-c / 2:.0f}px;width:{c}px;height:{c}px" data-layout-allow-overflow></div>')
 
 
 # ---------- the cards ----------
@@ -568,7 +568,7 @@ card("s3b", 6, f"""
   <div class="plate" style="left:470px;top:572px;rotate:188deg"></div><div class="plate" style="left:128px;top:344px;rotate:-82deg"></div>
   <div class="cup" style="left:650px;top:120px"></div><div class="cup" style="left:296px;top:560px"></div><div class="cup" style="left:150px;top:150px"></div><div class="cup" style="left:800px;top:560px"></div>
 </div>
-<div id="s3b-grp" style="position:absolute;inset:0" data-layout-ignore>
+<div id="s3b-grp" style="position:absolute;inset:0">
   <img id="s3b-folder" class="art" src="assets/img/folder.png" alt="" style="left:182px;top:744px;width:716px;height:528px;rotate:-4deg">
   {shadow("s3b-shA", 498, 1050, 150)}{shadow("s3b-shB", 606, 1062, 150)}
   {die("s3b-dA", 3, 492, 1000, 104, "a", -10)}{die("s3b-dB", 5, 600, 1012, 104, "b", 14)}
@@ -615,7 +615,7 @@ card("s5", 6, f"""
 <div class="sub" style="top:444px;font-size:56px">רק אחד מטיל, בשביל כולם</div>
 <div style="position:absolute;left:84px;top:560px;width:912px;height:1090px;border-radius:30px;background:linear-gradient(135deg,#f6e2a8 0%,#c9a36b 30%,#8a6534 52%,#e7c98a 78%,#a8814a 100%);box-shadow:0 30px 60px rgba(0,0,0,.65)" data-layout-ignore></div>
 <div style="position:absolute;left:92px;top:568px;width:896px;height:1074px;border-radius:24px;background:{INK}" data-layout-ignore></div>
-<div style="position:absolute;left:104px;top:580px;width:872px;height:1050px;border-radius:16px;overflow:hidden" data-layout-ignore>
+<div style="position:absolute;left:104px;top:580px;width:872px;height:1050px;border-radius:16px;overflow:hidden" data-layout-allow-overflow>
   <img id="s5-img" src="assets/hf/S5.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%">
   <div style="position:absolute;inset:0;border-radius:16px;box-shadow:inset 0 0 0 2px rgba(226,197,144,.7), inset 0 0 90px rgba(0,0,0,.45)"></div>
   <div id="s5-spot" style="position:absolute;inset:0;background:radial-gradient(ellipse 46% 40% at 47% 34%, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 62%, rgba(0,0,0,.55) 100%);opacity:0"></div>
@@ -875,7 +875,7 @@ card("s11", 8, f"""
 <div class="sub" style="top:444px;font-size:52px">רגעי הזכייה עולים לרשתות שלנו</div>
 <div style="position:absolute;left:216px;top:548px;width:648px;height:1122px;border-radius:88px;background:linear-gradient(135deg,#f6e2a8 0%,#c9a36b 22%,#6d5026 48%,#e7c98a 74%,#a8814a 100%);box-shadow:0 36px 70px rgba(0,0,0,.7)" data-layout-ignore></div>
 <div style="position:absolute;left:224px;top:556px;width:632px;height:1106px;border-radius:80px;background:#070605" data-layout-ignore></div>
-<div style="position:absolute;left:240px;top:572px;width:600px;height:1074px;border-radius:66px;overflow:hidden;background:#1c120c" data-layout-ignore>
+<div style="position:absolute;left:240px;top:572px;width:600px;height:1074px;border-radius:66px;overflow:hidden;background:#1c120c" data-layout-allow-overflow>
   <img id="s11-img" src="assets/hf/S11.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
   <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,0) 16%, rgba(0,0,0,0) 78%, rgba(0,0,0,.55) 100%)"></div>
   <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 600 1074"><g fill="none" stroke="rgba(255,255,255,.85)" stroke-width="4" stroke-linecap="round">
