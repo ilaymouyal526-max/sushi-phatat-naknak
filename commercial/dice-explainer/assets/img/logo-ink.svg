@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="260" viewBox="0 0 200 260" >
+  <g fill="none" stroke="#2b2016" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 127 V68 A50 50 0 0 1 150 68 V127 M50 168 V192 A50 50 0 0 0 150 192 V168"/>
+    <path d="M54 50 Q74 60 92 70 M146 50 Q126 60 108 70"/>
+    <g><circle cx="64.0" cy="51.4" r="3.1"/><circle cx="68.4" cy="54.6" r="3.1"/><circle cx="66.7" cy="59.7" r="3.1"/><circle cx="61.3" cy="59.7" r="3.1"/><circle cx="59.6" cy="54.6" r="3.1"/><circle cx="80.0" cy="61.4" r="3.1"/><circle cx="84.4" cy="64.6" r="3.1"/><circle cx="82.7" cy="69.7" r="3.1"/><circle cx="77.3" cy="69.7" r="3.1"/><circle cx="75.6" cy="64.6" r="3.1"/><circle cx="74.0" cy="37.4" r="3.1"/><circle cx="78.4" cy="40.6" r="3.1"/><circle cx="76.7" cy="45.7" r="3.1"/><circle cx="71.3" cy="45.7" r="3.1"/><circle cx="69.6" cy="40.6" r="3.1"/><circle cx="136.0" cy="51.4" r="3.1"/><circle cx="140.4" cy="54.6" r="3.1"/><circle cx="138.7" cy="59.7" r="3.1"/><circle cx="133.3" cy="59.7" r="3.1"/><circle cx="131.6" cy="54.6" r="3.1"/><circle cx="120.0" cy="61.4" r="3.1"/><circle cx="124.4" cy="64.6" r="3.1"/><circle cx="122.7" cy="69.7" r="3.1"/><circle cx="117.3" cy="69.7" r="3.1"/><circle cx="115.6" cy="64.6" r="3.1"/><circle cx="126.0" cy="37.4" r="3.1"/><circle cx="130.4" cy="40.6" r="3.1"/><circle cx="128.7" cy="45.7" r="3.1"/><circle cx="123.3" cy="45.7" r="3.1"/><circle cx="121.6" cy="40.6" r="3.1"/></g>
+    <polyline points="62,124 86,90 99,106 113,80 138,124"/>
+    <polyline points="80,99 84,103 88,98 92,102"/><polyline points="105,92 109,97 113,92 117,97 120,94"/>
+    <path d="M78 182 L122 182 Q120 204 100 204 Q80 204 78 182 Z M99 181 L110 169 M105 182 L117 171"/>
+    <path d="M70 230 Q100 208 130 230 M78 236 Q100 220 122 236 M86 240 Q100 230 114 240"/>
+  </g>
+  <text x="100" y="151" text-anchor="middle" direction="ltr" fill="#2b2016" font-family="Cormorant, serif" font-weight="600" font-size="29" letter-spacing="2.6">YOKO ONO</text>
+  <text x="100" y="163" text-anchor="middle" direction="ltr" fill="#2b2016" font-family="Cormorant, serif" font-weight="700" font-size="8.6" letter-spacing="1.9">ASIAN KITCHEN</text>
+</svg>

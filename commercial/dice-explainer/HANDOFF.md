@@ -1,6 +1,41 @@
 # HANDOFF: Yoko Ono dice-game video
 
-Updated after every step. Last update: user feedback round after the finals: knife/cut removed from card 7, dice rebuilt as clean rounded cubes. The hand in Kling is priced and waiting for approval; the user is asking the owner for feedback.
+Updated after every step. **Last update: v6, stage 1 (props) done; waiting for the user's approval before stage 2 (stills).**
+
+## v6 (current): a quality rebuild
+- **Brief:** `../dice-explainer-v6-brief.md`. Content, rules and structure stay as approved; the goal is quality (cards, type, motion, rhythm, realistic objects, SFX timing).
+- **Branch:** `ccr-56b6f5ef-labe3t`, built on top of v5 (`ccr-a63b5673-0h297p`).
+- **Plan (approved):**
+  1. Props: re-render (free) and show v5 next to v6. **Done; waiting for approval.**
+  2. Stills: a mid-card frame of every card, v6 next to v5. Rewrite `build.py` (layout grid, type scale, textures). Approval before animating.
+  3. Motion and SFX from one event table, all times in beats. QA: lint 0/0, `check`, freezedetect, frame sheet. Send a draft.
+  4. Deliverables: master (about −16 LUFS), silent screen loop, 15 s Stories cut (`tools/derive.sh`), compressed copy. Update script, SPEC and HANDOFF; commit and push.
+- **Not without a "yes":** the hand in Kling (still 0.25 + Kling std 3 s 4.5). The Instagram handle stays `@[instagram]`.
+
+### v6 stage 1: props (done)
+All renders are local and free: `node tools/render_props.js [dice|hand|receipt|coin]`. It ends with an **edge check** that
+fails if any prop (or any frame of a tumble strip) touches the frame edge, so nothing is ever cut off on screen.
+- **Dice** (`tools/dice.html`):
+  - **Why v5 failed:** the transmission pass blurred the far pips into blobs, and the tumble was 12 random poses swapped every 1/12 s (it read as flicker).
+  - **The body** is now an alpha-blended acrylic shell (front opacity 0.95, dark-red back faces). The opaque pips render first, so the far pips stay crisp and only faintly visible.
+  - **The pips** are drilled and filled flush, with rounded edges (r 0.07). The cube spans about 53% of its frame, so it can spin without clipping.
+  - **Bug fixed:** v5's rotation table had faces 2 and 5 swapped.
+  - **Output:**
+    - `die-{1..6}{a,b}.png`: 1024 px rest poses, two variants (a, b) with different yaw.
+    - `die-strip-{1..6}{a,b}.webp`: 24 frames of a continuous tumble that decelerates onto that face, with motion blur (6 sub-frames, quarter-frame shutter), 512 px cells in a 6 × 4 grid.
+    - Variant b uses other rolling axes, so a double never looks like a mirror copy.
+  - **No baked shadow:** the film draws the shadow, so it stays on the felt while the die is in the air.
+- **Hand** (`tools/hand.html`):
+  - **Why v5 failed:** separate cylinders and spheres left seams, and the fist was rotated wrong.
+  - **Now:** one signed distance field (round-cone bones smooth-unioned into the palm, knuckles, nails, wrist), raymarched in a shader. Wrap lighting with a red terminator for the skin; soft shadows and AO; navy sleeve, white cuff, gold cufflink. Rendered 2× and downsampled.
+  - **Poses:** `hand-{open,release,fist,flat}.png` (800×1280). `flat` is new, for the waiter in card 3b. The thumb is no longer cut off.
+- **Receipt** (`tools/props.html`, `receipt.png`):
+  - thermal paper with torn edges and a curl at the top;
+  - the logo (`assets/img/logo-ink.svg`, exported from `logo_svg` in `build.py`) and Hebrew lines: address, "חשבון לשולחן", 8 dishes, "לתשלום", a barcode, "תודה, ובהצלחה בקוביות!";
+  - **no prices.**
+- **Coin:** struck gold with a reeded edge (120 reeds), a rim, a bead ring and the logo's mountains and sun in relief. `coin.png` plus `coin-settle-0..11.png` (it lands and wobbles flat).
+- **Removed:** v5's `die-1..6.png` and `die-roll-0..11.png`. The v5 build still references them, so stage 2 rewrites `build.py`.
+- **For review** (gitignored, `review/`): `props-v5-v6.png` and `dice-tumble-v5-v6.mp4`.
 
 ## What this is
 An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at **Yoko Ono Asian Kitchen** (Ahuza 124, Ra'anana).

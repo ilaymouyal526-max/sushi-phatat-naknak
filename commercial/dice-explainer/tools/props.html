@@ -1,184 +1,150 @@
 <!doctype html>
 <html><head><meta charset="utf-8">
-<style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<style>
+@font-face { font-family: "Heebo"; font-weight: 100 900; src: url('../assets/fonts/heebo-normal-hebrew.woff2') format('woff2'); }
+@font-face { font-family: "HeeboL"; font-weight: 100 900; src: url('../assets/fonts/heebo-normal-latin.woff2') format('woff2'); }
+@font-face { font-family: "Frank Ruhl"; font-weight: 300 900; src: url('../assets/fonts/frankruhl-normal-hebrew.woff2') format('woff2'); }
+html,body{margin:0;background:transparent}canvas{display:block}
+</style>
 <script src="../assets/vendor/three.min.js"></script></head>
 <body><canvas id="c"></canvas>
 <script>
-// Renders the film's props as transparent PNGs (run by render_props.js). Real 3D: acrylic dice with transmission,
-// paper with fibres, gold coin, steel knife. Light: warm key, cool rim, soft shadow on an invisible catcher.
+// v6 props (run by render_props.js): the paper receipt and the gold tip coin. The dice are in dice.html, the hand
+// in hand.html. Real 3D, a warm key light, a cool rim and a soft shadow on an invisible catcher.
 const T = THREE;
 const canvas = document.getElementById("c");
 const renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(1);
-renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
 renderer.outputColorSpace = T.SRGBColorSpace;
 renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.PCFSoftShadowMap;
 
-// A small studio environment for reflections and refraction
-function studioEnv() {
+function studioEnv(gold = false) {
   const s = new T.Scene();
-  s.background = new T.Color("#1a1210");
+  s.background = new T.Color("#160f0c");
   const panel = (w, h, color, x, y, z, ry = 0, rx = 0) => { const m = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshBasicMaterial({ color, side: T.DoubleSide })); m.position.set(x, y, z); m.rotation.set(rx, ry, 0); s.add(m); };
-  panel(6, 3, "#fff6e8", -4, 4, 2, 0.9, -0.6); panel(5, 5, "#fff1dc", 0, 7, 0, 0, Math.PI / 2);
-  panel(4, 2, "#ffd6a8", 4, 3, 3, -0.9, -0.4);
-  panel(8, 1.2, "#bcd2ff", 0, 5, -5, 0, 0.4);
-  panel(10, 10, "#3a2418", 0, -3, 0, 0, Math.PI / 2);
+  panel(1.6, 7, "#fff4e4", -3.2, 4.5, 1.5, 0.6, -0.9);
+  panel(6, 1.2, "#ffe2bf", 2.5, 3.5, 3.5, -0.7, -0.5);
+  panel(5, 5, "#6a5040", 0, 7, 0, 0, Math.PI / 2);
+  panel(2.4, 1.4, "#fff8ee", -0.6, 6, 2.6, 0, Math.PI / 2 - 0.35);
+  panel(7, 1.0, "#9fb6ff", 0, 2.5, -5, 0, 0.2);
+  panel(14, 14, "#2a1a12", 0, -2, 0, 0, Math.PI / 2);
+  // for the coin: a big warm softbox up and behind, which a flat coin face mirrors towards the camera
+  if (gold) { panel(7, 3, "#fff1d6", 0, 4.5, -4.5, 0, 0.75); panel(3, 3, "#ffe7bf", -4, 3, 0, Math.PI / 2, 0); }
   const pm = new T.PMREMGenerator(renderer);
-  return pm.fromScene(s, 0.02).texture;
+  return pm.fromScene(s, 0.01).texture;
 }
-const env = studioEnv();
+const env = studioEnv(), goldEnv = studioEnv(true);
 
-function stage(w, h, camPos, look) {
+function stage(w, h, camPos, look, fov = 30) {
   renderer.setSize(w, h, false);
   const scene = new T.Scene(); scene.environment = env;
-  const cam = new T.PerspectiveCamera(30, w / h, 0.05, 50); cam.position.set(...camPos); cam.lookAt(...look);
-  const key = new T.DirectionalLight("#ffe6c8", 2.6); key.position.set(-2.5, 6, 3.5); key.castShadow = true;
-  key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 18; key.shadow.blurSamples = 24; key.shadow.bias = -0.0008; key.shadow.normalBias = 0.02; key.shadow.camera.left = -3; key.shadow.camera.right = 3; key.shadow.camera.top = 3; key.shadow.camera.bottom = -3;
+  const cam = new T.PerspectiveCamera(fov, w / h, 0.05, 50); cam.position.set(...camPos); cam.lookAt(...look);
+  const key = new T.DirectionalLight("#ffe9cf", 2.4); key.position.set(-2.5, 6, 3.5); key.castShadow = true;
+  key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 14; key.shadow.blurSamples = 24; key.shadow.bias = -0.0008; key.shadow.normalBias = 0.02;
+  Object.assign(key.shadow.camera, { left: -3, right: 3, top: 3, bottom: -3 });
   scene.add(key);
-  const rim = new T.DirectionalLight("#b8ccff", 1.2); rim.position.set(3, 2, -4); scene.add(rim);
+  const rim = new T.DirectionalLight("#b8ccff", 1.0); rim.position.set(3, 2, -4); scene.add(rim);
   scene.add(new T.HemisphereLight("#fff0dd", "#3a2418", 0.5));
-  const catcher = new T.Mesh(new T.PlaneGeometry(20, 20), new T.ShadowMaterial({ opacity: 0.3 })); catcher.rotation.x = -Math.PI / 2; catcher.receiveShadow = true; scene.add(catcher);
+  const catcher = new T.Mesh(new T.PlaneGeometry(20, 20), new T.ShadowMaterial({ opacity: 0.32 })); catcher.rotation.x = -Math.PI / 2; catcher.receiveShadow = true; scene.add(catcher);
   return { scene, cam, catcher };
 }
 
-// Vegas die: sharp-edged translucent red acrylic, flush white pips, side length 1
-const PIPS = { 1: [[0, 0]], 2: [[-1, -1], [1, 1]], 3: [[-1, -1], [0, 0], [1, 1]], 4: [[-1, -1], [1, -1], [-1, 1], [1, 1]], 5: [[-1, -1], [1, -1], [0, 0], [-1, 1], [1, 1]], 6: [[-1, -1], [-1, 0], [-1, 1], [1, -1], [1, 0], [1, 1]] };
-function die() {
-  const g = new T.Group();
-  // A real cube with slightly rounded edges (like the casino dice on the table photo). Dense red acrylic: just
-  // enough transmission to glow, not enough for the far pips to smear into blobs.
-  const body = new T.Mesh(roundedBox(1, 1, 1, 0.06, 10), new T.MeshPhysicalMaterial({
-    color: "#e0102e", transmission: 0.35, thickness: 1.2, ior: 1.49, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.05,
-    attenuationColor: new T.Color("#8a0014"), attenuationDistance: 0.5, specularIntensity: 0.8, envMapIntensity: 0.9 }));
-  body.castShadow = true; g.add(body);
-  const pipM = new T.MeshStandardMaterial({ color: "#fbfaf7", roughness: 0.35 });
-  // standard die: 1 opposite 6, 2 opposite 5, 3 opposite 4. Faces: +y=1, -y=6, +z=2, -z=5, +x=3, -x=4
-  const faces = [[1, [0, 1, 0]], [6, [0, -1, 0]], [2, [0, 0, 1]], [5, [0, 0, -1]], [3, [1, 0, 0]], [4, [-1, 0, 0]]];
-  for (const [n, nrm] of faces) {
-    for (const [u, v] of PIPS[n]) {
-      const r = n === 1 ? 0.11 : 0.085;
-      const pip = new T.Mesh(new T.CylinderGeometry(r, r, 0.014, 40), pipM);
-      const n3 = new T.Vector3(...nrm);
-      pip.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), n3);
-      // in-face axes
-      const a = Math.abs(n3.y) > 0.5 ? new T.Vector3(1, 0, 0) : new T.Vector3(0, 1, 0);
-      const b = new T.Vector3().crossVectors(n3, a);
-      pip.position.copy(n3.clone().multiplyScalar(0.499)).addScaledVector(a, u * 0.26).addScaledVector(b, v * 0.26);
-      g.add(pip);
-    }
-  }
-  return g;
-}
-// Rotation that brings face n to +y (towards the overhead camera)
-const UP = { 1: [0, 0, 0], 6: [Math.PI, 0, 0], 2: [Math.PI / 2, 0, 0], 5: [-Math.PI / 2, 0, 0], 3: [0, 0, Math.PI / 2], 4: [0, 0, -Math.PI / 2] };
+// ---------- the receipt: thermal paper, Hebrew, no prices ----------
+let rnd; const seed = (s) => { rnd = () => ((s = (s * 16807) % 2147483647) / 2147483647); };
+function loadImg(src) { return new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.src = src; }); }
 
-window.renderDie = (face, tumble = null) => {
-  const { scene, cam } = stage(408, 438, [0.32, 4.3, 1.55], [0, 0.48, 0.1]);
-  const d = die(); d.position.y = 0.5;
-  const [x, y, z] = UP[face]; d.rotation.set(x, y, z);
-  if (tumble) { d.rotation.x += tumble[0]; d.rotation.y += tumble[1]; d.rotation.z += tumble[2]; d.position.y = 0.62; }
-  scene.add(d); renderer.render(scene, cam); return canvas.toDataURL("image/png");
-};
-
-function paperTex(w, h, draw) {
-  const c = document.createElement("canvas"); c.width = w; c.height = h; const g = c.getContext("2d");
-  g.fillStyle = "#f5efe3"; g.fillRect(0, 0, w, h);
-  let s = 7; const rnd = () => ((s = (s * 16807) % 2147483647) / 2147483647);
-  for (let i = 0; i < 9000; i++) { g.fillStyle = `rgba(120,100,70,${rnd() * 0.06})`; g.fillRect(rnd() * w, rnd() * h, 1 + rnd() * 2, 1); }
-  for (let i = 0; i < 400; i++) { g.strokeStyle = `rgba(140,120,90,${rnd() * 0.08})`; g.beginPath(); const x = rnd() * w, y = rnd() * h; g.moveTo(x, y); g.lineTo(x + rnd() * 30 - 15, y + rnd() * 6 - 3); g.stroke(); }
-  draw(g, w, h);
-  const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; t.anisotropy = 8; return t;
+async function receiptTex(W, H) {
+  const c = document.createElement("canvas"); c.width = W; c.height = H; const g = c.getContext("2d");
+  seed(11);
+  // thermal paper: cool white, faint grain and fibres
+  g.fillStyle = "#f6f3ec"; g.fillRect(0, 0, W, H);
+  for (let i = 0; i < 26000; i++) { g.fillStyle = `rgba(110,100,90,${rnd() * 0.05})`; g.fillRect(rnd() * W, rnd() * H, 1 + rnd() * 1.5, 1); }
+  // torn top and bottom edges (alpha)
+  const ink = "#24201c";
+  const logo = await loadImg("../assets/img/logo-ink.svg");
+  const lw = 230; g.drawImage(logo, (W - lw) / 2, 70, lw, lw * 1.3);
+  g.fillStyle = ink; g.textAlign = "center"; g.direction = "rtl";
+  g.font = "500 34px Heebo"; g.fillText("אחוזה 124, רעננה", W / 2, 420);
+  const dashes = (y) => { g.save(); g.strokeStyle = ink; g.lineWidth = 3; g.setLineDash([12, 9]); g.beginPath(); g.moveTo(60, y); g.lineTo(W - 60, y); g.stroke(); g.restore(); };
+  dashes(460);
+  g.font = "700 38px Heebo"; g.fillText("חשבון לשולחן", W / 2, 520);
+  dashes(552);
+  g.textAlign = "right"; g.font = "400 36px Heebo";
+  const items = ["אדממה במלח ים", "גיוזה עוף", "סלמון טאטאקי", "פאד תאי", "רול יוקו ספיישל", "ראמן מיסו", "מוצ'י מנגו", "סאקה חם"];
+  items.forEach((t, i) => g.fillText(t, W - 70, 610 + i * 58));
+  dashes(610 + items.length * 58 - 14);
+  g.font = "700 40px Heebo"; g.fillText("לתשלום", W - 70, 610 + items.length * 58 + 46);
+  // barcode
+  const by = 610 + items.length * 58 + 100; let x = 150;
+  while (x < W - 150) { const w = 2 + Math.floor(rnd() * 5); g.fillStyle = ink; g.fillRect(x, by, w, 86); x += w + 2 + Math.floor(rnd() * 5); }
+  g.textAlign = "center"; g.font = "500 32px Heebo"; g.fillText("תודה, ובהצלחה בקוביות!", W / 2, by + 140);
+  // thermal print is never perfectly black: a slight fade across the roll
+  const fade = g.createLinearGradient(0, 0, W, 0); fade.addColorStop(0, "rgba(246,243,236,.18)"); fade.addColorStop(0.5, "rgba(246,243,236,0)"); fade.addColorStop(1, "rgba(246,243,236,.12)");
+  g.fillStyle = fade; g.fillRect(0, 0, W, H);
+  const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; t.anisotropy = 16;
+  // alpha: zig-zag tear at both ends
+  const a = document.createElement("canvas"); a.width = W; a.height = H; const ag = a.getContext("2d");
+  ag.fillStyle = "#fff"; ag.beginPath(); ag.moveTo(0, 14);
+  for (let k = 0; k <= 40; k++) ag.lineTo((k / 40) * W, k % 2 ? 0 : 16 + rnd() * 6);
+  for (let k = 40; k >= 0; k--) ag.lineTo((k / 40) * W, k % 2 ? H : H - 16 - rnd() * 6);
+  ag.closePath(); ag.fill();
+  const at = new T.CanvasTexture(a);
+  return { map: t, alpha: at, H: by + 200 };
 }
-window.renderReceipt = () => {
-  const { scene, cam } = stage(760, 1000, [0, 6.2, 0.9], [0, 0, 0.05]);
-  const tex = paperTex(700, 1000, (g, w, h) => {
-    g.fillStyle = "#2b2016"; g.font = "700 64px Georgia"; g.textAlign = "center"; g.fillText("YOKO ONO", w / 2, 110);
-    g.font = "500 26px Georgia"; g.fillText("ASIAN KITCHEN", w / 2, 150);
-    g.fillRect(60, 190, w - 120, 3);
-    for (let i = 0; i < 9; i++) { g.globalAlpha = 0.28; g.fillRect(70, 240 + i * 62, 300 + ((i * 97) % 200), 14); g.fillRect(w - 170, 240 + i * 62, 100, 14); }
-    g.globalAlpha = 1; g.fillRect(60, 830, w - 120, 3); g.globalAlpha = 0.5; g.fillRect(70, 870, 260, 22); g.fillRect(w - 230, 870, 160, 22);
-  });
-  const geo = new T.PlaneGeometry(2.1, 3, 40, 60);
-  const p = geo.attributes.position;
-  for (let i = 0; i < p.count; i++) { const x = p.getX(i), y = p.getY(i); p.setZ(i, 0.05 * Math.sin(y * 1.6) + 0.06 * x * x + (y > 1.2 ? 0.25 * Math.pow((y - 1.2) / 0.3, 2) : 0)); }
-  geo.computeVertexNormals();
-  const paper = new T.Mesh(geo, new T.MeshStandardMaterial({ map: tex, roughness: 0.9, side: T.DoubleSide }));
-  paper.rotation.x = -Math.PI / 2; paper.rotation.z = 0.08; paper.position.y = 0.3; paper.castShadow = true; scene.add(paper);
-  renderer.render(scene, cam); return canvas.toDataURL("image/png");
-};
-window.renderCoin = (tilt = 0) => {
-  const { scene, cam } = stage(400, 300, [0, 2.0, 1.7], [0, 0.05, 0]);
-  const gold = new T.MeshPhysicalMaterial({ color: "#f2c464", metalness: 1, roughness: 0.32, clearcoat: 0.4, envMapIntensity: 1.6 });
-  const coin = new T.Mesh(new T.CylinderGeometry(0.62, 0.62, 0.09, 96), gold); coin.position.y = 0.05 + tilt * 0.3; coin.rotation.z = tilt; coin.castShadow = true; scene.add(coin);
-  const ring = new T.Mesh(new T.TorusGeometry(0.47, 0.02, 12, 96), gold); ring.rotation.x = Math.PI / 2; ring.position.y = 0.1 + tilt * 0.3; ring.rotation.y = tilt; scene.add(ring);
-  renderer.render(scene, cam); return canvas.toDataURL("image/png");
-};
-// The thrower's right hand, seen from the back, fingers up: the man from img 1 (navy blazer, white shirt cuff,
-// gold cufflink). Real joints: each finger is three phalanges; the pose is only joint angles.
-function roundedBox(w, h, d, r, seg = 24) {
-  const g = new T.BoxGeometry(w, h, d, seg, seg, seg), p = g.attributes.position, n = g.attributes.normal;
-  const lo = new T.Vector3(-(w / 2 - r), -(h / 2 - r), -(d / 2 - r)), hi = lo.clone().negate(), v = new T.Vector3();
+window.renderReceipt = async (W = 900, H = 1300) => {
+  const { scene, cam } = stage(W, H, [0, 9.2, 0.55], [0, 0, -0.12], 30);
+  const tw = 760, th = 1400, tex = await receiptTex(tw, th);
+  const pw = 2.2, ph = pw * th / tw;
+  const geo = new T.PlaneGeometry(pw, ph, 60, 120), p = geo.attributes.position;
+  // the roll's memory: it curls up at the top, ripples gently, and the long edges lift a little
   for (let i = 0; i < p.count; i++) {
-    v.fromBufferAttribute(p, i); const c = v.clone().clamp(lo, hi), dir = v.clone().sub(c).normalize();
-    v.copy(c).addScaledVector(dir, r); p.setXYZ(i, v.x, v.y, v.z); n.setXYZ(i, dir.x, dir.y, dir.z);
+    const x = p.getX(i), y = p.getY(i), top = ph / 2 - 0.55;
+    p.setZ(i, 0.03 * Math.sin(y * 2.3 + 0.6) + 0.045 * x * x + (y > top ? 0.32 * Math.pow((y - top) / 0.55, 2.2) : 0));
+  }
+  geo.computeVertexNormals();
+  const paper = new T.Mesh(geo, new T.MeshStandardMaterial({ map: tex.map, alphaMap: tex.alpha, transparent: true, alphaTest: 0.5, roughness: 0.82, side: T.DoubleSide }));
+  paper.rotation.x = -Math.PI / 2; paper.rotation.z = 0.05; paper.position.y = 0.2; paper.castShadow = true; scene.add(paper);
+  renderer.render(scene, cam); return canvas.toDataURL("image/png");
+};
+
+// ---------- the coin: struck gold, reeded edge, a raised rim and the logo's mountains in relief ----------
+function coinBump(S) {
+  const c = document.createElement("canvas"); c.width = c.height = S; const g = c.getContext("2d");
+  g.fillStyle = "#000"; g.fillRect(0, 0, S, S);
+  const r = S / 2;
+  g.fillStyle = "#fff"; g.beginPath(); g.arc(r, r, r * 0.96, 0, Math.PI * 2); g.fill(); // rim
+  g.fillStyle = "#000"; g.beginPath(); g.arc(r, r, r * 0.84, 0, Math.PI * 2); g.fill();
+  g.strokeStyle = "#bbb"; g.lineWidth = S * 0.006; g.beginPath(); g.arc(r, r, r * 0.76, 0, 7); g.stroke();       // inner bead
+  for (let k = 0; k < 64; k++) { const a = k / 64 * Math.PI * 2; g.fillStyle = "#999"; g.beginPath(); g.arc(r + Math.cos(a) * r * 0.80, r + Math.sin(a) * r * 0.80, S * 0.006, 0, 7); g.fill(); }
+  // mountains and the sun, from the logo
+  g.fillStyle = "#fff";
+  g.beginPath(); g.moveTo(r - r * 0.5, r + r * 0.25); g.lineTo(r - r * 0.18, r - r * 0.22); g.lineTo(r - r * 0.02, r + r * 0.02); g.lineTo(r + r * 0.16, r - r * 0.34); g.lineTo(r + r * 0.52, r + r * 0.25); g.closePath(); g.fill();
+  g.fillStyle = "#000"; g.beginPath(); g.moveTo(r - r * 0.27, r - r * 0.08); g.lineTo(r - r * 0.18, r - r * 0.22); g.lineTo(r - r * 0.10, r - r * 0.10); g.lineTo(r - r * 0.14, r - r * 0.06); g.closePath(); g.fill();
+  g.fillStyle = "#fff"; g.beginPath(); g.arc(r + r * 0.36, r - r * 0.42, r * 0.11, 0, 7); g.fill();
+  g.fillRect(r - r * 0.5, r + r * 0.36, r, r * 0.05); g.fillRect(r - r * 0.36, r + r * 0.47, r * 0.72, r * 0.05);
+  g.filter = "blur(2px)"; g.drawImage(c, 0, 0); g.filter = "none";
+  return new T.CanvasTexture(c);
+}
+const GOLD = () => new T.MeshPhysicalMaterial({ color: "#ffcf70", metalness: 1, roughness: 0.28, clearcoat: 0.3, clearcoatRoughness: 0.2, envMapIntensity: 1.6 });
+function coin() {
+  const g = new T.Group(), R = 0.62, H = 0.085;
+  const faceM = GOLD(); faceM.bumpMap = coinBump(1024); faceM.bumpScale = 3.0;
+  // the edge: 120 reeds
+  const edge = new T.CylinderGeometry(R, R, H, 240, 1, true), p = edge.attributes.position;
+  for (let i = 0; i < p.count; i++) { const x = p.getX(i), z = p.getZ(i), a = Math.atan2(z, x), k = 1 + 0.012 * Math.max(0, Math.cos(a * 120)); p.setX(i, x * k); p.setZ(i, z * k); }
+  edge.computeVertexNormals();
+  const e = new T.Mesh(edge, GOLD()); e.castShadow = true; g.add(e);
+  for (const s of [1, -1]) {
+    const f = new T.Mesh(new T.CircleGeometry(R, 128), faceM); f.rotation.x = -s * Math.PI / 2; f.position.y = s * H / 2; f.castShadow = true; g.add(f);
   }
   return g;
 }
-const SKIN = new T.MeshPhysicalMaterial({ color: "#e2a986", roughness: 0.52, sheen: 0.5, sheenRoughness: 0.6, sheenColor: new T.Color("#ffd2b8"),
-  clearcoat: 0.08, emissive: new T.Color("#3a1006"), emissiveIntensity: 0.35, envMapIntensity: 0.8 });
-const NAIL = new T.MeshPhysicalMaterial({ color: "#f0c4b4", roughness: 0.25, clearcoat: 1, clearcoatRoughness: 0.1 });
-const POSES = {
-  open:    { f: [[0.16, -0.06, -0.08, -0.05], [0.03, -0.05, -0.07, -0.05], [-0.1, -0.06, -0.08, -0.05], [-0.24, -0.08, -0.1, -0.06]], th: [0.95, -0.25, -0.15, -0.1] },
-  release: { f: [[0.08, -0.4, -0.55, -0.35], [0.0, -0.36, -0.5, -0.32], [-0.06, -0.42, -0.55, -0.36], [-0.12, -0.5, -0.6, -0.4]], th: [0.65, -0.35, -0.3, -0.2] },
-  fist:    { f: [[0.02, -1.45, -1.75, -1.0], [0.0, -1.45, -1.8, -1.0], [-0.02, -1.42, -1.78, -1.0], [-0.05, -1.38, -1.75, -0.95]], th: [-0.35, -0.75, -0.35, -0.3] },
-};
-function finger(parent, x, y, r, lens, ang, nail = true) {
-  // ang = [splay, flex1, flex2, flex3]; negative flex curls towards the palm (-z). The finger tapers smoothly:
-  // each phalanx is a cone from one joint sphere to the next.
-  const rs = [r, r * 0.93, r * 0.86, r * 0.8];
-  let g = new T.Group(); g.position.set(x, y, 0); g.rotation.z = ang[0]; g.rotation.x = ang[1]; parent.add(g);
-  const ball = (rad, yy, host) => { const m = new T.Mesh(new T.SphereGeometry(rad, 32, 22), SKIN); m.position.y = yy; m.castShadow = m.receiveShadow = true; host.add(m); };
-  ball(r * 1.08, 0, g);
-  for (let k = 0; k < 3; k++) {
-    const c = new T.Mesh(new T.CylinderGeometry(rs[k + 1], rs[k], lens[k], 32, 1, true), SKIN); c.position.y = lens[k] / 2; c.castShadow = c.receiveShadow = true; g.add(c);
-    if (k === 2) {
-      ball(rs[3], lens[2], g);
-      if (nail) { const nl = new T.Mesh(new T.SphereGeometry(1, 24, 16), NAIL); nl.scale.set(rs[3] * 0.82, lens[2] * 0.4, rs[3] * 0.3); nl.position.set(0, lens[2] * 0.74, rs[3] * 0.84); g.add(nl); }
-    } else { const nx = new T.Group(); nx.position.y = lens[k]; nx.rotation.x = ang[k + 2]; g.add(nx); g = nx; ball(rs[k + 1], 0, g); }
-  }
-}
-window.renderHand = (pose) => {
-  const { scene, cam, catcher } = stage(800, 1280, [0.35, 0.75, 6.0], [0, 0.4, 0]);
-  scene.remove(catcher);
-  const P = POSES[pose], hand = new T.Group();
-  // palm: a superellipsoid, wider at the knuckles, arched across the back
-  const pg = new T.SphereGeometry(1, 72, 54), pp = pg.attributes.position, sp = (c, e) => Math.sign(c) * Math.pow(Math.abs(c), e);
-  for (let i = 0; i < pp.count; i++) {
-    const nx = pp.getX(i), ny = pp.getY(i), nz = pp.getZ(i);
-    let x = sp(nx, 0.55) * 0.45, y = sp(ny, 0.6) * 0.55, z = sp(nz, 0.85) * 0.16;
-    x *= 0.86 + 0.14 * (y / 0.55 + 1) / 2; z -= 0.12 * x * x; pp.setXYZ(i, x, y, z);
-  }
-  pg.computeVertexNormals();
-  const palm = new T.Mesh(pg, SKIN); palm.castShadow = palm.receiveShadow = true; hand.add(palm);
-  const F = [[-0.29, 0.42, 0.098, [0.42, 0.25, 0.2]], [-0.09, 0.46, 0.103, [0.46, 0.28, 0.21]], [0.12, 0.43, 0.097, [0.43, 0.26, 0.2]], [0.31, 0.34, 0.085, [0.34, 0.2, 0.17]]];
-  F.forEach(([x, y, r, lens], i) => finger(hand, x, y, r, lens, P.f[i]));
-  // thumb from the lower left of the palm (right hand seen from the back)
-  const tb = new T.Group(); tb.position.set(-0.3, -0.26, -0.03); tb.rotation.z = P.th[0]; tb.rotation.x = P.th[1]; hand.add(tb);
-  const mound = new T.Mesh(new T.SphereGeometry(1, 36, 24), SKIN); mound.scale.set(0.15, 0.3, 0.13); mound.position.y = 0.12; mound.castShadow = mound.receiveShadow = true; tb.add(mound);
-  finger(tb, 0, 0.3, 0.11, [0.24, 0.19, 0.17], [0, P.th[2], P.th[3], -0.1]);
-  // wrist, white cuff, navy blazer sleeve
-  const wrist = new T.Mesh(new T.CylinderGeometry(0.37, 0.32, 0.5, 48), SKIN); wrist.scale.z = 0.5; wrist.position.y = -0.52; wrist.castShadow = true; hand.add(wrist);
-  const cuff = new T.Mesh(new T.CylinderGeometry(0.37, 0.37, 0.28, 64), new T.MeshPhysicalMaterial({ color: "#f3f1ec", roughness: 0.75, sheen: 0.6, sheenColor: new T.Color("#ffffff") }));
-  cuff.scale.z = 0.66; cuff.position.y = -0.8; cuff.castShadow = cuff.receiveShadow = true; hand.add(cuff);
-  const link = new T.Mesh(new T.CylinderGeometry(0.045, 0.045, 0.03, 32), new T.MeshPhysicalMaterial({ color: "#e0b866", metalness: 1, roughness: 0.25 }));
-  link.rotation.x = Math.PI / 2; link.position.set(0.24, -0.8, 0.19); hand.add(link);
-  const sleeve = new T.Mesh(new T.CylinderGeometry(0.45, 0.5, 1.4, 64), new T.MeshPhysicalMaterial({ color: "#1d2a46", roughness: 0.82, sheen: 0.7, sheenRoughness: 0.5, sheenColor: new T.Color("#4a5f8a") }));
-  sleeve.scale.z = 0.72; sleeve.position.y = -1.6; sleeve.castShadow = sleeve.receiveShadow = true; hand.add(sleeve);
-  const hem = new T.Mesh(new T.TorusGeometry(0.45, 0.025, 12, 64), sleeve.material); hem.rotation.x = Math.PI / 2; hem.scale.y = 0.76; hem.position.y = -0.9; hand.add(hem);
-  [0, 1, 2].forEach((k) => { const b = new T.Mesh(new T.CylinderGeometry(0.035, 0.035, 0.02, 24), new T.MeshPhysicalMaterial({ color: "#14100c", roughness: 0.3, clearcoat: 1 }));
-    b.rotation.z = Math.PI / 2; b.position.set(0.45, -1.04 - k * 0.1, 0.12); hand.add(b); });
-  hand.rotation.set(pose === "fist" ? 0.5 : -0.18, 0.3, 0.02); hand.position.x = 0.14; scene.add(hand);
+window.renderCoin = (tilt = 0, spin = 0, W = 600, H = 450) => {
+  const { scene, cam } = stage(W, H, [0, 2.6, 2.2], [0, 0.2, 0], 30);
+  scene.environment = goldEnv;
+  const c = coin(); c.position.y = 0.05 + Math.abs(Math.sin(tilt)) * 0.6; c.rotation.set(0, spin, tilt); scene.add(c);
   renderer.render(scene, cam); return canvas.toDataURL("image/png");
 };
-window.ready = true;
+document.fonts.load("500 30px Heebo").then(() => document.fonts.load("700 30px Heebo")).then(() => { window.ready = true; });
 </script></body></html>
