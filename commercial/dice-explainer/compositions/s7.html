@@ -33,10 +33,10 @@
 #root { --glow: 68%; }</style>
   <div id="root" data-composition-id="s7" data-width="1080" data-height="1920" dir="rtl" lang="he">
 
-<div class="h" style="top:196px;font-size:112px">דאבל 1 · 2 · 3</div>
-<div id="s7-shA" class="shd" style="left:389px;top:416px;width:170px;height:71px;opacity:0.8" data-layout-ignore></div><div id="s7-shB" class="shd" style="left:527px;top:416px;width:170px;height:71px;opacity:0.8" data-layout-ignore></div>
-<div id="s7-dA" class="die" data-faces="1,2,3" data-v="a" style="left:409px;top:339px;width:122px;height:122px;rotate:-8deg"></div><div id="s7-dB" class="die" data-faces="1,2,3" data-v="b" style="left:549px;top:339px;width:122px;height:122px;rotate:7deg"></div>
-<div class="big foil" id="s7-pct" style="top:512px;font-size:300px"><span class="ltr">−50%*</span></div>
+<div class="h" style="top:190px;font-size:112px">דאבל 1 · 2 · 3</div>
+<div id="s7-shA" class="shd" style="left:362px;top:442px;width:200px;height:84px;opacity:0.8" data-layout-ignore></div><div id="s7-shB" class="shd" style="left:524px;top:442px;width:200px;height:84px;opacity:0.8" data-layout-ignore></div>
+<div id="s7-dA" class="die" data-faces="1,2,3" data-v="a" style="left:387px;top:353px;width:142px;height:142px;rotate:-8deg"></div><div id="s7-dB" class="die" data-faces="1,2,3" data-v="b" style="left:549px;top:353px;width:142px;height:142px;rotate:7deg"></div>
+<div class="big foil" id="s7-pct" style="top:524px;font-size:300px"><span class="ltr">−50%*</span></div>
 <div class="sub" style="top:826px;font-size:58px">על כל החשבון של השולחן</div>
 <img id="s7-rc" class="art" src="assets/img/receipt.png" alt="" style="left:245px;top:900px;width:590px;height:852px;rotate:-4deg" data-layout-ignore>
 <div id="s7-stamp" style="position:absolute;left:372px;top:1318px;width:340px;height:150px;rotate:-13deg;border:8px solid #b3261e;border-radius:18px;display:grid;place-items:center;
@@ -48,13 +48,13 @@
       const tl = gsap.timeline({ paused: true });
       DiceKit.mount(["#s7-dA","#s7-dB"]);
       DiceKit.spin(tl,"#s7-dA",0.2917,2,[16,17,18,19,20,21,22,23,-1]);
-tl.to("#s7-dA", { y: -54, duration: 0.1667, ease: "power2.out", yoyo: true, repeat: 1 }, 0.2917);
+tl.to("#s7-dA", { y: -38, duration: 0.1667, ease: "power2.out", yoyo: true, repeat: 1 }, 0.2917);
 DiceKit.spin(tl,"#s7-dB",0.3333,2,[16,17,18,19,20,21,22,23,-1]);
-tl.to("#s7-dB", { y: -54, duration: 0.1667, ease: "power2.out", yoyo: true, repeat: 1 }, 0.3333);
+tl.to("#s7-dB", { y: -38, duration: 0.1667, ease: "power2.out", yoyo: true, repeat: 1 }, 0.3333);
 DiceKit.spin(tl,"#s7-dA",0.9167,3,[16,17,18,19,20,21,22,23,-1]);
-tl.to("#s7-dA", { y: -54, duration: 0.1667, ease: "power2.out", yoyo: true, repeat: 1 }, 0.9167);
+tl.to("#s7-dA", { y: -38, duration: 0.1667, ease: "power2.out", yoyo: true, repeat: 1 }, 0.9167);
 DiceKit.spin(tl,"#s7-dB",0.9583,3,[16,17,18,19,20,21,22,23,-1]);
-tl.to("#s7-dB", { y: -54, duration: 0.1667, ease: "power2.out", yoyo: true, repeat: 1 }, 0.9583);
+tl.to("#s7-dB", { y: -38, duration: 0.1667, ease: "power2.out", yoyo: true, repeat: 1 }, 0.9583);
 
 tl.fromTo("#s7-stamp", { opacity: 0, scale: 1.9 }, { opacity: 0.86, scale: 1, duration: 0.2, ease: "power3.in" }, 2.3000);
 tl.fromTo("#s7-rc", { y: 0 }, { y: 10, duration: 0.07, ease: "power1.out", yoyo: true, repeat: 1 }, 2.5000);

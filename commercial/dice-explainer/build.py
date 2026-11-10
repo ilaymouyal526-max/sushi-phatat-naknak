@@ -385,7 +385,8 @@ def hook_flight(dx0, dy0, out, n=60, launch=7):
         w = max(0.0, (t - 1.0) / hang)
         rows.append([r1(dx0 * (1 - e) + out[0] * (0.2 * w + 0.8 * w ** 4)), r1(dy0 * (1 - e) - 70 * math.sin(math.pi * u) * (1 - u) + out[1] * (0.2 * w + 0.8 * w ** 4)),
                      round(0.3 + 0.7 * e + 0.06 * w + 0.5 * w ** 4, 3), 1])
-    ks = [0] * launch + [round(i * 17 / 23) for i in range(24)] + [17 + round(i * 6 / (n - launch - 25)) for i in range(n - launch - 24)]
+    m = n - launch
+    ks = [0] * launch + [round(23 * (1 - (1 - i / (m - 1)) ** 2.4)) for i in range(m)]
     return rows, ks
 
 
@@ -640,8 +641,10 @@ def table_hand_js(hid, t0):
     """The thrower's fist comes up, opens on the release, and drops out of frame."""
     return f"""
 DiceKit.pose(tl, "#{hid}", "fist", 0); DiceKit.pose(tl, "#{hid}", "release", {t0:.4f}); DiceKit.pose(tl, "#{hid}", "open", {t0 + 3 / FPS:.4f});
-tl.fromTo("#{hid}", {{ y: 190, rotation: 3 }}, {{ y: -60, rotation: -4, duration: {t0:.4f}, ease: "power3.out" }}, 0);
-tl.to("#{hid}", {{ y: -30, duration: 0.3, ease: "power1.out" }}, {t0:.4f});
+tl.fromTo("#{hid}", {{ y: 220, rotation: 3 }}, {{ y: 10, rotation: 0, duration: {t0 - 0.29:.4f}, ease: "power2.out" }}, 0);
+tl.to("#{hid}", {{ y: 70, rotation: 4, duration: 0.17, ease: "sine.inOut" }}, {t0 - 0.29:.4f});
+tl.to("#{hid}", {{ y: -70, rotation: -5, duration: 0.12, ease: "power2.in" }}, {t0 - 0.12:.4f});
+tl.to("#{hid}", {{ y: -100, rotation: -6, duration: 0.3, ease: "power2.out" }}, {t0:.4f});
 tl.to("#{hid}", {{ y: 640, rotation: 6, duration: 0.8, ease: "power2.in" }}, {t0 + 0.3:.4f});
 """
 
@@ -727,7 +730,7 @@ sfx("s6b", beat(6), "sparkle", .5)
 
 # ===== 7. Prize: double 1, 2 or 3 = 50% off =====
 
-def flip_js(sel, face, t_land, n=8, lift=54):
+def flip_js(sel, face, t_land, n=8, lift=38):
     """A die hops and turns over onto `face`, landing exactly at t_land (the last n frames of that face's tumble)."""
     t0 = t_land - n / FPS
     return js_spin(sel, t0, face, list(range(24 - n, 24)) + [-1]) + (
@@ -744,10 +747,10 @@ def doubles_js(card_id, faces):
 
 
 card("s7", 8, f"""
-<div class="h" style="top:196px;font-size:112px">דאבל 1 · 2 · 3</div>
-{shadow("s7-shA", 474, 452, 170, .8)}{shadow("s7-shB", 612, 452, 170, .8)}
-{die("s7-dA", [1, 2, 3], 470, 400, 122, "a", -8)}{die("s7-dB", [1, 2, 3], 610, 400, 122, "b", 7)}
-<div class="big foil" id="s7-pct" style="top:512px;font-size:300px"><span class="ltr">−50%*</span></div>
+<div class="h" style="top:190px;font-size:112px">דאבל 1 · 2 · 3</div>
+{shadow("s7-shA", 462, 484, 200, .8)}{shadow("s7-shB", 624, 484, 200, .8)}
+{die("s7-dA", [1, 2, 3], 458, 424, 142, "a", -8)}{die("s7-dB", [1, 2, 3], 620, 424, 142, "b", 7)}
+<div class="big foil" id="s7-pct" style="top:524px;font-size:300px"><span class="ltr">−50%*</span></div>
 <div class="sub" style="top:826px;font-size:58px">על כל החשבון של השולחן</div>
 <img id="s7-rc" class="art" src="assets/img/receipt.png" alt="" style="left:245px;top:900px;width:590px;height:852px;rotate:-4deg" data-layout-ignore>
 <div id="s7-stamp" style="position:absolute;left:372px;top:1318px;width:340px;height:150px;rotate:-13deg;border:8px solid #b3261e;border-radius:18px;display:grid;place-items:center;

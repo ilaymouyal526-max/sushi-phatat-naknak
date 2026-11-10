@@ -30,7 +30,11 @@ function studioEnv(gold = false) {
   panel(7, 1.0, "#9fb6ff", 0, 2.5, -5, 0, 0.2);
   panel(14, 14, "#2a1a12", 0, -2, 0, 0, Math.PI / 2);
   // for the coin: a big warm softbox up and behind, which a flat coin face mirrors towards the camera
-  if (gold) { panel(7, 3, "#fff1d6", 0, 4.5, -4.5, 0, 0.75); panel(3, 3, "#ffe7bf", -4, 3, 0, Math.PI / 2, 0); }
+  if (gold) {
+    panel(7, 3, "#fff1d6", 0, 4.5, -4.5, 0, 0.75); panel(3, 3, "#ffe7bf", -4, 3, 0, Math.PI / 2, 0);
+    // warm walls all round, so a coin still reads as gold while it tumbles
+    panel(9, 5, "#d9b06a", 5, 2, 0, Math.PI / 2, 0); panel(9, 5, "#e8c88a", 0, 2, 6, 0, 0); panel(9, 9, "#c79a52", 0, 8, 0, 0, Math.PI / 2);
+  }
   const pm = new T.PMREMGenerator(renderer);
   return pm.fromScene(s, 0.01).texture;
 }
