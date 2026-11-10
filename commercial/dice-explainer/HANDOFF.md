@@ -1,15 +1,15 @@
 # HANDOFF: Yoko Ono dice-game video
 
-Updated after every step. **Last update: v6, stage 2 (stills) done and sent; waiting for the user's approval before stage 3 (motion polish, sound, draft render).**
+Updated after every step. **Last update: v6 is finished and delivered (master, screen loop, 15 s cut). Waiting for the user's feedback on the film.**
 
 ## v6 (current): a quality rebuild
 - **Brief:** `../dice-explainer-v6-brief.md`. Content, rules and structure stay as approved; the goal is quality (cards, type, motion, rhythm, realistic objects, SFX timing).
 - **Branch:** `ccr-56b6f5ef-labe3t`, built on top of v5 (`ccr-a63b5673-0h297p`).
 - **Plan (approved):**
   1. Props: re-render (free) and show v5 next to v6. **Done; approved.**
-  2. Stills: a mid-card frame of every card, v6 next to v5. Rewrite `build.py` (layout grid, type scale, textures). **Done; waiting for approval.**
-  3. Motion and SFX from one event table, all times in beats. QA: lint 0/0, `check`, freezedetect, frame sheet. Send a draft.
-  4. Deliverables: master (about −16 LUFS), silent screen loop, 15 s Stories cut (`tools/derive.sh`), compressed copy. Update script, SPEC and HANDOFF; commit and push.
+  2. Stills: a mid-card frame of every card, v6 next to v5. Rewrite `build.py` (layout grid, type scale, textures). **Done; approved.**
+  3. Motion and SFX from one event table, all times in beats. QA: lint 0/0, `check`, freezedetect, frame sheet. **Done.**
+  4. Deliverables: master (about −16 LUFS), silent screen loop, 15 s Stories cut (`tools/derive.sh`), compressed copies. Script, SPEC and HANDOFF updated. **Done and sent.**
 - **Not without a "yes":** the hand in Kling (still 0.25 + Kling std 3 s 4.5). The Instagram handle stays `@[instagram]`.
 
 ### v6 stage 1: props (done)
@@ -67,7 +67,40 @@ fails if any prop (or any frame of a tumble strip) touches the frame edge, so no
   - **11:** a gold phone with a recording pill. There is no "REC" text any more (Hebrew only): a white dot and a running timer.
   - **12:** the same layout, tightened.
 - **For review** (gitignored, `review/`): `stills-v5-v6-1.png`, `-2.png`, `-3.png` (18 shots, v5 next to v6).
-- **Still to do in stage 3:** `check --json`, a draft render with freezedetect, verify the dice strips never drop a frame in the render, tune levels, update `tools/derive.sh` cut points if needed, then SPEC and the script (card 7 without the knife).
+
+### v6 stages 3 and 4: motion, QA and the deliverables (done)
+- **QA results on the master:**
+  - `lint`: 0 errors, 0 warnings.
+  - `check --json`: ok. No errors or warnings in runtime, layout, contrast, craft (`dead_stretch` is clean) or audio; 19 layout infos, all the dice strips overflowing their window on purpose.
+  - `freezedetect` (3 s): no freezes.
+  - Every throw was looked at frame by frame (`renders/qa/throw-*.jpg`): no dropped strip frames, and the wall hits and stamps land on their beats.
+  - Loudness: −16.0 LUFS integrated, peak −3.3 dBFS.
+- **Gotcha:** the craft checker ignores anything under `data-layout-ignore`, so a card whose only motion is inside such an element is reported as a dead stretch. Moving elements use `data-layout-allow-overflow` instead.
+- **Polish after the first draft:** the thrower's hand rises, pulls back and flicks on the release; the dice in card 1 keep turning through the hang; bigger dice in card 7; the coin's environment got warm walls so it stays gold while it tumbles.
+- **Deliverables** (`renders/` is gitignored; re-render to get them back):
+  - `yoko-dice-reels-master.mp4`: 68.125 s, 1080×1920, 24 fps, delivery quality, 238 MB.
+  - `yoko-dice-screen-loop.mp4`: the same picture, silent.
+  - `yoko-dice-15s.mp4`: 15.0 s. Beats: chef 5–11, perfect throw 55–60, −50% 65–70, jackpot 73–77, end card 99–103.
+  - `*-send.mp4`: compressed copies (the master is 10 MB).
+- **Decisions to confirm with the user:** the red "−50%" stamp on the receipt in card 7 (an addition, the same copy), and the timer instead of "REC" in card 11.
+- **Not done:** the production-log artifact from the earlier sessions was not updated in this session.
+
+### Commands (v6)
+```bash
+cd commercial/dice-explainer
+export HYPERFRAMES_NO_TELEMETRY=1 HYPERFRAMES_SKIP_SKILLS=1 HYPERFRAMES_BROWSER_PATH=/opt/pw-browsers/chromium-1243/chrome-linux64/chrome
+node tools/render_props.js                         # only when a prop changes (about 3 min); ends with the edge check
+python3 build.py                                   # index.html and compositions/
+npx -y hyperframes@0.8.226 lint                    # expect 0/0
+npx -y hyperframes@0.8.226 check --json            # the gate
+npx -y hyperframes@0.8.226 render --quality draft -o renders/draft-v6.mp4        # about 3 min
+npx -y hyperframes@0.8.226 render --quality delivery -o renders/master-raw.mp4   # about 4 min
+tools/derive.sh                                    # master at -16 LUFS, screen loop, 15 s cut, chat copies
+tools/qa.sh renders/yoko-dice-reels-master.mp4     # freezes, card sheet, every frame of each throw, loudness
+```
+
+---
+Everything below is the history up to v5. Its file list and commands describe the v5 build.
 
 ## What this is
 An animated 9:16 Hebrew ad (1080×1920, 24 fps, about 68 s) for the dice game at **Yoko Ono Asian Kitchen** (Ahuza 124, Ra'anana).
