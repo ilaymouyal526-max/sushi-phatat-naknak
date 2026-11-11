@@ -1,5 +1,9 @@
 # All media
 
+Browse it all in the gallery: https://claude.ai/artifact/ETVgwKNXjN3YCS5fpauvMe
+
+`higgsfield/` holds all 192 Higgsfield generations (138 images, 49 videos, 5 3D models), full quality. `higgsfield/generations.json` lists each one with its prompt, model and date.
+
 246 files collected from every branch of this repo, grouped by project.
 
 - Files ending in `.v5-old` are the earlier (v5, Nov 4) versions of dice-explainer props that were redrawn in v6.
