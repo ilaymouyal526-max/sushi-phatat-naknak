@@ -1,4 +1,4 @@
-"""Write scored leads to JSON (working file), CSV (Excel-friendly UTF-8) and a formatted XLSX."""
+"""Write scored leads to JSON (working file), CSV, a formatted XLSX and a phone-friendly HTML cards page."""
 
 from __future__ import annotations
 
@@ -8,34 +8,46 @@ import re
 from pathlib import Path
 from urllib.parse import quote_plus
 
-from .paths import home
+from .cards import render_cards
 
 SEEN = "seen.csv"
 STATUSES = ["contacted", "replied", "meeting", "won", "lost", "no_reply", "not_interested"]
 
+# (key, header, width). Order is phone-first: what you need to act on comes before technical detail.
+# The headers "outreach_he", "status", "notes", "signals" and "lead_id" are read back by name
+# (carry_over_edits, learn.read_lead_file), so keep them exactly as they are.
 COLUMNS = [
-    ("success_pct", "success_% (estimate)", 12),
-    ("band", "band", 7),
-    ("lead_type", "lead_type", 20),
-    ("name", "name", 26),
-    ("category", "category", 20),
-    ("phone", "phone", 15),
-    ("website", "website", 28),
+    ("name", "name / שם", 22),
+    ("phone", "phone / טלפון", 15),
+    ("rating", "rating / דירוג", 13),
+    ("sell", "what to sell / מה למכור", 20),
+    ("why_he", "why / למה", 40),
+    ("outreach_he", "outreach_he", 55),
+    ("website", "website", 26),
     ("facebook", "facebook", 22),
     ("instagram", "instagram", 22),
     ("email", "email", 22),
+    ("address", "address / כתובת", 24),
     ("verified", "verified_online", 10),
-    ("address", "address", 26),
-    ("why", "why", 48),
-    ("why_he", "why (עברית)", 40),
-    ("outreach_he", "outreach_he", 60),
     ("status", "status", 13),
     ("notes", "notes", 24),
-    ("maps_link", "google_maps", 14),
-    ("search_link", "google_search", 14),
-    ("signals", "signals", 40),
+    ("maps_link", "google_maps", 12),
+    ("search_link", "google_search", 12),
+    ("why", "why (English)", 44),
+    ("category", "category", 20),
+    ("success_pct", "success_pct", 11),
+    ("band", "band", 7),
+    ("signals", "signals", 36),
     ("lead_id", "lead_id", 18),
 ]
+
+SELL_LABELS = {
+    "WEBSITE": "אתר חדש · New website",
+    "REDESIGN": "שדרוג אתר · Redesign",
+    "AUTOMATION": "אוטומציה · Automation",
+    "REDESIGN+AUTOMATION": "שדרוג + אוטומציה · Redesign + automation",
+    "LOW_FIT": "התאמה נמוכה · Low fit",
+}
 
 
 def slug(text: str) -> str:
@@ -47,6 +59,8 @@ def add_links(lead: dict) -> None:
     lead["maps_link"] = f"https://www.google.com/maps/search/?api=1&query={q}"
     lead["search_link"] = f"https://www.google.com/search?q={q}"
     lead["verified"] = "yes" if lead.get("enriched") else "no"
+    lead["rating"] = f"{lead.get('band', '')} · {lead.get('success_pct', 0)}%"
+    lead["sell"] = SELL_LABELS.get(lead.get("lead_type", ""), lead.get("lead_type", ""))
 
 
 def row_values(lead: dict) -> dict:
@@ -105,19 +119,25 @@ def carry_over_edits(leads: list[dict], xlsx: Path, fresh: dict[str, set] | None
 
 def write_all(leads: list[dict], base: Path, meta: dict, fresh: dict[str, set] | None = None) -> dict[str, Path]:
     base.parent.mkdir(parents=True, exist_ok=True)
-    paths = {"json": base.with_suffix(".json"), "csv": base.with_suffix(".csv"), "xlsx": base.with_suffix(".xlsx")}
+    paths = {"json": base.with_suffix(".json"), "csv": base.with_suffix(".csv"), "xlsx": base.with_suffix(".xlsx"),
+             "html": base.with_suffix(".html")}
     carry_over_edits(leads, paths["xlsx"], fresh)
     for lead in leads:
         add_links(lead)
     paths["json"].write_text(json.dumps({"meta": meta, "leads": leads}, ensure_ascii=False, indent=1),
                              encoding="utf-8")
     with paths["csv"].open("w", encoding="utf-8-sig", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=[c[0] for c in COLUMNS])
-        w.writeheader()
+        w = csv.writer(f)
+        w.writerow([c[1] for c in COLUMNS])
         for lead in leads:
-            w.writerow(row_values(lead))
+            vals = row_values(lead)
+            w.writerow([vals[c[0]] for c in COLUMNS])
     write_xlsx(leads, paths["xlsx"])
+    paths["html"].write_text(render_cards(leads, meta), encoding="utf-8")
     return paths
+
+
+WRAP = {"name", "sell", "why_he", "outreach_he", "address", "notes", "why"}
 
 
 def write_xlsx(leads: list[dict], path: Path) -> None:
@@ -129,7 +149,7 @@ def write_xlsx(leads: list[dict], path: Path) -> None:
     wb = Workbook()
     ws = wb.active
     ws.title = "Leads"
-    ws.append([c[0] for c in COLUMNS])
+    ws.append([c[1] for c in COLUMNS])
     for cell in ws[1]:
         cell.font = Font(bold=True, color="FFFFFF")
         cell.fill = PatternFill("solid", fgColor="1F2937")
@@ -146,16 +166,19 @@ def write_xlsx(leads: list[dict], path: Path) -> None:
                 cell.font = Font(color="1D4ED8", underline="single")
                 if key in ("maps_link", "search_link"):
                     cell.value = "open"
-            if key in ("why", "why_he", "outreach_he"):
-                cell.alignment = Alignment(wrap_text=True, vertical="top")
-        band_fill = PatternFill("solid", fgColor=fills.get(lead.get("band"), "FFFFFF"))
-        ws.cell(row=r, column=1).fill = band_fill
-        ws.cell(row=r, column=2).fill = band_fill
-    # Friendly headers; learn.py reads the "status", "signals" and "lead_id" columns, whose headers equal their keys.
-    for c, (_, header, width) in enumerate(COLUMNS, start=1):
+            cell.alignment = Alignment(wrap_text=key in WRAP, vertical="top")
+            if key == "rating":
+                cell.fill = PatternFill("solid", fgColor=fills.get(lead.get("band"), "FFFFFF"))
+                cell.font = Font(bold=True)
+            elif key == "name":
+                cell.font = Font(bold=True)
+        ws.row_dimensions[r].height = 90 if vals["outreach_he"] else 48
+    ws.row_dimensions[1].height = 30
+    for c, (_, _, width) in enumerate(COLUMNS, start=1):
         ws.column_dimensions[get_column_letter(c)].width = width
-        ws.cell(row=1, column=c, value=header)
-    ws.freeze_panes = "E2"
+        ws.cell(row=1, column=c).alignment = Alignment(wrap_text=True, vertical="center")
+    # Freeze only the header row and the name column: on a phone everything else can still scroll into view.
+    ws.freeze_panes = "B2"
     ws.auto_filter.ref = ws.dimensions
     status_col = get_column_letter([c[0] for c in COLUMNS].index("status") + 1)
     dv = DataValidation(type="list", formula1='"' + ",".join(STATUSES) + '"', allow_blank=True)
@@ -164,7 +187,8 @@ def write_xlsx(leads: list[dict], path: Path) -> None:
 
     info = wb.create_sheet("How to use")
     for line in [
-        "success_% is an ESTIMATE of the chance this business becomes a paying client after personal outreach.",
+        "On a phone? Open the .html file from the same run instead: one card per lead with call/WhatsApp buttons.",
+        "rating / success_pct is an ESTIMATE of the chance this business becomes a paying client after personal outreach.",
         "Hot >= 7%, Warm >= 3.5%. Baseline from published outreach benchmarks; improves as you log results.",
         "1. Contact Hot leads first, one at a time (call or one-to-one WhatsApp). Never bulk-send.",
         "2. Fill the status column: contacted / replied / meeting / won / lost / no_reply / not_interested.",

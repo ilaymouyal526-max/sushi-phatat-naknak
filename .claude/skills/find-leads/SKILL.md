@@ -25,7 +25,7 @@ If the city is missing, ask for it (and offer the category groups). Don't ask ab
    ```bash
    python3 -m lead_agent find "<city>" --category <category> --limit 150
    ```
-   This writes `leads/<date>-<city>-<category>.json|csv|xlsx`, skips businesses delivered in earlier runs
+   This writes `leads/<date>-<city>-<category>.json|csv|xlsx|html`, skips businesses delivered in earlier runs
    (`leads/seen.csv`; `--include-seen` overrides), excludes chains and institutions, and prints stats plus the top leads.
 
 2. **Verify the top leads online.** OSM often lacks websites and phones, so a "no website" lead is a *claim
@@ -65,7 +65,8 @@ If the city is missing, ask for it (and offer the category groups). Don't ask ab
 5. **Report** to the user in plain language:
    - Stats: businesses found, chains/institutions excluded, websites checked, verified, Hot / Warm counts.
    - The top 10 as a table: name, type (WEBSITE / REDESIGN / AUTOMATION), success %, the main reason, phone.
-   - The path to the `.xlsx` (main deliverable) and `.csv`.
+   - The path to the **`.html` lead cards** (for phones: one card per lead with Call / WhatsApp buttons and the
+     opener pre-filled; good to send to a partner) and the **`.xlsx`** (for tracking status and `learn`).
    - One line explaining the %: *an estimate of the chance this business becomes a paying client after one
      personal outreach, based on published outreach benchmarks; it gets more accurate as you log results.*
    - The compliance line below, and the learn reminder.

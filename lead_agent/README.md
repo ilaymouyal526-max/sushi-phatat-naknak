@@ -20,12 +20,18 @@ python3 -m lead_agent learn leads/<run>.xlsx
 ```
 Requires Python 3.10+ with `requests`, `beautifulsoup4` and `openpyxl`.
 
-## What you get (`leads/<date>-<city>-<category>.xlsx`)
+## What you get
+- **`leads/<date>-<city>-<category>.html`: open this on a phone.** One card per lead, best first, with rating,
+  reasons, the Hebrew opener (with a Copy button), and Call / WhatsApp / website / map buttons. WhatsApp opens with the
+  message pre-filled and you press send yourself. It's a single self-contained file, so you can share it over WhatsApp or email.
+- **`.xlsx` (and `.csv`)** for tracking and learning. Columns start with what you act on:
+
 | column | meaning |
 |---|---|
-| success_% (estimate) / band | chance of becoming a paying client after personal outreach; Hot ≥ 7%, Warm ≥ 3.5% |
-| lead_type | WEBSITE (no own site) · REDESIGN (broken/outdated site) · AUTOMATION (no booking/WhatsApp/lead capture) · LOW_FIT |
-| why / why (עברית) | the top reasons behind the score |
+| name / phone | who to contact (the name column stays frozen while you scroll) |
+| rating | band + estimated chance of becoming a paying client; Hot ≥ 7%, Warm ≥ 3.5% |
+| what to sell | New website (no own site) · Redesign (broken/outdated site) · Automation (no booking/WhatsApp/lead capture) · Low fit |
+| why / why (English) | the top reasons behind the score |
 | outreach_he | a Hebrew opener naming a real gap, which you send yourself |
 | verified_online | `yes` once Claude has checked the business online |
 | status | fill this in: contacted / replied / meeting / won / lost / no_reply / not_interested |

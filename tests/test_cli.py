@@ -40,6 +40,21 @@ class EndToEnd(unittest.TestCase):
             self.assertEqual(lead["outreach_he"], "היי")
             self.assertIn("has_social", lead["signals"])
 
+            # Phone-friendly layout: name first, only header row + name column frozen.
+            from openpyxl import load_workbook
+            ws = load_workbook(result["files"]["xlsx"]).active
+            header = [c.value for c in ws[1]]
+            self.assertEqual(header[0], "name / שם")
+            self.assertEqual(ws.freeze_panes, "B2")
+            for machine in ("status", "notes", "outreach_he", "signals", "lead_id"):
+                self.assertIn(machine, header)
+            self.assertTrue(str(ws.cell(row=2, column=3).value).startswith("Hot"))
+
+            # Lead cards page: call + WhatsApp (mobile) with the opener prefilled.
+            with open(result["files"]["html"], encoding="utf-8") as f:
+                page = f.read()
+            self.assertIn("מספרת דנה", page)
+
             # A second find skips leads already delivered.
             out = StringIO()
             with redirect_stdout(out), mock.patch.object(cli.osm, "find_businesses",
