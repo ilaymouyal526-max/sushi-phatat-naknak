@@ -37,3 +37,9 @@
   src: url(rubik-italic-latin-ext.woff2) format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
 @font-face { font-family: "Shippori"; font-weight: 800; font-display: block;
   src: url(shippori-jp-subset.woff2) format("woff2"); }
+/* Shippori Mincho Medium/Bold for vertical kanji columns and seals (subset: kana, CJK punctuation and
+   運宴餃子盛合赤龍鶏新麺寿司鮨巻天丼米肉魚牛豚海老蟹鮭鮪旨味焼揚炙火技手仕事心今注文鮮料理). */
+@font-face { font-family: "Shippori Mincho"; font-weight: 500; font-display: block;
+  src: url(shippori-mincho-medium-jp.woff2) format("woff2"); }
+@font-face { font-family: "Shippori Mincho"; font-weight: 700; font-display: block;
+  src: url(shippori-mincho-bold-jp.woff2) format("woff2"); }

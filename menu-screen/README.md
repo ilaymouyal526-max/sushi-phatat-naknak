@@ -2,6 +2,20 @@
 
 The loop opens on the logo, then shows party trays and dishes in turn. Text is mainly in English, with Hebrew underneath. Each slide stays about 6–7 seconds, so a full loop takes about 48 seconds.
 
+## Style: "Sumi" (minimal Japanese, black and gold)
+- **Three font families, five sizes, nothing else:**
+  - Montserrat Light/Regular for English.
+  - Heebo Light for Hebrew text, with Frank Ruhl for the Hebrew dish name.
+  - Shippori Mincho for Japanese.
+  - The five sizes are `--xs` 20, `--s` 28, `--m` 36, `--l` 64 and `--xl` 96. They are defined once in `:root` in `index.html`.
+- **Japanese layout:** each dish gets a vertical kanji column with kana on the left (`jp` / `kana` in `CONFIG`) and a red 運 hanko seal. Frames are single gold hairlines.
+- **Motion:** each slide builds itself in:
+  1. The photo brush-wipes in from the top.
+  2. The kanji column wipes in and slowly drifts upward.
+  3. The hairlines draw out from the centre and the title letters rise one after another.
+  4. The Hebrew name, description and prices fade up out of a soft blur.
+  5. The seal stamps down, and a light sheen sweeps across the photo and the XL box.
+
 | # | Slide | Price on screen |
 |---|---|---|
 | 0 | Logo | |
@@ -23,9 +37,10 @@ The dice-game slides are still in the code. Set `showGame: true` in `CONFIG` to 
 Everything is in the `CONFIG` block at the bottom of `index.html`. `slides` is the loop in order. Each entry takes:
 - `photo`
 - `name` / `he`: the title in English and Hebrew
+- `jp` / `kana` (optional): the vertical Japanese column. The kanji must be in the Shippori Mincho subset (listed in `fonts/fonts.css`).
 - `en` / `heDesc`: the descriptions
 - one price option:
-  - `price`: a single gold box
+  - `price`: `"Chicken 69 ₪ · Veggie 59 ₪"` shows each label over its number. Text without numbers (`"Order ahead"`) shows as a gold note line.
   - `options`: side-by-side boxes, used for the L/XL trays
 - `kicker` (optional): a small gold line above the title. Without it, the slide is numbered N° 01, N° 02, …
 - `seconds` (optional): how long the slide stays on screen
