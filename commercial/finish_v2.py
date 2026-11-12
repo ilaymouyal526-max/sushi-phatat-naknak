@@ -5,14 +5,17 @@ Needs ffmpeg, numpy, Pillow. Techniques that break the "AI look":
   virtual camera (push-ins, slide, handheld weave + roll), speed ramps with frame blending,
   beat-locked cuts (96 BPM, 15 frames/beat), cut-around of AI morphs, light leak + flash cut,
   halation, film grade, grain, CA, vignette, synthesized foley + taiko score.
+  Supers use the Sumi type system in typography.py.
 """
-import subprocess, sys
+import os, subprocess, sys
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageFilter
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import typography as T  # noqa: E402  (Sumi type system: fonts, sizes, motion)
 
 SRC, OUT = sys.argv[1], sys.argv[2]
 FPS, OW, OH, SW, SH, SR = 24, 1080, 1920, 1920, 1080, 48000
-GOLD = (214, 178, 110)
 
 # (out_frames, src_start_s, speed_start, speed_end, cx, cy, crop_w_start, crop_w_end, pan_px, title)
 # Source map: hands 0-2.4s | flash 2.5 | torch 2.75-4.9 | AI morph 5.0-5.4 (avoided) | chopsticks 5.5-7.9
@@ -40,50 +43,10 @@ def decode(t0, dur):
     return np.frombuffer(raw, np.uint8).reshape(-1, SH, SW, 3)
 
 
-def font(size):
-    try:
-        path = subprocess.run(["fc-match", "-f", "%{file}", "Montserrat:light"], capture_output=True, text=True).stdout
-        if "ontserrat" in path:
-            return ImageFont.truetype(path, size)
-    except OSError:
-        pass
-    import glob
-    found = sorted(glob.glob("/usr/**/*ontserrat*.[ot]tf", recursive=True) + glob.glob("/home/**/*ontserrat*.[ot]tf", recursive=True),
-                   key=lambda p: "Light" not in p)
-    return ImageFont.truetype(found[0], size) if found else ImageFont.truetype("DejaVuSans.ttf", size)
-
-
-def text_layer(txt, size, track):
-    f = font(size)
-    widths = [f.getlength(c) for c in txt]
-    x = (OW - sum(widths) - track * size * (len(txt) - 1)) / 2
-    im = Image.new("RGBA", (OW, size * 2), (0, 0, 0, 0))
-    d = ImageDraw.Draw(im)
-    for c, w in zip(txt, widths):
-        d.text((x, size * 0.4), c, font=f, fill=GOLD + (255,))
-        x += w + track * size
-    shadow = Image.new("RGBA", im.size, (0, 0, 0, 0))
-    shadow.putalpha(im.getchannel("A").filter(ImageFilter.GaussianBlur(8)).point(lambda v: int(v * .7)))
-    return im, shadow
-
-
-def put(img, layer, y, alpha):
-    if alpha <= 0:
-        return
-    for L in layer[::-1]:  # shadow first, then text
-        L = L.copy()
-        L.putalpha(L.getchannel("A").point(lambda v: int(v * alpha)))
-        img.paste(L, (0, y), L)
-
-
-def fade(k, a, b, n=5):
-    return float(np.clip(min((k - a) / n, (b - k) / n), 0, 1))
-
-
-TITLES = {"FIRE": text_layer("FIRE", 72, .45), "CRAFT": text_layer("CRAFT", 72, .45),
-          "DISH": text_layer("RED DRAGON TATAKI", 52, .3)}
-TSPAN = {"FIRE": (4, int(CUTS[2]) - 1), "CRAFT": (int(CUTS[2]) + 4, int(CUTS[4]) - 1),
-         "DISH": (int(CUTS[6]) + 6, int(CUTS[8]) - 5)}
+# Supers: (first frame, last frame) on screen, incl. enter/exit animation — see typography.py
+TSPAN = {"fire": (4, int(CUTS[2]) - 1), "craft": (int(CUTS[2]) + 4, int(CUTS[4]) - 1),
+         "dish": (int(CUTS[6]) + 6, int(CUTS[8]) - 5)}
+CTA_IN = 16  # end-card frame where ORDER NOW starts animating in
 
 
 def leak(u):
@@ -129,12 +92,12 @@ def render_video(enc):
             if fx is not None:
                 img = Image.fromarray((fx * 255).astype(np.uint8))
             for name, (a_, b_) in TSPAN.items():
-                put(img, TITLES[name], 1380, fade(g, a_, b_))
+                if a_ <= g <= b_:
+                    img = T.compose(img, name, (g - a_) / FPS, (b_ - a_ + 1) / FPS)
             enc.stdin.write(img.tobytes())
             g += 1
         del fr
     fr = decode(LOGO_T, LOGO_N / FPS + .2)
-    cta = text_layer("ORDER NOW", 60, .42)
     for k in range(LOGO_N):
         u = k / (LOGO_N - 1)
         wv = int(OW * (1 + .05 * u)); hv = int(wv * (LOGO_BOX[3] - LOGO_BOX[1]) / (LOGO_BOX[2] - LOGO_BOX[0]))
@@ -143,10 +106,7 @@ def render_video(enc):
             lg = lg.filter(ImageFilter.GaussianBlur(14 * (1 - k / 12) ** 2))
         img = Image.new("RGB", (OW, OH))
         img.paste(lg, ((OW - wv) // 2, (OH - hv) // 2 - 60))
-        al = float(np.clip((k - 16) / 10, 0, 1))
-        put(img, cta, 1290, al)
-        if al > 0:
-            ImageDraw.Draw(img).rectangle([OW / 2 - 70, 1268, OW / 2 + 70, 1269], fill=tuple(int(c * al) for c in GOLD))
+        img = T.compose(img, "cta", (k - CTA_IN) / FPS)
         enc.stdin.write(img.tobytes())
 
 

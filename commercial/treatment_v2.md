@@ -33,7 +33,13 @@ The rhythm alternates long and short shots (3 beats, then 1 beat). The AI morph 
   - Room tone.
   - A taiko/rim score locked to the cuts, with a whoosh into a big logo hit.
   - Loudness-normalized to about -15 LUFS.
-- **Typography:** Montserrat Light in gold (#D6B26E), widely letter-spaced, with a soft shadow. It sits inside the 4:5 and TikTok UI safe areas.
+- **Typography: the Sumi (墨) system** in `typography.py`, shared by v1 (`build.sh`), v2 (`finish_v2.py`) and v3 (`ending_v3.sh`):
+  - Fonts: Montserrat Light for Latin and Shippori Mincho for Japanese, bundled in `fonts/` under the OFL. If a font is missing, the script stops; it never falls back silently to another face.
+  - Sizes: Latin 42px with 0.45em tracking, kanji 88px, kana 30px. Nothing else gets a size.
+  - Colours: gold `#D6B26E`, paper `#ECE4D4`, a seal red `#B2221E`.
+  - Layout: one Latin baseline (y=1440) with a hairline gold rule above it. A vertical kanji column sits on the left, clear of the TikTok right rail, with a red 龍 hanko seal. The end card stacks seal, rule, ORDER NOW and 今すぐ注文.
+  - Motion: the kanji brush-wipes in, the Latin letters rise one after another, the rule draws out from the centre and the seal stamps down. On hold, the text drifts slowly and the tracking breathes. It exits with a soft fade and blur.
+  - `python3 typography.py --check` confirms every super sits inside the 4:5 crop and clear of the TikTok rail and captions.
 
 ## Posting notes
 - Add a trending sound in the TikTok/Reels editor at about 20% volume under the foley track. Trending audio boosts reach, and the foley keeps it feeling real.
