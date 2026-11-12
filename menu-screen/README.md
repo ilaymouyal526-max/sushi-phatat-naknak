@@ -13,6 +13,19 @@ Set `style` in `CONFIG`, or add `?style=cinema` to the address in Chrome.
 
 All three share the "Sumi" system below.
 
+## Five colour themes
+Set `theme` in `CONFIG`, or add `?theme=washi` to the address. Styles and themes combine, for example `?style=cinema&theme=aka`.
+
+| Theme | Colours |
+|---|---|
+| `noir` (default) | Black and gold |
+| `washi` 和紙 | Light: rice paper, sumi ink and vermilion red |
+| `aka` 朱漆 | Red lacquer and gold, with a gold seal |
+| `ai` 藍 | Indigo and silver, with a red seal |
+| `matcha` 抹茶 | Deep green and antique gold |
+
+Every colour is a token in `:root`, and each theme overrides those tokens in one block (`#screen[data-theme=…]`). To add a theme, copy a block and change its values.
+
 ## "Sumi" design system (minimal Japanese, black and gold)
 - **Three font families, five sizes, nothing else:**
   - Montserrat Light/Regular for English.
@@ -63,6 +76,7 @@ To add a slide, put its photo in `images/` and add an entry. Then re-render the 
 node render.js out/yoko-ono-screen-framed.mp4 30 framed
 node render.js out/yoko-ono-screen-cinema.mp4 30 cinema
 node render.js out/yoko-ono-screen-mix.mp4 30 mix
+node render.js out/yoko-ono-screen-mix-washi.mp4 30 mix washi   # 4th argument: colour theme
 ```
 
 ## Photos (all already made, no new credits used)

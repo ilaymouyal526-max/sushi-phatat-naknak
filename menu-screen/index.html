@@ -17,24 +17,48 @@
     Japanese  Shippori Mincho · sizes  --xs 20 · --s 28 · --m 36 · --l 64 · --xl 96
 */
 :root{
-  --ink:#14110e; --ivory:#f4ecdf; --ivory-dim:#cfc4b2; --gold:#c9a36b; --gold-light:#e2c590; --red:#b8322a;
-  --hair:rgba(201,163,107,.55);
+  /* colour theme "noir" (default). Other themes below override these tokens; nothing else holds a colour. */
+  --ink:#14110e; --bg-hi:#241d17; --ivory:#f4ecdf; --ivory-dim:#cfc4b2; --gold:#c9a36b; --gold-light:#e2c590;
+  --red:#b8322a; --seal-text:#f4ecdf; --hair:rgba(201,163,107,.55); --panel:rgba(12,10,8,.85); --photo-bg:#0b0a09;
+  --fill:linear-gradient(160deg,#d9b67c 0%,#c9a36b 55%,#b48c55 100%); --on-fill:#14110e; --fill-edge:#e2c590;
+  --veil:10,8,6; --glow:rgba(201,163,107,.18); --pattern:#c9a36b; --pattern-op:.07; --jp-shadow:rgba(0,0,0,.75);
   --xs:20px; --s:28px; --m:36px; --l:64px; --xl:96px;
   --sans:"Montserrat","Heebo",sans-serif; --serif:"Frank Ruhl",serif; --jp:"Shippori Mincho",serif;
   --ease:cubic-bezier(.2,.7,.2,1);
 }
+/* ---- colour themes: CONFIG.theme or ?theme= ---- */
+#screen[data-theme="washi"]{   /* 和紙 paper, sumi ink and vermilion */
+  --ink:#ece3d2; --bg-hi:#f8f2e7; --ivory:#1f1a16; --ivory-dim:#574d43; --gold:#9a7340; --gold-light:#a3291d;
+  --red:#b3261e; --seal-text:#f8f2e7; --hair:rgba(154,115,64,.55); --panel:rgba(248,242,231,.9); --photo-bg:#d9cfbd;
+  --fill:linear-gradient(160deg,#c8402f 0%,#a8291d 60%,#8a1f16 100%); --on-fill:#f8f2e7; --fill-edge:#a8291d;
+  --veil:236,227,210; --glow:rgba(154,115,64,.15); --pattern:#9a7340; --pattern-op:.10; --jp-shadow:rgba(248,242,231,.85)}
+#screen[data-theme="aka"]{     /* 朱漆 red lacquer and gold */
+  --ink:#260a08; --bg-hi:#4a1510; --ivory:#f7ead8; --ivory-dim:#dcc4ab; --gold:#d6a957; --gold-light:#efcd85;
+  --red:#d6a957; --seal-text:#2b0b08; --hair:rgba(214,169,87,.55); --panel:rgba(38,10,8,.85); --photo-bg:#1a0605;
+  --fill:linear-gradient(160deg,#ecc77d 0%,#d6a957 55%,#b98a3c 100%); --on-fill:#2b0b08; --fill-edge:#efcd85;
+  --veil:38,10,8; --glow:rgba(214,169,87,.22); --pattern:#d6a957; --pattern-op:.08; --jp-shadow:rgba(0,0,0,.75)}
+#screen[data-theme="ai"]{      /* 藍 indigo, silver and a red seal */
+  --ink:#0b1322; --bg-hi:#1b2b47; --ivory:#eef2f8; --ivory-dim:#b8c3d6; --gold:#a9bad3; --gold-light:#dfe7f3;
+  --red:#c0392b; --seal-text:#eef2f8; --hair:rgba(169,186,211,.5); --panel:rgba(11,19,34,.85); --photo-bg:#070d18;
+  --fill:linear-gradient(160deg,#e6edf7 0%,#bccadf 55%,#93a6c2 100%); --on-fill:#0b1322; --fill-edge:#dfe7f3;
+  --veil:11,19,34; --glow:rgba(169,186,211,.2); --pattern:#a9bad3; --pattern-op:.08; --jp-shadow:rgba(0,0,0,.75)}
+#screen[data-theme="matcha"]{  /* 抹茶 deep green and antique gold */
+  --ink:#0e160d; --bg-hi:#1f2e1b; --ivory:#f2efe0; --ivory-dim:#c9c6ae; --gold:#bba765; --gold-light:#dccb8b;
+  --red:#b8322a; --seal-text:#f2efe0; --hair:rgba(187,167,101,.5); --panel:rgba(14,22,13,.85); --photo-bg:#080d07;
+  --fill:linear-gradient(160deg,#dccb8b 0%,#bba765 55%,#9a8748 100%); --on-fill:#0e160d; --fill-edge:#dccb8b;
+  --veil:14,22,13; --glow:rgba(187,167,101,.2); --pattern:#bba765; --pattern-op:.08; --jp-shadow:rgba(0,0,0,.75)}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:#000;overflow:hidden;cursor:none}
 [lang="he"]{font-family:"Heebo",sans-serif;direction:rtl;letter-spacing:0}
 
 #screen{position:absolute;left:50%;top:50%;width:1080px;height:1920px;overflow:hidden;transform-origin:center;
   color:var(--ivory);font-family:var(--sans);font-weight:300;
-  background:radial-gradient(ellipse 90% 50% at 50% 40%,#241d17 0%,var(--ink) 75%)}
+  background:radial-gradient(ellipse 90% 50% at 50% 40%,var(--bg-hi) 0%,var(--ink) 75%)}
 .bg{position:absolute;inset:0;width:100%;height:100%}
 .frame{position:absolute;inset:28px;border:1px solid var(--hair);z-index:4;pointer-events:none}
 .signoff{position:absolute;left:0;right:0;bottom:56px;z-index:5;justify-content:center;white-space:nowrap;
   display:flex;align-items:center;gap:18px;color:var(--gold);font-weight:400;font-size:var(--xs);letter-spacing:.48em}
-.seal,.hanko{background:var(--red);color:var(--ivory);display:grid;place-items:center;font-family:var(--jp);font-weight:700;letter-spacing:0;border-radius:5px}
+.seal,.hanko{background:var(--red);color:var(--seal-text);display:grid;place-items:center;font-family:var(--jp);font-weight:700;letter-spacing:0;border-radius:5px}
 .seal{width:36px;height:36px;font-size:22px}
 
 /* ---- motion: every slide builds itself in, nothing just "appears" ---- */
@@ -66,7 +90,7 @@ html,body{height:100%;background:#000;overflow:hidden;cursor:none}
 .logo-sm svg,.logo-lg svg{width:100%;height:auto;display:block}
 
 /* ---- Dish ---- */
-.visual{position:relative;overflow:hidden;margin-top:22px;width:936px;height:880px;background:#0b0a09;--d:.1s}
+.visual{position:relative;overflow:hidden;margin-top:22px;width:936px;height:880px;background:var(--photo-bg);--d:.1s}
 .visual .ph{position:absolute;inset:0;background-size:cover;background-position:center;animation:kb var(--dur) linear forwards}
 .slide.alt .visual .ph{animation-name:kb2}
 @keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.12) translateY(-1.5%)}}
@@ -105,13 +129,13 @@ h1{margin:22px -30px 0;font-weight:300;font-size:var(--l);line-height:1.12;lette
 /* tray sizes: side-by-side boxes */
 .slide.has-options .visual{height:760px}
 .options{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:26px;width:640px;--d:1.2s}
-.opt{position:relative;overflow:hidden;padding:16px 16px 18px;text-align:center;border:1px solid var(--gold);background:rgba(12,10,8,.85);display:grid;gap:6px}
+.opt{position:relative;overflow:hidden;padding:16px 16px 18px;text-align:center;border:1px solid var(--gold);background:var(--panel);display:grid;gap:6px}
 .opt .label{font-weight:400;font-size:var(--xs);letter-spacing:.4em;color:var(--gold)}
 .opt .big{font-weight:300;font-size:var(--l);line-height:1;color:var(--gold-light);white-space:nowrap}
 .opt .big small{font-size:var(--m);margin-inline-start:6px}
 .opt .lines{display:grid;gap:2px;font-size:var(--xs);font-weight:400;color:var(--ivory-dim)}
-.opt:last-child{background:linear-gradient(160deg,#d9b67c 0%,var(--gold) 55%,#b48c55 100%);border-color:var(--gold-light)}
-.opt:last-child .label,.opt:last-child .big,.opt:last-child .lines{color:var(--ink)}
+.opt:last-child{background:var(--fill);border-color:var(--fill-edge)}
+.opt:last-child .label,.opt:last-child .big,.opt:last-child .lines{color:var(--on-fill)}
 .opt:last-child::after{content:"";position:absolute;inset:0;transform:translateX(-120%);background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%)}
 .slide.on .opt:last-child::after{animation:sheen 1.4s var(--ease) 2s both}
 
@@ -123,7 +147,7 @@ h1{margin:22px -30px 0;font-weight:300;font-size:var(--l);line-height:1.12;lette
 
 /* ---- Brand ---- */
 .brand{justify-content:center;padding-bottom:120px}
-.logo-lg{width:620px;color:var(--gold);filter:drop-shadow(0 0 40px rgba(201,163,107,.18));--d:.15s}
+.logo-lg{width:620px;color:var(--gold);filter:drop-shadow(0 0 40px var(--glow));--d:.15s}
 .slide.on .logo-lg svg{animation:breathe 5s ease-in-out 1.4s infinite alternate}
 @keyframes breathe{from{transform:scale(1)}to{transform:scale(1.025)}}
 .brand .tag{margin-top:64px;display:grid;justify-items:center;gap:16px;text-align:center}
@@ -140,12 +164,12 @@ h1{margin:22px -30px 0;font-weight:300;font-size:var(--l);line-height:1.12;lette
 .game h2{margin-top:16px;font-weight:300;font-size:var(--xl);line-height:1.02;letter-spacing:.1em;text-transform:uppercase;text-align:center;--d:.4s}
 .title-alt{margin-top:14px;font-family:var(--serif);font-weight:500;font-size:var(--m);color:var(--gold-light);--d:.8s}
 .prizes{margin-top:44px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:30px;--d:1s}
-.prize{padding:24px 20px 22px;text-align:center;border:1px solid var(--gold);background:rgba(12,10,8,.85)}
+.prize{padding:24px 20px 22px;text-align:center;border:1px solid var(--gold);background:var(--panel)}
 .prize .label{font-weight:400;font-size:var(--xs);letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
 .prize .big{font-weight:300;font-size:var(--xl);line-height:1;margin-top:12px;color:var(--gold-light)}
 .prize .lines{margin-top:12px;display:grid;gap:6px;font-size:var(--s)}
-.prize.free{background:linear-gradient(160deg,#d9b67c 0%,var(--gold) 55%,#b48c55 100%);border-color:var(--gold-light);color:var(--ink)}
-.prize.free .label,.prize.free .big{color:var(--ink)}
+.prize.free{background:var(--fill);border-color:var(--fill-edge);color:var(--on-fill)}
+.prize.free .label,.prize.free .big{color:var(--on-fill)}
 .game .when{margin-top:36px;display:grid;gap:8px;text-align:center;font-size:var(--s);color:var(--ivory-dim);--d:1.2s}
 
 /* ================= Style B: "Cinema" (full-bleed film frame, like the ad's supers) ================= */
@@ -162,15 +186,15 @@ h1{margin:22px -30px 0;font-weight:300;font-size:var(--l);line-height:1.12;lette
   background:radial-gradient(circle at 30% 35%,rgba(255,138,60,.42),transparent 42%)}
 .cine.on .leak{animation:leak var(--dur) ease-in-out forwards}
 @keyframes leak{0%{opacity:0;transform:translate(-12%,-6%)}30%{opacity:1}100%{opacity:.35;transform:translate(14%,10%)}}
-.cine .top{position:absolute;left:0;right:0;top:0;height:400px;background:linear-gradient(rgba(10,8,6,.92) 15%,transparent)}
+.cine .top{position:absolute;left:0;right:0;top:0;height:400px;background:linear-gradient(rgba(var(--veil),.92) 15%,rgba(var(--veil),0))}
 .cine .logo-sm{position:absolute;top:66px;left:465px}
 .grain{position:absolute;inset:-50%;pointer-events:none;opacity:.13;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .cine.on .grain{animation:grain .6s steps(5) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}}
 .cine .jp-col{left:74px;top:auto;bottom:440px}
-.cine .jp{text-shadow:0 2px 22px rgba(0,0,0,.75)}
-.cine .kana{text-shadow:0 1px 10px rgba(0,0,0,.8)}
+.cine .jp{text-shadow:0 2px 22px var(--jp-shadow)}
+.cine .kana{text-shadow:0 1px 10px var(--jp-shadow)}
 .cine .cap{position:absolute;left:0;right:0;bottom:150px;display:flex;flex-direction:column;align-items:center;padding:0 170px}
 .cine .num{margin-top:0}
 .cine h1{margin:20px -40px 0;font-size:var(--m);letter-spacing:.42em;line-height:1.55}
@@ -183,12 +207,12 @@ h1{margin:22px -30px 0;font-weight:300;font-size:var(--l);line-height:1.12;lette
 <div id="screen">
   <svg class="bg" aria-hidden="true">
     <pattern id="seigaiha" width="64" height="32" patternUnits="userSpaceOnUse">
-      <g fill="#14110e" stroke="#c9a36b" stroke-width="1">
+      <g style="fill:var(--ink);stroke:var(--pattern)" stroke-width="1">
         <g id="wave"><circle r="31"/><circle r="23" fill="none"/><circle r="15" fill="none"/><circle r="7" fill="none"/></g>
         <use href="#wave" x="64"/><use href="#wave" x="32" y="16"/><use href="#wave" y="32"/><use href="#wave" x="64" y="32"/>
       </g>
     </pattern>
-    <rect width="100%" height="100%" fill="url(#seigaiha)" opacity=".07"/>
+    <rect width="100%" height="100%" fill="url(#seigaiha)" style="opacity:var(--pattern-op)"/>
   </svg>
   <div id="slides"></div>
   <div class="frame"></div>
@@ -205,6 +229,8 @@ const CONFIG = {
   brandSeconds: 4,
   style: "framed",         // "framed" (photo in a gold frame + full text), "cinema" (full-bleed film frame, minimal text),
                            // or "mix" (alternates). Override with ?style=cinema in the address bar.
+  theme: "noir",           // colours: "noir" (black and gold), "washi" (paper, ink, vermilion), "aka" (red lacquer and gold),
+                           // "ai" (indigo and silver), "matcha" (green and antique gold). Override with ?theme=washi
   showGame: false,         // dice-game slide and strip (off: the screen shows food only)
   gameEvery: 2,            // when showGame is on: dice-game slide after every N slides
   // The loop, in order. Each entry: photo, kicker (small gold line on top; default "N° 01"),
@@ -288,6 +314,7 @@ function brand(){
 }
 let dishNo = 0;   // dishes are numbered in order; slides with a kicker are skipped
 const STYLE = new URLSearchParams(location.search).get('style') || CONFIG.style;
+S.dataset.theme = new URLSearchParams(location.search).get('theme') || CONFIG.theme;
 const jpCol = d => d.jp ? `<div class="jp-col"><div class="ink wipe"><span class="jp">${esc(d.jp)}</span>${d.kana ? `<span class="kana">${esc(d.kana)}</span>` : ''}</div><span class="hanko">運</span></div>` : '';
 const kicker = d => `<div class="num"><i class="rule l"></i><span class="fade" style="--d:.45s">${d.kicker ? kick(d.kicker) : `N° ${String(++dishNo).padStart(2, '0')}`}</span><i class="rule r"></i></div>`;
 function dish(d, i){
