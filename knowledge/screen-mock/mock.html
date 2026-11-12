@@ -1,0 +1,117 @@
+<!doctype html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css">
+<script src="logo-path.js"></script>
+<script src="logo.js"></script>
+<style>
+:root{--noir:#0b0907;--gold:#c9a36b;--ivory:#f4ecdf;--red:#b8322a;--mute:#b9ab95}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
+.f{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--noir);color:var(--ivory);font-family:Heebo,sans-serif}
+.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.shade{position:absolute;inset:0}
+.logo{position:absolute;color:var(--gold)}
+.logo svg{width:100%;height:auto;display:block}
+.en{font-family:Cormorant,serif;font-weight:600;letter-spacing:.04em}
+.he{font-family:"Frank Ruhl",serif;direction:rtl}
+.gold{color:var(--gold)}
+.rule{height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.kicker{font-family:Montserrat,sans-serif;font-weight:500;letter-spacing:.32em;font-size:26px;color:var(--gold);text-transform:uppercase}
+.price{font-family:Cormorant,serif;font-weight:600;font-size:54px;color:var(--gold)}
+.sh{font-family:"Frank Ruhl",serif;font-weight:500}
+.dice{display:inline-flex;gap:8px;align-items:center}
+.frame{position:absolute;inset:28px;border:2px solid rgba(201,163,107,.55);pointer-events:none}
+.frame:after{content:"";position:absolute;inset:10px;border:1px solid rgba(201,163,107,.3)}
+</style>
+<body><div id="f"></div>
+<script>
+const m = new URLSearchParams(location.search).get('m');
+const L = (x,y,w) => `<div class="logo" style="left:${x}px;top:${y}px;width:${w}px">${Logo.svg()}</div>`;
+const die = n => { const D={1:[[50,50]],3:[[26,26],[50,50],[74,74]],4:[[28,28],[72,28],[28,72],[72,72]],6:[[28,24],[72,24],[28,50],[72,50],[28,76],[72,76]]}[n]; return `<svg viewBox="0 0 100 100" width="52" height="52"><rect x="4" y="4" width="92" height="92" rx="18" fill="#b8322a"/>${D.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="9" fill="#f4ecdf"/>`).join('')}</svg>`; };
+const P = c => `p/${c}.jpg`;
+const V = {
+// A: Fresh story, 3 beats
+A1: `<img class="bg" src="${P('Y149')}" style="object-position:50% 40%">
+  <div class="shade" style="background:linear-gradient(180deg,rgba(11,9,7,.55) 0,transparent 22%,transparent 55%,rgba(11,9,7,.95) 82%)"></div>
+  ${L(450,70,180)}
+  <div style="position:absolute;left:0;right:0;bottom:170px;text-align:center">
+   <div class="kicker">Every morning · 01</div>
+   <div class="en" style="font-size:104px;line-height:1;margin-top:26px">Rice, washed<br>by hand</div>
+   <div class="he gold" style="font-size:58px;margin-top:30px">אורז שנשטף ביד, כל בוקר</div></div>`,
+A2: `<img class="bg" src="${P('Y397')}" style="object-position:50% 50%">
+  <div class="shade" style="background:linear-gradient(180deg,rgba(11,9,7,.55) 0,transparent 22%,transparent 55%,rgba(11,9,7,.95) 82%)"></div>
+  ${L(450,70,180)}
+  <div style="position:absolute;left:0;right:0;bottom:170px;text-align:center">
+   <div class="kicker">Every morning · 02</div>
+   <div class="en" style="font-size:104px;line-height:1;margin-top:26px">Fresh fish,<br>cut today</div>
+   <div class="he gold" style="font-size:58px;margin-top:30px">דג טרי, נחתך היום</div></div>`,
+A3: `<img class="bg" src="${P('Y348')}" style="object-position:50% 50%;height:1300px">
+  <div class="shade" style="background:linear-gradient(180deg,rgba(11,9,7,.4) 0,transparent 18%,transparent 52%,var(--noir) 68%)"></div>
+  ${L(450,70,180)}
+  <div style="position:absolute;left:90px;right:90px;top:1180px;text-align:center">
+   <div class="kicker">Today's catch</div>
+   <div class="he" style="font-size:76px;margin-top:18px">הדג של היום</div>
+   <div class="rule" style="margin:34px 80px"></div>
+   <div style="display:flex;flex-direction:column;gap:22px;font-size:44px" dir="rtl">
+    <div style="display:flex;justify-content:space-between"><span class="he">סלמון נורווגי</span><span class="en gold">Salmon</span></div>
+    <div style="display:flex;justify-content:space-between"><span class="he">טונה אדומה</span><span class="en gold">Red tuna</span></div>
+    <div style="display:flex;justify-content:space-between"><span class="he">דג לבן של היום</span><span class="en gold">White fish</span></div>
+   </div>
+   <div style="font-size:26px;color:var(--mute);margin-top:44px" dir="rtl">מתעדכן כל בוקר, בלי לגעת בקוד</div></div>`,
+// B: one hero dish
+B: `<img class="bg" src="${P('Y049')}" style="object-position:50% 40%;height:1420px">
+  <div class="shade" style="background:linear-gradient(180deg,rgba(11,9,7,.35) 0,transparent 15%,transparent 60%,var(--noir) 74%)"></div>
+  <div class="frame"></div>
+  ${L(460,80,160)}
+  <div style="position:absolute;left:0;right:0;top:1330px;text-align:center;padding:0 90px">
+   <div class="kicker">From the wok</div>
+   <div class="en" style="font-size:140px;line-height:1;margin-top:20px">Gyoza</div>
+   <div class="he gold" style="font-size:62px;margin-top:14px">גיוזה עוף · בקר</div>
+   <div class="he" style="font-size:34px;color:var(--mute);margin-top:22px;line-height:1.45">ארבעה כיסונים עדינים מטוגנים במילוי עוף או בקר, מוגש עם סלט תאילנדי</div>
+   <div class="price" style="margin-top:30px">Chicken 55 <span class="sh">₪</span> · Beef 59 <span class="sh">₪</span></div></div>`,
+// C: menu board
+C: (()=>{const d=[['Y308','California Salmon','קליפורניה סלמון אבוקדו'],['Y309','Spicy Salmon','ספייסי סלמון בטטה'],['Y310','Spicy Tuna','ספייסי טונה'],['Y312','Tuna Mayo','טונה מיונז אבוקדו'],['Y313','Caviar Roll','רול קוויאר'],['Y324','Crazy Roll','קרייזי רול']];
+  return `<div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0,#2a2118,var(--noir) 60%)"></div>
+  ${L(470,64,140)}
+  <div style="position:absolute;left:0;right:0;top:300px;text-align:center"><div class="kicker">Sushi · Rolls</div>
+   <div class="he" style="font-size:72px;margin-top:10px">רולים</div><div class="rule" style="margin:26px 300px 0"></div></div>
+  <div style="position:absolute;left:60px;right:60px;top:470px;display:grid;grid-template-columns:1fr 1fr;gap:34px 30px">
+   ${d.map(([c,e,h])=>`<div><div style="height:300px;overflow:hidden;border:1px solid rgba(201,163,107,.4)"><img src="${P(c)}" style="width:100%;height:100%;object-fit:cover;transform:scale(1.25)"></div>
+     <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:16px"><span class="en" style="font-size:40px">${e}</span><span class="en gold" style="font-size:38px">·· <span class="sh">₪</span></span></div>
+     <div class="he" style="font-size:28px;color:var(--mute);margin-top:4px">${h}</div></div>`).join('')}
+  </div>
+  <div style="position:absolute;bottom:44px;left:0;right:0;text-align:center;font-size:26px;color:var(--mute)" dir="rtl">כל הרולים · 8 יחידות</div>`})(),
+// D: happy hour
+D: `<img class="bg" src="${P('Y212')}" style="object-position:50% 50%;height:1250px">
+  <div class="shade" style="background:linear-gradient(180deg,rgba(11,9,7,.5) 0,transparent 20%,transparent 50%,var(--noir) 64%)"></div>
+  <div class="frame"></div>
+  <div style="position:absolute;top:96px;left:0;right:0;text-align:center"><div style="display:inline-block;border:2px solid var(--gold);padding:12px 34px;font-family:Montserrat;font-weight:600;letter-spacing:.2em;font-size:30px;color:var(--gold)">HAPPY HOUR · 16:00–18:00</div></div>
+  <div style="position:absolute;left:90px;right:90px;top:1110px;text-align:center">
+   <div class="he" style="font-size:96px;line-height:1.1">הטילו את הקוביות</div>
+   <div class="en gold" style="font-size:54px;margin-top:8px;font-style:italic">Roll the dice, win the bill</div>
+   <div class="rule" style="margin:40px 120px"></div>
+   <div style="display:flex;gap:40px;justify-content:center" dir="rtl">
+    <div style="flex:1;border:1px solid rgba(201,163,107,.5);padding:30px 10px"><div class="dice" dir="ltr">${die(1)}${die(1)}<span class="gold" style="font-size:40px">–</span>${die(3)}${die(3)}</div><div class="he" style="font-size:52px;margin-top:10px"><bdi dir="ltr">−50%</bdi> על החשבון</div></div>
+    <div style="flex:1;border:2px solid var(--gold);padding:30px 10px;background:rgba(201,163,107,.08)"><div class="dice" dir="ltr">${die(4)}${die(4)}<span class="gold" style="font-size:40px">–</span>${die(6)}${die(6)}</div><div class="he" style="font-size:52px;margin-top:10px">הארוחה עלינו</div></div>
+   </div>
+   <div class="he" style="font-size:30px;color:var(--mute);margin-top:40px">בסוף הארוחה · בלי מינימום הזמנה · *בכפוף לתקנון</div></div>`,
+// E: atmosphere mosaic
+E: `<div style="position:absolute;inset:0;display:grid;grid-template-rows:760px 520px 1fr;gap:10px;background:var(--gold)">
+   <div style="overflow:hidden;position:relative"><img src="${P('Y370')}" style="width:100%;height:100%;object-fit:cover;object-position:50% 45%"></div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div style="overflow:hidden"><img src="${P('Y212')}" style="width:100%;height:100%;object-fit:cover"></div><div style="overflow:hidden"><img src="${P('Y421')}" style="width:100%;height:100%;object-fit:cover"></div></div>
+   <div style="overflow:hidden;position:relative"><img src="${P('Y276')}" style="width:100%;height:100%;object-fit:cover;object-position:50% 60%"><div class="shade" style="background:linear-gradient(180deg,transparent 30%,rgba(11,9,7,.85))"></div>
+    <div style="position:absolute;bottom:60px;left:0;right:0;text-align:center"><div class="en" style="font-size:72px">Sushi · Wok · Cocktails</div><div class="he gold" style="font-size:44px;margin-top:8px">אחוזה 124, רעננה</div></div></div>
+  </div>`,
+// F: QR and social
+F: `<img class="bg" src="${P('Y273')}" style="filter:brightness(.35) saturate(.9)">
+  <div class="shade" style="background:radial-gradient(circle at 50% 46%,transparent 0,rgba(11,9,7,.75) 70%)"></div>
+  ${L(440,110,200)}
+  <div style="position:absolute;left:0;right:0;top:520px;text-align:center">
+   <div class="kicker">Scan the menu</div>
+   <div class="he" style="font-size:80px;margin-top:10px">סרקו לתפריט</div>
+   <div style="margin:50px auto 0;width:560px;height:560px;background:#fff;padding:26px;border:10px solid var(--gold);box-shadow:0 0 80px rgba(201,163,107,.35)"><img src="${P('R176')}" style="width:100%;height:100%;object-fit:contain"></div>
+   <div class="he" style="font-size:50px;margin-top:70px">צלמו, תייגו, ותופיעו על המסך</div>
+   <div class="en gold" style="font-size:52px;margin-top:10px">@yokoono · #YokoOno</div></div>`,
+};
+document.getElementById('f').outerHTML = `<div class="f">${V[m]}</div>`;
+</script>

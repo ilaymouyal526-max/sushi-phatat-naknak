@@ -21,6 +21,10 @@ Built 2026-11-12 by going through every item. Update this file whenever somethin
   - Prizes: a double 1 to 3 gives 50% off the whole bill; a double 4 to 6 makes the meal free.
   - Not covered: the tip. Winners are photographed for social media.
   - Small print: "בכפוף לתקנון" (subject to the rules).
+- **Known prices** (from `MENU_FINAL_HEBSP.pdf`, quoted in `menu-screen/index.html` on `ccr-53cee3cd-iiiipd`; the PDF itself is not in the repo or the Drive):
+  - Gyoza: chicken 55 ₪, beef 59 ₪.
+  - Caramel tempura chicken: 72 ₪.
+  - House wok noodles: chicken 69 ₪, tempura 72 ₪, veggie 59 ₪.
 - **Unknowns to ask before using them anywhere:**
   - prices and the real current menu text;
   - opening hours and phone number;
@@ -204,6 +208,17 @@ Related artifacts:
 - Media gallery: https://claude.ai/artifact/ETVgwKNXjN3YCS5fpauvMe
 
 ## 6. "I want X": what we have and what's missing
+- **Screen ideas, proposed 2026-11-12:** https://claude.ai/artifact/JKbLdLudNQpziHbySXNeN2
+  - Six mocked-up concepts:
+    - fresh this morning;
+    - one dish per screen;
+    - menu board;
+    - programmed by the clock (happy hour from 16:00 to 18:00);
+    - atmosphere mosaic;
+    - QR and social.
+  - Plus a recommended loop of about 2 minutes.
+  - The mock source is `knowledge/screen-mock/mock.html` (open it with `?m=A1`, `A2`, `A3`, `B`, `C`, `D`, `E` or `F`); the photos are fetched with `drive_get.py`.
+  - Waiting for the user to pick one.
 - **Display screen or menu TV:**
   - Have: both screen projects, the pro dish photos, the logo, the fonts.
   - Missing: the final dish list, prices, and a Push Pop photo.
