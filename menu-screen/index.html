@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yoko Ono — Dish Screen</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+/*
+  Yoko Ono · Asian Kitchen: dish screen for the portrait TV (1080 x 1920), Noir & Or style.
+  Loops forever: logo → dish → dice game → dish → dice game → ...
+  Open in Chrome on the screen's computer, press F for fullscreen.
+  Dishes and texts live in the CONFIG block at the bottom.
+*/
+:root{
+  --ink:#14110e; --ivory:#f4ecdf; --ivory-dim:#d8cdbb; --muted:#a3947f;
+  --gold:#c9a36b; --gold-light:#e2c590; --red:#b8322a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;overflow:hidden;cursor:none}
+[lang="he"]{font-family:"Heebo",sans-serif;direction:rtl}
+
+#screen{position:absolute;left:50%;top:50%;width:1080px;height:1920px;overflow:hidden;transform-origin:center;
+  color:var(--ivory);font-family:"Montserrat","Heebo",sans-serif;
+  background:radial-gradient(ellipse 90% 50% at 50% 40%,#241d17 0%,var(--ink) 75%)}
+.bg{position:absolute;inset:0;width:100%;height:100%}
+.frame{position:absolute;inset:24px;border:2px solid var(--gold);z-index:4;pointer-events:none}
+.frame::after{content:"";position:absolute;inset:8px;border:2px solid rgba(201,163,107,.5)}
+.signoff{position:absolute;left:0;right:0;bottom:52px;z-index:5;justify-content:center;white-space:nowrap;
+  display:flex;align-items:center;gap:16px;color:var(--gold);font-weight:700;font-size:16px;letter-spacing:.48em}
+.seal{width:34px;height:34px;background:var(--red);color:var(--ivory);display:grid;place-items:center;font-family:"Shippori";font-size:22px;letter-spacing:0;border-radius:4px}
+
+.slide{position:absolute;inset:0;padding:66px 72px 0;display:flex;flex-direction:column;align-items:center;opacity:0;transition:opacity .9s ease}
+.slide.on{opacity:1}
+.slide>*{flex-shrink:0}
+.up{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+/* boxes only fade, so their thin borders never sit between pixels */
+.price.up{transform:none}
+.slide.on .up{opacity:1;transform:none}
+.d1{transition-delay:.2s!important}.d2{transition-delay:.35s!important}.d3{transition-delay:.5s!important}.d4{transition-delay:.65s!important}
+
+.logo-sm{width:150px;color:var(--gold)}
+.logo-sm svg,.logo-lg svg{width:100%;height:auto;display:block}
+
+/* ---- Dish ---- */
+.visual{position:relative;overflow:hidden;margin-top:22px;width:936px;height:880px;background:#0b0a09}
+.visual .ph{position:absolute;inset:0;background-size:cover;background-position:center}
+.visual .ph{animation:kb var(--dur) linear forwards}
+.slide.alt .visual .ph{animation-name:kb2}
+@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.12) translateY(-1.5%)}}
+@keyframes kb2{from{transform:scale(1.12) translateX(1.5%)}to{transform:scale(1.02)}}
+.visual::after{content:"";position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 0 2px var(--gold),inset 0 0 0 9px var(--ink),inset 0 0 0 11px rgba(201,163,107,.55),inset 0 -120px 120px -60px rgba(0,0,0,.6)}
+.num{margin-top:34px;display:flex;align-items:center;gap:18px;color:var(--gold)}
+.num i{width:70px;height:1px;background:var(--gold);opacity:.7}
+.num span{font-family:"Cormorant";font-style:italic;font-weight:700;font-size:40px}
+h1{margin-top:8px;font-weight:800;font-size:80px;line-height:.98;text-transform:uppercase;text-align:center;letter-spacing:.01em}
+.he-name{margin-top:12px;font-family:"Frank Ruhl",serif;font-weight:700;font-size:54px;color:var(--gold-light)}
+.desc{margin-top:20px;text-align:center;display:grid;gap:8px;max-width:900px}
+.desc .en{font-size:30px;color:var(--ivory-dim);line-height:1.35}
+.desc .he{font-size:29px;color:var(--ivory-dim);line-height:1.4}
+.price{margin-top:20px;padding:8px 30px;border:2px solid var(--gold);color:var(--gold-light);font-weight:700;font-size:36px;letter-spacing:.02em}
+
+/* game reminder strip on every dish slide */
+.strip{position:absolute;left:60px;right:60px;bottom:58px;display:flex;align-items:center;justify-content:center;gap:16px;
+  padding:14px 0;border-top:1px solid rgba(201,163,107,.45);color:var(--gold-light);font-size:23px;white-space:nowrap}
+.strip b{color:var(--gold);font-weight:800;letter-spacing:.2em;font-size:19px}
+.strip .he{font-size:24px}
+.diamond{width:7px;height:7px;background:var(--gold);transform:rotate(45deg);flex:none}
+
+/* ---- Brand ---- */
+.brand{justify-content:center;padding-bottom:120px}
+.logo-lg{width:640px;color:var(--gold);filter:drop-shadow(0 0 40px rgba(201,163,107,.18))}
+.brand .tag{margin-top:60px;display:grid;gap:12px;text-align:center}
+.brand .tag .en{font-weight:600;font-size:28px;letter-spacing:.42em;text-transform:uppercase;color:var(--ivory-dim)}
+.brand .tag .he{font-family:"Frank Ruhl",serif;font-weight:700;font-size:40px;color:var(--gold-light)}
+
+/* ---- Dice game ---- */
+.game .photo{margin-top:20px;width:1080px;height:640px;margin-left:-72px;margin-right:-72px;background-size:cover;background-position:center 55%;
+  -webkit-mask-image:linear-gradient(transparent,#000 18%,#000 68%,transparent);mask-image:linear-gradient(transparent,#000 18%,#000 68%,transparent)}
+.game .photo{animation:kb 14s linear forwards}
+.kicker{margin-top:-40px;display:flex;align-items:center;gap:16px;color:var(--gold)}
+.kicker i{width:50px;height:1px;background:var(--gold);opacity:.7}
+.kicker .en{font-weight:600;font-size:22px;letter-spacing:.4em;text-transform:uppercase}
+.game h2{margin-top:10px;font-weight:900;font-size:112px;line-height:.95;text-transform:uppercase;text-align:center}
+.title-alt{margin-top:12px;display:flex;align-items:center;gap:22px;color:var(--gold-light)}
+.title-alt .he{font-family:"Frank Ruhl",serif;font-weight:700;font-size:44px}
+.prizes{margin-top:44px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.prize{padding:24px 20px 22px;text-align:center;border:1.5px solid var(--gold);background:rgba(12,10,8,.85)}
+.prize .label{font-weight:800;font-size:20px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.prize .big{font-weight:900;font-size:110px;line-height:.95;margin-top:12px;color:var(--gold-light);letter-spacing:-.02em}
+.prize .lines{margin-top:12px;display:grid;gap:6px}
+.prize .lines .en{font-weight:600;font-size:28px}
+.prize .lines .he{font-weight:600;font-size:27px}
+.prize.free{background:linear-gradient(160deg,#d9b67c 0%,var(--gold) 55%,#b48c55 100%);border-color:var(--gold-light);color:#14110e}
+.prize.free .label,.prize.free .big{color:#14110e}
+.game .when{margin-top:36px;display:grid;gap:8px;text-align:center}
+.game .when .en{font-size:28px;color:var(--ivory-dim)}
+.game .when .he{font-size:28px;color:var(--ivory-dim)}
+
+/* ---- Tray sizes (side-by-side price boxes) ---- */
+.num .kick{font-family:"Montserrat","Heebo",sans-serif;font-style:normal;font-weight:700;font-size:24px;letter-spacing:.3em;text-transform:uppercase}
+.num .kick [lang="he"]{letter-spacing:0;font-size:28px}
+.price [lang="he"]{font-family:"Heebo",sans-serif}
+.slide.has-options .visual{height:760px}
+.options{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:28px;width:760px}
+.opt{padding:14px 16px 16px;text-align:center;border:2px solid var(--gold);background:rgba(12,10,8,.85)}
+.opt .label{font-weight:800;font-size:24px;letter-spacing:.24em;color:var(--gold)}
+.opt .big{font-weight:900;font-size:76px;line-height:1;margin-top:6px;color:var(--gold-light)}
+.opt .lines{margin-top:8px;display:grid;gap:2px;font-size:26px;font-weight:600;color:var(--ivory-dim)}
+.opt:last-child{background:linear-gradient(160deg,#d9b67c 0%,var(--gold) 55%,#b48c55 100%);border-color:var(--gold-light)}
+.opt:last-child .label,.opt:last-child .big,.opt:last-child .lines{color:#14110e}
+</style>
+</head>
+<body>
+<div id="screen">
+  <svg class="bg" aria-hidden="true">
+    <pattern id="seigaiha" width="64" height="32" patternUnits="userSpaceOnUse">
+      <g fill="#14110e" stroke="#c9a36b" stroke-width="1">
+        <g id="wave"><circle r="31"/><circle r="23" fill="none"/><circle r="15" fill="none"/><circle r="7" fill="none"/></g>
+        <use href="#wave" x="64"/><use href="#wave" x="32" y="16"/><use href="#wave" y="32"/><use href="#wave" x="64" y="32"/>
+      </g>
+    </pattern>
+    <rect width="100%" height="100%" fill="url(#seigaiha)" opacity=".07"/>
+  </svg>
+  <div id="slides"></div>
+  <div class="frame"></div>
+  <div class="signoff"><span class="seal">運</span><span>YOKO ONO · ASIAN KITCHEN</span></div>
+</div>
+
+<script src="../shared/logo-path.js"></script>
+<script src="../shared/logo.js"></script>
+<script>
+/* ================== CONFIG ================== */
+const CONFIG = {
+  dishSeconds: 6,          // default time on screen for each slide in `slides`
+  gameSeconds: 9,
+  brandSeconds: 4,
+  showGame: false,         // dice-game slide and strip (off: the screen shows food only)
+  gameEvery: 2,            // when showGame is on: dice-game slide after every N slides
+  // The loop, in order. Each entry: photo, kicker (small gold line on top; default "N° 01"),
+  // name / he (English and Hebrew title), en / heDesc (descriptions),
+  // price (one gold box) or options (side-by-side boxes), seconds (optional, overrides dishSeconds).
+  // Dish names and prices: restaurant menu (MENU_FINAL_HEBSP.pdf). Promo tray sizes and prices: the 3D tray project.
+  slides: [
+    { photo: "images/party-tray.jpg", seconds: 7,
+      kicker: "Party trays · מגשי מסיבה",
+      name: "Party Tray", he: "מגש מסיבה",
+      en: "A round tray of our signature rolls with kimchi in the centre",
+      heDesc: "מגש עגול של הרולים שלנו: פנקו ורוד, שומשום, אבוקדו, טמפורה ומאקי, עם קימצ'י במרכז",
+      price: "Order ahead · הזמינו מראש" },
+    { photo: "images/gyoza-marble.jpg",
+      name: "Gyoza", he: "גיוזה עוף · בקר",
+      en: "4 crispy fried dumplings, chicken or beef, with Thai salad",
+      heDesc: "ארבעה כיסונים עדינים מטוגנים במילוי עוף או בקר, מוגש עם סלט תאילנדי",
+      price: "Chicken 55 ₪ · Beef 59 ₪" },
+    { photo: "images/promo-tray.jpg", seconds: 7,
+      kicker: "Party trays · מגשי מסיבה",
+      name: "Promo Tray", he: "מגש פרומו",
+      en: "Six kinds of rolls around a veggie maki centre, with ginger and wasabi",
+      heDesc: "שישה סוגי רולים סביב מאקי ירקות במרכז, עם ג'ינג'ר ווסאבי",
+      options: [ { label: "L", big: "199 ₪", en: "56 pieces", he: "56 יחידות" },
+                 { label: "XL", big: "299 ₪", en: "80 pieces", he: "80 יחידות" } ] },
+    { photo: "images/red-dragon-tataki.jpg",
+      name: "Red Dragon Tataki", he: "רד דרגון טטאקי",
+      en: "Avocado-wrapped roll with spicy tuna, topped with torch-seared tuna and sesame",
+      heDesc: "רול עטוף אבוקדו במילוי טונה ספייסי, עם קוביות טונה צרובה ושומשום" },
+    { photo: "images/crispy-chicken-marble.jpg",
+      name: "Caramel Tempura Chicken", he: "עוף קרמל בטמפורה",
+      en: "Caramel sauce, caramelised onions and sesame, served with rice",
+      heDesc: "ברוטב קרמל עם בצלים מקורמלים, מצופה שומשום, מוגש עם אורז",
+      price: "72 ₪" },
+    { photo: "images/push-pop.jpg",
+      kicker: "New · חדש",
+      name: "Sushi Push Pop", he: "סושי פוש פופ",
+      en: "Sushi in a tube: push it up, pop it, bite it",
+      heDesc: "סושי בשפופרת: דוחפים, נוגסים, נהנים" },
+    { photo: "images/wok-noodles-marble.jpg",
+      name: "House Wok Noodles", he: "נודלס הבית מוקפץ בווק",
+      en: "Fresh noodles, peppers, cabbage, carrot, bean sprouts and peanuts",
+      heDesc: "אטריות טריות, גמבה, כרוב, גזר, נבטי סויה ובוטנים ברוטב ווק מתקתק",
+      price: "Chicken 69 ₪ · Tempura 72 ₪ · Veggie 59 ₪" },
+  ],
+};
+/* ============================================ */
+
+const S = document.getElementById('screen');
+const fit = () => { const k = Math.min(innerWidth / 1080, innerHeight / 1920); S.style.transform = `translate(-50%,-50%) scale(${k})`; };
+addEventListener('resize', fit); fit();
+
+// text with Hebrew parts: each Hebrew run gets lang=he so it uses the Hebrew font
+const kick = s => esc(s).replace(/[\u0590-\u05FF][\u0590-\u05FF\s'׳״"0-9]*/g, m => `<span lang="he">${m.trim()}</span> `).trim();
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pip = n => { const P = {1:[[50,50]],2:[[28,28],[72,72]],3:[[26,26],[50,50],[74,74]],4:[[28,28],[72,28],[28,72],[72,72]],5:[[26,26],[74,26],[50,50],[26,74],[74,74]],6:[[28,24],[72,24],[28,50],[72,50],[28,76],[72,76]]}[n];
+  return `<svg viewBox="0 0 100 100" width="26" height="26"><rect x="4" y="4" width="92" height="92" rx="18" fill="none" stroke="currentColor" stroke-width="7"/>${P.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="9" fill="currentColor"/>`).join('')}</svg>`; };
+
+const box = document.getElementById('slides');
+const list = [];
+const add = (html, cls, secs) => { const n = document.createElement('div'); n.className = 'slide ' + cls; n.innerHTML = html; box.appendChild(n); list.push({ n, secs }); return n; };
+
+function brand(){
+  add(`<div class="logo-lg up">${Logo.svg()}</div>
+    <div class="tag up d2"><span class="en">Asian kitchen</span><span class="he" lang="he">מטבח אסייתי</span></div>`, 'brand', CONFIG.brandSeconds);
+}
+let dishNo = 0;   // dishes are numbered in order; slides with a kicker are skipped
+function dish(d, i){
+  const n = add(`<div class="logo-sm">${Logo.svg()}</div>
+    <div class="visual"><div class="ph" style="background-image:url('${encodeURI(d.photo)}')"></div></div>
+    <div class="num up d1"><i></i>${d.kicker ? `<span class="kick">${kick(d.kicker)}</span>` : `<span>N° ${String(++dishNo).padStart(2, '0')}</span>`}<i></i></div>
+    <h1 class="up d1">${esc(d.name)}</h1>
+    <div class="he-name up d2" lang="he">${esc(d.he)}</div>
+    <div class="desc up d3"><span class="en">${esc(d.en)}</span><span class="he" lang="he">${esc(d.heDesc)}</span></div>
+    ${d.price ? `<div class="price up d4">${kick(d.price)}</div>` : ''}
+    ${d.options ? `<div class="options up d4">${d.options.map(o => `<div class="opt"><div class="label">${esc(o.label)}</div><div class="big">${esc(o.big)}</div><div class="lines"><span class="en">${esc(o.en)}</span><span class="he" lang="he">${esc(o.he)}</span></div></div>`).join('')}</div>` : ''}
+    ${CONFIG.showGame ? `<div class="strip up d4"><b>THE BIG GAME</b><b class="diamond"></b><span>Roll a double = 50% off or it's on us</span><b class="diamond"></b><span class="he" lang="he">דאבל = 50% הנחה או הכל עלינו</span></div>` : ''}`,
+    (i % 2 ? 'alt' : '') + (d.options ? ' has-options' : ''), d.seconds || CONFIG.dishSeconds);
+  n.style.setProperty('--dur', ((d.seconds || CONFIG.dishSeconds) + 2) + 's');
+}
+function game(){
+  add(`<div class="logo-sm">${Logo.svg()}</div>
+    <div class="photo" style="background-image:url('images/dice.jpg')"></div>
+    <div class="kicker up"><i></i><span class="en">The big game</span><i></i></div>
+    <h2 class="up d1">Roll<br>the dice</h2>
+    <div class="title-alt up d2"><span class="he" lang="he">הטילו את הקוביות</span></div>
+    <div class="prizes up d3">
+      <div class="prize half"><div class="label">Double 1 · 2 · 3</div><div class="big">−50%</div>
+        <div class="lines"><span class="en">off the whole bill</span><span class="he" lang="he">על כל החשבון</span></div></div>
+      <div class="prize free"><div class="label">Double 4 · 5 · 6</div><div class="big">100%</div>
+        <div class="lines"><span class="en">On the house!</span><span class="he" lang="he">הכל עלינו!</span></div></div>
+    </div>
+    <div class="when up d4"><span class="en">At the end of your meal · one roll per table</span><span class="he" lang="he">בסוף הארוחה · הטלה אחת לשולחן</span></div>`,
+    'game', CONFIG.gameSeconds);
+}
+
+brand();
+CONFIG.slides.forEach((d, i) => { dish(d, i); if (CONFIG.showGame && (i + 1) % CONFIG.gameEvery === 0) game(); });
+CONFIG.slides.forEach(d => { const im = new Image(); im.src = d.photo; });
+
+let cur = -1, timer;
+function next(){
+  if (cur >= 0) list[cur].n.classList.remove('on');
+  cur = (cur + 1) % list.length;
+  const n = list[cur].n;
+  n.querySelectorAll('.ph,.photo').forEach(p => { p.style.animation = 'none'; void p.offsetWidth; p.style.animation = ''; });
+  n.classList.add('on');
+  clearTimeout(timer); timer = setTimeout(next, list[cur].secs * 1000);
+}
+// ?render=1 hands control to the MP4 renderer (render.js) instead of the timers
+window.RENDER = new URLSearchParams(location.search).has('render');
+window.SLIDES = list.map(x => x.secs);
+window.go = i => { if (cur >= 0) list[cur].n.classList.remove('on'); cur = i;
+  const n = list[cur].n; n.querySelectorAll('.ph,.photo').forEach(p => { p.style.animation = 'none'; void p.offsetWidth; p.style.animation = ''; }); n.classList.add('on'); };
+if (!RENDER) document.fonts.ready.then(next);
+
+const fs = () => { if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {}); };
+addEventListener('keydown', e => { if (e.key === 'f' || e.key === 'F') fs(); if (e.key === 'ArrowRight' || e.key === ' ') next(); });
+addEventListener('click', fs);
+async function wake(){ try { await navigator.wakeLock?.request('screen'); } catch (e) {} }
+wake(); document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') wake(); });
+if (!RENDER) setTimeout(() => location.reload(), 6 * 60 * 60 * 1000);   // fresh reload every 6 hours
+</script>
+</body>
+</html>
