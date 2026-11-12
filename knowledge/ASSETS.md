@@ -23,6 +23,9 @@ Built 2026-11-12 by going through every item. Update this file whenever somethin
   - Small print: "בכפוף לתקנון" (subject to the rules).
 - **The current menu:** `knowledge/menu/MENU.md`, from `MENU_FINAL_HEBSP.pdf` (2026-10-19, saved in `knowledge/menu/`).
   - It has every dish and price, the Drive photo for each dish, the dishes that have no photo, and the photographed dishes that are no longer on the menu.
+  - The photos were matched by eye: 89 lines, 31 exact, 29 close, 29 without a photo.
+  - The data is in `menu.json`; `build_menu.py` regenerates it.
+  - Visual check page: https://claude.ai/artifact/AzKjHnXRGXsGPWQ4MnzwmC
   - The menu's own look is "סטריט סושי בר" (Street Sushi Bar): white, orange-red, line illustrations.
   - It is fully kosher: זהבנון stands in for shrimp, and surimi for crab.
   - It has no desserts, cocktails or alcohol.
@@ -220,6 +223,12 @@ Related artifacts:
   - Plus a recommended loop of about 2 minutes.
   - The mock source is `knowledge/screen-mock/mock.html` (open it with `?m=A1`, `A2`, `A3`, `B`, `C`, `D`, `E` or `F`); the photos are fetched with `drive_get.py`.
   - Waiting for the user to pick one.
+- **Dishes that need new photos** (no photo at all):
+  - soups, kimchi, papaya salad;
+  - surimi special roll; salmon cheese, cooked salmon, tataki and spicy surimi classic rolls;
+  - all temaki; tuna tartares; truffle and seared nigiri;
+  - tuna pizzettas; golden nems salad; sides; bubble tea.
+  - See `knowledge/menu/MENU.md`. A photo day, or Higgsfield stills built from the close references (priced first), would fill these.
 - **Display screen or menu TV:**
   - Have: both screen projects, the pro dish photos, the logo, the fonts.
   - Missing: the final dish list, prices, and a Push Pop photo.

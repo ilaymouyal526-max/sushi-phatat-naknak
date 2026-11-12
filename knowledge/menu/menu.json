@@ -1,0 +1,1088 @@
+[
+ {
+  "section": "לפתיחה או לחלוקה",
+  "en": "Starters",
+  "note": "",
+  "items": [
+   {
+    "he": "אדממה",
+    "en": "Edamame",
+    "price": "22",
+    "hero": "Y333",
+    "alts": [
+     "Y108"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "קימצ'י",
+    "en": "Kimchi",
+    "price": "21",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": "Only the 3D-tray kimchi mesh exists"
+   },
+   {
+    "he": "מרק מיסו",
+    "en": "Miso soup",
+    "price": "25",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "מרק טום יאם",
+    "en": "Tom yum soup",
+    "price": "49",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "נמס עוף (2)",
+    "en": "Chicken nems",
+    "price": "39",
+    "hero": "Y009",
+    "alts": [
+     "Y007"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "נמס צמחוני (2)",
+    "en": "Veggie nems",
+    "price": "36",
+    "hero": "Y009",
+    "alts": [],
+    "match": "close",
+    "note": "The photo is the chicken nems; they look the same"
+   },
+   {
+    "he": "גיוזה עוף / בקר (4)",
+    "en": "Gyoza",
+    "price": "55 / 59",
+    "hero": "Y049",
+    "alts": [
+     "Y017",
+     "Y062",
+     "Y073",
+     "Y078",
+     "Y032",
+     "Y334",
+     "Y335",
+     "Y336"
+    ],
+    "match": "exact",
+    "note": "Y334-336: in a bamboo steamer"
+   },
+   {
+    "he": "באן באו אסאדו (2)",
+    "en": "Asado bao",
+    "price": "49",
+    "hero": "Y307",
+    "alts": [],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "באן באו עוף (2)",
+    "en": "Crispy chicken bao",
+    "price": "46",
+    "hero": "Y014",
+    "alts": [
+     "Y029",
+     "Y046",
+     "Y060"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "באן באו דג לבן טמפורה (2)",
+    "en": "White fish bao",
+    "price": "46",
+    "hero": "Y014",
+    "alts": [],
+    "match": "close",
+    "note": "Stand-in: the chicken bao looks almost the same"
+   },
+   {
+    "he": "שרימפס בטמפורה, זהבנון (4)",
+    "en": "Tempura 'shrimp'",
+    "price": "49",
+    "hero": "Y065",
+    "alts": [
+     "Y020",
+     "Y037",
+     "Y053",
+     "Y074"
+    ],
+    "match": "close",
+    "note": "Shot as 'shrimp crispy coco'. Looks right, but check it is the same coating"
+   },
+   {
+    "he": "סלט פפאיה ואגוזי קשיו",
+    "en": "Papaya and cashew salad",
+    "price": "42",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "section": "רולים מיוחדים",
+  "en": "Special rolls",
+  "note": "8 pieces; no changes; soy wrap +7",
+  "items": [
+   {
+    "he": "קוויאר סלמון רול",
+    "en": "Caviar Salmon Roll",
+    "price": "72",
+    "hero": "Y393",
+    "alts": [
+     "Y394"
+    ],
+    "match": "exact",
+    "note": "Seared salmon wrap with smoked tobiko"
+   },
+   {
+    "he": "ספיישל יונו",
+    "en": "Special Yono",
+    "price": "75",
+    "hero": "Y313",
+    "alts": [],
+    "match": "close",
+    "note": "Rolls topped with salmon tartare and tobiko"
+   },
+   {
+    "he": "מיסו סלמון",
+    "en": "Miso Salmon",
+    "price": "75",
+    "hero": "Y416",
+    "alts": [],
+    "match": "close",
+    "note": "Seared salmon wrap with sauce; shot as 'Tataki salmon roll'"
+   },
+   {
+    "he": "קרייזי רול",
+    "en": "Crazy Roll",
+    "price": "75",
+    "hero": "Y324",
+    "alts": [
+     "Y325",
+     "Y326"
+    ],
+    "match": "close",
+    "note": "Shot as a rainbow wrap (salmon, tuna, white fish, avocado); today it's salmon and mango"
+   },
+   {
+    "he": "ספיישל קריספי וג'י",
+    "en": "Special Crispy Veggie",
+    "price": "59",
+    "hero": "Y422",
+    "alts": [
+     "Y254",
+     "Y255",
+     "Y256"
+    ],
+    "match": "close",
+    "note": "Y422: avocado and mango wrap with crispy shallot; shot as 'Veggie roll'"
+   },
+   {
+    "he": "ספיישל סלמון מבושל",
+    "en": "Special Cooked Salmon",
+    "price": "65",
+    "hero": "Y114",
+    "alts": [
+     "Y115"
+    ],
+    "match": "close",
+    "note": "Avocado wrap with a crispy top; not named in the shoot"
+   },
+   {
+    "he": "ספיישל סורימי רול",
+    "en": "Special Surimi Roll",
+    "price": "59",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": "No photo of a mango-wrapped surimi roll"
+   },
+   {
+    "he": "רד דרגון טונה טטאקי",
+    "en": "Red Dragon Tuna Tataki",
+    "price": "79",
+    "hero": "Y412",
+    "alts": [
+     "Y415",
+     "Y337",
+     "Y338"
+    ],
+    "match": "close",
+    "note": "Avocado wrap with seared tuna on top. Higgsfield has the Red Dragon ad too"
+   },
+   {
+    "he": "פיור וויט טמפורה",
+    "en": "Pure White Tempura",
+    "price": "65",
+    "hero": "Y425",
+    "alts": [
+     "Y414",
+     "Y426"
+    ],
+    "match": "exact",
+    "note": "Avocado wrap with the truffle-aioli dollop"
+   },
+   {
+    "he": "וולקנו סלמון / טונה (4)",
+    "en": "Volcano",
+    "price": "69 / 79",
+    "hero": "Y424",
+    "alts": [
+     "Y423",
+     "Y111",
+     "Y112"
+    ],
+    "match": "close",
+    "note": "The photo is the salmon version, salmon-wrapped; today's is avocado-wrapped"
+   }
+  ]
+ },
+ {
+  "section": "רולים קלאסיים",
+  "en": "Classic rolls",
+  "note": "8 pieces; push-pop version +12; soy wrap +7. The 2024 photos are all sesame-coated inside-out rolls on blue plates",
+  "items": [
+   {
+    "he": "סלמון אבוקדו (פנקו)",
+    "en": "Salmon Avocado",
+    "price": "45",
+    "hero": "Y308",
+    "alts": [],
+    "match": "close",
+    "note": "Today it's panko-coated; the photo is sesame"
+   },
+   {
+    "he": "סלמון צ'יז אבוקדו (פנקו)",
+    "en": "Salmon Cheese Avocado",
+    "price": "49",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "ספייסי סלמון (שומשום)",
+    "en": "Spicy Salmon",
+    "price": "45",
+    "hero": "Y309",
+    "alts": [],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "טונה אדומה אבוקדו (פנקו)",
+    "en": "Red Tuna Avocado",
+    "price": "59",
+    "hero": "Y311",
+    "alts": [],
+    "match": "close",
+    "note": "Today it's panko-coated; the photo is sesame"
+   },
+   {
+    "he": "ספייסי טונה (פנקו)",
+    "en": "Spicy Tuna",
+    "price": "59",
+    "hero": "Y310",
+    "alts": [],
+    "match": "close",
+    "note": "Today it's panko-coated; the photo is sesame"
+   },
+   {
+    "he": "סלמון מבושל (שומשום)",
+    "en": "Cooked Salmon",
+    "price": "48",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "טטאקי טונה (פנקו)",
+    "en": "Tuna Tataki",
+    "price": "59",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "טטאקי סלמון (פנקו סגול)",
+    "en": "Salmon Tataki",
+    "price": "52",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "טונה מיונז (שומשום)",
+    "en": "Tuna Mayo",
+    "price": "42",
+    "hero": "Y312",
+    "alts": [],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "ירקות (פנקו סגול)",
+    "en": "Veggie",
+    "price": "35",
+    "hero": "Y250",
+    "alts": [
+     "Y249",
+     "Y251",
+     "Y252",
+     "Y253"
+    ],
+    "match": "close",
+    "note": "The photo is an avocado and cucumber roll without purple panko"
+   },
+   {
+    "he": "ספייסי סורימי (שומשום)",
+    "en": "Spicy Surimi",
+    "price": "48",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "section": "טטאקי",
+  "en": "Tataki",
+  "note": "",
+  "items": [
+   {
+    "he": "סלמון טטאקי (6)",
+    "en": "Salmon Tataki",
+    "price": "69",
+    "hero": "Y417",
+    "alts": [
+     "Y418",
+     "Y419",
+     "Y420"
+    ],
+    "match": "exact",
+    "note": "Y419-420: with an ikura spoon"
+   },
+   {
+    "he": "טונה אדומה טטאקי (6)",
+    "en": "Red Tuna Tataki",
+    "price": "79",
+    "hero": "Y421",
+    "alts": [
+     "Y038",
+     "Y044",
+     "Y058",
+     "Y066",
+     "Y068"
+    ],
+    "match": "close",
+    "note": "Shot in an orange broth; today it's served on avocado and asparagus"
+   }
+  ]
+ },
+ {
+  "section": "סשימי",
+  "en": "Sashimi",
+  "note": "",
+  "items": [
+   {
+    "he": "סשימי סלמון (6)",
+    "en": "Salmon Sashimi",
+    "price": "49",
+    "hero": "Y146",
+    "alts": [
+     "Y145"
+    ],
+    "match": "close",
+    "note": "Salmon rosettes on a sashimi plate"
+   },
+   {
+    "he": "סשימי טונה אדומה (6)",
+    "en": "Red Tuna Sashimi",
+    "price": "69",
+    "hero": "Y406",
+    "alts": [
+     "Y003",
+     "Y026",
+     "Y057",
+     "Y407",
+     "Y408",
+     "Y409"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "סשימי רויאל (10)",
+    "en": "Sashimi Royal",
+    "price": "98",
+    "hero": "Y397",
+    "alts": [
+     "Y395",
+     "Y396",
+     "Y398",
+     "Y399",
+     "Y400",
+     "Y401",
+     "Y402",
+     "Y143",
+     "Y144"
+    ],
+    "match": "exact",
+    "note": "Salmon, tuna and white fish on ice"
+   }
+  ]
+ },
+ {
+  "section": "ספיישל מטוגנים",
+  "en": "Fried specials",
+  "note": "",
+  "items": [
+   {
+    "he": "קריספי רייס טונה אדומה (4)",
+    "en": "Crispy Rice Red Tuna",
+    "price": "59",
+    "hero": "Y330",
+    "alts": [
+     "Y329",
+     "Y331",
+     "Y332"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "קריספי רייס סלמון (4)",
+    "en": "Crispy Rice Salmon",
+    "price": "52",
+    "hero": "Y328",
+    "alts": [
+     "Y327"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "קריספי רייס סלמון טטאקי (4)",
+    "en": "Crispy Rice Salmon Tataki",
+    "price": "55",
+    "hero": "Y327",
+    "alts": [],
+    "match": "close",
+    "note": "Stand-in: the salmon crispy rice"
+   },
+   {
+    "he": "פנקו רול",
+    "en": "Panko Roll",
+    "price": "64",
+    "hero": "Y358",
+    "alts": [
+     "Y359"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "פנקו רול ירקות",
+    "en": "Veggie Panko Roll",
+    "price": "55",
+    "hero": "Y359",
+    "alts": [],
+    "match": "close",
+    "note": "Stand-in: the salmon panko roll"
+   },
+   {
+    "he": "קריספי פיז'טה סלמון (2)",
+    "en": "Crispy Pizzetta Salmon",
+    "price": "59",
+    "hero": "Y097",
+    "alts": [
+     "Y096",
+     "Y098"
+    ],
+    "match": "close",
+    "note": "Crispy rice slab with salmon and ikura; not named in the shoot"
+   },
+   {
+    "he": "קריספי פיז'טה טונה אדומה כמהין",
+    "en": "Crispy Pizzetta Tuna Truffle",
+    "price": "69",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "קריספי פיז'טה טונה מיונז",
+    "en": "Crispy Pizzetta Tuna Mayo",
+    "price": "59",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "section": "מאקי",
+  "en": "Maki",
+  "note": "8 pieces",
+  "items": [
+   {
+    "he": "מאקי סלמון מלפפון",
+    "en": "Salmon Maki",
+    "price": "32",
+    "hero": "Y339",
+    "alts": [
+     "Y340"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "מאקי טונה אדומה מלפפון",
+    "en": "Red Tuna Maki",
+    "price": "39",
+    "hero": "Y342",
+    "alts": [],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "מאקי טונה מיונז מלפפון",
+    "en": "Tuna Mayo Maki",
+    "price": "32",
+    "hero": "Y341",
+    "alts": [],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "מאקי צמחוני",
+    "en": "Veggie Maki",
+    "price": "26",
+    "hero": "Y343",
+    "alts": [],
+    "match": "exact",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "section": "פנסי טמאקי",
+  "en": "Fancy temaki",
+  "note": "1 or 3 pieces. Nothing photographed",
+  "items": [
+   {
+    "he": "טמאקי סלמון",
+    "en": "Salmon Temaki",
+    "price": "26 / 59",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "טמאקי טונה אדומה",
+    "en": "Red Tuna Temaki",
+    "price": "29 / 69",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "טמאקי סורימי",
+    "en": "Surimi Temaki",
+    "price": "29 / 66",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "טמאקי קריספי שרימפס",
+    "en": "Crispy Shrimp Temaki",
+    "price": "29 / 66",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "טמאקי דג לבן טמפורה",
+    "en": "White Fish Temaki",
+    "price": "29 / 66",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "פנסי טמאקי (3)",
+    "en": "Fancy Temaki x3",
+    "price": "68",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "section": "טרטר יפני וצ'יראשי",
+  "en": "Japanese tartare and chirashi",
+  "note": "",
+  "items": [
+   {
+    "he": "סלמון טרטר",
+    "en": "Salmon Tartare",
+    "price": "78",
+    "hero": "Y379",
+    "alts": [
+     "Y378",
+     "Y380"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "טרטר טונה אדומה",
+    "en": "Red Tuna Tartare",
+    "price": "98",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "טרטר טונה מיונז",
+    "en": "Tuna Mayo Tartare",
+    "price": "72",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "רויאל צ'יראשי",
+    "en": "Royal Chirashi",
+    "price": "95",
+    "hero": "Y318",
+    "alts": [
+     "Y314",
+     "Y315",
+     "Y316",
+     "Y317",
+     "Y319",
+     "Y320"
+    ],
+    "match": "exact",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "section": "ניגירי",
+  "en": "Nigiri",
+  "note": "2 or 3 pieces",
+  "items": [
+   {
+    "he": "ניגירי סלמון",
+    "en": "Salmon Nigiri",
+    "price": "29 / 39",
+    "hero": "Y351",
+    "alts": [
+     "Y001",
+     "Y347",
+     "Y348",
+     "Y349",
+     "Y350"
+    ],
+    "match": "exact",
+    "note": "Y347-351: with a sauce pour"
+   },
+   {
+    "he": "ניגירי טונה אדומה",
+    "en": "Red Tuna Nigiri",
+    "price": "34 / 49",
+    "hero": "Y041",
+    "alts": [
+     "Y002",
+     "Y025",
+     "Y352"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "ניגירי טונה אדומה וכמהין",
+    "en": "Red Tuna Truffle Nigiri",
+    "price": "42 / 59",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "ניגירי סלמון צרוב",
+    "en": "Seared Salmon Nigiri",
+    "price": "31 / 41",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "ניגירי טונה אדומה צרובה",
+    "en": "Seared Red Tuna Nigiri",
+    "price": "36 / 51",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "ניגירי דניס צרוב",
+    "en": "Seared Sea Bream Nigiri",
+    "price": "34 / 46",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "section": "סלטים",
+  "en": "Salads",
+  "note": "",
+  "items": [
+   {
+    "he": "סלט גולדן נמס",
+    "en": "Golden Nems Salad",
+    "price": "58 / 64",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "סלט אסייתי עוף / שרימפס קריספי",
+    "en": "Asian Salad",
+    "price": "69 / 79",
+    "hero": "Y381",
+    "alts": [
+     "Y382",
+     "Y241",
+     "Y248",
+     "Y259",
+     "Y260",
+     "Y261"
+    ],
+    "match": "exact",
+    "note": "Y259-261: with crispy pieces, good for the shrimp version"
+   },
+   {
+    "he": "סלט סשימי בול",
+    "en": "Sashimi Bowl Salad",
+    "price": "79",
+    "hero": "Y385",
+    "alts": [
+     "Y384",
+     "Y386",
+     "Y387",
+     "Y388",
+     "Y389",
+     "Y390",
+     "Y391",
+     "Y102",
+     "Y103",
+     "Y104",
+     "Y403",
+     "Y404",
+     "Y405"
+    ],
+    "match": "exact",
+    "note": "Y403-405: black sesame pour"
+   },
+   {
+    "he": "סלט עוף קראנץ' מלפפונים",
+    "en": "Crunchy Chicken Cucumber Salad",
+    "price": "49",
+    "hero": "Y243",
+    "alts": [
+     "Y242",
+     "Y392"
+    ],
+    "match": "close",
+    "note": "Chicken and cucumber salad; the photo also has tomato"
+   }
+  ]
+ },
+ {
+  "section": "ווק פארטי",
+  "en": "Wok Party",
+  "note": "Spicy option +8",
+  "items": [
+   {
+    "he": "נודלס הבית: עוף / טמפורה / צמחוני",
+    "en": "House Wok Noodles",
+    "price": "69 / 72 / 59",
+    "hero": "Y010",
+    "alts": [
+     "Y011",
+     "Y033",
+     "Y050",
+     "Y355",
+     "Y356"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "נודלס חמוץ מתוק אננס וקשיו",
+    "en": "Sweet & Sour Noodles",
+    "price": "72 / 75 / 62",
+    "hero": "Y011",
+    "alts": [],
+    "match": "close",
+    "note": "Stand-in: the house noodles; no pineapple in the photo"
+   },
+   {
+    "he": "עוף קרמל בטמפורה",
+    "en": "Caramel Tempura Chicken",
+    "price": "72",
+    "hero": "Y005",
+    "alts": [
+     "Y006",
+     "Y028"
+    ],
+    "match": "close",
+    "note": "Shot as 'chicken lemon': glazed crispy chicken with rice"
+   },
+   {
+    "he": "עוף בטמפורה ג'נרל טאו",
+    "en": "General Tao Chicken",
+    "price": "72",
+    "hero": "Y016",
+    "alts": [
+     "Y031",
+     "Y048",
+     "Y061",
+     "Y072"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "עוף חמוץ מתוק אננס וקשיו",
+    "en": "Sweet & Sour Chicken",
+    "price": "75",
+    "hero": "Y031",
+    "alts": [],
+    "match": "close",
+    "note": "Stand-in: General Tao"
+   },
+   {
+    "he": "תוספת: אורז / אורז סושי / סלט תאילנדי",
+    "en": "Sides",
+    "price": "19",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "section": "קומבינציות",
+  "en": "Combinations",
+  "note": "Party trays: Y303-306, Y099; Drive folder 'יוקומגשים'; the 3D trays project",
+  "items": [
+   {
+    "he": "מיקס מבושלים (24)",
+    "en": "Cooked Mix",
+    "price": "125",
+    "hero": "Y303",
+    "alts": [
+     "Y304",
+     "Y305",
+     "Y306"
+    ],
+    "match": "close",
+    "note": "The party-tray photos are not one specific combination"
+   },
+   {
+    "he": "מיאמי (22)",
+    "en": "Miami",
+    "price": "135",
+    "hero": "Y303",
+    "alts": [
+     "Y304",
+     "Y305",
+     "Y306"
+    ],
+    "match": "close",
+    "note": "The party-tray photos are not one specific combination"
+   },
+   {
+    "he": "סופר קליפורניה (32)",
+    "en": "Super California",
+    "price": "170",
+    "hero": "Y303",
+    "alts": [
+     "Y304",
+     "Y305",
+     "Y306"
+    ],
+    "match": "close",
+    "note": "The party-tray photos are not one specific combination"
+   },
+   {
+    "he": "פול ניגירי סלמון (10)",
+    "en": "Full Salmon Nigiri",
+    "price": "129",
+    "hero": "Y303",
+    "alts": [
+     "Y304",
+     "Y305",
+     "Y306"
+    ],
+    "match": "close",
+    "note": "The party-tray photos are not one specific combination"
+   },
+   {
+    "he": "דלוקס (32)",
+    "en": "Deluxe",
+    "price": "219",
+    "hero": "Y303",
+    "alts": [
+     "Y304",
+     "Y305",
+     "Y306"
+    ],
+    "match": "close",
+    "note": "The party-tray photos are not one specific combination"
+   },
+   {
+    "he": "פלטת השף (28)",
+    "en": "Chef's Platter",
+    "price": "259",
+    "hero": "Y303",
+    "alts": [
+     "Y304",
+     "Y305",
+     "Y306"
+    ],
+    "match": "close",
+    "note": "The party-tray photos are not one specific combination"
+   }
+  ]
+ },
+ {
+  "section": "משקאות",
+  "en": "Drinks",
+  "note": "",
+  "items": [
+   {
+    "he": "קוקה קולה / זירו / ספרייט זירו / פנטה / פוזטי",
+    "en": "Soft drinks",
+    "price": "15",
+    "hero": "Y116",
+    "alts": [
+     "Y117",
+     "Y118",
+     "Y120",
+     "Y125"
+    ],
+    "match": "exact",
+    "note": "Bottles on a grey backdrop"
+   },
+   {
+    "he": "מיצי פריגת",
+    "en": "Prigat juices",
+    "price": "15",
+    "hero": "Y123",
+    "alts": [
+     "Y124",
+     "Y126"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "מים מינרליים קטן / גדול",
+    "en": "Mineral water",
+    "price": "15 / 24",
+    "hero": "Y122",
+    "alts": [
+     "Y128",
+     "Y135"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "סאן פלגרינו גדול",
+    "en": "San Pellegrino",
+    "price": "",
+    "hero": "Y129",
+    "alts": [
+     "Y121",
+     "Y134"
+    ],
+    "match": "exact",
+    "note": ""
+   },
+   {
+    "he": "סודה יפנית / סודה פרייה",
+    "en": "Sodas",
+    "price": "15",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "באבל תה פסיפלורה / דובדבן / צ'אי",
+    "en": "Bubble tea",
+    "price": "26 / 26 / 29",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   },
+   {
+    "he": "תה ושתייה חמה",
+    "en": "Tea and coffee",
+    "price": "11–28",
+    "hero": null,
+    "alts": [],
+    "match": "none",
+    "note": ""
+   }
+  ]
+ }
+]
