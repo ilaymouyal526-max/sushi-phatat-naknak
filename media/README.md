@@ -9,6 +9,13 @@ Browse it all in the gallery: https://claude.ai/artifact/ETVgwKNXjN3YCS5fpauvMe
 - Files ending in `.v5-old` are the earlier (v5, Nov 4) versions of dice-explainer props that were redrawn in v6.
 - Left out: Pixabay stock sound effects, fonts, and vendor code (not your own media).
 
+## Also on Google Drive
+
+The shared Yoko Ono restaurant folder isn't copied here. Open it on Drive:
+
+- [YOKO ONO](https://drive.google.com/drive/folders/1G1eDXuQpZ62a47NQ8YHMGDtQktJ-dtNH): social-media photos and videos, cocktail videos, wall-print and register PDFs
+- [images_yoko](https://drive.google.com/drive/folders/1D0jUwKnMMdP8N925Z4uWGMOwv2Cq5ULA): about 440 dish and ambiance photos
+
 | Folder | What | Files |
 |---|---|---|
 | [3d-trays/](3d-trays/) | 3D sushi-tray configurator: product renders, tile/filling textures, GLB meshes | 82 |
