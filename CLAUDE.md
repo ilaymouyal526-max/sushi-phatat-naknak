@@ -14,3 +14,6 @@ then wait for a clear "yes". This covers Higgsfield, Artlist, Adobe and Descript
 - If a tool has no price check (for example, `upscale_video`), don't call it just to find the price. Tell the user the price is unknown and ask first.
 - Approval covers only the specific job shown. Batches, retries, extra variants or a different model each need a new approval.
 - Free work doesn't need approval: local processing, sandbox ffmpeg edits, read-only lookups and price checks.
+
+## Naming: "מסך תצוגה" = the display screen
+"מסך תצוגה" (display screen) means the in-store portrait TV loop in `menu-screen/` (`index.html` plus `render.js`). It is **not** the commercial in `commercial/`. When the user asks about the display screen (design, fonts, motion, slides), work only in `menu-screen/`, `fonts/` and `shared/`, and never touch or re-style the commercial.
