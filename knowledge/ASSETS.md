@@ -21,12 +21,13 @@ Built 2026-11-12 by going through every item. Update this file whenever somethin
   - Prizes: a double 1 to 3 gives 50% off the whole bill; a double 4 to 6 makes the meal free.
   - Not covered: the tip. Winners are photographed for social media.
   - Small print: "בכפוף לתקנון" (subject to the rules).
-- **Known prices** (from `MENU_FINAL_HEBSP.pdf`, quoted in `menu-screen/index.html` on `ccr-53cee3cd-iiiipd`; the PDF itself is not in the repo or the Drive):
-  - Gyoza: chicken 55 ₪, beef 59 ₪.
-  - Caramel tempura chicken: 72 ₪.
-  - House wok noodles: chicken 69 ₪, tempura 72 ₪, veggie 59 ₪.
+- **The current menu:** `knowledge/menu/MENU.md`, from `MENU_FINAL_HEBSP.pdf` (2026-10-19, saved in `knowledge/menu/`).
+  - It has every dish and price, the Drive photo for each dish, the dishes that have no photo, and the photographed dishes that are no longer on the menu.
+  - The menu's own look is "סטריט סושי בר" (Street Sushi Bar): white, orange-red, line illustrations.
+  - It is fully kosher: זהבנון stands in for shrimp, and surimi for crab.
+  - It has no desserts, cocktails or alcohol.
 - **Unknowns to ask before using them anywhere:**
-  - prices and the real current menu text;
+  - whether there's a separate desserts, cocktails and alcohol menu;
   - opening hours and phone number;
   - the Instagram handle (the dice video still shows `@[instagram]`);
   - the website domain.

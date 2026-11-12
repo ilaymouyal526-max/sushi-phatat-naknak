@@ -53,11 +53,11 @@ A3: `<img class="bg" src="${P('Y348')}" style="object-position:50% 50%;height:13
    <div class="he" style="font-size:76px;margin-top:18px">הדג של היום</div>
    <div class="rule" style="margin:34px 80px"></div>
    <div style="display:flex;flex-direction:column;gap:22px;font-size:44px" dir="rtl">
-    <div style="display:flex;justify-content:space-between"><span class="he">סלמון נורווגי</span><span class="en gold">Salmon</span></div>
+    <div style="display:flex;justify-content:space-between"><span class="he">סלמון</span><span class="en gold">Salmon</span></div>
     <div style="display:flex;justify-content:space-between"><span class="he">טונה אדומה</span><span class="en gold">Red tuna</span></div>
-    <div style="display:flex;justify-content:space-between"><span class="he">דג לבן של היום</span><span class="en gold">White fish</span></div>
+    <div style="display:flex;justify-content:space-between"><span class="he">דניס</span><span class="en gold">Sea bream</span></div>
    </div>
-   <div style="font-size:26px;color:var(--mute);margin-top:44px" dir="rtl">מתעדכן כל בוקר, בלי לגעת בקוד</div></div>`,
+   <div style="font-size:26px;color:var(--mute);margin-top:44px" dir="rtl">סשימי רויאל · 10 יחידות · 98 ₪</div></div>`,
 // B: one hero dish
 B: `<img class="bg" src="${P('Y049')}" style="object-position:50% 40%;height:1420px">
   <div class="shade" style="background:linear-gradient(180deg,rgba(11,9,7,.35) 0,transparent 15%,transparent 60%,var(--noir) 74%)"></div>
@@ -70,17 +70,17 @@ B: `<img class="bg" src="${P('Y049')}" style="object-position:50% 40%;height:142
    <div class="he" style="font-size:34px;color:var(--mute);margin-top:22px;line-height:1.45">ארבעה כיסונים עדינים מטוגנים במילוי עוף או בקר, מוגש עם סלט תאילנדי</div>
    <div class="price" style="margin-top:30px">Chicken 55 <span class="sh">₪</span> · Beef 59 <span class="sh">₪</span></div></div>`,
 // C: menu board
-C: (()=>{const d=[['Y308','California Salmon','קליפורניה סלמון אבוקדו'],['Y309','Spicy Salmon','ספייסי סלמון בטטה'],['Y310','Spicy Tuna','ספייסי טונה'],['Y312','Tuna Mayo','טונה מיונז אבוקדו'],['Y313','Caviar Roll','רול קוויאר'],['Y324','Crazy Roll','קרייזי רול']];
+C: (()=>{const d=[['Y308','Salmon Avocado','סלמון אבוקדו','45'],['Y309','Spicy Salmon','ספייסי סלמון','45'],['Y311','Red Tuna Avocado','טונה אדומה אבוקדו','59'],['Y310','Spicy Tuna','ספייסי טונה','59'],['Y312','Tuna Mayo','טונה מיונז','42'],['Y250','Veggie','ירקות','35']];
   return `<div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0,#2a2118,var(--noir) 60%)"></div>
   ${L(470,64,140)}
-  <div style="position:absolute;left:0;right:0;top:300px;text-align:center"><div class="kicker">Sushi · Rolls</div>
-   <div class="he" style="font-size:72px;margin-top:10px">רולים</div><div class="rule" style="margin:26px 300px 0"></div></div>
+  <div style="position:absolute;left:0;right:0;top:300px;text-align:center"><div class="kicker">Classic Rolls</div>
+   <div class="he" style="font-size:72px;margin-top:10px">רולים קלאסיים</div><div class="rule" style="margin:26px 300px 0"></div></div>
   <div style="position:absolute;left:60px;right:60px;top:470px;display:grid;grid-template-columns:1fr 1fr;gap:34px 30px">
-   ${d.map(([c,e,h])=>`<div><div style="height:300px;overflow:hidden;border:1px solid rgba(201,163,107,.4)"><img src="${P(c)}" style="width:100%;height:100%;object-fit:cover;transform:scale(1.25)"></div>
-     <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:16px"><span class="en" style="font-size:40px">${e}</span><span class="en gold" style="font-size:38px">·· <span class="sh">₪</span></span></div>
+   ${d.map(([c,e,h,pr])=>`<div><div style="height:300px;overflow:hidden;border:1px solid rgba(201,163,107,.4)"><img src="${P(c)}" style="width:100%;height:100%;object-fit:cover;transform:scale(1.25)"></div>
+     <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:16px"><span class="en" style="font-size:40px">${e}</span><span class="en gold" style="font-size:40px">${pr} <span class="sh">₪</span></span></div>
      <div class="he" style="font-size:28px;color:var(--mute);margin-top:4px">${h}</div></div>`).join('')}
   </div>
-  <div style="position:absolute;bottom:44px;left:0;right:0;text-align:center;font-size:26px;color:var(--mute)" dir="rtl">כל הרולים · 8 יחידות</div>`})(),
+  <div style="position:absolute;bottom:44px;left:0;right:0;text-align:center;font-size:26px;color:var(--mute)" dir="rtl">8 יחידות · גרסת פוש פופ ‎+12 ₪ · דף סויה ‎+7 ₪</div>`})(),
 // D: happy hour
 D: `<img class="bg" src="${P('Y212')}" style="object-position:50% 50%;height:1250px">
   <div class="shade" style="background:linear-gradient(180deg,rgba(11,9,7,.5) 0,transparent 20%,transparent 50%,var(--noir) 64%)"></div>
@@ -100,7 +100,7 @@ E: `<div style="position:absolute;inset:0;display:grid;grid-template-rows:760px 
    <div style="overflow:hidden;position:relative"><img src="${P('Y370')}" style="width:100%;height:100%;object-fit:cover;object-position:50% 45%"></div>
    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div style="overflow:hidden"><img src="${P('Y212')}" style="width:100%;height:100%;object-fit:cover"></div><div style="overflow:hidden"><img src="${P('Y421')}" style="width:100%;height:100%;object-fit:cover"></div></div>
    <div style="overflow:hidden;position:relative"><img src="${P('Y276')}" style="width:100%;height:100%;object-fit:cover;object-position:50% 60%"><div class="shade" style="background:linear-gradient(180deg,transparent 30%,rgba(11,9,7,.85))"></div>
-    <div style="position:absolute;bottom:60px;left:0;right:0;text-align:center"><div class="en" style="font-size:72px">Sushi · Wok · Cocktails</div><div class="he gold" style="font-size:44px;margin-top:8px">אחוזה 124, רעננה</div></div></div>
+    <div style="position:absolute;bottom:60px;left:0;right:0;text-align:center"><div class="en" style="font-size:72px">Street Sushi Bar</div><div class="he gold" style="font-size:44px;margin-top:8px">אחוזה 124, רעננה</div></div></div>
   </div>`,
 // F: QR and social
 F: `<img class="bg" src="${P('Y273')}" style="filter:brightness(.35) saturate(.9)">

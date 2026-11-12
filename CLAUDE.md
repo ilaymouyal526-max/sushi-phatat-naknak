@@ -35,4 +35,5 @@ Be the one who knows the whole picture. When the user asks for something:
   - `--find <word>` searches the titles;
   - `knowledge/drive-sheets/*.jpg` are labelled contact sheets to look at before picking a photo.
 - **Best references for Higgsfield:** the professional shoot (codes Y001 to Y426, Google Drive folder `images_yoko`).
+- **The current menu, with prices and the photo for each dish:** `knowledge/menu/MENU.md`.
 - **Keep it current:** when you make, find or get approval for something, update `knowledge/ASSETS.md` in the same commit.
