@@ -2,7 +2,18 @@
 
 The loop opens on the logo, then shows party trays and dishes in turn. Text is mainly in English, with Hebrew underneath. Each slide stays about 6–7 seconds, so a full loop takes about 48 seconds.
 
-## Style: "Sumi" (minimal Japanese, black and gold)
+## Three styles, one design system
+Set `style` in `CONFIG`, or add `?style=cinema` to the address in Chrome.
+
+| Style | Look |
+|---|---|
+| `framed` (default) | The photo sits in a gold hairline frame, with the full text: titles, descriptions and prices. |
+| `cinema` | A full-bleed film frame in the style of the Red Dragon ad's supers. The photo fills the screen and fades into black. It has a slow dolly-in (wide photos pan sideways, `pan: true`), a warm light leak drifting across, film grain and a vignette. Text is minimal: a widely tracked title, the Hebrew name and prices, with no descriptions. |
+| `mix` | Alternates `framed` and `cinema` from slide to slide. |
+
+All three share the "Sumi" system below.
+
+## "Sumi" design system (minimal Japanese, black and gold)
 - **Three font families, five sizes, nothing else:**
   - Montserrat Light/Regular for English.
   - Heebo Light for Hebrew text, with Frank Ruhl for the Hebrew dish name.
@@ -30,7 +41,7 @@ The loop opens on the logo, then shows party trays and dishes in turn. Text is m
 The dice-game slides are still in the code. Set `showGame: true` in `CONFIG` to bring them back.
 
 ## Two ways to run it on the screen
-- **USB / smart TV:** play `out/yoko-ono-screen-loop.mp4` on repeat (H.264, 1080×1920, 30fps).
+- **USB / smart TV:** play one of `out/yoko-ono-screen-framed.mp4`, `-cinema.mp4` or `-mix.mp4` on repeat (H.264, 1080×1920, 30fps).
 - **Computer connected to the screen:** copy the whole repository folder, open `menu-screen/index.html` in Chrome, and press **F** for fullscreen. The page keeps the screen awake and reloads itself every 6 hours. The right arrow key or space skips to the next slide.
 
 ## Changing slides, text or prices
@@ -44,16 +55,19 @@ Everything is in the `CONFIG` block at the bottom of `index.html`. `slides` is t
   - `options`: side-by-side boxes, used for the L/XL trays
 - `kicker` (optional): a small gold line above the title. Without it, the slide is numbered N° 01, N° 02, …
 - `seconds` (optional): how long the slide stays on screen
+- `pan: true` (optional, cinema): pans across a wide photo instead of the dolly-in
 
 To add a slide, put its photo in `images/` and add an entry. Then re-render the video:
 
 ```
-node render.js out/yoko-ono-screen-loop.mp4 30
+node render.js out/yoko-ono-screen-framed.mp4 30 framed
+node render.js out/yoko-ono-screen-cinema.mp4 30 cinema
+node render.js out/yoko-ono-screen-mix.mp4 30 mix
 ```
 
 ## Photos (all already made, no new credits used)
 - `*-marble.jpg`: Higgsfield (GPT Image 2.5) from the kitchen photos, on a black marble tray.
 - `party-tray.jpg`, `party-tray-2.jpg`: Higgsfield (Nano Banana 2), the round party platter from the real Yoko tray photos.
-- `promo-tray.jpg`: a still from the 3D tray model (square promo tray).
+- `promo-tray.jpg`: a real square tray from the professional photo shoot (Drive `Y304`, file `A7402524.jpg`), not the 3D model.
 - `push-pop.jpg`: Higgsfield product shot of the push pop with the new label, in the restaurant.
-- `red-dragon-tataki.jpg`: crop of the Red Dragon Tataki hero image from the commercial.
+- `red-dragon-tataki.jpg`: the finished row of Red Dragon Tataki on the board, a 9:16 film frame made for the ad (Higgsfield GPT Image 2.5, `…5cd9f208058d`).

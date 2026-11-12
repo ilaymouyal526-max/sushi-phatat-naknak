@@ -1,6 +1,6 @@
 // Renders one full loop of the dish screen to an MP4 (1080x1920, H.264) for TVs that play video from USB.
 // Steps every CSS animation frame by frame, so the video matches the live page exactly.
-// Usage: node render.js [out.mp4] [fps]
+// Usage: node render.js [out.mp4] [fps] [style]   (style: framed, cinema or mix; default from CONFIG)
 const path = require("path");
 const { spawn } = require("child_process");
 const { chromium } = require("playwright");
@@ -14,7 +14,8 @@ const FPS = Number(process.argv[3] || 30);
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
   const errors = [];
   page.on("pageerror", e => errors.push(e.message));
-  await page.goto("file://" + path.join(__dirname, "index.html") + "?render=1");
+  const STYLE = process.argv[4];   // optional: framed, cinema or mix
+  await page.goto("file://" + path.join(__dirname, "index.html") + "?render=1" + (STYLE ? "&style=" + STYLE : ""));
   await page.evaluate(() => document.fonts.ready);
   await page.evaluate(() => Promise.all([...document.images, ...[...document.querySelectorAll(".ph,.photo")]
     .map(e => { const i = new Image(); i.src = getComputedStyle(e).backgroundImage.slice(5, -2); return i; })]

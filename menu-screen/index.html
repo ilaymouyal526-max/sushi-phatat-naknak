@@ -147,6 +147,36 @@ h1{margin:22px -30px 0;font-weight:300;font-size:var(--l);line-height:1.12;lette
 .prize.free{background:linear-gradient(160deg,#d9b67c 0%,var(--gold) 55%,#b48c55 100%);border-color:var(--gold-light);color:var(--ink)}
 .prize.free .label,.prize.free .big{color:var(--ink)}
 .game .when{margin-top:36px;display:grid;gap:8px;text-align:center;font-size:var(--s);color:var(--ivory-dim);--d:1.2s}
+
+/* ================= Style B: "Cinema" (full-bleed film frame, like the ad's supers) ================= */
+.cine{padding:0}
+.cine .shot{position:absolute;left:0;top:0;width:1080px;height:1500px;--d:.05s}
+.cine .shot .edge{position:absolute;inset:0;overflow:hidden;
+  -webkit-mask-image:linear-gradient(#000 60%,transparent 100%);mask-image:linear-gradient(#000 60%,transparent 100%)}
+.cine .ph{position:absolute;inset:0;background-size:cover;background-position:center;animation:dolly var(--dur) cubic-bezier(.25,.6,.3,1) forwards}
+.cine .ph.pan{animation-name:pan}
+@keyframes dolly{from{transform:scale(1.12)}to{transform:scale(1.02) translateY(-1%)}}
+@keyframes pan{from{transform:scale(1.06);background-position:12% 50%}to{transform:scale(1.02);background-position:88% 50%}}
+.cine .edge::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 240px rgba(0,0,0,.6)}
+.cine .leak{position:absolute;inset:-25%;mix-blend-mode:screen;opacity:0;
+  background:radial-gradient(circle at 30% 35%,rgba(255,138,60,.42),transparent 42%)}
+.cine.on .leak{animation:leak var(--dur) ease-in-out forwards}
+@keyframes leak{0%{opacity:0;transform:translate(-12%,-6%)}30%{opacity:1}100%{opacity:.35;transform:translate(14%,10%)}}
+.cine .top{position:absolute;left:0;right:0;top:0;height:400px;background:linear-gradient(rgba(10,8,6,.92) 15%,transparent)}
+.cine .logo-sm{position:absolute;top:66px;left:465px}
+.grain{position:absolute;inset:-50%;pointer-events:none;opacity:.13;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.cine.on .grain{animation:grain .6s steps(5) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}}
+.cine .jp-col{left:74px;top:auto;bottom:440px}
+.cine .jp{text-shadow:0 2px 22px rgba(0,0,0,.75)}
+.cine .kana{text-shadow:0 1px 10px rgba(0,0,0,.8)}
+.cine .cap{position:absolute;left:0;right:0;bottom:150px;display:flex;flex-direction:column;align-items:center;padding:0 170px}
+.cine .num{margin-top:0}
+.cine h1{margin:20px -40px 0;font-size:var(--m);letter-spacing:.42em;line-height:1.55}
+.cine .he-name{margin-top:10px}
+.cine .prices,.cine .note{margin-top:30px}
+.t .w:last-child .c:last-child{letter-spacing:0}
 </style>
 </head>
 <body>
@@ -173,6 +203,8 @@ const CONFIG = {
   dishSeconds: 6,          // default time on screen for each slide in `slides`
   gameSeconds: 9,
   brandSeconds: 4,
+  style: "framed",         // "framed" (photo in a gold frame + full text), "cinema" (full-bleed film frame, minimal text),
+                           // or "mix" (alternates). Override with ?style=cinema in the address bar.
   showGame: false,         // dice-game slide and strip (off: the screen shows food only)
   gameEvery: 2,            // when showGame is on: dice-game slide after every N slides
   // The loop, in order. Each entry: photo, kicker (small gold line on top; default "N° 01"),
@@ -195,8 +227,8 @@ const CONFIG = {
     { photo: "images/promo-tray.jpg", seconds: 7,
       kicker: "Party trays · מגשי מסיבה",
       name: "Promo Tray", jp: "盛合", kana: "もりあわせ", he: "מגש פרומו",
-      en: "Six kinds of rolls around a veggie maki centre, with ginger and wasabi",
-      heDesc: "שישה סוגי רולים סביב מאקי ירקות במרכז, עם ג'ינג'ר ווסאבי",
+      en: "Six kinds of signature rolls around the centre, with ginger and wasabi", pan: true,
+      heDesc: "שישה סוגי רולים של הבית סביב המרכז, עם ג'ינג'ר ווסאבי",
       options: [ { label: "L", big: "199 ₪", en: "56 pieces", he: "56 יחידות" },
                  { label: "XL", big: "299 ₪", en: "80 pieces", he: "80 יחידות" } ] },
     { photo: "images/red-dragon-tataki.jpg",
@@ -255,12 +287,36 @@ function brand(){
     </div>`, 'brand', CONFIG.brandSeconds);
 }
 let dishNo = 0;   // dishes are numbered in order; slides with a kicker are skipped
+const STYLE = new URLSearchParams(location.search).get('style') || CONFIG.style;
+const jpCol = d => d.jp ? `<div class="jp-col"><div class="ink wipe"><span class="jp">${esc(d.jp)}</span>${d.kana ? `<span class="kana">${esc(d.kana)}</span>` : ''}</div><span class="hanko">運</span></div>` : '';
+const kicker = d => `<div class="num"><i class="rule l"></i><span class="fade" style="--d:.45s">${d.kicker ? kick(d.kicker) : `N° ${String(++dishNo).padStart(2, '0')}`}</span><i class="rule r"></i></div>`;
 function dish(d, i){
+  const st = STYLE === 'mix' ? (i % 2 ? 'cinema' : 'framed') : STYLE;
+  return st === 'cinema' ? cinema(d, i) : framed(d, i);
+}
+// Style B: full-bleed photo with a film finish (dolly-in, warm light leak, grain, vignette) and minimal supers
+function cinema(d, i){
+  // L/XL boxes become label-over-number pairs: "L 56 pieces" over "199 ₪"
+  const price = d.options ? prices(d.options.map(o => `${o.label} ${o.en} ${o.big}`).join(' · ')) : (d.price ? prices(d.price) : '');
+  const n = add(`<div class="shot wipe"><div class="edge"><div class="ph${d.pan ? ' pan' : ''}" style="background-image:url('${encodeURI(d.photo)}')"></div><div class="leak"></div></div></div>
+    <div class="top"></div><div class="logo-sm">${Logo.svg()}</div>
+    ${jpCol(d)}
+    <div class="cap">
+      ${kicker(d)}
+      <h1 class="t">${letters(d.name)}</h1>
+      <div class="he-name fade" lang="he">${esc(d.he)}</div>
+      ${price}
+    </div>
+    <div class="grain"></div>`, 'cine', d.seconds || CONFIG.dishSeconds);
+  n.style.setProperty('--dur', ((d.seconds || CONFIG.dishSeconds) + 2) + 's');
+}
+// Style A: photo in a gold hairline frame, full text
+function framed(d, i){
   const n = add(`<div class="logo-sm">${Logo.svg()}</div>
     <div class="visual wipe"><div class="ph" style="background-image:url('${encodeURI(d.photo)}')"></div></div>
     <div class="info">
-      ${d.jp ? `<div class="jp-col"><div class="ink wipe"><span class="jp">${esc(d.jp)}</span>${d.kana ? `<span class="kana">${esc(d.kana)}</span>` : ''}</div><span class="hanko">運</span></div>` : ''}
-      <div class="num"><i class="rule l"></i><span class="fade" style="--d:.45s">${d.kicker ? kick(d.kicker) : `N° ${String(++dishNo).padStart(2, '0')}`}</span><i class="rule r"></i></div>
+      ${jpCol(d)}
+      ${kicker(d)}
       <h1 class="t">${letters(d.name)}</h1>
       <div class="he-name fade" lang="he">${esc(d.he)}</div>
       <div class="desc fade"><span class="en">${esc(d.en)}</span><span class="he" lang="he">${esc(d.heDesc)}</span></div>
