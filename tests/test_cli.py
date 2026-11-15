@@ -49,11 +49,18 @@ class EndToEnd(unittest.TestCase):
             for machine in ("status", "notes", "outreach_he", "signals", "lead_id"):
                 self.assertIn(machine, header)
             self.assertTrue(str(ws.cell(row=2, column=3).value).startswith("Hot"))
+            for h in ("מתי להתקשר / best time to call", "שעות עומס / rush hours", "תסריט שיחה / call script"):
+                self.assertIn(h, header)
+            self.assertIn("התנגדויות · Objections", ws.parent.sheetnames)
 
             # Lead cards page: call + WhatsApp (mobile) with the opener prefilled.
             with open(result["files"]["html"], encoding="utf-8") as f:
                 page = f.read()
             self.assertIn("מספרת דנה", page)
+            self.assertIn("data-lead=", page)
+            self.assertIn("טוב עכשיו", page)
+            self.assertIn("תשובות להתנגדויות", page)
+            self.assertIn("ייצוא יומן שיחות", page)
 
             # A second find skips leads already delivered.
             out = StringIO()

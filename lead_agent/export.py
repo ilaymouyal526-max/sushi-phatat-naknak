@@ -8,6 +8,7 @@ import re
 from pathlib import Path
 from urllib.parse import quote_plus
 
+from . import call_times, calls, scripts_he
 from .cards import render_cards
 
 SEEN = "seen.csv"
@@ -21,8 +22,16 @@ COLUMNS = [
     ("phone", "phone / טלפון", 15),
     ("rating", "rating / דירוג", 13),
     ("sell", "what to sell / מה למכור", 20),
+    ("call_best", "מתי להתקשר / best time to call", 30),
+    ("call_avoid", "שעות עומס / rush hours", 30),
+    ("opening_he", "שעות פתיחה / opening hours", 24),
+    ("call_tip", "טיפ / tip", 30),
+    ("attempts", "ניסיונות / attempts", 10),
+    ("next_try", "ניסיון הבא / next try", 22),
     ("why_he", "why / למה", 40),
     ("outreach_he", "outreach_he", 55),
+    ("call_script_he", "תסריט שיחה / call script", 55),
+    ("missed_he", "וואטסאפ אחרי שיחה שלא נענתה / missed-you WhatsApp", 45),
     ("website", "website", 26),
     ("facebook", "facebook", 22),
     ("instagram", "instagram", 22),
@@ -122,8 +131,13 @@ def write_all(leads: list[dict], base: Path, meta: dict, fresh: dict[str, set] |
     paths = {"json": base.with_suffix(".json"), "csv": base.with_suffix(".csv"), "xlsx": base.with_suffix(".xlsx"),
              "html": base.with_suffix(".html")}
     carry_over_edits(leads, paths["xlsx"], fresh)
+    log = calls.load()
+    stats = calls.personal_stats(log)
     for lead in leads:
+        call_times.annotate(lead, stats)
+        scripts_he.fill(lead)
         add_links(lead)
+    calls.apply_to_leads(leads, log)
     paths["json"].write_text(json.dumps({"meta": meta, "leads": leads}, ensure_ascii=False, indent=1),
                              encoding="utf-8")
     with paths["csv"].open("w", encoding="utf-8-sig", newline="") as f:
@@ -137,7 +151,8 @@ def write_all(leads: list[dict], base: Path, meta: dict, fresh: dict[str, set] |
     return paths
 
 
-WRAP = {"name", "sell", "why_he", "outreach_he", "address", "notes", "why"}
+WRAP = {"name", "sell", "why_he", "outreach_he", "address", "notes", "why", "call_best", "call_avoid", "call_tip",
+        "next_try", "call_script_he", "missed_he", "opening_he"}
 
 
 def write_xlsx(leads: list[dict], path: Path) -> None:
@@ -172,7 +187,7 @@ def write_xlsx(leads: list[dict], path: Path) -> None:
                 cell.font = Font(bold=True)
             elif key == "name":
                 cell.font = Font(bold=True)
-        ws.row_dimensions[r].height = 90 if vals["outreach_he"] else 48
+        ws.row_dimensions[r].height = 120
     ws.row_dimensions[1].height = 30
     for c, (_, _, width) in enumerate(COLUMNS, start=1):
         ws.column_dimensions[get_column_letter(c)].width = width
@@ -185,6 +200,19 @@ def write_xlsx(leads: list[dict], path: Path) -> None:
     ws.add_data_validation(dv)
     dv.add(f"{status_col}2:{status_col}{max(len(leads) + 1, 2)}")
 
+    obj = wb.create_sheet("התנגדויות · Objections")
+    obj.append(["כשאומרים… / objection", "מה לענות / answer"])
+    for cell in obj[1]:
+        cell.font = Font(bold=True, color="FFFFFF")
+        cell.fill = PatternFill("solid", fgColor="1F2937")
+    for q, a in scripts_he.objections_for({"lead_type": "WEBSITE", "signals": [], "category": ""}):
+        obj.append([q, a])
+    for row in obj.iter_rows(min_row=2):
+        for cell in row:
+            cell.alignment = Alignment(wrap_text=True, vertical="top")
+    obj.column_dimensions["A"].width = 34
+    obj.column_dimensions["B"].width = 90
+
     info = wb.create_sheet("How to use")
     for line in [
         "On a phone? Open the .html file from the same run instead: one card per lead with call/WhatsApp buttons.",
@@ -193,6 +221,8 @@ def write_xlsx(leads: list[dict], path: Path) -> None:
         "1. Contact Hot leads first, one at a time (call or one-to-one WhatsApp). Never bulk-send.",
         "2. Fill the status column: contacted / replied / meeting / won / lost / no_reply / not_interested.",
         "3. Run:  python -m lead_agent learn <this file>   (or /find-leads learn <file>) to recalibrate.",
+        "When to call: 'מתי להתקשר' = best windows for this type of business, 'שעות עומס' = rush hours to avoid.",
+        "Daily plan: /find-leads plan  -> plan-<date>.html + .ics (calendar). Log calls: /find-leads log <file>.",
         "Israeli spam law (Communications Law s.30A): send a single, personal opener asking if they're interested;",
         "stop immediately if they say no. Not legal advice.",
     ]:
