@@ -84,4 +84,4 @@ node render.js out/yoko-ono-screen-mix-washi.mp4 30 mix washi   # 4th argument: 
 - `party-tray.jpg`, `party-tray-2.jpg`: Higgsfield (Nano Banana 2), the round party platter from the real Yoko tray photos.
 - `promo-tray.jpg`: a real square tray from the professional photo shoot (Drive `Y304`, file `A7402524.jpg`), not the 3D model.
 - `push-pop.jpg`: Higgsfield product shot of the push pop with the new label, in the restaurant.
-- `red-dragon-tataki.jpg`: the finished row of Red Dragon Tataki on the board, a 9:16 film frame made for the ad (Higgsfield GPT Image 2.5, `…5cd9f208058d`).
+- `red-dragon-tataki.jpg`: the real Red Dragon Tataki, restaged as a studio photo. It was generated with Higgsfield (GPT Image 2.6, 2.75 credits, approved) from two real kitchen photos of the dish, keeping the real plate, bamboo leaf and small seared tuna cubes. Job `0991c42d…`.
