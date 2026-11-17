@@ -7,8 +7,8 @@ Set `style` in `CONFIG`, or add `?style=cinema` to the address in Chrome.
 
 | Style | Look |
 |---|---|
-| `framed` (default) | The photo sits in a gold hairline frame, with the full text: titles, descriptions and prices. |
-| `cinema` | A full-bleed film frame in the style of the Red Dragon ad's supers. The photo fills the screen and fades into black. It has a slow dolly-in (wide photos pan sideways, `pan: true`), a warm light leak drifting across, film grain and a vignette. Text is minimal: a widely tracked title, the Hebrew name and prices, with no descriptions. |
+| `framed` | The photo sits in a gold hairline frame, with the full text: titles, descriptions and prices. |
+| `cinema` (default since 2026-11-17, the user's pick: every slide fades in full-screen) | A full-bleed film frame in the style of the Red Dragon ad's supers. The photo fills the screen and fades into black. It has a slow dolly-in (wide photos pan sideways, `pan: true`), a warm light leak drifting across, film grain and a vignette. Text is minimal: a widely tracked title, the Hebrew name and prices, with no descriptions. |
 | `mix` | Alternates `framed` and `cinema` from slide to slide. |
 
 All three share the "Sumi" system below.
