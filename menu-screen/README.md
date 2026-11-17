@@ -1,6 +1,6 @@
 # Yoko Ono: display screen (portrait TV, 1080×1920)
 
-The loop opens on the logo, then shows party trays and dishes in turn. Text is mainly in English, with Hebrew underneath. Each slide stays about 6–7 seconds, so a full loop takes about 48 seconds.
+The loop opens on the logo, then shows party trays and dishes in turn. Text is mainly in English, with Hebrew underneath. Each slide stays about 6–7 seconds, so a full loop takes about 55 seconds.
 
 ## Three styles, one design system
 Set `style` in `CONFIG`, or add `?style=cinema` to the address in Chrome.
@@ -49,7 +49,8 @@ Every colour is a token in `:root`, and each theme overrides those tokens in one
 | 4 | Red Dragon Tataki | (no price yet) |
 | 5 | Caramel tempura chicken | 72 ₪ |
 | 6 | Sushi Push Pop ("New") | (no price yet) |
-| 7 | House wok noodles | Chicken 69 · Tempura 72 · Veggie 59 ₪ |
+| 7 | Push Pop in 4 steps ("How to enjoy") | (no price) |
+| 8 | House wok noodles | Chicken 69 · Tempura 72 · Veggie 59 ₪ |
 
 The dice-game slides are still in the code. Set `showGame: true` in `CONFIG` to bring them back.
 
@@ -83,5 +84,6 @@ node render.js out/yoko-ono-screen-mix-washi.mp4 30 mix washi   # 4th argument: 
 - `*-marble.jpg`: Higgsfield (GPT Image 2.5) from the kitchen photos, on a black marble tray.
 - `party-tray.jpg`, `party-tray-2.jpg`: Higgsfield (Nano Banana 2), the round party platter from the real Yoko tray photos.
 - `promo-tray.jpg`: a real square tray from the professional photo shoot (Drive `Y304`, file `A7402524.jpg`), not the 3D model.
-- `push-pop.jpg`: Higgsfield product shot of the push pop with the new label, in the restaurant.
+- `push-pop-v2.jpg` and `push-pop-howto.jpg` (in the loop since 2026-11-17): the user's Higgsfield images of the final tube, made from the real product photo. They show the front label and the "How to enjoy" side, on the restaurant counter. The Higgsfield files were `hf_20261116_145554_76d…` and `hf_20261116_145553_7c9…`. The connector didn't return those originals, so these were cropped from the user's full-resolution phone screenshots. The browser's dimming and scroll bar were removed locally, with no credits used.
+- `push-pop.jpg`: the previous version, a Higgsfield product shot of the push pop with the new label, in the restaurant. It's no longer in the loop.
 - `red-dragon-tataki.jpg`: the real Red Dragon Tataki, restaged as a studio photo. It was generated with Higgsfield (GPT Image 2.6, 2.75 credits, approved) from two real kitchen photos of the dish, keeping the real plate, bamboo leaf and small seared tuna cubes. Job `0991c42d…`.
