@@ -1,5 +1,16 @@
 # CLAUDE.md
 
+## Image library rule (always applies)
+
+**Don't ask the user to upload photos or the logo before checking the library.**
+Every known image (Drive, the shared YOKO ONO folder, Higgsfield uploads) is indexed in
+`library/catalog.csv` (Hebrew description, Drive file ID, proposed name, duplicates), with an overview in
+`library/CATALOG.md` and contact sheets in `library/previews/`.
+- Find the asset there first, then fetch it by ID (`download_file_content`); HEIC → `library/tools/heic2jpg.py`.
+- Logo: `library/brand/yoko-ono-logo_gold-on-black.png` (low-res working copy). Ask only for a vector original.
+- Ask the user for an image only if the catalog truly has nothing that fits, and say what you searched.
+- When new images are added or generated, add them to `catalog.csv` using the naming convention in CATALOG.md.
+
 ## Spending rule (always applies)
 
 **Never spend tokens, credits or money anywhere without explicit permission first.**
