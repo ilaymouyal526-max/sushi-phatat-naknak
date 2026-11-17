@@ -6,8 +6,14 @@
 Every known image (Drive, the shared YOKO ONO folder, Higgsfield uploads) is indexed in
 `library/catalog.csv` (Hebrew description, Drive file ID, proposed name, duplicates), with an overview in
 `library/CATALOG.md` and contact sheets in `library/previews/`.
-- The same rules ship as a claude.ai skill: `library/skill/yoko-image-library.zip` (SKILL.md + catalog + logo).
-  When `catalog.csv` changes, refresh the copy in `library/skill/yoko-image-library/` and re-zip.
+- **Skill `yoko-image-library` is installed in this repo** at `.claude/skills/yoko-image-library/`
+  (SKILL.md + catalog.csv + logo + heic2jpg.py), so it loads in every Claude Code session here.
+  Invoke it whenever a task needs any Yoko Ono image, photo, logo or brand asset.
+- The same skill as a zip for claude.ai (Settings → Capabilities → Skills → Upload): `library/skill/yoko-image-library.zip`.
+- When `catalog.csv` changes, copy it to `.claude/skills/yoko-image-library/` and `library/skill/yoko-image-library/`,
+  then re-zip, so all three stay identical.
+- Drive storage is full (Nov 2026): uploads to Drive fail. The user clears space themselves. **Never delete or trash
+  anything in their Drive.**
 - Find the asset there first, then fetch it by ID (`download_file_content`); HEIC → `library/tools/heic2jpg.py`.
 - Logo: `library/brand/yoko-ono-logo_gold-on-black.png` (low-res working copy). Ask only for a vector original.
 - Ask the user for an image only if the catalog truly has nothing that fits, and say what you searched.
