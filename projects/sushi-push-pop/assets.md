@@ -1,8 +1,7 @@
 # Assets: Sushi Push Pop / "Anywhere"
 
-One line per file we receive or generate. Paid jobs need approval first (see `CLAUDE.md`).
+Brand inputs (logo, product, how-to, brand kid) are in **`brand/yoko-ono/README.md`**, with Higgsfield media IDs. Don't ask the user for them.
+One line per file we generate. Paid jobs need approval first (see `CLAUDE.md`).
 
 | Date | Asset | Tool / model | Job / media ID | URL | Cost | Prompt file | Status |
 |---|---|---|---|---|---|---|---|
-| | Product photos (real push pop, all angles) | Client | | | 0 | | **needed** |
-| | Logo (PNG/SVG) | Client | | | 0 | | **needed** |

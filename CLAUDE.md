@@ -17,7 +17,9 @@ then wait for a clear "yes". This covers Higgsfield, Artlist, Adobe and Descript
 
 ## Organization rule (always applies)
 
-- Start every session by reading `README.md` (the project index).
+- Start every session by reading `README.md` (the project index and brand shortcuts).
+- **Brand names map to brand kits.** "Sushi Push Pop" / "סושי פוש פופ" / "Yoko Ono" → `brand/yoko-ono/` (logo, product photos, how-to, brand kid, with Higgsfield media IDs). NEVER ask the user for a logo or product photo that's already there. For a new brand, create `brand/<name>/` the first time its assets appear, and add it to the shortcut table in `README.md`.
+- Before asking for any image, check `brand/higgsfield-library.md` and run `show_medias` (it's free).
 - Work for a project goes in `projects/<name>/`: `brief.md`, `treatment.md`, `assets.md`, `prompts/`, `scripts/`.
 - **Log every asset** received or generated in that project's `assets.md` as soon as it exists: tool/model, job or media ID, URL, cost, prompt file, status. Prompts that were actually run get saved in `prompts/`.
 - Before asking the user to re-send or re-find anything, search `assets.md` and `grep -ri` the repo first.
