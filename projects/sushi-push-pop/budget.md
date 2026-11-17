@@ -35,3 +35,32 @@ All video prices are for a 5s clip with no AI audio, since sound is designed in 
 - "Takes" is an average. Some shots land on the first try, the product macros usually need more.
 - Not included: AI music or SFX (price not checked yet) and upscaling (no price check exists, so ask first).
 - Style (animated vs photoreal) doesn't change the price. Only the model and resolution do.
+
+## Update 2026-11-17: shortest-possible clips (we only use 1.5–2s of each)
+Video is billed per second. Each model has a **minimum length**, so a 1.5–2s clip can't be ordered (only Grok goes down to 2s).
+
+| Model | Min length | Price at min (checked) | Per second | 2s if it were possible |
+|---|---|---|---|---|
+| Grok Video 1.5 720p | **2s** | 9 | 4.5 | 9 (real) |
+| Kling 3.0 std | 3s | 4.5 | 1.5 | 3 |
+| Kling 3.0 pro | 3s | 5.25 | 1.75 | 3.5 |
+| Kling 3.0 4K | 3s | 18 | 6 | 12 |
+| Kling 4.0 1080p | 3s | 9.75 | 3.25 | 6.5 |
+| Seedance 2.0 fast 720p | 4s | 10 | 2.5 | 5 |
+| Seedance 2.0 std 720p | 4s | 18 | 4.5 | 9 |
+| Seedance 2.0 std 1080p | 4s | 48 | 12 | 24 |
+| Seedance 2.5 draft 480p | 4s | 12 | 3 | 6 |
+| Seedance 2.5 1080p | 4s | 64 | 16 | 32 |
+
+### Packages at minimum length (10 shots)
+| Package | Was (5s) | **Now (min length)** | Theoretical floor (2s, not orderable) |
+|---|---|---|---|
+| A. Kling 3.0 std, 2 takes | 159 | **~99** | ~69 |
+| B. Seedance 2.0 fast, 2 takes | 298 | **~248** | ~148 |
+| C. Kling 4.0 walk + Seedance 2.0 std product, 2.5 takes | 548 | **~416** | ~248 |
+| C+. Same as C, but merged into 8 generations (see below) | — | **~348** | — |
+| D. Seedance 2.5: 3 drafts + 1080p final | 1,298 | **~1,048** (final assumed 64) | — |
+| E. Seedance 2.0 std 1080p, 3 takes | 1,872 | **~1,512** | ~792 |
+
+**C+ merge:** shots 7+8+9 (click → pop → soy pour → push up) become one continuous 6s macro (27 credits per take), and the arrival + the draw become one clip. That's 8 generations instead of 10.
+Calculation: 4×2.5×9.75 + 3×2.5×18 + 2.5×27 + 48 images = **~348**.
