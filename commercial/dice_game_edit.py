@@ -1,7 +1,8 @@
 """Assemble the Yoko Ono dice-game spot (9:16, 1080x1920, <=20s) from AI clips.
 
 Usage: python3 commercial/dice_game_edit.py <clips_dir> <out.mp4>
-clips_dir must hold: shot1.mp4 shot2.mp4 bill.mp4 chef.mp4 surprise.mp4 shot6.mp4 shot7.mp4
+clips_dir must hold: shot1.mp4 shot2.mp4 bill.mp4 chef.mp4 surprise.mp4 shot6_v2.mp4 shot7.mp4
+(shot6_v2.mp4 comes from commercial/dice_shot6_build.py)
 Run from the repo root (uses commercial/assets/terms_card_v2.png and fonts). Free: ffmpeg + Pillow only.
 """
 import os, subprocess, sys, tempfile
@@ -15,15 +16,15 @@ GOLD, CREAM = (240, 214, 150), (255, 248, 235)
 
 # (file, src_start, duration, caption or None)
 SHOTS = [
-    ("shot1.mp4",    0.0, 3.0, None),
-    ("shot2.mp4",    0.0, 3.0, None),
-    ("bill.mp4",     0.6, 2.0, None),
+    ("shot1.mp4",    0.0, 2.5, None),
+    ("shot2.mp4",    0.3, 2.5, None),
+    ("bill.mp4",     0.7, 1.8, None),
     ("chef.mp4",     0.4, 2.5, "לא לא, בואו איתי!"),
-    ("surprise.mp4", 0.6, 2.0, "יש לכם סיכוי לזכות בארוחה חינם!"),
-    ("shot6.mp4",    0.6, 3.0, "דאבל!"),
+    ("surprise.mp4", 0.7, 1.8, "יש לכם סיכוי לזכות בארוחה חינם!"),
+    ("shot6_v2.mp4", 0.0, 4.6, "דאבל!"),
     ("shot7.mp4",    0.0, 2.0, "מזל טוב, תגיעו שוב!"),
 ]
-CARD_DUR = 2.4  # terms card; total = 17.5 + 2.4 = 19.9s
+CARD_DUR = 2.2  # terms card; total = 17.7 + 2.2 = 19.9s
 
 
 def caption_png(text, path, size=78, color=CREAM):
@@ -65,7 +66,7 @@ for i, (f, ss, dur, cap) in enumerate(SHOTS):
         inputs += ["-loop", "1", "-framerate", str(FPS), "-t", "20", "-i", p]
         a, b = t + 0.15, t + dur - 0.05
         if cap == "דאבל!":
-            a = t + dur - 1.0  # pop in once the dice land
+            a = t + dur - 0.75  # pop in once the dice land on 6-6
         y = 1660 if cap == "דאבל!" else 1330
         filters.append(f"[{k}:v]format=rgba,fade=in:st={a:.2f}:d=0.15:alpha=1[c{k}];"
                        f"[{last}][c{k}]overlay=0:{y}:shortest=0:eof_action=pass:enable='between(t,{a:.2f},{b:.2f})'[o{k}]")
