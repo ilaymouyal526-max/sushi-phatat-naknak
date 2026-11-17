@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Builds the 9:16 social cut from raw clips. Usage: commercial/build.sh <clips_dir> <out.mp4>
+# Builds the 9:16 social cut from raw clips. Usage: projects/yoko-ono-red-dragon-tataki/scripts/build.sh <clips_dir> <out.mp4>
 set -e
-FF=${FFMPEG:-ffmpeg}; D=$1; OUT=${2:-commercial/sushi_cut_v1.mp4}
+FF=${FFMPEG:-ffmpeg}; D=$1; OUT=${2:-sushi_cut_v1.mp4}
 A=$D/*WA0024_1.mp4; B=$D/*WA0024_2_1.mp4; C=$D/*WA0023.mp4
 A=$(ls $A); B=$(ls $B); C=$(ls $C)
 FONT=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf

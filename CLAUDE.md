@@ -14,3 +14,11 @@ then wait for a clear "yes". This covers Higgsfield, Artlist, Adobe and Descript
 - If a tool has no price check (for example, `upscale_video`), don't call it just to find the price. Tell the user the price is unknown and ask first.
 - Approval covers only the specific job shown. Batches, retries, extra variants or a different model each need a new approval.
 - Free work doesn't need approval: local processing, sandbox ffmpeg edits, read-only lookups and price checks.
+
+## Organization rule (always applies)
+
+- Start every session by reading `README.md` (the project index).
+- Work for a project goes in `projects/<name>/`: `brief.md`, `treatment.md`, `assets.md`, `prompts/`, `scripts/`.
+- **Log every asset** received or generated in that project's `assets.md` as soon as it exists: tool/model, job or media ID, URL, cost, prompt file, status. Prompts that were actually run get saved in `prompts/`.
+- Before asking the user to re-send or re-find anything, search `assets.md` and `grep -ri` the repo first.
+- Record decisions in `brief.md` → "Decisions made". Commit and push at the end of every working block, because the container is wiped.
