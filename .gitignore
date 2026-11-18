@@ -3,4 +3,4 @@ __pycache__/
 
 # large regenerable masters
 sticker/v5/*_master.png
-sticker/v5/wrap_v5_flat.png
+sticker/v5/wrap_v5*_flat.png

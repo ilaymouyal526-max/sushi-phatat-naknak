@@ -37,3 +37,11 @@ Fonts: Shippori Mincho B1 (Google Fonts, OFL).
 > Japanese seinen samurai-manga ink illustration. Expressive sumi brush linework with dry-brush edges and strongly varying line weight, realistic adult anatomy, fine-pen cross-hatching in the shadows, sparse grey ink wash, generous bare cream washi paper, a few ink splatters, calm intense mood. Black ink only, except the product's thin gold label rim and the natural colours of the sushi. No screentone, no chibi, no sparkles, no cute elements. No text, no letters, no seals with characters, no logo.
 
 **Character block:** a Japanese ronin-chef in his 30s, long black hair in a rough topknot, light stubble, dark kimono with tasuki, white cloth headband, serious calm face.
+
+## Two colourways
+- **Black + gold** (default): `sticker_v5_*`, `wrap_v5_*`.
+- **Black, white + red**: `sticker_v5_red_*`, `wrap_v5_red_*`.
+  - White paper with black ink.
+  - Red logo everywhere, on the tube too, with the tube's label ring recoloured red.
+  - Red step seals and rules.
+  - Rebuild with `--theme red` on both `brand_tube.py` and `compose_v5.py`.

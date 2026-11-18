@@ -33,6 +33,10 @@ GOLD_TOP = (228, 199, 132)
 GOLD_BOT = (172, 131, 60)
 CREAM = (244, 236, 220)
 GOLD_SEAL = (201, 165, 96)
+RED_TOP = (198, 46, 38)
+RED_BOT = (150, 26, 22)
+WHITE = (250, 248, 244)
+
 
 STEPS = ["Remove the soy sauce", "Open the lid", "Add soy sauce", "Push up & enjoy"]
 
@@ -41,9 +45,9 @@ nrng = np.random.default_rng(7)
 
 
 # ---------- textures ----------
-def washi(w, h):
+def washi(w, h, base_color=PAPER):
     """Cream washi paper: soft blotches + fine grain + a few long fibers."""
-    base = np.ones((h, w, 3)) * np.array(PAPER, float)
+    base = np.ones((h, w, 3)) * np.array(base_color, float)
     small = nrng.normal(0, 1, (h // 40 + 2, w // 40 + 2))
     blotch = np.array(Image.fromarray(((small - small.min()) / np.ptp(small) * 255).astype("uint8"))
                       .resize((w, h), Image.BICUBIC), float) / 255 - 0.5
@@ -70,6 +74,33 @@ def black_paper(w, h):
     grain = nrng.normal(0, 1, (h, w))
     lum = blotch * 7 + grain * 2.2
     return Image.fromarray(np.clip(base + lum[..., None], 0, 255).astype("uint8"))
+
+
+def white_paper(w, h):
+    return washi(w, h, base_color=(247, 245, 240)).convert("RGB")
+
+
+# Palettes. "black": brand black + gold. "red": white paper, black ink, red accents (logo included).
+THEMES = {
+    "black": dict(bg=black_paper, title=(GOLD_TOP, GOLD_BOT), sub=(GOLD_TOP, GOLD_BOT), rule=GOLD_BOT,
+                  frame=GOLD_BOT, seal=GOLD_SEAL, seal_txt=INK, cap=(GOLD_TOP, GOLD_BOT), push=GOLD_TOP,
+                  kana=GOLD_TOP, logo=None, suffix=""),
+    "red": dict(bg=white_paper, title=(INK, INK), sub=(RED_TOP, RED_TOP), rule=RED_BOT,
+                frame=INK, seal=VERMILION, seal_txt=WHITE, cap=(INK, INK), push=INK,
+                kana=INK, logo=(RED_TOP, RED_BOT), suffix="_red"),
+}
+T = THEMES["black"]
+
+
+def tint(logo, top, bot):
+    """Recolour an RGBA logo with a vertical gradient, keeping its alpha."""
+    w, h = logo.size
+    gy = np.linspace(0, 1, h)[:, None, None]
+    g = np.array(top) * (1 - gy) + np.array(bot) * gy
+    rgb = np.repeat(g, w, axis=1).astype("uint8")
+    out = Image.fromarray(rgb, "RGB").convert("RGBA")
+    out.putalpha(logo.split()[3])
+    return out
 
 
 def rough_mask(w, h, edge=28, seed=0, dry=True, amp=0.9):
@@ -134,7 +165,7 @@ def ink_frame(img, box, width=16, color=INK):
             brush_line(d, a2, b2, w, color)
 
 
-def gold_text(img, xy, text, font, anchor="la", tracking=0):
+def gold_text(img, xy, text, font, anchor="la", tracking=0, colors=None):
     """Gold-gradient text with an optional letter spacing."""
     w, h = img.size
     mask = Image.new("L", (w, h), 0)
@@ -154,7 +185,8 @@ def gold_text(img, xy, text, font, anchor="la", tracking=0):
         return
     grad = Image.new("RGB", (w, h))
     gy = np.linspace(0, 1, bb[3] - bb[1])[:, None]
-    g = (np.array(GOLD_TOP) * (1 - gy) + np.array(GOLD_BOT) * gy)
+    top, bot = colors or (GOLD_TOP, GOLD_BOT)
+    g = (np.array(top) * (1 - gy) + np.array(bot) * gy)
     strip = np.repeat(g[:, None, :], bb[2] - bb[0], axis=1).astype("uint8")
     grad.paste(Image.fromarray(strip), (bb[0], bb[1]))
     img.paste(grad, (0, 0), mask)
@@ -206,7 +238,7 @@ def place_logo(img, logo, cx, top, height):
 # ---------- layouts ----------
 def build_sticker(a, f):
     W, H = 2400, 3200
-    img = black_paper(W, H)
+    img = T["bg"](W, H)
 
     # header: gold logo + title on the black, one brand palette (black + gold) throughout
 
@@ -214,10 +246,10 @@ def build_sticker(a, f):
     lw = place_logo(img, a["logo"], 120 + 225, 40, logo_h)
     tx = 120 + 450 + 80
     title_cx = tx + (W - 110 - tx) / 2
-    gold_text(img, (title_cx, 250), "HOW TO ENJOY YOUR", f["f500_64"], anchor="ms", tracking=14)
-    gold_text(img, (title_cx, 430), "SUSHI PUSH POP", f["f800_150"], anchor="ms", tracking=6)
+    gold_text(img, (title_cx, 250), "HOW TO ENJOY YOUR", f["f500_64"], anchor="ms", tracking=14, colors=T["sub"])
+    gold_text(img, (title_cx, 430), "SUSHI PUSH POP", f["f800_150"], anchor="ms", tracking=6, colors=T["title"])
     d = ImageDraw.Draw(img, "RGBA")
-    d.line([(title_cx - 330, 300), (title_cx + 330, 300)], fill=GOLD_BOT + (200,), width=3)
+    d.line([(title_cx - 330, 300), (title_cx + 330, 300)], fill=T["rule"] + (220,), width=3)
 
     # 2x2 panels
     M, G, P, CAP = 115, 70, 1050, 140
@@ -228,17 +260,17 @@ def build_sticker(a, f):
         y0 = tops[row]
         panel = a["panels"][i].resize((P, P), Image.LANCZOS)
         img.paste(panel, (x0, y0))
-        ink_frame(img, (x0, y0, x0 + P, y0 + P), width=12, color=GOLD_BOT)
-        seal = hanko(i + 1, 150, f["p800"], color=GOLD_SEAL, text=INK)
+        ink_frame(img, (x0, y0, x0 + P, y0 + P), width=12, color=T["frame"])
+        seal = hanko(i + 1, 150, f["p800"], color=T["seal"], text=T["seal_txt"])
         img.paste(seal, (x0 + 26, y0 + 26), seal)
-        gold_text(img, (x0 + P / 2, y0 + P + 95), STEPS[i], f["f500_66"], anchor="ms", tracking=3)
+        gold_text(img, (x0 + P / 2, y0 + P + 95), STEPS[i], f["f500_66"], anchor="ms", tracking=3, colors=T["cap"])
     return img
 
 
 def build_wrap(a, f):
     """Same zones as wrap_v1 (1200x720) at 3x: seam | front | soy-clip side | back | seam."""
     W, H = 3600, 2160
-    img = black_paper(W, H)
+    img = T["bg"](W, H)
     d = ImageDraw.Draw(img, "RGBA")
     FRONT = (144, 1440)
     SIDE = (1440, 1764)
@@ -246,12 +278,12 @@ def build_wrap(a, f):
 
     # thin gold rules top and bottom (as wrap_v1)
     for y in (54, H - 54):
-        d.line([(0, y), (W, y)], fill=GOLD_BOT + (230,), width=5)
+        d.line([(0, y), (W, y)], fill=T["rule"] + (230,), width=5)
 
     # FRONT: ink slab with logo + title, ronin hero below
     fw = FRONT[1] - FRONT[0]
     place_logo(img, a["logo"], FRONT[0] + fw / 2, 130, 600)
-    gold_text(img, (FRONT[0] + fw / 2, 900), "SUSHI PUSH POP", f["f800_100"], anchor="ms", tracking=4)
+    gold_text(img, (FRONT[0] + fw / 2, 900), "SUSHI PUSH POP", f["f800_100"], anchor="ms", tracking=4, colors=T["title"])
     hero = a["hero"]
     hs = fw
     hero = hero.resize((hs, hs), Image.LANCZOS)
@@ -263,19 +295,19 @@ def build_wrap(a, f):
     crop_h = bottom - top
     hero = hero.crop((0, (hw - crop_h) // 3, hw, (hw - crop_h) // 3 + crop_h))
     img.paste(hero, (FRONT[0] + m, top))
-    ink_frame(img, (FRONT[0] + m, top, FRONT[1] - m, bottom), width=12, color=GOLD_BOT)
+    ink_frame(img, (FRONT[0] + m, top, FRONT[1] - m, bottom), width=12, color=T["frame"])
     # PUSH hint (gold) + gold YO seal on the black below the hero
     d = ImageDraw.Draw(img, "RGBA")
     px, py = FRONT[0] + m, H - 120
-    gold_text(img, (px, py), "PUSH", f["f800_60"], anchor="ls", tracking=4)
+    gold_text(img, (px, py), "PUSH", f["f800_60"], anchor="ls", tracking=4, colors=(T["push"], T["push"]))
     d = ImageDraw.Draw(img, "RGBA")
     ax = px + sum(d.textlength(c, font=f["f800_60"]) for c in "PUSH") + 12 + 30
-    d.line([(ax, py), (ax, py - 70)], fill=GOLD_TOP, width=8)
-    d.polygon([(ax - 18, py - 58), (ax + 18, py - 58), (ax, py - 88)], fill=GOLD_TOP)
+    d.line([(ax, py), (ax, py - 70)], fill=T["push"], width=8)
+    d.polygon([(ax - 18, py - 58), (ax + 18, py - 58), (ax, py - 88)], fill=T["push"])
     sm = rough_mask(130, 130, edge=10, seed=55, dry=False, amp=0.35)
-    s_img = Image.new("RGBA", (130, 130), GOLD_SEAL + (255,))
+    s_img = Image.new("RGBA", (130, 130), T["seal"] + (255,))
     s_img.putalpha(sm)
-    ImageDraw.Draw(s_img).text((65, 68), "YO", font=f["f800_60"], fill=INK, anchor="mm")
+    ImageDraw.Draw(s_img).text((65, 68), "YO", font=f["f800_60"], fill=T["seal_txt"], anchor="mm")
     img.paste(s_img, (FRONT[1] - m - 130, H - 215), s_img)
 
     # SIDE (soy clip zone): vertical katakana of the brand name, thin ink rule
@@ -284,17 +316,17 @@ def build_wrap(a, f):
     y = 380
     for ch in "ヨーコ・オノ":
         if ch == "ー":  # vertical long-vowel mark
-            d.line([(sx, y - 60), (sx, y + 10)], fill=GOLD_TOP, width=9)
+            d.line([(sx, y - 60), (sx, y + 10)], fill=T["kana"], width=9)
         else:
-            d.text((sx, y), ch, font=f["p500_110"], fill=GOLD_TOP, anchor="ms")
+            d.text((sx, y), ch, font=f["p500_110"], fill=T["kana"], anchor="ms")
         y += 150
-    brush_line(d, (sx, 1300), (sx, 1820), 8, GOLD_BOT)
+    brush_line(d, (sx, 1300), (sx, 1820), 8, T["rule"])
 
     # BACK: title + 2x2 panels
     bw = BACK[1] - BACK[0]
     bcx = BACK[0] + bw / 2
-    gold_text(img, (bcx, 180), "HOW TO ENJOY YOUR", f["f500_60"], anchor="ms", tracking=12)
-    gold_text(img, (bcx, 310), "SUSHI PUSH POP", f["f800_120"], anchor="ms", tracking=5)
+    gold_text(img, (bcx, 180), "HOW TO ENJOY YOUR", f["f500_60"], anchor="ms", tracking=12, colors=T["sub"])
+    gold_text(img, (bcx, 310), "SUSHI PUSH POP", f["f800_120"], anchor="ms", tracking=5, colors=T["title"])
     M, G, P = 70, 60, 720
     tops = [380, 380 + P + 105]
     for i in range(4):
@@ -302,10 +334,10 @@ def build_wrap(a, f):
         x0 = int(BACK[0] + M + col * (P + G) + (bw - 2 * M - 2 * P - G) / 2)
         y0 = tops[row]
         img.paste(a["panels"][i].resize((P, P), Image.LANCZOS), (x0, y0))
-        ink_frame(img, (x0, y0, x0 + P, y0 + P), width=10, color=GOLD_BOT)
-        seal = hanko(i + 1, 110, f["p800"], color=GOLD_SEAL, text=INK)
+        ink_frame(img, (x0, y0, x0 + P, y0 + P), width=10, color=T["frame"])
+        seal = hanko(i + 1, 110, f["p800"], color=T["seal"], text=T["seal_txt"])
         img.paste(seal, (x0 + 18, y0 + 18), seal)
-        gold_text(img, (x0 + P / 2, y0 + P + 70), STEPS[i], f["f500_54"], anchor="ms", tracking=2)
+        gold_text(img, (x0 + P / 2, y0 + P + 70), STEPS[i], f["f500_54"], anchor="ms", tracking=2, colors=T["cap"])
     return img
 
 
@@ -365,14 +397,18 @@ def main():
     ap.add_argument("--sticker-mm", default="90x120")
     ap.add_argument("--wrap-mm", default="", help="WxH of the wrap in mm; skip wrap print export if empty")
     ap.add_argument("--bleed-mm", type=float, default=2)
+    ap.add_argument("--theme", choices=sorted(THEMES), default="black")
     args = ap.parse_args()
+    global T
+    T = THEMES[args.theme]
+    sfx = T["suffix"]
     os.makedirs(args.out, exist_ok=True)
 
     A = args.assets
 
     def find(name):
         # prefer the version with the logo on the tube (brand_tube.py), else the raw panel
-        for stem in (name + "_branded", name):
+        for stem in (name + "_branded" + T["suffix"], name):
             for ext in (".png", ".jpg", ".webp"):
                 if os.path.exists(os.path.join(A, stem + ext)):
                     return os.path.join(A, stem + ext)
@@ -383,6 +419,8 @@ def main():
         "hero": Image.open(find("hero")).convert("RGB"),
         "logo": Image.open(os.path.join(A, "logo_gold.png")).convert("RGBA"),
     }
+    if T["logo"]:
+        assets["logo"] = tint(assets["logo"], *T["logo"])
     p5 = os.path.join(args.fonts, "ShipporiB1-500.ttf")
     p8 = os.path.join(args.fonts, "ShipporiB1-800.ttf")
     F = lambda p, s: ImageFont.truetype(p, s)
@@ -394,18 +432,18 @@ def main():
     }
 
     sticker = build_sticker(assets, fonts)
-    sticker.save(os.path.join(args.out, "sticker_v5_master.png"))
-    sticker.resize((900, 1200), Image.LANCZOS).save(os.path.join(args.out, "sticker_v5_preview.jpg"), quality=90)
+    sticker.save(os.path.join(args.out, f"sticker_v5{sfx}_master.png"))
+    sticker.resize((900, 1200), Image.LANCZOS).save(os.path.join(args.out, f"sticker_v5{sfx}_preview.jpg"), quality=90)
     sw, sh = (float(v) for v in args.sticker_mm.split("x"))
-    export_print(sticker, (sw, sh), args.bleed_mm, 3, os.path.join(args.out, "sticker_v5"))
+    export_print(sticker, (sw, sh), args.bleed_mm, 3, os.path.join(args.out, f"sticker_v5{sfx}"))
 
     wrap = build_wrap(assets, fonts)
-    wrap.save(os.path.join(args.out, "wrap_v5_flat.png"))
-    wrap.resize((1200, 720), Image.LANCZOS).save(os.path.join(args.out, "wrap_v5_preview.jpg"), quality=90)
-    build_wrap_guides(wrap).resize((1200, 720), Image.LANCZOS).save(os.path.join(args.out, "wrap_v5_guides.jpg"), quality=90)
+    wrap.save(os.path.join(args.out, f"wrap_v5{sfx}_flat.png"))
+    wrap.resize((1200, 720), Image.LANCZOS).save(os.path.join(args.out, f"wrap_v5{sfx}_preview.jpg"), quality=90)
+    build_wrap_guides(wrap).resize((1200, 720), Image.LANCZOS).save(os.path.join(args.out, f"wrap_v5{sfx}_guides.jpg"), quality=90)
     if args.wrap_mm:
         ww, wh = (float(v) for v in args.wrap_mm.split("x"))
-        export_print(wrap, (ww, wh), args.bleed_mm, 0, os.path.join(args.out, "wrap_v5"))
+        export_print(wrap, (ww, wh), args.bleed_mm, 0, os.path.join(args.out, f"wrap_v5{sfx}"))
 
 
 if __name__ == "__main__":

@@ -18,7 +18,7 @@ import os
 import numpy as np
 from PIL import Image, ImageFilter, ImageFont
 
-from compose_v5 import gold_text
+from compose_v5 import GOLD_BOT, GOLD_TOP, RED_BOT, RED_TOP, gold_text, tint
 
 # Measured on the 2048px panels (hero: 1024px). cx, cy = label centre; r = label radius (x);
 # tube = (left, right) edge of the tube at the label's height; tilt = degrees the tube's top leans
@@ -68,7 +68,25 @@ def paint(base, layer, dark_thresh=95):
     return Image.fromarray(out.astype("uint8"))
 
 
-def brand(img, c, logo, font_path):
+def recolor_rim(img, c, top, bot):
+    """Turn the gold label ring into the theme colour (keeps its shading)."""
+    a = np.array(img).astype(float)
+    H, W = a.shape[:2]
+    yy, xx = np.mgrid[0:H, 0:W]
+    d = np.hypot(xx - c["cx"], yy - c["cy"]) / c["r"]
+    R, G, B = a[..., 0], a[..., 1], a[..., 2]
+    gold = (d > 0.85) & (d < 1.18) & (R - B > 35) & (R > 80) & (R - G < 80)
+    lum = a.mean(axis=2)
+    k = np.clip(lum / 150, 0, 1.4)[..., None]
+    col = np.array(top, float) * k
+    soft = np.clip((R - B - 35) / 25, 0, 1)[..., None] * gold[..., None]
+    a = a * (1 - soft) + col * soft
+    return Image.fromarray(np.clip(a, 0, 255).astype("uint8"))
+
+
+def brand(img, c, logo, font_path, colors=(GOLD_TOP, GOLD_BOT)):
+    if colors != (GOLD_TOP, GOLD_BOT):
+        img = recolor_rim(img, c, *colors)
     W, H = img.size
     tube_r = (c["tube"][1] - c["tube"][0]) / 2
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -90,7 +108,7 @@ def brand(img, c, logo, font_path):
             f = ImageFont.truetype(font_path, size)
         txt = Image.new("RGB", (W, H), (0, 0, 0))
         y = c["cy"] + c["r"] * 1.12 + size
-        gold_text(txt, (c["cx"], y), "SUSHI PUSH POP", f, anchor="ms", tracking=size * 0.05)
+        gold_text(txt, (c["cx"], y), "SUSHI PUSH POP", f, anchor="ms", tracking=size * 0.05, colors=colors)
         m = Image.new("L", (W, H), 0)
         md = Image.new("RGB", (W, H), (0, 0, 0))
         # mask = where text was drawn
@@ -122,14 +140,19 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--panels", required=True)
     ap.add_argument("--fonts", required=True)
+    ap.add_argument("--theme", choices=["black", "red"], default="black")
     args = ap.parse_args()
     logo = Image.open(os.path.join(args.panels, "logo_gold.png")).convert("RGBA")
+    colors, sfx = (GOLD_TOP, GOLD_BOT), ""
+    if args.theme == "red":
+        colors, sfx = ((228, 64, 52), (186, 40, 32)), "_red"  # a touch brighter than print red so it reads on the black tube
+        logo = tint(logo, *colors)
     font = os.path.join(args.fonts, "ShipporiB1-800.ttf")
     for name, c in CONF.items():
         src = os.path.join(args.panels, name + ".jpg")
-        out = brand(Image.open(src).convert("RGB"), c, logo, font)
-        out.save(os.path.join(args.panels, name + "_branded.jpg"), quality=93)
-        print("wrote", name + "_branded.jpg")
+        out = brand(Image.open(src).convert("RGB"), c, logo, font, colors)
+        out.save(os.path.join(args.panels, name + "_branded" + sfx + ".jpg"), quality=93)
+        print("wrote", name + "_branded" + sfx + ".jpg")
 
 
 if __name__ == "__main__":
