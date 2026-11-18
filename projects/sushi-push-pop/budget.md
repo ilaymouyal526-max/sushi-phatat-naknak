@@ -82,3 +82,17 @@ For this concept the right mode is **motion transfer**, because object replace k
 | G1. Everything via Genjutsu 720p, 1.5 takes (the motion is fixed, so fewer retries) | 6×1.5×28 = 252 | 2 clips (4s + 6s) via Genjutsu = 1.5×(28+42) = 105 | 48 | **~405** |
 | **G2. Hybrid** ⭐: kid via Genjutsu 720p + **product filmed for real** (no AI) | 252 | 0 (real footage + real ASMR sound) | 6 world start frames + 4 background plates ≈ 32 | **~284** |
 | G3. Hybrid at 1080p | 6×1.5×80 = 720 | 0 | 32 | **~752** |
+
+## v1 shotlist pricing (2026-11-18): **current**. Supersedes the tables above
+Method: `sushi-ad-director` + `ad-playbook`. 4 multi-cut Seedance prompts (1a 10s, 1b 5s, 2 12s, 3 5s = 32s generated).
+New checks: Seedance 2.5 8s draft = 24, 720p = 56, 1080p = 128; Seedance 2.0 8s std = 36, fast = 20. **Audio on/off costs the same.**
+
+| Package | What | Video | Assets | Total |
+|---|---|---|---|---|
+| F | Full AI, Seedance 2.5 drafts (3 for high-risk, 2 for others) → 1080p finals | 258 + 512 | 48 | ~818 |
+| E | Full AI, drafts → 720p finals | 258 + 224 | 48 | ~530 |
+| **H** ⭐ | Kid prompts (1a, 1b, 3) via Seedance 2.5 drafts → 720p. Prompt 2 filmed for real + composited | 150 + 140 | 48 | **~338** |
+| S | Like H, Seedance 2.0 std 720p direct (no drafts) | 225 | 48 | ~273 |
+| X | Like H, Seedance 2.0 fast 720p | 125 | 48 | ~173 |
+
+Assets: look test 1 + kid 12 + push pop 12 + 5 worlds 15 + start frames 8 = 48. Elements creation: cost not yet confirmed.

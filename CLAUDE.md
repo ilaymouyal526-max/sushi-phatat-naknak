@@ -22,6 +22,7 @@ For ANY food, restaurant or Yoko Ono / Sushi Push Pop ad, **invoke the `sushi-ad
 2. **Assets**: lock every recurring thing as a named Higgsfield Element (@name) from real photos.
 3. **Shotlist**: style prefix + up-to-15s prompts made of CUTs, with ENDS ON, delivered as an HTML shotlist.
 
+Also load the repo skill `ad-playbook` (`.claude/skills/ad-playbook/SKILL.md`): verified prices, draft math, reference and label rules learned in practice. Update it whenever a new lesson or price is verified.
 When camera or composition must be exact, also use `food-ad-3d-pipeline` (blockout → locked first frame → motion reference).
 Stills and animatic come before any video. Cheap drafts come before finals. Save each stage's output in the project folder.
 
