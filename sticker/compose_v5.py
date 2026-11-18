@@ -373,9 +373,11 @@ def main():
     A = args.assets
 
     def find(name):
-        for ext in (".png", ".jpg", ".webp"):
-            if os.path.exists(os.path.join(A, name + ext)):
-                return os.path.join(A, name + ext)
+        # prefer the version with the logo on the tube (brand_tube.py), else the raw panel
+        for stem in (name + "_branded", name):
+            for ext in (".png", ".jpg", ".webp"):
+                if os.path.exists(os.path.join(A, stem + ext)):
+                    return os.path.join(A, stem + ext)
         raise FileNotFoundError(name)
 
     assets = {

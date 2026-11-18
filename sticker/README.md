@@ -10,7 +10,7 @@ v4 (chibi anime kid) was rejected by the owner as too kitschy. v5 is a seinen-ma
 - `sticker_v5_cut.svg`: the cut line as a vector.
 - `wrap_v5_preview.jpg`: preview of the tube wrap label.
 - `wrap_v5_guides.jpg`: the same wrap with zone guides (seam | front | soy-clip side | back | seam, same zones as wrap_v1).
-- `panels/`: the generated art (4 steps, hero, character options) and the extracted gold logo.
+- `panels/`: the generated art (4 steps, hero, character options) and the extracted gold logo. `*_branded.jpg` = the same images with the gold Yoko Ono logo and "SUSHI PUSH POP" composited onto the tube label by `brand_tube.py`; `compose_v5.py` uses them when present.
 
 The masters (`*_master.png`, `wrap_v5_flat.png`) are git-ignored. Regenerate them with:
 
