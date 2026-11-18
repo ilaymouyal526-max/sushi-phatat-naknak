@@ -64,3 +64,21 @@ Video is billed per second. Each model has a **minimum length**, so a 1.5–2s c
 
 **C+ merge:** shots 7+8+9 (click → pop → soy pour → push up) become one continuous 6s macro (27 credits per take), and the arrival + the draw become one clip. That's 8 generations instead of 10.
 Calculation: 4×2.5×9.75 + 3×2.5×18 + 2.5×27 + 48 images = **~348**.
+
+## Option G: film it ourselves + Genjutsu (checked 2026-11-18)
+Billed by the **length of the source video** we upload. Quotes used library video `e7b9e53c…` (4.0s) and `27fc00f6…` (15.1s).
+
+| Genjutsu mode | What it does | 720p | 1080p |
+|---|---|---|---|
+| Motion transfer (`hf_mult_motion_control`) | Our filmed motion → the brand kid in a reference image (the image sets the world) | 28 per 4s = **7/s** (15s = 105) | 80 per 4s = **20/s** |
+| Object replace (`hf_mult_replace_object`) | Swaps an object or person but **keeps the filmed background**. Source must be 4–30s | 35 per 4s = **8.75/s** | 100 per 4s = **25/s** |
+
+Per second this is more than generating from scratch (Seedance 2.0 std 720p = 4.5/s, Kling 4.0 1080p = 3.25/s).
+For this concept the right mode is **motion transfer**, because object replace keeps our real background and we need snow, desert, sea and jungle.
+
+### Packages
+| Package | Kid shots (6 × 4s) | Product shots | Images | Total |
+|---|---|---|---|---|
+| G1. Everything via Genjutsu 720p, 1.5 takes (the motion is fixed, so fewer retries) | 6×1.5×28 = 252 | 2 clips (4s + 6s) via Genjutsu = 1.5×(28+42) = 105 | 48 | **~405** |
+| **G2. Hybrid** ⭐: kid via Genjutsu 720p + **product filmed for real** (no AI) | 252 | 0 (real footage + real ASMR sound) | 6 world start frames + 4 background plates ≈ 32 | **~284** |
+| G3. Hybrid at 1080p | 6×1.5×80 = 720 | 0 | 32 | **~752** |
