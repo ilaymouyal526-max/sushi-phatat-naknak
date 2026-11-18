@@ -3,7 +3,7 @@
 ## Known
 - Brand: **Yoko Ono Asian Kitchen**. The full kit (logo, product, how-to, brand kid) is in `brand/yoko-ono/README.md`.
 - Product mechanics: soy vial clipped on the side, clear lid, **push up from the bottom**. These are the 4 steps from the label and sticker.
-- Concept: `treatment.md` ("Anywhere"). Budget: `budget.md`.
+- Concept: `treatment.md` ("Anywhere"). Budget: `budget.md`. Production plan: `plan.md` (pro-on-a-budget, ~192 credits).
 - Tagline language: Hebrew or English, either is fine.
 - Budget: no ceiling. Present tiered options (see `budget.md`).
 
