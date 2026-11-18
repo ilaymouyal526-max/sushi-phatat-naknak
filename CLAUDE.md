@@ -15,6 +15,16 @@ then wait for a clear "yes". This covers Higgsfield, Artlist, Adobe and Descript
 - Approval covers only the specific job shown. Batches, retries, extra variants or a different model each need a new approval.
 - Free work doesn't need approval: local processing, sandbox ffmpeg edits, read-only lookups and price checks.
 
+## Ad workflow rule (always applies)
+
+For ANY food, restaurant or Yoko Ono / Sushi Push Pop ad, **invoke the `sushi-ad-director` skill first**, before concepts, budgets or prompts. It was built from the Higgsfield "3-Step Workflow To Make Ultra-Realistic AI Ads" video the user chose. Follow its stages in order:
+1. **Concept**: 6-line brief, hook in the first 1–2s.
+2. **Assets**: lock every recurring thing as a named Higgsfield Element (@name) from real photos.
+3. **Shotlist**: style prefix + up-to-15s prompts made of CUTs, with ENDS ON, delivered as an HTML shotlist.
+
+When camera or composition must be exact, also use `food-ad-3d-pipeline` (blockout → locked first frame → motion reference).
+Stills and animatic come before any video. Cheap drafts come before finals. Save each stage's output in the project folder.
+
 ## Organization rule (always applies)
 
 - Start every session by reading `README.md` (the project index and brand shortcuts).
