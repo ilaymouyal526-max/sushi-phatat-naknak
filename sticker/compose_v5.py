@@ -32,6 +32,7 @@ VERMILION = (176, 36, 28)
 GOLD_TOP = (228, 199, 132)
 GOLD_BOT = (172, 131, 60)
 CREAM = (244, 236, 220)
+GOLD_SEAL = (201, 165, 96)
 
 STEPS = ["Remove the soy sauce", "Open the lid", "Add soy sauce", "Push up & enjoy"]
 
@@ -58,6 +59,17 @@ def washi(w, h):
                for t in np.linspace(0, L, 6)]
         d.line(pts, fill=(205, 192, 168, rng.randint(30, 70)), width=1)
     return im
+
+
+def black_paper(w, h):
+    """Near-black matte paper like the tube: soft mottling + fine grain."""
+    base = np.ones((h, w, 3)) * np.array((24, 22, 20), float)
+    small = nrng.normal(0, 1, (h // 60 + 2, w // 60 + 2))
+    blotch = np.array(Image.fromarray(((small - small.min()) / np.ptp(small) * 255).astype("uint8"))
+                      .resize((w, h), Image.BICUBIC), float) / 255 - 0.5
+    grain = nrng.normal(0, 1, (h, w))
+    lum = blotch * 7 + grain * 2.2
+    return Image.fromarray(np.clip(base + lum[..., None], 0, 255).astype("uint8"))
 
 
 def rough_mask(w, h, edge=28, seed=0, dry=True, amp=0.9):
@@ -103,7 +115,7 @@ def brush_line(draw, p0, p1, width, color=INK):
         draw.ellipse([pts[i + 1][0] - r, pts[i + 1][1] - r, pts[i + 1][0] + r, pts[i + 1][1] + r], fill=c)
 
 
-def ink_frame(img, box, width=16):
+def ink_frame(img, box, width=16, color=INK):
     """Hand-brushed manga panel border, two passes for an uneven edge."""
     d = ImageDraw.Draw(img, "RGBA")
     x0, y0, x1, y1 = box
@@ -119,7 +131,7 @@ def ink_frame(img, box, width=16):
             ov = rng.uniform(6, 22)
             a2 = (a[0] - dx / L * ov, a[1] - dy / L * ov)
             b2 = (b[0] + dx / L * ov * 0.5, b[1] + dy / L * ov * 0.5)
-            brush_line(d, a2, b2, w)
+            brush_line(d, a2, b2, w, color)
 
 
 def gold_text(img, xy, text, font, anchor="la", tracking=0):
@@ -158,12 +170,12 @@ def tracked_text(draw, xy, text, font, fill, tracking=0, anchor="ms"):
         x += draw.textlength(c, font=font) + tracking
 
 
-def hanko(n, size, font_path):
-    """Red seal square with eroded edges and a number in cream."""
+def hanko(n, size, font_path, color=VERMILION, text=CREAM):
+    """Seal square with eroded edges and a number (gold seal + black numeral in the black theme)."""
     pad = 12
     s = size + pad * 2
     m = rough_mask(s, s, edge=pad + 2, seed=100 + n, dry=False, amp=0.35)
-    seal = Image.new("RGBA", (s, s), VERMILION + (0,))
+    seal = Image.new("RGBA", (s, s), color + (0,))
     # mottled ink coverage like a real stamp
     cover = nrng.random((s, s))
     cover = np.array(Image.fromarray((cover * 255).astype("uint8")).filter(ImageFilter.GaussianBlur(2)), float)
@@ -171,7 +183,7 @@ def hanko(n, size, font_path):
     seal.putalpha(Image.fromarray(alpha.astype("uint8")))
     d = ImageDraw.Draw(seal)
     f = ImageFont.truetype(font_path, int(size * 0.72))
-    d.text((s / 2, s / 2 + size * 0.03), str(n), font=f, fill=CREAM + (255,), anchor="mm")
+    d.text((s / 2, s / 2 + size * 0.03), str(n), font=f, fill=text + (255,), anchor="mm")
     return seal.rotate(rng.uniform(-4, 4), resample=Image.BICUBIC, expand=True)
 
 
@@ -194,13 +206,9 @@ def place_logo(img, logo, cx, top, height):
 # ---------- layouts ----------
 def build_sticker(a, f):
     W, H = 2400, 3200
-    img = washi(W, H).convert("RGB")
+    img = black_paper(W, H)
 
-    # header: sumi ink slab with gold logo + title
-    slab_h = 660
-    slab = rough_mask(W + 80, slab_h, edge=36, seed=1)
-    img.paste(Image.new("RGB", slab.size, INK), (-40, -40), slab)
-    splatter(img, (40, slab_h - 70, W - 40, slab_h + 30), count=55, scale=1.3)
+    # header: gold logo + title on the black, one brand palette (black + gold) throughout
 
     logo_h = 520
     lw = place_logo(img, a["logo"], 120 + 225, 40, logo_h)
@@ -220,18 +228,17 @@ def build_sticker(a, f):
         y0 = tops[row]
         panel = a["panels"][i].resize((P, P), Image.LANCZOS)
         img.paste(panel, (x0, y0))
-        ink_frame(img, (x0, y0, x0 + P, y0 + P), width=18)
-        seal = hanko(i + 1, 150, f["p800"])
+        ink_frame(img, (x0, y0, x0 + P, y0 + P), width=12, color=GOLD_BOT)
+        seal = hanko(i + 1, 150, f["p800"], color=GOLD_SEAL, text=INK)
         img.paste(seal, (x0 + 26, y0 + 26), seal)
-        d = ImageDraw.Draw(img)
-        tracked_text(d, (x0 + P / 2, y0 + P + 95), STEPS[i], f["f500_66"], INK, tracking=3)
+        gold_text(img, (x0 + P / 2, y0 + P + 95), STEPS[i], f["f500_66"], anchor="ms", tracking=3)
     return img
 
 
 def build_wrap(a, f):
     """Same zones as wrap_v1 (1200x720) at 3x: seam | front | soy-clip side | back | seam."""
     W, H = 3600, 2160
-    img = washi(W, H).convert("RGB")
+    img = black_paper(W, H)
     d = ImageDraw.Draw(img, "RGBA")
     FRONT = (144, 1440)
     SIDE = (1440, 1764)
@@ -243,41 +250,33 @@ def build_wrap(a, f):
 
     # FRONT: ink slab with logo + title, ronin hero below
     fw = FRONT[1] - FRONT[0]
-    slab_h = 980
-    slab = rough_mask(fw + 60, slab_h, edge=34, seed=3)
-    img.paste(Image.new("RGB", slab.size, INK), (FRONT[0] - 30, 70), slab)
     place_logo(img, a["logo"], FRONT[0] + fw / 2, 130, 600)
     gold_text(img, (FRONT[0] + fw / 2, 900), "SUSHI PUSH POP", f["f800_100"], anchor="ms", tracking=4)
     hero = a["hero"]
     hs = fw
     hero = hero.resize((hs, hs), Image.LANCZOS)
-    top = 1000
-    crop_h = H - 70 - top
-    hero = hero.crop((0, (hs - crop_h) // 3, hs, (hs - crop_h) // 3 + crop_h))
-    # feather hero top into the paper
-    fm = Image.new("L", hero.size, 255)
-    grad = np.clip(np.linspace(0, 1.6, 140), 0, 1)
-    fa = np.array(fm, float)
-    fa[:140, :] *= grad[:, None]
-    hero_mask = Image.fromarray(fa.astype("uint8"))
-    img.paste(hero, (FRONT[0], top), hero_mask)
-    splatter(img, (FRONT[0], 960, FRONT[1], 1100), count=40, scale=1.2)
-    # PUSH hint + brand seal
+    # hero in a gold brush frame, inset like the step panels
+    m = 70
+    top, bottom = 1000, H - 260
+    hw = fw - 2 * m
+    hero = hero.resize((hw, hw), Image.LANCZOS)
+    crop_h = bottom - top
+    hero = hero.crop((0, (hw - crop_h) // 3, hw, (hw - crop_h) // 3 + crop_h))
+    img.paste(hero, (FRONT[0] + m, top))
+    ink_frame(img, (FRONT[0] + m, top, FRONT[1] - m, bottom), width=12, color=GOLD_BOT)
+    # PUSH hint (gold) + gold YO seal on the black below the hero
     d = ImageDraw.Draw(img, "RGBA")
-    # PUSH hint on a small torn washi patch at the bottom of the front, near the base
-    patch = rough_mask(400, 150, edge=14, seed=77, dry=False)
-    img.paste(washi(400, 150).convert("RGB"), (FRONT[0] + 60, H - 250), patch)
+    px, py = FRONT[0] + m, H - 120
+    gold_text(img, (px, py), "PUSH", f["f800_60"], anchor="ls", tracking=4)
     d = ImageDraw.Draw(img, "RGBA")
-    px, py = FRONT[0] + 110, H - 150
-    d.text((px, py), "PUSH", font=f["f800_60"], fill=INK, anchor="ls")
-    ax = px + d.textlength("PUSH", font=f["f800_60"]) + 30
-    d.line([(ax, py), (ax, py - 70)], fill=INK, width=8)
-    d.polygon([(ax - 18, py - 58), (ax + 18, py - 58), (ax, py - 88)], fill=INK)
-    sm = rough_mask(150, 150, edge=10, seed=55, dry=False, amp=0.35)
-    s_img = Image.new("RGBA", (150, 150), VERMILION + (255,))
+    ax = px + sum(d.textlength(c, font=f["f800_60"]) for c in "PUSH") + 12 + 30
+    d.line([(ax, py), (ax, py - 70)], fill=GOLD_TOP, width=8)
+    d.polygon([(ax - 18, py - 58), (ax + 18, py - 58), (ax, py - 88)], fill=GOLD_TOP)
+    sm = rough_mask(130, 130, edge=10, seed=55, dry=False, amp=0.35)
+    s_img = Image.new("RGBA", (130, 130), GOLD_SEAL + (255,))
     s_img.putalpha(sm)
-    ImageDraw.Draw(s_img).text((75, 78), "YO", font=f["f800_60"], fill=CREAM, anchor="mm")
-    img.paste(s_img, (FRONT[1] - 230, H - 250), s_img)
+    ImageDraw.Draw(s_img).text((65, 68), "YO", font=f["f800_60"], fill=INK, anchor="mm")
+    img.paste(s_img, (FRONT[1] - m - 130, H - 215), s_img)
 
     # SIDE (soy clip zone): vertical katakana of the brand name, thin ink rule
     sx = (SIDE[0] + SIDE[1]) / 2
@@ -285,17 +284,17 @@ def build_wrap(a, f):
     y = 380
     for ch in "ヨーコ・オノ":
         if ch == "ー":  # vertical long-vowel mark
-            d.line([(sx, y - 60), (sx, y + 10)], fill=INK, width=9)
+            d.line([(sx, y - 60), (sx, y + 10)], fill=GOLD_TOP, width=9)
         else:
-            d.text((sx, y), ch, font=f["p500_110"], fill=INK, anchor="ms")
+            d.text((sx, y), ch, font=f["p500_110"], fill=GOLD_TOP, anchor="ms")
         y += 150
-    brush_line(d, (sx, 1300), (sx, 1820), 10)
+    brush_line(d, (sx, 1300), (sx, 1820), 8, GOLD_BOT)
 
     # BACK: title + 2x2 panels
     bw = BACK[1] - BACK[0]
     bcx = BACK[0] + bw / 2
-    tracked_text(d, (bcx, 180), "HOW TO ENJOY YOUR", f["f500_60"], INK, tracking=12)
-    tracked_text(d, (bcx, 310), "SUSHI PUSH POP", f["f800_120"], INK, tracking=5)
+    gold_text(img, (bcx, 180), "HOW TO ENJOY YOUR", f["f500_60"], anchor="ms", tracking=12)
+    gold_text(img, (bcx, 310), "SUSHI PUSH POP", f["f800_120"], anchor="ms", tracking=5)
     M, G, P = 70, 60, 720
     tops = [380, 380 + P + 105]
     for i in range(4):
@@ -303,11 +302,10 @@ def build_wrap(a, f):
         x0 = int(BACK[0] + M + col * (P + G) + (bw - 2 * M - 2 * P - G) / 2)
         y0 = tops[row]
         img.paste(a["panels"][i].resize((P, P), Image.LANCZOS), (x0, y0))
-        ink_frame(img, (x0, y0, x0 + P, y0 + P), width=14)
-        seal = hanko(i + 1, 110, f["p800"])
+        ink_frame(img, (x0, y0, x0 + P, y0 + P), width=10, color=GOLD_BOT)
+        seal = hanko(i + 1, 110, f["p800"], color=GOLD_SEAL, text=INK)
         img.paste(seal, (x0 + 18, y0 + 18), seal)
-        dd = ImageDraw.Draw(img)
-        tracked_text(dd, (x0 + P / 2, y0 + P + 70), STEPS[i], f["f500_54"], INK, tracking=2)
+        gold_text(img, (x0 + P / 2, y0 + P + 70), STEPS[i], f["f500_54"], anchor="ms", tracking=2)
     return img
 
 

@@ -1,6 +1,6 @@
 # Sushi Push Pop sticker – v5 "Ink Ronin"
 
-v4 (chibi anime kid) was rejected by the owner as too kitschy. v5 is a seinen-manga sumi-ink look: a ronin-chef, black ink on washi paper, gold logo, red hanko step numbers.
+v4 (chibi anime kid) was rejected by the owner as too kitschy. v5 is a seinen-manga sumi-ink look: a ronin-chef drawn in black ink, set on an all black-and-gold layout (brand palette): gold logo, gold title and captions, gold brush frames and gold seal step numbers, with the same gold logo on the tube in every panel.
 
 ## Files (`v5/`)
 - `sticker_v5_preview.jpg`: preview of the 4-step how-to sticker.
