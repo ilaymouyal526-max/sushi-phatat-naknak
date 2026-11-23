@@ -7,7 +7,8 @@ Brief, decisions and open questions: `brief.md`. Every file used or made: `asset
 2. `python3 scripts/check_prompts.py`: checks the prompts against the brief and writes `prompts/QA.md`.
 3. Generate (paid, needs approval): `generate_image_batch` with `requests` from `prompts/prompts.json`. Save the results as `assets/panels/<ID>.png`.
 4. `python3 scripts/build_layout.py && python3 scripts/build_layout.py --guides`: writes `layout/sticker.html` (RTL panel grid, ink frames, sound effects in Dela Gothic One, and the real logo).
-5. `python3 scripts/export_print.py`: writes the print files to `out/`.
+5. `python3 scripts/export_print.py [--wrap]`. The side A grid and the sound effects are in `layout/side_a.json`, and `build_layout.py --placeholders ID…` makes placeholder panels.
+   The export: writes the print files to `out/`.
    - `side_A/B_print.png` at 300 DPI, 54×104 mm.
    - `side_A/B_print.pdf` with a `CutContour` spot line.
    - `side_A/B_cut.svg`, `sticker_both_sides.pdf` and `preview.jpg`.

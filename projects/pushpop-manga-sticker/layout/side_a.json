@@ -1,0 +1,195 @@
+{
+ "_doc": [
+  "Side A manga grid, read RIGHT TO LEFT, top to bottom. Edited by hand; scripts/build_layout.py reads it.",
+  "Units: mm from the TRIM top-left corner (trim is 50 x 100; usable area 2.5..47.5 x 2.5..97.5; safe zone 3..47 x 3..97).",
+  "Each panel: 'box' [x, y, w, h] or 'poly' [[x, y], ...] for a slanted panel (the image fills the polygon's bounding box).",
+  "'img' defaults to assets/panels/<id>.png. Any size works: the real pixel size is read at build time, so a new image",
+  "only has to be dropped in at that path. 'focal' [fx, fy] is the point of the image (0..1 of its width/height) that is",
+  "kept as close to the panel centre as the crop allows; 'zoom' > 1 crops tighter around it (default 1 = just cover).",
+  "'sfx': 'at' [fx, fy] is the text centre as a fraction of the panel's bounding box; size is the font size in mm."
+ ],
+ "panels": [
+  {
+   "id": "A1",
+   "beat": "forest (establishing strip)",
+   "box": [
+    2.5,
+    2.5,
+    45.0,
+    9.0
+   ],
+   "focal": [
+    0.68,
+    0.52
+   ]
+  },
+  {
+   "id": "A2",
+   "beat": "entrance, real YOKO ONO sign (never crop the sign)",
+   "box": [
+    2.5,
+    13.1,
+    45.0,
+    14.2
+   ],
+   "focal": [
+    0.5,
+    0.48
+   ]
+  },
+  {
+   "id": "A3",
+   "beat": "the cut (1:1 source, slanted gutter on the left)",
+   "poly": [
+    [
+     20.4,
+     28.9
+    ],
+    [
+     47.5,
+     28.9
+    ],
+    [
+     47.5,
+     47.9
+    ],
+    [
+     24.4,
+     47.9
+    ]
+   ],
+   "focal": [
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "A3b",
+   "beat": "thrown through the air (1:1 source)",
+   "poly": [
+    [
+     2.5,
+     28.9
+    ],
+    [
+     18.8,
+     28.9
+    ],
+    [
+     22.8,
+     47.9
+    ],
+    [
+     2.5,
+     47.9
+    ]
+   ],
+   "focal": [
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "A3c",
+   "beat": "fallen on his side (1:1 source)",
+   "box": [
+    24.4,
+    49.5,
+    23.1,
+    18.2
+   ],
+   "focal": [
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "A4",
+   "beat": "rises to one knee",
+   "box": [
+    2.5,
+    49.5,
+    20.3,
+    18.2
+   ],
+   "focal": [
+    0.6,
+    0.45
+   ]
+  },
+  {
+   "id": "A5",
+   "beat": "REVEAL: push pop on the red cushion (never crop the tube)",
+   "box": [
+    24.4,
+    69.3,
+    23.1,
+    28.2
+   ],
+   "focal": [
+    0.56,
+    0.47
+   ]
+  },
+  {
+   "id": "A6",
+   "beat": "he reads the scroll, hand-off to side B (1:1 source)",
+   "box": [
+    2.5,
+    69.3,
+    20.3,
+    28.2
+   ],
+   "focal": [
+    0.5,
+    0.5
+   ]
+  }
+ ],
+ "sfx": [
+  {
+   "text": "ザッ",
+   "panel": "A2",
+   "at": [
+    0.17,
+    0.36
+   ],
+   "size": 5.0,
+   "rot": -8,
+   "vertical": false
+  },
+  {
+   "text": "ドン!!",
+   "panel": "A3",
+   "at": [
+    0.68,
+    0.27
+   ],
+   "size": 4.8,
+   "rot": -8,
+   "vertical": false
+  },
+  {
+   "text": "ズザッ",
+   "panel": "A3c",
+   "at": [
+    0.33,
+    0.76
+   ],
+   "size": 3.9,
+   "rot": 6,
+   "vertical": false
+  },
+  {
+   "text": "ゴゴゴ",
+   "panel": "A5",
+   "at": [
+    0.83,
+    0.36
+   ],
+   "size": 4.2,
+   "rot": 0,
+   "vertical": true
+  }
+ ]
+}
