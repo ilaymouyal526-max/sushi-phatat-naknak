@@ -27,4 +27,11 @@
 | 2026-11-23 | B4 v2: logo on label | same, edit of 780c90fd | job ffb7efe5-9a8c-4f59-b454-83e665a10d68 | https://d8j0ntlcm91z4.cloudfront.net/user_3JoptmBPugci1QhYLrCOcuUL5MN/hf_20261123_124604_ffb7efe5-9a8c-4f59-b454-83e665a10d68.png | 0.75 | prompts_v2.json | selected (faint second logo above the label) |
 | 2026-11-23 | Print files v1 | local export | - | `out/side_A_print.pdf`, `out/side_B_print.pdf`, `out/sticker_both_sides.pdf` (+ PNG 300 DPI, cut SVG, preview) | free | - | ready for review |
 
-Session spend 23.11: 9 panels 6.75 + 6 edits 4.50 = **11.25 credits**.
+| 2026-11-23 | A3 v3: the cut, closed chest, no product | GPT Image 2.6 low 1k | job 589f77fa-f2cd-4a53-8fae-224db8740cda | https://d8j0ntlcm91z4.cloudfront.net/user_3JoptmBPugci1QhYLrCOcuUL5MN/hf_20261123_130120_589f77fa-f2cd-4a53-8fae-224db8740cda.png | 0.75 | prompts_v3.json | selected |
+| 2026-11-23 | A3b v3: thrown by the blast (new) | GPT Image 2.6 low 1k | job 56c6ff26-9963-4d83-9f10-c778a0f20ad6 | https://d8j0ntlcm91z4.cloudfront.net/user_3JoptmBPugci1QhYLrCOcuUL5MN/hf_20261123_130118_56c6ff26-9963-4d83-9f10-c778a0f20ad6.png | 0.75 | prompts_v3.json | selected |
+| 2026-11-23 | A3c v3: lying on his side (new) | GPT Image 2.6 low 1k | job 53570243-d2da-45ef-ad16-24b1faf0b5d3 | https://d8j0ntlcm91z4.cloudfront.net/user_3JoptmBPugci1QhYLrCOcuUL5MN/hf_20261123_130119_53570243-d2da-45ef-ad16-24b1faf0b5d3.png | 0.75 | prompts_v3.json | selected |
+| 2026-11-23 | A6 v3: reads the scroll (new) | GPT Image 2.6 low 1k | job 74cbbe08-5dcd-4fed-b0b9-9b1d42d6aae9 | https://d8j0ntlcm91z4.cloudfront.net/user_3JoptmBPugci1QhYLrCOcuUL5MN/hf_20261123_130118_74cbbe08-5dcd-4fed-b0b9-9b1d42d6aae9.png | 0.75 | prompts_v3.json | selected |
+| 2026-11-23 | B2 v3: vial off, on the table | GPT Image 2.6 low 1k | job e36b9ea7-58d3-4125-874b-9c1f7bf3e4e2 | https://d8j0ntlcm91z4.cloudfront.net/user_3JoptmBPugci1QhYLrCOcuUL5MN/hf_20261123_130116_e36b9ea7-58d3-4125-874b-9c1f7bf3e4e2.png | 0.75 | prompts_v3_fixes.json | selected (red cushion + torii remain) |
+| 2026-11-23 | B4 v3: vial off, one logo, no red | GPT Image 2.6 low 1k | job ad73d594-ae0b-4593-b591-3cf84e5c17dc | https://d8j0ntlcm91z4.cloudfront.net/user_3JoptmBPugci1QhYLrCOcuUL5MN/hf_20261123_130120_ad73d594-ae0b-4593-b591-3cf84e5c17dc.png | 0.75 | prompts_v3_fixes.json | selected |
+
+Session spend 23.11: 9 panels 6.75 + 6 logo/sign edits 4.50 + 4 story panels 3.00 + 2 fixes 1.50 = **15.75 credits**.
