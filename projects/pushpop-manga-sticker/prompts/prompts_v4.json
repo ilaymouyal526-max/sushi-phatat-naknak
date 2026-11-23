@@ -1,0 +1,145 @@
+{
+  "note": "v4 'the ceremony': 4 new + 2 edits, 6 x 0.75 = 4.50 credits",
+  "requests": [
+    {
+      "index": 0,
+      "id": "A3",
+      "name": "lays down his sword",
+      "params": {
+        "model": "gpt_image_2_6",
+        "quality": "low",
+        "resolution": "1k",
+        "aspect_ratio": "1:1",
+        "prompt": "Reference 1 is the exact samurai and the exact ink style to keep; ignore its background and counter.\nReference 2 is the same shrine hall (dark wooden pillars and beams, open paper parasols hanging from the ceiling, paper lanterns, worn stone floor, shafts of light): use it ONLY for the location and the lighting; ignore the pose and the figure in it, and ignore its red torii gate and red altar objects, which must not appear.\nReference 3 shows the ancient chest on its low stone altar: use it ONLY for the shape of the chest and altar; ignore the red energy, the sword strike and the pose, which must not appear.\nPANEL A3 - THE SWORD. Inside the shrine, before the low stone altar with the CLOSED ancient chest. Close shot: the samurai, kneeling, lays his sheathed sword horizontally on the stone floor in front of him with both hands, slowly, as a sign of respect. Eyes lowered. The closed chest is behind, slightly out of focus.\nMOOD: calm, silent and respectful, like a tea ceremony. No violence, no attack, no weapon drawn, no explosion, no energy wave, no speed lines, no flying debris, no ink splatter bursts.\nMUST NOT APPEAR: no push pop, no tube, no vial, no bottle, no sushi, no rice, no food of any kind, no tray, no plate, no bowl, no cushion, no scroll and no object of any kind on, in, beside or around the chest. The cushion, the push pop label and the sushi and teriyaki colours named in the colour rule do not appear in this panel.\nNO RED: there is no red anywhere in this panel (no energy, no gate, no cushion); only black ink, grey wash and bare cream paper.\nNO RED IN THE BACKGROUND: there is no gate in this panel. No red torii gates, no red pillars, no red lanterns, no red altar objects; the whole shrine background is black ink, grey wash and bare paper.\nTHE LIGHT: soft white light drawn as bare cream paper and fine radiating ink hatching against grey wash; never coloured, never gold.\nFRAMING: square image. Keep the samurai, his face, hands and sword, and all the important action inside the central 70% of the frame; the outer 15% on every side holds only background, energy, dust or bare paper, because the panel will be cropped to about 5:4 or 4:5.\nTHE SAMURAI (match reference 1 exactly): a Japanese ronin-chef in his 30s, long black hair in a rough topknot, white cloth headband, light stubble, lean and strong, indigo-black kimono with a tasuki cord tying back the sleeves, narrow focused eyes, serious calm face. Same face and costume in every panel.\nINSIDE THE YOKO SHRINE: a dim ancient Japanese shrine hall, thick dark wooden pillars and beams, old paper parasols hanging open from the high ceiling, hanging paper lanterns, worn stone floor, drifting dust in shafts of light.\nTHE ANCIENT CHEST: a knee-high antique lacquered wooden chest with iron corner fittings and a heavy lid, standing alone on a low stone altar.\nART STYLE: Japanese seinen samurai-manga ink illustration. Expressive sumi brush linework with dry-brush edges and strongly varying line weight, realistic adult anatomy, fine-pen cross-hatching in the shadows, sparse grey ink wash, generous bare cream washi paper, a few ink splatters, calm intense mood. No screentone, no chibi, no sparkles, no cute elements.\nCOLOUR: black ink only on cream washi paper, with exactly these exceptions and nothing else: deep vermilion red ONLY for the Yoko gate frame, the red energy wave and the red display cushion; a thin gold rim ONLY on the round label of the push pop; the natural colours of the sushi (white rice, black sesame, orange salmon, green avocado) and the dark glossy brown of teriyaki sauce. Everything else, including lanterns, snow, wood, stone and clothing, is black ink, grey wash or bare paper.\nNO TEXT: no text, no letters, no numbers, no kanji or kana, no seals with characters, no logo, no writing on signs, no speech bubbles, no sound-effect lettering, no panel borders.",
+        "medias": [
+          {
+            "role": "image_references",
+            "value": "a7ea96c5-87d2-40b6-b2f5-23ef4b9ad311"
+          },
+          {
+            "role": "image_references",
+            "value": "b03006ea-566c-4498-8006-6818a992f5eb"
+          },
+          {
+            "role": "image_references",
+            "value": "589f77fa-f2cd-4a53-8fae-224db8740cda"
+          }
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "id": "A3b",
+      "name": "bows",
+      "params": {
+        "model": "gpt_image_2_6",
+        "quality": "low",
+        "resolution": "1k",
+        "aspect_ratio": "1:1",
+        "prompt": "Reference 1 is the exact samurai and the exact ink style to keep; ignore its background and counter.\nReference 2 is the same shrine hall (dark wooden pillars and beams, open paper parasols hanging from the ceiling, paper lanterns, worn stone floor, shafts of light): use it ONLY for the location and the lighting; ignore the pose and the figure in it, and ignore its red torii gate and red altar objects, which must not appear.\nReference 3 shows the ancient chest on its low stone altar: use it ONLY for the shape of the chest and altar; ignore the red energy, the sword strike and the pose, which must not appear.\nPANEL A3b - THE BOW. Medium-wide shot from the side: he kneels in seiza on the stone floor before the altar and bows deeply, back straight, head low, both hands flat on the floor in front of his knees; his sheathed sword lies on the floor before him. The closed chest rests on the altar ahead of him. Shafts of light and drifting dust. Complete stillness.\nMOOD: calm, silent and respectful, like a tea ceremony. No violence, no attack, no weapon drawn, no explosion, no energy wave, no speed lines, no flying debris, no ink splatter bursts.\nMUST NOT APPEAR: no push pop, no tube, no vial, no bottle, no sushi, no rice, no food of any kind, no tray, no plate, no bowl, no cushion, no scroll and no object of any kind on, in, beside or around the chest. The cushion, the push pop label and the sushi and teriyaki colours named in the colour rule do not appear in this panel.\nNO RED: there is no red anywhere in this panel (no energy, no gate, no cushion); only black ink, grey wash and bare cream paper.\nNO RED IN THE BACKGROUND: there is no gate in this panel. No red torii gates, no red pillars, no red lanterns, no red altar objects; the whole shrine background is black ink, grey wash and bare paper.\nTHE LIGHT: soft white light drawn as bare cream paper and fine radiating ink hatching against grey wash; never coloured, never gold.\nFRAMING: square image. Keep the samurai, his face, hands and sword, and all the important action inside the central 70% of the frame; the outer 15% on every side holds only background, energy, dust or bare paper, because the panel will be cropped to about 5:4 or 4:5.\nTHE SAMURAI (match reference 1 exactly): a Japanese ronin-chef in his 30s, long black hair in a rough topknot, white cloth headband, light stubble, lean and strong, indigo-black kimono with a tasuki cord tying back the sleeves, narrow focused eyes, serious calm face. Same face and costume in every panel.\nINSIDE THE YOKO SHRINE: a dim ancient Japanese shrine hall, thick dark wooden pillars and beams, old paper parasols hanging open from the high ceiling, hanging paper lanterns, worn stone floor, drifting dust in shafts of light.\nTHE ANCIENT CHEST: a knee-high antique lacquered wooden chest with iron corner fittings and a heavy lid, standing alone on a low stone altar.\nART STYLE: Japanese seinen samurai-manga ink illustration. Expressive sumi brush linework with dry-brush edges and strongly varying line weight, realistic adult anatomy, fine-pen cross-hatching in the shadows, sparse grey ink wash, generous bare cream washi paper, a few ink splatters, calm intense mood. No screentone, no chibi, no sparkles, no cute elements.\nCOLOUR: black ink only on cream washi paper, with exactly these exceptions and nothing else: deep vermilion red ONLY for the Yoko gate frame, the red energy wave and the red display cushion; a thin gold rim ONLY on the round label of the push pop; the natural colours of the sushi (white rice, black sesame, orange salmon, green avocado) and the dark glossy brown of teriyaki sauce. Everything else, including lanterns, snow, wood, stone and clothing, is black ink, grey wash or bare paper.\nNO TEXT: no text, no letters, no numbers, no kanji or kana, no seals with characters, no logo, no writing on signs, no speech bubbles, no sound-effect lettering, no panel borders.",
+        "medias": [
+          {
+            "role": "image_references",
+            "value": "a7ea96c5-87d2-40b6-b2f5-23ef4b9ad311"
+          },
+          {
+            "role": "image_references",
+            "value": "b03006ea-566c-4498-8006-6818a992f5eb"
+          },
+          {
+            "role": "image_references",
+            "value": "589f77fa-f2cd-4a53-8fae-224db8740cda"
+          }
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "id": "A3c",
+      "name": "opens the lid gently",
+      "params": {
+        "model": "gpt_image_2_6",
+        "quality": "low",
+        "resolution": "1k",
+        "aspect_ratio": "1:1",
+        "prompt": "Reference 1 is the exact samurai and the exact ink style to keep; ignore its background and counter.\nReference 2 is the same shrine hall (dark wooden pillars and beams, open paper parasols hanging from the ceiling, paper lanterns, worn stone floor, shafts of light): use it ONLY for the location and the lighting; ignore the pose and the figure in it, and ignore its red torii gate and red altar objects, which must not appear.\nReference 3 shows the ancient chest on its low stone altar: use it ONLY for the shape of the chest and altar; ignore the red energy, the sword strike and the pose, which must not appear.\nPANEL A3c - THE LID. Close-up of his two hands on the heavy lid of the closed chest, lifting it slowly and carefully a few centimetres. A thin line of soft white light spills out of the gap and lights his fingers and the old iron fittings. Nothing inside can be seen yet. Keep the upper-left area as quiet grey wash, free of detail, for lettering added later.\nMOOD: calm, silent and respectful, like a tea ceremony. No violence, no attack, no weapon drawn, no explosion, no energy wave, no speed lines, no flying debris, no ink splatter bursts.\nMUST NOT APPEAR: no push pop, no tube, no vial, no bottle, no sushi, no rice, no food of any kind, no tray, no plate, no bowl, no cushion, no scroll and no object of any kind on, in, beside or around the chest. The cushion, the push pop label and the sushi and teriyaki colours named in the colour rule do not appear in this panel.\nNO RED: there is no red anywhere in this panel (no energy, no gate, no cushion); only black ink, grey wash and bare cream paper.\nNO RED IN THE BACKGROUND: there is no gate in this panel. No red torii gates, no red pillars, no red lanterns, no red altar objects; the whole shrine background is black ink, grey wash and bare paper.\nTHE LIGHT: soft white light drawn as bare cream paper and fine radiating ink hatching against grey wash; never coloured, never gold.\nFRAMING: square image. Keep the samurai, his face, hands and sword, and all the important action inside the central 70% of the frame; the outer 15% on every side holds only background, energy, dust or bare paper, because the panel will be cropped to about 5:4 or 4:5.\nTHE SAMURAI (match reference 1 exactly): a Japanese ronin-chef in his 30s, long black hair in a rough topknot, white cloth headband, light stubble, lean and strong, indigo-black kimono with a tasuki cord tying back the sleeves, narrow focused eyes, serious calm face. Same face and costume in every panel.\nINSIDE THE YOKO SHRINE: a dim ancient Japanese shrine hall, thick dark wooden pillars and beams, old paper parasols hanging open from the high ceiling, hanging paper lanterns, worn stone floor, drifting dust in shafts of light.\nTHE ANCIENT CHEST: a knee-high antique lacquered wooden chest with iron corner fittings and a heavy lid, standing alone on a low stone altar.\nART STYLE: Japanese seinen samurai-manga ink illustration. Expressive sumi brush linework with dry-brush edges and strongly varying line weight, realistic adult anatomy, fine-pen cross-hatching in the shadows, sparse grey ink wash, generous bare cream washi paper, a few ink splatters, calm intense mood. No screentone, no chibi, no sparkles, no cute elements.\nCOLOUR: black ink only on cream washi paper, with exactly these exceptions and nothing else: deep vermilion red ONLY for the Yoko gate frame, the red energy wave and the red display cushion; a thin gold rim ONLY on the round label of the push pop; the natural colours of the sushi (white rice, black sesame, orange salmon, green avocado) and the dark glossy brown of teriyaki sauce. Everything else, including lanterns, snow, wood, stone and clothing, is black ink, grey wash or bare paper.\nNO TEXT: no text, no letters, no numbers, no kanji or kana, no seals with characters, no logo, no writing on signs, no speech bubbles, no sound-effect lettering, no panel borders.",
+        "medias": [
+          {
+            "role": "image_references",
+            "value": "a7ea96c5-87d2-40b6-b2f5-23ef4b9ad311"
+          },
+          {
+            "role": "image_references",
+            "value": "b03006ea-566c-4498-8006-6818a992f5eb"
+          },
+          {
+            "role": "image_references",
+            "value": "589f77fa-f2cd-4a53-8fae-224db8740cda"
+          }
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "id": "A4",
+      "name": "the light",
+      "params": {
+        "model": "gpt_image_2_6",
+        "quality": "low",
+        "resolution": "1k",
+        "aspect_ratio": "1:1",
+        "prompt": "Reference 1 is the exact samurai and the exact ink style to keep; ignore its background and counter.\nReference 2 is the same shrine hall (dark wooden pillars and beams, open paper parasols hanging from the ceiling, paper lanterns, worn stone floor, shafts of light): use it ONLY for the location and the lighting; ignore the pose and the figure in it, and ignore its red torii gate and red altar objects, which must not appear.\nReference 3 shows the ancient chest on its low stone altar: use it ONLY for the shape of the chest and altar; ignore the red energy, the sword strike and the pose, which must not appear.\nPANEL A4 - THE LIGHT. The lid is open. Soft white light rises out of the open chest and lights his face from below; he leans in slightly and looks inside with calm, quiet wonder, eyes open, serene. We do not see what is inside the chest (the open lid and the rim hide it). The hall around him is dim.\nMOOD: calm, silent and respectful, like a tea ceremony. No violence, no attack, no weapon drawn, no explosion, no energy wave, no speed lines, no flying debris, no ink splatter bursts.\nMUST NOT APPEAR: no push pop, no tube, no vial, no bottle, no sushi, no rice, no food of any kind, no tray, no plate, no bowl, no cushion, no scroll and no object of any kind on, in, beside or around the chest. The cushion, the push pop label and the sushi and teriyaki colours named in the colour rule do not appear in this panel.\nNO RED: there is no red anywhere in this panel (no energy, no gate, no cushion); only black ink, grey wash and bare cream paper.\nNO RED IN THE BACKGROUND: there is no gate in this panel. No red torii gates, no red pillars, no red lanterns, no red altar objects; the whole shrine background is black ink, grey wash and bare paper.\nTHE LIGHT: soft white light drawn as bare cream paper and fine radiating ink hatching against grey wash; never coloured, never gold.\nFRAMING: square image. Keep the samurai, his face, hands and sword, and all the important action inside the central 70% of the frame; the outer 15% on every side holds only background, energy, dust or bare paper, because the panel will be cropped to about 5:4 or 4:5.\nTHE SAMURAI (match reference 1 exactly): a Japanese ronin-chef in his 30s, long black hair in a rough topknot, white cloth headband, light stubble, lean and strong, indigo-black kimono with a tasuki cord tying back the sleeves, narrow focused eyes, serious calm face. Same face and costume in every panel.\nINSIDE THE YOKO SHRINE: a dim ancient Japanese shrine hall, thick dark wooden pillars and beams, old paper parasols hanging open from the high ceiling, hanging paper lanterns, worn stone floor, drifting dust in shafts of light.\nTHE ANCIENT CHEST: a knee-high antique lacquered wooden chest with iron corner fittings and a heavy lid, standing alone on a low stone altar.\nART STYLE: Japanese seinen samurai-manga ink illustration. Expressive sumi brush linework with dry-brush edges and strongly varying line weight, realistic adult anatomy, fine-pen cross-hatching in the shadows, sparse grey ink wash, generous bare cream washi paper, a few ink splatters, calm intense mood. No screentone, no chibi, no sparkles, no cute elements.\nCOLOUR: black ink only on cream washi paper, with exactly these exceptions and nothing else: deep vermilion red ONLY for the Yoko gate frame, the red energy wave and the red display cushion; a thin gold rim ONLY on the round label of the push pop; the natural colours of the sushi (white rice, black sesame, orange salmon, green avocado) and the dark glossy brown of teriyaki sauce. Everything else, including lanterns, snow, wood, stone and clothing, is black ink, grey wash or bare paper.\nNO TEXT: no text, no letters, no numbers, no kanji or kana, no seals with characters, no logo, no writing on signs, no speech bubbles, no sound-effect lettering, no panel borders.",
+        "medias": [
+          {
+            "role": "image_references",
+            "value": "a7ea96c5-87d2-40b6-b2f5-23ef4b9ad311"
+          },
+          {
+            "role": "image_references",
+            "value": "b03006ea-566c-4498-8006-6818a992f5eb"
+          },
+          {
+            "role": "image_references",
+            "value": "589f77fa-f2cd-4a53-8fae-224db8740cda"
+          }
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "id": "A5",
+      "name": "reveal, chest intact",
+      "params": {
+        "model": "gpt_image_2_6",
+        "quality": "low",
+        "resolution": "1k",
+        "aspect_ratio": "16:9",
+        "prompt": "Edit reference 1. Keep EVERYTHING else exactly the same: the same drawing, composition, pose, face, lighting, the push pop, the red cushion, the scroll and the same Japanese seinen samurai-manga sumi-ink style. Change ONLY the chest: it is intact, not broken. Its heavy wooden lid is opened and rests back on its hinges, whole and undamaged. Remove every splinter, broken plank and shattered edge; the chest walls are solid antique lacquered wood with iron corner fittings. No other text, letters or logo anywhere in the image.",
+        "medias": [
+          {
+            "role": "image_references",
+            "value": "5a6c5675-df4f-4a53-bb85-29c7702fcb2e"
+          }
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "id": "A6",
+      "name": "reads the scroll, chest intact",
+      "params": {
+        "model": "gpt_image_2_6",
+        "quality": "low",
+        "resolution": "1k",
+        "aspect_ratio": "1:1",
+        "prompt": "Edit reference 1. Keep EVERYTHING else exactly the same: the same drawing, composition, pose, face, lighting, the push pop, the red cushion, the scroll and the same Japanese seinen samurai-manga sumi-ink style. Change ONLY the chest beside him: it is intact, not broken, its heavy wooden lid opened and resting back on its hinges, whole and undamaged. Remove every splinter, broken plank and shattered edge. No other text, letters or logo anywhere in the image.",
+        "medias": [
+          {
+            "role": "image_references",
+            "value": "74cbbe08-5dcd-4fed-b0b9-9b1d42d6aae9"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -36,3 +36,4 @@
 
 Session spend 23.11: 9 panels 6.75 + 6 logo/sign edits 4.50 + 4 story panels 3.00 + 2 fixes 1.50 = **15.75 credits**.
 | 2026-11-23 | Tube labels A5, A6, B1–B4 with the real logo | local `scripts/brand_labels.py` (design-system logo file) | - | `assets/panels/<ID>_label.png` | free | - | selected (replaces the AI labels) |
+| 2026-11-23 | v4 "ceremony" submitted (A3 sword down, A3b bow, A3c lid, A4 light, A5/A6 chest intact) | GPT Image 2.6 low 1k | jobs f61e875f-7ed8-47cd-b8b4-ea914a261496, 7e272083-aefc-40f6-bf5b-f79daa12392e, 56d93c59-551f-4608-adaf-776d9ac14634, edceea3b-32ce-4a1f-bc1a-6c22623d30a4, a6c541c6-e959-4109-921d-c9611d692867, 57d36956-ccda-4ccd-b8c2-356d001675f1 | (pending) | 6 x 0.75 = 4.50 | prompts_v4.json | submitted |
