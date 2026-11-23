@@ -60,7 +60,7 @@
    ],
    "focal": [
     0.5,
-    0.5
+    0.61
    ]
   },
   {
@@ -159,28 +159,6 @@
    "vertical": false
   },
   {
-   "text": "ドン!!",
-   "panel": "A3",
-   "at": [
-    0.68,
-    0.27
-   ],
-   "size": 4.8,
-   "rot": -8,
-   "vertical": false
-  },
-  {
-   "text": "ズザッ",
-   "panel": "A3c",
-   "at": [
-    0.33,
-    0.76
-   ],
-   "size": 3.9,
-   "rot": 6,
-   "vertical": false
-  },
-  {
    "text": "ゴゴゴ",
    "panel": "A5",
    "at": [
@@ -190,6 +168,17 @@
    "size": 4.2,
    "rot": 0,
    "vertical": true
+  },
+  {
+   "text": "ギィ",
+   "panel": "A3c",
+   "at": [
+    0.27,
+    0.28
+   ],
+   "size": 4.6,
+   "rot": -6,
+   "vertical": false
   }
  ]
 }

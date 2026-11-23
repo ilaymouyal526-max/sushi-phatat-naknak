@@ -25,8 +25,8 @@ RING = (212, 156, 91)   # design-system gold-deep #D49C5B
 #   ai   = (cx, cy, rx, ry) ellipse covering the AI-drawn label/logo (repainted)
 #   label centre = ai centre; label diameter = 0.82 x tube width (same proportion in every panel)
 PANELS = {
-    "A5": ("A5_v2_final.png", (588, 684), (636, 336, 50, 62)),
-    "A6": ("A6_v3.png",       (338, 409), (376, 701, 34, 40)),
+    "A5": ("A5_v4.png",       (586, 685), (635, 345, 30, 30)),   # v4 ceremony: tube came back blank
+    "A6": ("A6_v4.png",       (346, 409), (377, 690, 20, 20)),
     "B1": ("B1_clean.png",    (337, 449), (392, 768, 56, 66)),
     "B2": ("B2_clean.png",    (348, 462), (405, 753, 37, 63)),
     "B3": ("B3_clean.png",    (340, 479), (411, 816, 70, 74)),
