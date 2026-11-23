@@ -7,3 +7,4 @@ out/_*.png
 out/_*
 !assets/panels/*_v3.png
 !assets/panels/*_clean.png
+!assets/panels/*_label.png

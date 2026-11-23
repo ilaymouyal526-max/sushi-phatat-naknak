@@ -35,3 +35,4 @@
 | 2026-11-23 | B4 v3: vial off, one logo, no red | GPT Image 2.6 low 1k | job ad73d594-ae0b-4593-b591-3cf84e5c17dc | https://d8j0ntlcm91z4.cloudfront.net/user_3JoptmBPugci1QhYLrCOcuUL5MN/hf_20261123_130120_ad73d594-ae0b-4593-b591-3cf84e5c17dc.png | 0.75 | prompts_v3_fixes.json | selected |
 
 Session spend 23.11: 9 panels 6.75 + 6 logo/sign edits 4.50 + 4 story panels 3.00 + 2 fixes 1.50 = **15.75 credits**.
+| 2026-11-23 | Tube labels A5, A6, B1–B4 with the real logo | local `scripts/brand_labels.py` (design-system logo file) | - | `assets/panels/<ID>_label.png` | free | - | selected (replaces the AI labels) |
