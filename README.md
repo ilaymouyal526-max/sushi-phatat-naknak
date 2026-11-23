@@ -16,7 +16,7 @@ Search tip: `grep -ri "<word>" projects/` finds any prompt, job ID, URL or decis
 |---|---|---|---|---|
 | Red Dragon Tataki | Yoko Ono (dish) | v3 (painting ending) done | 9:16 13.98s + 4:5 | `projects/yoko-ono-red-dragon-tataki/` |
 | Sushi Push Pop: "Anywhere" | Yoko Ono (Sushi Push Pop) | Pre-production; budget in `budget.md` | 9:16 ~15s + 6s cutdown | `projects/sushi-push-pop/` |
-| Push Pop manga sticker | Yoko Ono (Sushi Push Pop) | Prompts + layout ready; panels awaiting generation | 2 sides 50×100 mm print PDF | `projects/pushpop-manga-sticker/` |
+| Push Pop manga sticker | Yoko Ono (Sushi Push Pop) | Print files v1 ready for review | 2 sides 50×100 mm print PDF | `projects/pushpop-manga-sticker/` |
 
 ## Layout of every project folder
 ```

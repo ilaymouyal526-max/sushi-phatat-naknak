@@ -1,0 +1,135 @@
+{
+  "note": "v2 logo edits, approved 23.11: 6 x 0.75 = 4.50 credits",
+  "requests": [
+    {
+      "index": 0,
+      "id": "A2",
+      "params": {
+        "model": "gpt_image_2_6",
+        "quality": "low",
+        "resolution": "1k",
+        "aspect_ratio": "21:9",
+        "prompt": "Edit reference 1. Keep EVERYTHING exactly the same: the same drawing, composition, pose, hands, face, background, lighting, colours and the same Japanese seinen samurai-manga sumi-ink style. Change ONLY the long blank sign board on the red entrance frame: put the real sign from reference 2 on it, exactly as in that photo: the letters YOKO ONO spelled exactly Y-O-K-O O-N-O in the same rounded thin line lettering, with the oval medallion in the middle exactly as in reference 2 (an arched oval gold frame with cherry blossoms, mountains, a bowl with chopsticks and waves; reference 3 shows these details clearly). Sign letters and medallion in warm gold on the dark board, slightly glowing, with a little snow on top of the board. No other text, letters or logo anywhere in the image.",
+        "medias": [
+          {
+            "role": "image_references",
+            "value": "fec4e871-aec2-4515-9aca-e8ee609e087e"
+          },
+          {
+            "role": "image_references",
+            "value": "ae5a9411-dc77-409c-842d-43a16623c9a6"
+          },
+          {
+            "role": "image_references",
+            "value": "7d756499-c1ca-4655-a534-653fe05df47b"
+          }
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "id": "A5",
+      "params": {
+        "model": "gpt_image_2_6",
+        "quality": "low",
+        "resolution": "1k",
+        "aspect_ratio": "16:9",
+        "prompt": "Edit reference 1. Keep EVERYTHING exactly the same: the same drawing, composition, pose, hands, face, background, lighting, colours and the same Japanese seinen samurai-manga sumi-ink style. Change ONLY the round dark label on the front of the push pop tube: inside its thin gold rim, draw the Yoko Ono logo: a tall arched oval line frame with cherry-blossom branches at the top, a mountain range, the words YOKO ONO with ASIAN KITCHEN under them, and a bowl with chopsticks over curved waves at the bottom, all in thin gold lines, copied exactly from reference 2, in gold, centred and upright, small and crisp, following the curve of the tube. No other text, letters or logo anywhere in the image.",
+        "medias": [
+          {
+            "role": "image_references",
+            "value": "26b632e0-adcb-44a3-bf1b-88782bbadfbe"
+          },
+          {
+            "role": "image_references",
+            "value": "7d756499-c1ca-4655-a534-653fe05df47b"
+          }
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "id": "B1",
+      "params": {
+        "model": "gpt_image_2_6",
+        "quality": "low",
+        "resolution": "1k",
+        "aspect_ratio": "3:4",
+        "prompt": "Edit reference 1. Keep EVERYTHING exactly the same: the same drawing, composition, pose, hands, face, background, lighting, colours and the same Japanese seinen samurai-manga sumi-ink style. Change ONLY the round dark label on the front of the push pop tube: inside its thin gold rim, draw the Yoko Ono logo: a tall arched oval line frame with cherry-blossom branches at the top, a mountain range, the words YOKO ONO with ASIAN KITCHEN under them, and a bowl with chopsticks over curved waves at the bottom, all in thin gold lines, copied exactly from reference 2, in gold, centred and upright, small and crisp, following the curve of the tube. No other text, letters or logo anywhere in the image.",
+        "medias": [
+          {
+            "role": "image_references",
+            "value": "2260f325-2ffc-45aa-a7e4-a4806aa05bde"
+          },
+          {
+            "role": "image_references",
+            "value": "7d756499-c1ca-4655-a534-653fe05df47b"
+          }
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "id": "B2",
+      "params": {
+        "model": "gpt_image_2_6",
+        "quality": "low",
+        "resolution": "1k",
+        "aspect_ratio": "3:4",
+        "prompt": "Edit reference 1. Keep EVERYTHING exactly the same: the same drawing, composition, pose, hands, face, background, lighting, colours and the same Japanese seinen samurai-manga sumi-ink style. Change ONLY the round dark label on the front of the push pop tube: inside its thin gold rim, draw the Yoko Ono logo: a tall arched oval line frame with cherry-blossom branches at the top, a mountain range, the words YOKO ONO with ASIAN KITCHEN under them, and a bowl with chopsticks over curved waves at the bottom, all in thin gold lines, copied exactly from reference 2, in gold, centred and upright, small and crisp, following the curve of the tube. No other text, letters or logo anywhere in the image.",
+        "medias": [
+          {
+            "role": "image_references",
+            "value": "13af2582-97e3-4855-bef5-bb28c04af75f"
+          },
+          {
+            "role": "image_references",
+            "value": "7d756499-c1ca-4655-a534-653fe05df47b"
+          }
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "id": "B3",
+      "params": {
+        "model": "gpt_image_2_6",
+        "quality": "low",
+        "resolution": "1k",
+        "aspect_ratio": "3:4",
+        "prompt": "Edit reference 1. Keep EVERYTHING exactly the same: the same drawing, composition, pose, hands, face, background, lighting, colours and the same Japanese seinen samurai-manga sumi-ink style. Change ONLY the round dark label on the front of the push pop tube: inside its thin gold rim, draw the Yoko Ono logo: a tall arched oval line frame with cherry-blossom branches at the top, a mountain range, the words YOKO ONO with ASIAN KITCHEN under them, and a bowl with chopsticks over curved waves at the bottom, all in thin gold lines, copied exactly from reference 2, in gold, centred and upright, small and crisp, following the curve of the tube. No other text, letters or logo anywhere in the image.",
+        "medias": [
+          {
+            "role": "image_references",
+            "value": "6a3a2c5b-d9fb-4842-8e1f-6dbf518bf827"
+          },
+          {
+            "role": "image_references",
+            "value": "7d756499-c1ca-4655-a534-653fe05df47b"
+          }
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "id": "B4",
+      "params": {
+        "model": "gpt_image_2_6",
+        "quality": "low",
+        "resolution": "1k",
+        "aspect_ratio": "3:4",
+        "prompt": "Edit reference 1. Keep EVERYTHING exactly the same: the same drawing, composition, pose, hands, face, background, lighting, colours and the same Japanese seinen samurai-manga sumi-ink style. Change ONLY the round dark label on the front of the push pop tube: inside its thin gold rim, draw the Yoko Ono logo: a tall arched oval line frame with cherry-blossom branches at the top, a mountain range, the words YOKO ONO with ASIAN KITCHEN under them, and a bowl with chopsticks over curved waves at the bottom, all in thin gold lines, copied exactly from reference 2, in gold, centred and upright, small and crisp, following the curve of the tube. No other text, letters or logo anywhere in the image.",
+        "medias": [
+          {
+            "role": "image_references",
+            "value": "780c90fd-b1c1-4cc1-9ba8-0915b624e4d6"
+          },
+          {
+            "role": "image_references",
+            "value": "7d756499-c1ca-4655-a534-653fe05df47b"
+          }
+        ]
+      }
+    }
+  ]
+}
