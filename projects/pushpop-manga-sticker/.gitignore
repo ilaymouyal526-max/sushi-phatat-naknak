@@ -1,0 +1,6 @@
+# placeholders and big masters are rebuilt locally
+assets/panels/*.png
+!assets/panels/*_final.png
+fonts/YujiBoku-Regular.ttf
+out/_*.png
+out/
