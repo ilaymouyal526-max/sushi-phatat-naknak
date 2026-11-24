@@ -4,9 +4,9 @@ Handoff from the session of 10–24 Nov 2026. To continue in a new session, say:
 **"Read `HANDOFF-lead-finder.md` and continue the lead finder."**
 
 ## Start here
-- **Branch:** `claude/jolly-meitner-s4e01m` (repo `ilaymouyal526-max/sushi-phatat-naknak`). Everything below is committed and pushed there.
-  No pull request has been opened.
-- **Tests:** `python3 -m unittest discover -s tests` (43 tests, stdlib `unittest`, no pytest needed). All pass.
+- **Branch:** `claude/wizardly-allen-y5msa0` (repo `ilaymouyal526-max/sushi-phatat-naknak`, **public**). It contains the
+  original work from `claude/jolly-meitner-s4e01m` (merged) plus the lead-burn scheduler (section 8). No pull request has been opened.
+- **Tests:** `python3 -m unittest discover -s tests` (51 tests, stdlib `unittest`, no pytest needed). All pass.
 - **Needs:** Python 3.10+ with `requests`, `beautifulsoup4`, `openpyxl` (and `zoneinfo`, built in).
 - **The repo also holds an unrelated project** (`commercial/`, the AI sushi commercial). The lead finder is self-contained in
   `lead_agent/`, `tests/` and `.claude/skills/find-leads/`.
@@ -108,6 +108,23 @@ python3 -m lead_agent plan [--date YYYY-MM-DD] [--max 25]
 - `objections_he.json` holds 7 common objections (Instagram is enough, too expensive, no time, already have someone, send me an email,
   need to think, word of mouth) with variants per lead type. The user can edit it.
 
+### 8. Lead burn: spend leftover usage before the reset (`burn.py`, `/lead-burn`, `lead-finder` subagent)
+Added 24 Nov 2026. The user asked: "make it a subagent that uses credits an hour before the reset times; if there are still
+a lot of credits, ask for permission and notify me beforehand in case I have another project to work on."
+- **Subagent** `.claude/agents/lead-finder.md`: one full find → verify → texts → merge run for a city/category, with a deadline.
+- **Skill** `.claude/skills/lead-burn/SKILL.md`: a chain of one-shot `send_later` checks named `lead-burn check` (one pending
+  at a time). Each check reads `get_session` → `external_metadata.rate_limit_info` (`resetsAt`, `status`, `isUsingOverage`)
+  and runs `python3 -m lead_agent burn decide`.
+  - 70 min before the reset, if `status == allowed` and no overage, it sends a **push notification + chat question**. It runs
+    the subagent only on the user's "go", until 5 min before the reset. No answer = no run.
+  - Warning/overage, < 25 min left, or quiet hours (23:00–08:00 Israel) → skip that window. Otherwise it just schedules the next check.
+  - After a run: `burn finish` records counts + **hashed** lead ids, advances the rotation (16 cities × 6 categories),
+    sends the `.html` + `.xlsx` with SendUserFile, and pushes a "done" notification.
+- **State** `lead_agent/state/burn.json` is committed (settings, rotation, asked_for, run counts, salted-hash seen/dnc ids).
+  The repo is public, so it holds no names or phones (a test checks this). `find` skips hashed seen/dnc ids too, so runs don't
+  repeat leads after the container (and `leads/`) is reset.
+- **Limit:** there's no exact "% left", only `allowed` vs `allowed_warning`/`rejected` and the reset time.
+
 ## File map
 | Path | Role |
 |---|---|
@@ -123,10 +140,12 @@ python3 -m lead_agent plan [--date YYYY-MM-DD] [--max 25]
 | `lead_agent/scripts_he.py` / `data/objections_he.json` | Scripts, missed-you, objections |
 | `lead_agent/export.py` | JSON / CSV / XLSX writer, carries over sheet edits, applies the call log |
 | `lead_agent/cards.py` | Phone page and plan page (HTML + JS) |
+| `lead_agent/burn.py` / `state/burn.json` | Lead-burn decisions, rotation, hashed memory (section 8) |
+| `.claude/skills/lead-burn/SKILL.md` / `.claude/agents/lead-finder.md` | Scheduled leftover-usage runs + the subagent |
 | `lead_agent/paths.py` | User data folder: `./leads` or `$LEAD_AGENT_HOME` |
 | `lead_agent/RESEARCH.md` | Sources for the % and the call times (sourced vs. inferred) |
 | `lead_agent/README.md` | User guide |
-| `tests/` | 43 tests: audit, score/learn/osm, cards, CLI end-to-end, call times/holidays, call log/plan |
+| `tests/` | 51 tests: audit, score/learn/osm, cards, CLI end-to-end, call times/holidays, call log/plan, lead burn |
 | `leads/` (**git-ignored**) | Run files, `seen.csv`, `calls.csv`, `do_not_contact.csv`, `outcomes.csv`, `weights.learned.json`, plans |
 
 ## Research summary (details and links in `lead_agent/RESEARCH.md`)
@@ -186,3 +205,5 @@ python3 -m lead_agent plan [--date YYYY-MM-DD] [--max 25]
    Built call timing, holidays, call log, follow-ups, do-not-contact, personal best hours, daily plan + `.ics`, scripts, objections and missed-you.
    Commit `53f3f9b`.
 6. "Give me a handoff file". This file.
+7. (New session, 24 Nov) "Make it a subagent that uses credits an hour before the reset times; ask permission and notify me first."
+   Built section 8 and armed the first check.

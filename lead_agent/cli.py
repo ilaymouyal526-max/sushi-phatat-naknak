@@ -1,4 +1,4 @@
-"""Command line: find / show / merge / learn.
+"""Command line: find / show / merge / learn / log / plan / burn.
 
   python -m lead_agent find "Tel Aviv" --category beauty --limit 50
   python -m lead_agent show leads/2026-11-10-tel-aviv-beauty.json --top 30
@@ -14,7 +14,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import audit, calls, cities, export, learn, osm, paths, plan, score
+from . import audit, burn, calls, cities, export, learn, osm, paths, plan, score
 
 EDITABLE = {"phone", "website", "facebook", "instagram", "email", "opening_hours", "outreach_he", "notes",
             "status", "address", "call_script_he", "missed_he"}
@@ -48,11 +48,13 @@ def cmd_find(args) -> int:
     leads, stats = osm.find_businesses(bbox, args.category, city)
     seen = set() if args.include_seen else export.load_seen(out_dir)
     before = len(leads)
-    leads = [l for l in leads if l["lead_id"] not in seen]
+    memory = burn.load() if burn.state_path().exists() else {}
+    remembered = {l["lead_id"]: burn.remembered(l["lead_id"], memory) for l in leads}
+    leads = [l for l in leads if l["lead_id"] not in seen and (args.include_seen or remembered[l["lead_id"]] != "seen")]
     stats["skipped_already_delivered"] = before - len(leads)
     dnc = calls.load_dnc()
     before = len(leads)
-    leads = [l for l in leads if not calls.is_dnc(l, dnc)]
+    leads = [l for l in leads if not calls.is_dnc(l, dnc) and remembered[l["lead_id"]] != "dnc"]
     stats["skipped_do_not_contact"] = before - len(leads)
     with_site = sum(1 for l in leads if l.get("website"))
     if args.no_audit:
@@ -192,6 +194,29 @@ def cmd_learn(args) -> int:
     return 0
 
 
+def cmd_burn(args) -> int:
+    if args.action == "decide":
+        st = burn.load()
+        now = args.now if args.now is not None else dt.datetime.now().timestamp()
+        _print(burn.decide(now, args.resets_at, args.status, args.overage, st))
+    elif args.action == "asked":
+        _print(burn.mark_asked(args.resets_at))
+    elif args.action == "target":
+        _print(burn.current_target())
+    elif args.action == "finish":
+        target = {"city": args.city, "category": args.category} if args.city else burn.current_target()
+        _print(burn.finish(Path(args.run) if args.run else None, args.resets_at, target,
+                           calls.dnc_path(), advance=not args.no_advance))
+    elif args.action == "status":
+        _print(burn.status())
+    elif args.action == "set":
+        quiet = args.quiet.split("-") if args.quiet else None
+        enabled = {"on": True, "off": False}.get(args.enabled or "")
+        _print(burn.configure(enabled=enabled, verify_count=args.verify_count,
+                              notify_minutes_before=args.notify_before, quiet_hours=quiet))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="lead_agent", description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -243,6 +268,30 @@ def main(argv: list[str] | None = None) -> int:
     pl.add_argument("--date", help="YYYY-MM-DD (default: today, or the next working day)")
     pl.add_argument("--max", type=int, default=25, help="max calls in the plan")
     pl.set_defaults(func=cmd_plan)
+
+    b = sub.add_parser("burn", help="use leftover plan usage before it resets (see /lead-burn)")
+    bsub = b.add_subparsers(dest="action", required=True)
+    bd = bsub.add_parser("decide", help="what a scheduled check should do now")
+    bd.add_argument("--resets-at", type=float, help="plan reset time, epoch seconds (rate_limit_info.resetsAt)")
+    bd.add_argument("--status", default="allowed", help="rate_limit_info.status")
+    bd.add_argument("--overage", action="store_true", help="rate_limit_info.isUsingOverage is true")
+    bd.add_argument("--now", type=float, help="epoch seconds (default: now)")
+    ba = bsub.add_parser("asked", help="remember that the user was asked about this window")
+    ba.add_argument("resets_at", type=int)
+    bsub.add_parser("target", help="the next city/category in the rotation")
+    bf = bsub.add_parser("finish", help="record a finished run (counts + hashed ids only) and advance")
+    bf.add_argument("--run", help="the run .json the subagent produced")
+    bf.add_argument("--resets-at", type=int)
+    bf.add_argument("--city")
+    bf.add_argument("--category")
+    bf.add_argument("--no-advance", action="store_true", help="custom target: keep the rotation where it is")
+    bsub.add_parser("status", help="settings, next target and past runs")
+    bs = bsub.add_parser("set", help="change settings")
+    bs.add_argument("--enabled", choices=["on", "off"])
+    bs.add_argument("--verify-count", type=int)
+    bs.add_argument("--notify-before", type=int, help="minutes before the reset to ask")
+    bs.add_argument("--quiet", help='Israel time range, e.g. "23:00-08:00"')
+    b.set_defaults(func=cmd_burn)
 
     args = p.parse_args(argv)
     if args.cmd == "find" and not args.city and not args.bbox:

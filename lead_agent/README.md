@@ -11,7 +11,11 @@ Free and local. Uses OpenStreetMap plus direct checks of each business's own web
 /find-leads learn leads/2026-11-10-tel-aviv-beauty.xlsx
 /find-leads plan                 # today's call plan (or the next working day) + calendar file
 /find-leads log calls-2026-11-17.csv   # or just tell Claude: "called המוסך שלי, no answer"
+/lead-burn status                # leftover-usage runs: ~70 min before each plan reset Claude asks, you reply "go"
 ```
+**Lead burn:** before each usage reset, if plenty is left, Claude notifies you and asks. Reply `go` (or
+`go haifa trades 30`) and the `lead-finder` subagent runs until 5 minutes before the reset. Ignore it and nothing runs.
+`/lead-burn off` stops the checks. Details: `.claude/skills/lead-burn/SKILL.md`.
 Claude finds, audits and scores the businesses. It then verifies the best leads online, writes a personal Hebrew
 opener for each and hands you an Excel sheet. See `.claude/skills/find-leads/SKILL.md`.
 
