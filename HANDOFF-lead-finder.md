@@ -112,7 +112,7 @@ python3 -m lead_agent plan [--date YYYY-MM-DD] [--max 25]
 Full details: [`HANDOFF-lead-burn.md`](HANDOFF-lead-burn.md).
 Added 24 Nov 2026. The user asked: "make it a subagent that uses credits an hour before the reset times; if there are still
 a lot of credits, ask for permission and notify me beforehand in case I have another project to work on."
-- **Subagent** `.claude/agents/lead-finder.md`: one full find → verify → texts → merge run for a city/category, with a deadline.
+- **Subagent**: originally `.claude/agents/lead-finder.md`, now split into website + app finders (see section 9).
 - **Skill** `.claude/skills/lead-burn/SKILL.md`: a chain of one-shot `send_later` checks named `lead-burn check` (one pending
   at a time). Each check reads `get_session` → `external_metadata.rate_limit_info` (`resetsAt`, `status`, `isUsingOverage`)
   and runs `python3 -m lead_agent burn decide`.
