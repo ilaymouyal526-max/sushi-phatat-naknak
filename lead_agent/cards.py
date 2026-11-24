@@ -73,6 +73,70 @@ LOG_BUTTONS = [("answered", "ענה"), ("no_answer", "לא ענה"), ("call_back
                ("meeting", "פגישה"), ("not_interested", "לא מעוניין"), ("won", "נסגר ✓")]
 
 
+GROUP_ICON = {"hair": "✂️", "beauty": "💅", "tattoo": "🖋️", "massage": "💆", "default": "🏪"}
+
+
+def _upsell(lead: dict) -> str:
+    from .services import group_for, top_services
+    items = top_services(lead)
+    if not items:
+        return ""
+    g = group_for(lead)
+    chips = " ".join(f'<span class="chip-s">{_e(s["name_he"])}</span>' for s in items)
+    return (f'<p class="upsell" dir="rtl"><b>🧰 להציע גם:</b> {chips} '
+            f'<a href="#pack-{_e(g)}" data-pack="{_e(g)}">דף שיחה ↓</a></p>')
+
+
+def _src(name: str, url: str, when) -> str:
+    u = _safe_url(url)
+    label = f"{_e(name)}{', ' + _e(when) if when else ''}"
+    return f'<a href="{_e(u)}" target="_blank" rel="noopener">{label}</a>' if u else label
+
+
+def callsheet(leads: list[dict]) -> str:
+    """Page-level call sheet: one collapsible pack per type of business that appears in these leads."""
+    from .services import group_for, pack
+    counts: dict[str, int] = {}
+    for lead in leads:
+        g = group_for(lead)
+        counts[g] = counts.get(g, 0) + 1
+    if not counts:
+        return ""
+    packs = []
+    for g in sorted(counts, key=lambda k: (-counts[k], k)):
+        pk = pack(g)
+        svc = "".join(
+            f'<div class="svc-item"><b>{_e(sv["name_he"])}</b><p>{_e(sv["what_he"])}</p>'
+            f'<p class="pitch">💬 {_e(sv["pitch_he"])}</p><p class="small">⏱ {_e(sv["time_he"])}</p></div>'
+            for sv in pk["services"])
+        seen_prices, prices = set(), []
+        for sv in pk["services"]:
+            p = sv.get("price_info")
+            if p and sv.get("price") not in seen_prices:
+                seen_prices.add(sv.get("price"))
+                est = " <span class=\"est\">הערכה</span>" if p.get("estimate") else ""
+                prices.append(f'<li>{_e(p["text_he"])}{est} <span class="src">({_src(p["source"], p["url"], p.get("year"))})</span></li>')
+        facts = "".join(
+            f'<li><b>{_e(f["number"])}</b> · {_e(f["say_he"])} '
+            f'<span class="src">({_src(f["source"], f["url"], f.get("year"))})</span></li>' for f in pk["facts"])
+        qs = "".join(f"<li>{_e(q)}</li>" for q in pk["questions_he"])
+        legal = "".join(
+            f'<dt>{_e(l["title_he"])}</dt><dd>{_e(l["text_he"])} '
+            f'<span class="src">({_src(l["source"], l["url"], "נבדק " + str(l.get("checked", "")))})</span></dd>'
+            for l in pk["legal"])
+        packs.append(f'''<details class="pack" id="pack-{_e(g)}"><summary>{GROUP_ICON.get(g, "🏪")} {_e(pk["label_he"])} · {counts[g]} עסקים</summary>
+  <h3>🧰 מה להציע</h3><div class="svc">{svc}</div>
+  <h3>📊 מספרים לשיחה</h3><ul>{facts}</ul>
+  <h3>❓ מה לשאול את בעל העסק</h3><ol>{qs}</ol>
+  <h3>💰 מחירים בשוק</h3><ul>{"".join(prices)}</ul>
+  <h3>⚖️ חשוב לדעת</h3><dl>{legal}</dl>
+</details>''')
+    return ('<section class="sheet" dir="rtl" aria-labelledby="sheet-h"><h2 id="sheet-h">📋 דף שיחה לפי סוג עסק</h2>'
+            '<p class="small">מה עוד להציע, מספרים עם מקור, מה לשאול ומה חשוב לדעת. זמני העבודה הם הערכה שלנו. '
+            'המידע המשפטי הוא סיכום ולא ייעוץ משפטי. את התוכן עורכים ב-lead_agent/data/services_he.json ו-facts_he.json.</p>'
+            + "".join(packs) + "</section>")
+
+
 def _card(lead: dict, slot: str = "", kind: str = "") -> str:
     from .scripts_he import objections_for
     band = lead.get("band", "Cold")
@@ -144,6 +208,7 @@ def _card(lead: dict, slot: str = "", kind: str = "") -> str:
   </header>
   <p class="meta" dir="auto">{meta}</p>
   <p class="sell"><span class="pill">{_e(lead.get("sell") or lead.get("lead_type"))}</span> {verified}</p>
+  {_upsell(lead)}
   {when}
   <ul class="why" dir="rtl">{reasons}</ul>
   {notes}
@@ -174,6 +239,18 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .cbf input,.csvbox textarea{font:inherit;font-size:.9rem;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:6px 8px}
 .csvbox textarea{width:100%;font-family:ui-monospace,monospace;font-size:.8rem}
 .cbf button,.csvbox button{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--chip-on);color:var(--chip-on-t);border-radius:8px;padding:6px 12px}
+.upsell{margin:6px 0;font-size:.9rem}.upsell a{color:var(--accent);white-space:nowrap}
+.chip-s{display:inline-block;background:var(--opener);border-radius:6px;padding:2px 8px;margin:2px 0;font-size:.85rem}
+.sheet{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin:12px 0}
+.sheet h2{font-size:1.05rem;margin:4px 0}.sheet h3{font-size:.95rem;margin:14px 0 6px}
+.pack{border-top:1px solid var(--line);padding:4px 0;scroll-margin-top:72px}
+.pack summary{font-weight:600;cursor:pointer;padding:8px 0;min-height:44px;display:flex;align-items:center}
+.svc{display:grid;gap:8px}.svc-item{border-inline-start:3px solid var(--line);padding-inline-start:10px}
+.svc-item p{margin:2px 0}.pitch{color:var(--muted);font-size:.9rem}
+.sheet ul,.sheet ol{padding-inline-start:20px;margin:4px 0}.sheet li{margin:4px 0}
+.sheet dt{font-weight:600;margin-top:8px}.sheet dd{margin:2px 0 6px;margin-inline-start:0}
+.src{font-size:.8rem;color:var(--muted)}.src a{color:var(--accent);overflow-wrap:anywhere}
+.est{font-size:.75rem;background:var(--warm);color:var(--warm-t);border-radius:6px;padding:1px 6px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--chip-on);color:var(--chip-on-t);padding:10px 16px;border-radius:10px;z-index:20;max-width:calc(100% - 32px);font-size:.9rem}
 button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
@@ -381,6 +458,9 @@ if(exp)exp.addEventListener('click',async()=>{
   try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:name});return}}catch(e){}
   const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=name;a.click();
 });
+document.querySelectorAll('[data-pack]').forEach(a=>a.addEventListener('click',e=>{
+  const d=document.getElementById('pack-'+a.dataset.pack);if(!d)return;e.preventDefault();d.open=true;
+  d.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}));
 refresh();setInterval(refresh,60000);
 """
 
@@ -430,7 +510,7 @@ def render_cards(leads: list[dict], meta: dict) -> str:
   message or call (Hot ≥ 7%, Warm ≥ 3.5%). The green badge shows who is good to call <b>right now</b> (Israel time).
   Send messages yourself, one at a time, and stop if they say no.</p>
   {TOOLBAR.format(extra="")}"""
-    return _page(f"Leads · {city}", intro, "".join(_card(l) for l in leads), leads)
+    return _page(f"Leads · {city}", intro + callsheet(leads), "".join(_card(l) for l in leads), leads)
 
 
 def render_plan(result: dict) -> str:

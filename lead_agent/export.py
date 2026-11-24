@@ -8,7 +8,7 @@ import re
 from pathlib import Path
 from urllib.parse import quote_plus
 
-from . import call_times, calls, scripts_he
+from . import call_times, calls, scripts_he, services
 from .cards import render_cards
 
 SEEN = "seen.csv"
@@ -22,6 +22,7 @@ COLUMNS = [
     ("phone", "phone / טלפון", 15),
     ("rating", "rating / דירוג", 13),
     ("sell", "what to sell / מה למכור", 20),
+    ("upsell", "להציע גם / upsell", 34),
     ("call_best", "מתי להתקשר / best time to call", 30),
     ("call_avoid", "שעות עומס / rush hours", 30),
     ("opening_he", "שעות פתיחה / opening hours", 24),
@@ -70,6 +71,7 @@ def add_links(lead: dict) -> None:
     lead["verified"] = "yes" if lead.get("enriched") else "no"
     lead["rating"] = f"{lead.get('band', '')} · {lead.get('success_pct', 0)}%"
     lead["sell"] = SELL_LABELS.get(lead.get("lead_type", ""), lead.get("lead_type", ""))
+    lead["upsell"] = services.upsell_text(lead)
 
 
 def row_values(lead: dict) -> dict:
@@ -217,6 +219,33 @@ def write_xlsx(leads: list[dict], path: Path) -> None:
             cell.alignment = Alignment(wrap_text=True, vertical="top")
     obj.column_dimensions["A"].width = 34
     obj.column_dimensions["B"].width = 90
+
+    sheet = wb.create_sheet("דף שיחה · Call sheet")
+    sheet.append(["סוג עסק / type", "מה / kind", "תוכן / text", "פירוט / detail", "מקור / source", "קישור / link"])
+    for cell in sheet[1]:
+        cell.font = Font(bold=True, color="FFFFFF")
+        cell.fill = PatternFill("solid", fgColor="1F2937")
+    groups = sorted({services.group_for(l) for l in leads}) or ["default"]
+    for g in groups:
+        pk = services.pack(g)
+        label = pk["label_he"]
+        for sv in pk["services"]:
+            p = sv.get("price_info") or {}
+            price = (p.get("text_he", "") + (" (הערכה)" if p.get("estimate") else "")) if p else ""
+            sheet.append([label, "🧰 שירות", sv["name_he"], f'{sv["what_he"]}\n💬 {sv["pitch_he"]}\n⏱ {sv["time_he"]}'
+                          + (f"\n💰 {price}" if price else ""), p.get("source", ""), p.get("url", "")])
+        for f in pk["facts"]:
+            sheet.append([label, "📊 מספר", f'{f["number"]} · {f["say_he"]}', "", f'{f["source"]}, {f.get("year", "")}', f["url"]])
+        for q in pk["questions_he"]:
+            sheet.append([label, "❓ שאלה", q, "", "", ""])
+        for l in pk["legal"]:
+            sheet.append([label, "⚖️ חוק", l["title_he"], l["text_he"], f'{l["source"]} (נבדק {l.get("checked", "")})', l["url"]])
+    for row in sheet.iter_rows(min_row=2):
+        for cell in row:
+            cell.alignment = Alignment(wrap_text=True, vertical="top")
+    for col, width in zip("ABCDEF", (14, 10, 40, 60, 30, 30)):
+        sheet.column_dimensions[col].width = width
+    sheet.freeze_panes = "A2"
 
     info = wb.create_sheet("How to use")
     for line in [
