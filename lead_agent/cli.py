@@ -156,6 +156,7 @@ def cmd_merge(args) -> int:
                 if k in ("call_script_he", "missed_he"):
                     lead.pop("call_script_auto" if k == "call_script_he" else "missed_auto", None)
         lead["enriched"] = True
+        lead["verified_online"] = "yes"  # merge = Claude checked this lead online (the sheet's "verified" column)
         changed += 1
     for lead in reaudit:
         lead["audit"] = audit.audit_site(lead["website"])

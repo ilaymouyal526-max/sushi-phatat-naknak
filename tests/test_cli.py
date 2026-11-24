@@ -38,6 +38,7 @@ class EndToEnd(unittest.TestCase):
             with open(run, encoding="utf-8") as f:
                 lead = next(l for l in json.load(f)["leads"] if l["lead_id"] == "osm:node/1")
             self.assertEqual(lead["outreach_he"], "היי")
+            self.assertEqual(lead["verified_online"], "yes")
             self.assertIn("has_social", lead["signals"])
 
             # Phone-friendly layout: name first, only header row + name column frozen.
