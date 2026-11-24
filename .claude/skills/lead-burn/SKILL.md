@@ -1,6 +1,6 @@
 ---
 name: lead-burn
-description: Use leftover Claude plan usage before it resets by running a lead-finder subagent (website-lead-finder, or app-lead-finder once the app profile exists) in the last hour of the usage window, but only after notifying the user and getting a "go". Use for "/lead-burn check" (fired by the scheduled check), "/lead-burn go [app] [city] [category] [count]" or a plain "go"/"go app"/"yes" reply to a burn notification, "/lead-burn skip", "/lead-burn status", "/lead-burn on|off", "/lead-burn set …", or "use my leftover credits for leads".
+description: Use leftover Claude plan usage before it resets by running a lead-finder subagent (website-lead-finder, or app-lead-finder once the app profile exists) in the last hour of the usage window, but only after notifying the user and getting a "go". Use for "/lead-burn check" (fired by the scheduled check), "/lead-burn go [type|app] [city] [count]" or a reply to a burn notification ("1"/"2"/"3", a business type, "go", "go app", "yes"), "/lead-burn skip", "/lead-burn status", "/lead-burn on|off", "/lead-burn set …", or "use my leftover credits for leads".
 ---
 
 # /lead-burn: spend leftover usage on leads, with permission
@@ -42,12 +42,14 @@ Schedule with `at` = the `next_check` epoch as an RFC3339 UTC time (`date -u -d 
      **No push notification.**
    - `notify`:
      a. `python3 -m lead_agent burn asked <resets_at>`.
-     b. **PushNotification** (one line, under 200 chars), e.g.
-        `Claude usage resets 17:20 with plenty left. Reply "go" for website leads (Tel Aviv beauty, 40) till 17:15, or ignore to keep it.`
-        Only if `app_profile.ready` is true (from `burn status`), add ` "go app" = app leads.` (keep it under 200 chars).
-     c. Post the same question in the chat with the options: `go`, `go <city> <category> <count>`,
-        `go app [city] [count]` (only if the app profile is ready), `skip`.
-     d. Schedule the next check at `next_check`. End the turn and **wait**. Don't start anything.
+     b. `python3 -m lead_agent types suggest` (three types: sweet spot, volume, big fish).
+     c. **PushNotification** (one line, under 200 chars) that asks which type, e.g.
+        `Usage resets 17:20, plenty left. Which type today? 1 Aesthetic clinics 2 Photographers 3 Dentists. Reply 1/2/3 or a type, or ignore.`
+     d. Post the same question in the chat: "Which type should we go for today?" with the three suggestions (name, quadrant,
+        price band, ease), and the reply options: `1` / `2` / `3`, any type by name (`go zimmers haifa 30`),
+        `go app [city] [count]` (only if `app_profile.ready`), or `skip`. Don't use AskUserQuestion here: the user is
+        probably away, and a plain chat question waits for them.
+     e. Schedule the next check at `next_check`. End the turn and **wait**. Don't start anything.
 3. Commit `lead_agent/state/burn.json` if it changed (`git add lead_agent/state/burn.json`, message
    "lead-burn: update state"), and push to the session's branch.
 
@@ -56,18 +58,23 @@ Schedule with `at` = the `next_check` epoch as an RFC3339 UTC time (`date -u -d 
    If `/lead-burn go` comes with no recent notification, it's still a valid request: use the current window's reset.
 2. Focus: `app` if the reply says "app", otherwise `website`. For `app`, check `burn status` → `app_profile.ready`.
    If it's not ready, say the app profile is still waiting on the friend's handoff and offer `go` (website) instead. Don't run.
-3. Target: the user's city/category/count if given. Otherwise use `python3 -m lead_agent burn target` and `verify_count`
-   from `burn status`. For `app`, use the rotation's city with no category (the agent uses the profile's categories).
+3. Target:
+   - **Type** (website runs): `1`/`2`/`3` = that suggestion from the notification; a name = `types show "<name>"`.
+     A bare "go" or "yes" means suggestion 1. If the user starts a run with `/lead-burn go` and no type, and there was no
+     notification, ask "Which type should we go for today?" with AskUserQuestion, the same way as in `/find-leads`.
+   - **City**: the user's, otherwise the rotation city from `python3 -m lead_agent burn target` (ignore its category).
+   - **Count**: the user's, otherwise `verify_count` from `burn status`.
+   - For `app`: the rotation city and no type (the app agent uses the profile).
    Deadline = reset − 5 min, in Israel time.
 4. Start the subagent: **`website-lead-finder`** or **`app-lead-finder`** (Agent tool with that `subagent_type`). If that
    type isn't listed, use `general-purpose` and tell it to read and follow `.claude/agents/<name>.md`. Pass city,
-   category, verify_count and deadline. Run it in the foreground so the files exist when it returns.
+   verify_count and deadline, plus `type` for the website-lead-finder. Run it in the foreground so the files exist when it returns.
 5. When it returns:
-   - `python3 -m lead_agent burn finish --run <run.json> --resets-at <resetsAt> --focus <website|app>`
-     (add `--city … --category … --no-advance` if the user picked a custom target).
+   - `python3 -m lead_agent burn finish --run <run.json> --resets-at <resetsAt> --focus <website|app> --type <type>`
+     (add `--city … --no-advance` if the user picked their own city). `--type` lets `types suggest` rotate next time.
    - Send the `.html` phone page and the `.xlsx` to the user with **SendUserFile** (status `proactive`). The container's
      `leads/` folder doesn't survive restarts, so this is how the user keeps them.
-   - PushNotification: `Website leads done: <N> Hot, <M> Warm in <city> <category>. Phone page + sheet in the chat.`
+   - PushNotification: `Website leads done: <N> Hot, <M> Warm in <city> (<type>). Phone page + sheet in the chat.`
      (for app runs: `App leads done: <N> high fit, <M> medium in <city>. …`)
    - In the chat: the subagent's top-10 table, stats, the compliance line from `/find-leads`, and the next target.
    - Commit and push `lead_agent/state/burn.json` only. **Never commit `leads/`.**
@@ -83,7 +90,7 @@ Schedule with `at` = the `next_check` epoch as an RFC3339 UTC time (`date -u -d 
 ## Defaults (change with `set`)
 Ask 70 min before the reset; the run stops 5 min before it; no question if under 25 min are left; quiet hours
 23:00–08:00 Israel time (no notifications, that window is skipped); 40 leads verified per run; website runs
-rotate through 16 cities × beauty, health, trades, auto, fitness, professional. Website and app runs remember
+use the business type the user picks (suggestions rotate to the type not run for the longest) and rotate through 16 cities. Website and app runs remember
 delivered leads separately, so one business can be offered both; a "not interested" blocks it for both. Leads delivered by earlier burn runs, and
 businesses that said no, are skipped even after the container is reset (hashed ids in the state file).
 

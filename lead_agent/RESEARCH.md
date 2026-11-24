@@ -56,3 +56,23 @@ afternoons; hotels' check-out and check-in; Sunday from 10:00.
 Your own data takes over: answer rates per type of business and hour are smoothed toward these priors
 (best ≈ 30%, other ≈ 20%, rush ≈ 10%, weight of 5 calls). From ~20 logged calls per type, the cards show your
 own best hour and the daily plan prefers it.
+
+## Business types: who pays, who closes (24 Nov 2026)
+Feeds `data/business_types.json` (the playbook used by `find --type`, `types suggest` and the website-lead-finder).
+Published as the "Website Client Map" artifact. **Positions are estimates**: no public survey splits website budgets by
+Israeli business type.
+- **Price bands (₪, one-off build):** Midrag: landing page ₪1,000–3,500, brochure site ₪3,500–5,000, store ₪5,000–7,500;
+  custom/premium above that. https://www.midrag.co.il/Content/Price/23030
+- **Value of one customer, by industry:** Google Ads cost per lead 2025: legal services the highest at $131.63, restaurants
+  among the lowest at $30.27, overall average $70.11 (LocaliQ/WordStream via Search Engine Land).
+  https://searchengineland.com/google-ads-costs-keep-rising-but-conversion-rates-improved-in-2025-451167
+- **Project values / easy niches:** personal-injury and family-law projects $8,000–15,000; home services and restaurants
+  named the easiest niches to start (agency and lead-list sellers, so opinion).
+  https://leadsbylocation.pages.dev/blog/best-niches-for-web-design/ · https://siteswan.com/how-to-sell-websites-to-law-firms
+- **Healthcare and dental have higher customer lifetime value** than most local types (Datalane, qualitative).
+- **Features by type:** booking for salons, dental and fitness; online ordering and menu for restaurants; quote form and
+  click-to-call for home services; practice-area pages and intake for lawyers (Housecall Pro, Homebase, agency pages).
+- **Accessibility (IS 5568, WCAG 2.0):** required for sites serving the public, but businesses with turnover of ₪1M or less
+  are exempt without applying (gov.il, Kol Zchut). Old reporting cites civil claims up to ₪62,000 without proof of damage;
+  check current rules.
+- Quadrant rule: ease ≥ 5.5 and middle price (geometric) ≥ ₪5,000 → sweet spot. Re-place types from your own won/lost data.

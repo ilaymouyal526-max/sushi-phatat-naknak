@@ -6,7 +6,7 @@ Handoff from the session of 10–24 Nov 2026. To continue in a new session, say:
 ## Start here
 - **Branch:** `claude/wizardly-allen-y5msa0` (repo `ilaymouyal526-max/sushi-phatat-naknak`, **public**). It contains the
   original work from `claude/jolly-meitner-s4e01m` (merged) plus the lead-burn scheduler (section 8). No pull request has been opened.
-- **Tests:** `python3 -m unittest discover -s tests` (55 tests, stdlib `unittest`, no pytest needed). All pass.
+- **Tests:** `python3 -m unittest discover -s tests` (61 tests, stdlib `unittest`, no pytest needed). All pass.
 - **Needs:** Python 3.10+ with `requests`, `beautifulsoup4`, `openpyxl` (and `zoneinfo`, built in).
 - **The repo also holds an unrelated project** (`commercial/`, the AI sushi commercial). The lead finder is self-contained in
   `lead_agent/`, `tests/` and `.claude/skills/find-leads/`.
@@ -149,6 +149,24 @@ need of an app that I'm waiting on a handoff file from my friend."
 - `show --type WEBSITE,REDESIGN` filters by lead type.
 - `HANDOFF-lead-burn.md` was **not** updated for this split. It still names the old `lead-finder` agent.
 
+### 10. Business-type playbook + "which type today?" (24 Nov 2026)
+The user asked for research on which businesses pay most vs. close easiest, plus what each wants in a site's look and
+features. Then: "add these rules to the subagent, and when I pull him up, ask me which type we should go for today."
+- **Research artifact:** "Website Client Map" (https://claude.ai/artifact/LP2TWYoCY2f8uRS7SiXotq; source HTML was in the
+  session scratchpad). Sources and caveats are in `RESEARCH.md` ("Business types"). Positions are estimates.
+- **Data:** `lead_agent/data/business_types.json` has 18 types. Each has OSM tags (`osm`), optional `name_keywords` for shared tags
+  (aesthetic clinics vs. beauty salons), a ₪ `lo`/`hi` band, `ease` (1–10), `why`, `look`, `mood` colours, `pitch` / `pitch_he`,
+  `must_have` / `nice_to_have` features, plus an `approach` per quadrant.
+  Quadrants: sweet = renovation, zimmer, aesthetic; skip = garage; volume and bigfish are the rest.
+- **Engine:** `business_types.py` and CLI `types list|show|suggest`; `find --type <id>` (overrides `--category`, applies the
+  name filter, and names files `<date>-<city>-<type>-website.*`, with `meta.business_type`); `burn finish --type`.
+  `suggest` gives one type per quadrant: the one run least recently (from run files + burn runs), ties going to the best middle price × ease.
+- **Subagent rules:** `website-lead-finder.md` now needs a `type`, loads `types show`, builds openers on `pitch_he` and a
+  missing must-have, follows the approach for the type's quadrant (big fish: sample first, 2–3 touches, accessibility only as
+  "worth checking"), writes a `look:` line in notes, and reports the price band. No prices in openers.
+- **Asking:** `/find-leads` asks "Which type should we go for today?" with AskUserQuestion (3 suggestions + Other) unless the
+  user named a type. `/lead-burn` notifications ask the same with 1/2/3 replies; a bare "go" = suggestion 1.
+
 ## File map
 | Path | Role |
 |---|---|
@@ -167,11 +185,12 @@ need of an app that I'm waiting on a handoff file from my friend."
 | `lead_agent/burn.py` / `state/burn.json` | Lead-burn decisions, rotation, hashed memory (section 8) |
 | `.claude/skills/lead-burn/SKILL.md` | Scheduled leftover-usage runs |
 | `.claude/agents/website-lead-finder.md` / `app-lead-finder.md` | The two subagents (section 9) |
+| `lead_agent/business_types.py` / `data/business_types.json` | Business-type playbook, `find --type`, `types suggest` (section 10) |
 | `lead_agent/app_profile.py` / `app_profile.example.json` | The app profile, waiting on the friend's handoff |
 | `lead_agent/paths.py` | User data folder: `./leads` or `$LEAD_AGENT_HOME` |
 | `lead_agent/RESEARCH.md` | Sources for the % and the call times (sourced vs. inferred) |
 | `lead_agent/README.md` | User guide |
-| `tests/` | 55 tests: audit, score/learn/osm, cards, CLI end-to-end, call times/holidays, call log/plan, lead burn, website/app focus |
+| `tests/` | 61 tests: audit, score/learn/osm, cards, CLI end-to-end, call times/holidays, call log/plan, lead burn, website/app focus, business types |
 | `leads/` (**git-ignored**) | Run files, `seen.csv`, `calls.csv`, `do_not_contact.csv`, `outcomes.csv`, `weights.learned.json`, plans |
 
 ## Research summary (details and links in `lead_agent/RESEARCH.md`)

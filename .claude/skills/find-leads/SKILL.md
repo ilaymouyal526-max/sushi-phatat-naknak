@@ -18,10 +18,27 @@ The work is split between two subagents. Pick by what the user wants to sell:
   profile, which gets built from a handoff file the user is waiting on from a friend. Until then it stops with that message.
 - `find` with no `--focus` (= `all`) keeps the old mixed behaviour (website + redesign + automation).
 For a big run (more than about 15 leads to verify), hand it to the subagent so the main conversation stays short.
-For a small one, follow the steps below yourself, with `--focus website` on `find`.
+For a small one, follow the steps below yourself, with `--focus website` and `--type <type>` on `find`.
+
+## Always ask first: "Which type should we go for today?"
+Every time the user starts the website lead finder (`/find-leads`, "find me leads", "run the lead finder", starting the
+`website-lead-finder`), **unless they already named a business type in that message**, ask before running anything:
+1. `python3 -m lead_agent types suggest` gives three suggestions: one sweet-spot type, one volume type and one big-fish
+   type, each the one not run for the longest.
+2. Ask with **AskUserQuestion**, header `Type today`, question "Which type of business should we go for today?", and these
+   options in this order: the sweet-spot suggestion labelled `<name> (Recommended)`, then the volume one, then the big-fish one.
+   Each option's description: quadrant, price band, ease and the pitch, e.g.
+   "Sweet spot · ₪7,000–15,000 · ease 5.6/10 · Online booking and a look that matches the price of the treatment."
+   The user can type any other type in "Other" (`types list` has all 18; Hebrew names work, e.g. צימרים).
+   If the city is missing too, ask it in the same AskUserQuestion call as a second question.
+3. Resolve the answer with `python3 -m lead_agent types show "<answer>"`. If it doesn't match, show `types list` and ask again.
+4. Run with `--type <id>` (yourself, or pass `type` to the `website-lead-finder`). A type the playbook marks `skip`
+   (garages) runs only because the user picked it, so say in one line that it's cheap and hard to close, then run it.
+The `app-lead-finder` doesn't use these types; its targets come from the app profile.
 
 ## Arguments
-- `/find-leads <city> [category] [count]`. Defaults: category `all`, count `30` to verify and draft.
+- `/find-leads <city> [type] [count]`. Count defaults to `30` to verify and draft. With no type, ask (see above).
+  `type` is a playbook type (`python3 -m lead_agent types list`); a raw `--category` still works for odd one-off searches.
   - City: English or Hebrew (`Tel Aviv`, `רמת גן`, `Haifa` …). Unknown cities fall back to free Nominatim geocoding.
   - Category: `all`, a group (`beauty, health, food, trades, fitness, professional, retail, auto, education, hospitality`),
     a raw OSM value (`dentist`, `hairdresser`, `car_repair`), or a comma list.
@@ -29,13 +46,13 @@ For a small one, follow the steps below yourself, with `--focus website` on `fin
 - `/find-leads plan [YYYY-MM-DD]`: today's (or that day's) call plan, see "Daily call plan".
 - `/find-leads log <file.csv>` or plain words ("called המוסך שלי, no answer"): record calls, see "Call log".
 
-If the city is missing, ask for it (and offer the category groups). Don't ask about anything else.
+If the city or the business type is missing, ask for them (see "Always ask first"). Don't ask about anything else.
 
 ## Workflow
 
 1. **Find + audit + score** (≈20 s to 2 min):
    ```bash
-   python3 -m lead_agent find "<city>" --category <category> --limit 150
+   python3 -m lead_agent find "<city>" --type <type> --focus website --limit 150
    ```
    This writes `leads/<date>-<city>-<category>.json|csv|xlsx|html`, skips businesses delivered in earlier runs
    (`leads/seen.csv`; `--include-seen` overrides), excludes chains and institutions, and prints stats plus the top leads.

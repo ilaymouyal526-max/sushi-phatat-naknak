@@ -1,4 +1,4 @@
-"""Command line: find / show / merge / learn / log / plan / burn.
+"""Command line: find / show / merge / learn / log / plan / types / burn.
 
   python -m lead_agent find "Tel Aviv" --category beauty --limit 50
   python -m lead_agent show leads/2026-11-10-tel-aviv-beauty.json --top 30
@@ -14,7 +14,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import app_profile, audit, burn, calls, cities, export, learn, osm, paths, plan, score
+from . import app_profile, audit, burn, business_types, calls, cities, export, learn, osm, paths, plan, score
 
 EDITABLE = {"phone", "website", "facebook", "instagram", "email", "opening_hours", "outreach_he", "notes",
             "status", "address", "call_script_he", "missed_he"}
@@ -51,6 +51,13 @@ def cmd_find(args) -> int:
         profile = app_profile.load()  # raises SystemExit with a clear message until the friend's handoff is in
         if args.category == "all" and profile.get("categories"):
             args.category = profile["categories"]
+    btype = None
+    if args.type:
+        btype = business_types.get(args.type)
+        if not btype:
+            ids = ", ".join(t["id"] for t in business_types.load())
+            raise SystemExit(f"Unknown business type '{args.type}'. Use one of: {ids}")
+        args.category = btype["osm"]
     if args.bbox:
         bbox = tuple(float(x) for x in args.bbox.split(","))
         city = args.city or "custom"
@@ -59,6 +66,10 @@ def cmd_find(args) -> int:
     out_dir = Path(args.out_dir) if args.out_dir else paths.home()
     print(f"Searching OpenStreetMap: {city} / {args.category} …", file=sys.stderr)
     leads, stats = osm.find_businesses(bbox, args.category, city)
+    if btype:
+        before = len(leads)
+        leads = business_types.filter_by_name(btype, leads)
+        stats["skipped_name_not_matching_type"] = before - len(leads)
     seen = set() if args.include_seen else export.load_seen(out_dir, focus)
     before = len(leads)
     memory = burn.load() if burn.state_path().exists() else {}
@@ -83,18 +94,23 @@ def cmd_find(args) -> int:
         stats["skipped_has_working_website"] = before - len(leads)
     for l in leads:
         l["focus"] = focus
+        if btype:
+            l["business_type"] = btype["id"]
     leads = leads[: args.limit]
     stats.update({"websites_checked": with_site, "delivered": len(leads),
                   "hot": sum(l["band"] == "Hot" for l in leads),
                   "warm": sum(l["band"] == "Warm" for l in leads)})
     suffix = "" if focus == "all" else f"-{focus}"
-    base = out_dir / f"{dt.date.today().isoformat()}-{export.slug(city)}-{export.slug(args.category)}{suffix}"
+    label = btype["id"] if btype else args.category
+    base = out_dir / f"{dt.date.today().isoformat()}-{export.slug(city)}-{export.slug(label)}{suffix}"
     meta = {"city": city, "category": args.category, "focus": focus, "bbox": bbox,
+            "business_type": btype["id"] if btype else None,
             "created": dt.datetime.now().isoformat(),
             "stats": stats, "weights_version": score.load_weights().get("version")}
     files = export.write_all(leads, base, meta)
     export.mark_seen(out_dir, [l["lead_id"] for l in leads], focus)
     _print({"files": {k: str(v) for k, v in files.items()}, "stats": stats,
+            **({"business_type": business_types.summary(btype)} if btype else {}),
             "top": [_compact(l) for l in leads[: args.show]]})
     return 0
 
@@ -217,6 +233,19 @@ def cmd_learn(args) -> int:
     return 0
 
 
+def cmd_types(args) -> int:
+    if args.action == "list":
+        _print([business_types.summary(t) for t in business_types.load()])
+    elif args.action == "show":
+        t = business_types.get(args.key)
+        if not t:
+            raise SystemExit(f"Unknown business type '{args.key}'. Run: python3 -m lead_agent types list")
+        _print(t)
+    elif args.action == "suggest":
+        _print(business_types.suggest())
+    return 0
+
+
 def cmd_burn(args) -> int:
     if args.action == "decide":
         st = burn.load()
@@ -228,6 +257,8 @@ def cmd_burn(args) -> int:
         _print(burn.current_target())
     elif args.action == "finish":
         target = {"city": args.city, "category": args.category} if args.city else burn.current_target()
+        if args.type:
+            target["type"] = args.type
         _print(burn.finish(Path(args.run) if args.run else None, args.resets_at, target,
                            calls.dnc_path(), advance=not args.no_advance, focus=args.focus))
     elif args.action == "status":
@@ -258,6 +289,8 @@ def main(argv: list[str] | None = None) -> int:
     f.add_argument("--focus", choices=["all", "website", "app"], default="all",
                    help="website: only businesses with no working website (quick-site pitch); "
                         "app: categories from the app profile (see app_profile.py); all: everything")
+    f.add_argument("--type", help="business type from the playbook (e.g. renovation, zimmer, dentist); "
+                                  "overrides --category. List: python3 -m lead_agent types list")
     f.set_defaults(func=cmd_find)
 
     s = sub.add_parser("show", help="print leads from a run file")
@@ -296,6 +329,14 @@ def main(argv: list[str] | None = None) -> int:
     pl.add_argument("--max", type=int, default=25, help="max calls in the plan")
     pl.set_defaults(func=cmd_plan)
 
+    ty = sub.add_parser("types", help="business-type playbook: list / show <type> / suggest")
+    tsub = ty.add_subparsers(dest="action", required=True)
+    tsub.add_parser("list", help="all types with quadrant, price band and ease")
+    tsh = tsub.add_parser("show", help="one type in full: pitch, look, must-have features")
+    tsh.add_argument("key", help="id, name, Hebrew name or alias")
+    tsub.add_parser("suggest", help="one type per quadrant to offer the user today (least recently run)")
+    ty.set_defaults(func=cmd_types)
+
     b = sub.add_parser("burn", help="use leftover plan usage before it resets (see /lead-burn)")
     bsub = b.add_subparsers(dest="action", required=True)
     bd = bsub.add_parser("decide", help="what a scheduled check should do now")
@@ -313,6 +354,7 @@ def main(argv: list[str] | None = None) -> int:
     bf.add_argument("--category")
     bf.add_argument("--no-advance", action="store_true", help="custom target: keep the rotation where it is")
     bf.add_argument("--focus", choices=["website", "app"], default="website")
+    bf.add_argument("--type", help="business type id the run used (see: types list)")
     bsub.add_parser("status", help="settings, next target and past runs")
     bs = bsub.add_parser("set", help="change settings")
     bs.add_argument("--enabled", choices=["on", "off"])

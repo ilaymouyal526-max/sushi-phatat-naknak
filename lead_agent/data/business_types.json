@@ -1,0 +1,846 @@
+{
+ "version": "2026-11-24",
+ "source": "Website Client Map research (artifact LP2TWYoCY2f8uRS7SiXotq). Prices and ease are estimates; see lead_agent/RESEARCH.md.",
+ "quadrant_rule": {
+  "ease_split": 5.5,
+  "price_split": 5000,
+  "note": "price = geometric middle of lo..hi"
+ },
+ "approach": {
+  "sweet": "Easy and pays well. Lead with the measurable payback (more project leads / direct bookings). Offer a short example of a similar site and ask for a 10-minute call.",
+  "volume": "Easy but cheap. Keep it short and fast: a simple one-page site ready within days. Offer the example on WhatsApp; the owner decides on the call.",
+  "bigfish": "Hard but pays well. Credibility first: send a sample or mockup and proof before asking for anything. Expect 2-3 touches. Reach the owner or partner, not reception. Mention accessibility (IS 5568) only as something worth checking, never as a legal threat.",
+  "skip": "Cheap and hard. Don't run unless the user picks it."
+ },
+ "types": [
+  {
+   "id": "renovation",
+   "name": "Renovation & kitchens",
+   "he": "שיפוצים, מטבחים, פרגולות ואלומיניום",
+   "aliases": [
+    "renovation",
+    "kitchens",
+    "kitchen",
+    "contractor",
+    "contractors",
+    "pergola",
+    "aluminium",
+    "aluminum",
+    "שיפוצים",
+    "שיפוצניק",
+    "מטבחים",
+    "פרגולות",
+    "אלומיניום",
+    "קבלן"
+   ],
+   "osm": "carpenter,builder,kitchen,window_construction,metal_construction,tiler,plasterer,glaziery,bathroom_furnishing,doors,flooring,painter",
+   "lo": 5000,
+   "hi": 12000,
+   "ease": 6.0,
+   "why": "Jobs worth ₪50,000+, so one extra lead pays for the site. Owner decides. Weak sites are common.",
+   "look": "Premium and solid: full-width project photos, before/after sliders, the real team on site.",
+   "mood": [
+    "#1f2a33",
+    "#c8a15a",
+    "#f2efe9"
+   ],
+   "pitch": "A portfolio that sells the next kitchen while you're on site.",
+   "pitch_he": "אתר שמציג את העבודות שלכם ומביא פניות לפרויקטים הבאים, גם כשאתם באמצע עבודה.",
+   "name_keywords": null,
+   "must_have": [
+    "WhatsApp button",
+    "Gallery / portfolio",
+    "Reviews",
+    "Lead / quote form"
+   ],
+   "nice_to_have": [
+    "Click to call",
+    "Map & hours",
+    "Articles (SEO)",
+    "Team & credentials"
+   ]
+  },
+  {
+   "id": "zimmer",
+   "name": "Zimmers & boutique B&Bs",
+   "he": "צימרים ובתי הארחה",
+   "aliases": [
+    "zimmer",
+    "zimmers",
+    "b&b",
+    "bnb",
+    "guest house",
+    "guesthouse",
+    "boutique hotel",
+    "צימר",
+    "צימרים",
+    "בית הארחה",
+    "בתי הארחה"
+   ],
+   "osm": "guest_house,chalet,apartment",
+   "lo": 5000,
+   "hi": 14000,
+   "ease": 6.6,
+   "why": "Every direct booking skips the OTA commission (often around 15%). Owner-run. Payback is easy to show.",
+   "look": "Calm and atmospheric: big landscape photos, room-by-room pages, warm natural tones.",
+   "mood": [
+    "#3d4a3a",
+    "#b98b5e",
+    "#efe8dc"
+   ],
+   "pitch": "Bookings straight to you, without Booking.com's cut.",
+   "pitch_he": "הזמנות ישירות אליכם, בלי העמלה של אתרי ההזמנות.",
+   "name_keywords": null,
+   "must_have": [
+    "Online booking",
+    "WhatsApp button",
+    "Prices / menu",
+    "Gallery / portfolio",
+    "Reviews",
+    "Map & hours"
+   ],
+   "nice_to_have": [
+    "Click to call",
+    "Orders & payments",
+    "Lead / quote form",
+    "Articles (SEO)",
+    "EN / RU / AR"
+   ]
+  },
+  {
+   "id": "aesthetic",
+   "name": "Aesthetic clinics",
+   "he": "קליניקות אסתטיקה, לייזר ובוטוקס",
+   "aliases": [
+    "aesthetic",
+    "aesthetics",
+    "laser",
+    "botox",
+    "clinic",
+    "clinics",
+    "אסתטיקה",
+    "לייזר",
+    "בוטוקס",
+    "קליניקה"
+   ],
+   "osm": "beauty,cosmetics,clinic",
+   "name_keywords": [
+    "לייזר",
+    "אסתט",
+    "בוטוקס",
+    "קליניק",
+    "הסרת שיער",
+    "laser",
+    "aesthet",
+    "botox",
+    "clinic",
+    "skin",
+    "עור"
+   ],
+   "lo": 7000,
+   "hi": 15000,
+   "ease": 5.6,
+   "why": "High-ticket treatments and marketing-minded owners, but many already have a site, so it's often a redesign pitch.",
+   "look": "Luxurious and clean: white space, nude or gold accents, before/after photos with consent.",
+   "mood": [
+    "#f6f1ec",
+    "#c9a98a",
+    "#2b2422"
+   ],
+   "pitch": "Online booking and a look that matches the price of the treatment.",
+   "pitch_he": "קביעת תורים אונליין ואתר שנראה ברמה של הטיפולים שלכם.",
+   "must_have": [
+    "Online booking",
+    "WhatsApp button",
+    "Gallery / portfolio",
+    "Reviews",
+    "Lead / quote form",
+    "Map & hours",
+    "Team & credentials"
+   ],
+   "nice_to_have": [
+    "Click to call",
+    "Prices / menu",
+    "Articles (SEO)",
+    "EN / RU / AR",
+    "Accessibility (IS 5568)"
+   ]
+  },
+  {
+   "id": "photo",
+   "name": "Photographers & event pros",
+   "he": "צלמים ואנשי אירועים",
+   "aliases": [
+    "photographer",
+    "photographers",
+    "photo",
+    "events",
+    "event",
+    "צלם",
+    "צלמים",
+    "צלמת",
+    "אירועים"
+   ],
+   "osm": "photographer,photo_studio,photo",
+   "lo": 3000,
+   "hi": 8000,
+   "ease": 6.9,
+   "why": "Visual people who already know they need a portfolio. Freelancers decide fast.",
+   "look": "Minimal frame, the photos are the design. Dark or white, very little text.",
+   "mood": [
+    "#111111",
+    "#f4f4f4",
+    "#8c8c8c"
+   ],
+   "pitch": "A portfolio that books dates while you're shooting.",
+   "pitch_he": "תיק עבודות שסוגר תאריכים בזמן שאתם מצלמים.",
+   "name_keywords": null,
+   "must_have": [
+    "WhatsApp button",
+    "Gallery / portfolio",
+    "Reviews",
+    "Lead / quote form"
+   ],
+   "nice_to_have": [
+    "Online booking",
+    "Click to call",
+    "Prices / menu",
+    "Team & credentials"
+   ]
+  },
+  {
+   "id": "fitness",
+   "name": "Fitness & yoga studios",
+   "he": "סטודיו פילאטיס, יוגה וכושר",
+   "aliases": [
+    "fitness",
+    "gym",
+    "gyms",
+    "yoga",
+    "pilates",
+    "studio",
+    "כושר",
+    "יוגה",
+    "פילאטיס",
+    "סטודיו",
+    "חדר כושר"
+   ],
+   "osm": "fitness_centre,yoga,dance,sports_centre",
+   "lo": 3000,
+   "hi": 7000,
+   "ease": 6.2,
+   "why": "Need a class schedule and sign-ups. Often already on a booking app (Arbox and similar), which lowers the price.",
+   "look": "Energetic (gym) or calm (yoga, pilates): people in motion, a clear class timetable.",
+   "mood": [
+    "#16324f",
+    "#e85d3f",
+    "#f3f5f7"
+   ],
+   "pitch": "Trial-class sign-ups straight from Google.",
+   "pitch_he": "הרשמה לשיעור ניסיון ישר מגוגל, בלי לרדוף אחרי הודעות.",
+   "name_keywords": null,
+   "must_have": [
+    "Online booking",
+    "WhatsApp button",
+    "Prices / menu",
+    "Map & hours",
+    "Team & credentials"
+   ],
+   "nice_to_have": [
+    "Click to call",
+    "Orders & payments",
+    "Gallery / portfolio",
+    "Reviews",
+    "Lead / quote form"
+   ]
+  },
+  {
+   "id": "movers",
+   "name": "Movers",
+   "he": "חברות הובלה",
+   "aliases": [
+    "movers",
+    "moving",
+    "mover",
+    "הובלות",
+    "הובלה",
+    "מוביל"
+   ],
+   "osm": "moving_company",
+   "name_keywords": null,
+   "lo": 3000,
+   "hi": 6500,
+   "ease": 7.2,
+   "why": "Every lead is a paid job and they already pay for leads. Very competitive online, though.",
+   "look": "Practical and trustworthy: truck and crew photos, a quote form above the fold.",
+   "mood": [
+    "#0f3d6e",
+    "#f5a623",
+    "#ffffff"
+   ],
+   "pitch": "Quote requests directly to you, without lead-site fees.",
+   "pitch_he": "בקשות להצעת מחיר ישירות אליכם, בלי לשלם לאתרי לידים.",
+   "must_have": [
+    "WhatsApp button",
+    "Click to call",
+    "Reviews",
+    "Lead / quote form"
+   ],
+   "nice_to_have": [
+    "Prices / menu",
+    "Gallery / portfolio",
+    "Map & hours",
+    "Articles (SEO)",
+    "EN / RU / AR"
+   ]
+  },
+  {
+   "id": "trades",
+   "name": "Trades (electrician, plumber, AC)",
+   "he": "חשמלאים, אינסטלטורים, טכנאי מיזוג ומנעולנים",
+   "aliases": [
+    "trades",
+    "trade",
+    "electrician",
+    "plumber",
+    "ac",
+    "hvac",
+    "locksmith",
+    "handyman",
+    "חשמלאי",
+    "אינסטלטור",
+    "מיזוג",
+    "מנעולן",
+    "הנדימן"
+   ],
+   "osm": "electrician,plumber,hvac,locksmith,handyman",
+   "lo": 2500,
+   "hi": 5500,
+   "ease": 7.6,
+   "why": "Often no site at all. The owner answers his own phone and decides on the spot. Payback is calls.",
+   "look": "Clean and trustworthy: big call button, the owner's real photo, service area, licence number.",
+   "mood": [
+    "#0b4f8a",
+    "#ff7a1a",
+    "#f4f7fa"
+   ],
+   "pitch": "Customers searching 'electrician near me' land on you, not on a directory.",
+   "pitch_he": "מי שמחפש בגוגל בעל מקצוע באזור שלכם יגיע ישר אליכם, ולא לאתר מדריך.",
+   "name_keywords": null,
+   "must_have": [
+    "WhatsApp button",
+    "Click to call",
+    "Reviews",
+    "Lead / quote form",
+    "Map & hours"
+   ],
+   "nice_to_have": [
+    "Online booking",
+    "Prices / menu",
+    "Gallery / portfolio",
+    "Articles (SEO)",
+    "Team & credentials",
+    "EN / RU / AR"
+   ]
+  },
+  {
+   "id": "therapist",
+   "name": "Therapists, dietitians, coaches",
+   "he": "מטפלים, דיאטניות ומאמנים אישיים",
+   "aliases": [
+    "therapist",
+    "therapists",
+    "psychologist",
+    "dietitian",
+    "nutritionist",
+    "coach",
+    "physio",
+    "מטפל",
+    "מטפלת",
+    "פסיכולוג",
+    "דיאטנית",
+    "תזונאית",
+    "מאמן",
+    "פיזיותרפיה"
+   ],
+   "osm": "psychotherapist,psychologist,counselling,nutrition_counselling,dietitian,alternative,physiotherapist",
+   "lo": 2500,
+   "hi": 4500,
+   "ease": 6.8,
+   "why": "Solo practitioners who need credibility. They decide alone, but budgets are small.",
+   "look": "Warm and calm: a personal photo, soft colours, the story in their own words.",
+   "mood": [
+    "#6b8f71",
+    "#f3ece2",
+    "#2f3b33"
+   ],
+   "pitch": "A page that builds trust before the first call.",
+   "pitch_he": "עמוד שבונה אמון עוד לפני השיחה הראשונה.",
+   "name_keywords": null,
+   "must_have": [
+    "WhatsApp button",
+    "Team & credentials"
+   ],
+   "nice_to_have": [
+    "Online booking",
+    "Click to call",
+    "Prices / menu",
+    "Reviews",
+    "Lead / quote form",
+    "Map & hours",
+    "Articles (SEO)",
+    "EN / RU / AR"
+   ]
+  },
+  {
+   "id": "kinder",
+   "name": "Private kindergartens & daycare",
+   "he": "גנים ומעונות פרטיים",
+   "aliases": [
+    "kindergarten",
+    "kindergartens",
+    "daycare",
+    "nursery",
+    "גן",
+    "גנים",
+    "מעון",
+    "מעונות",
+    "פעוטון"
+   ],
+   "osm": "childcare",
+   "lo": 2500,
+   "hi": 4500,
+   "ease": 6.4,
+   "why": "Registration season creates urgency. Owner decides. Small budgets. (Public kindergartens are excluded.)",
+   "look": "Warm and playful but safe: photos of the space (no children's faces), the daily routine.",
+   "mood": [
+    "#ffd166",
+    "#4ea8de",
+    "#fff9ef"
+   ],
+   "pitch": "Parents find you and register before the year fills up.",
+   "pitch_he": "הורים מוצאים אתכם ונרשמים לפני שהמקומות לשנה הבאה נגמרים.",
+   "name_keywords": null,
+   "must_have": [
+    "WhatsApp button",
+    "Click to call",
+    "Gallery / portfolio",
+    "Reviews",
+    "Lead / quote form",
+    "Map & hours",
+    "Team & credentials"
+   ],
+   "nice_to_have": [
+    "Prices / menu",
+    "EN / RU / AR"
+   ]
+  },
+  {
+   "id": "beauty",
+   "name": "Beauty salons, nails, lashes",
+   "he": "קוסמטיקה, ציפורניים וריסים",
+   "aliases": [
+    "beauty",
+    "nails",
+    "lashes",
+    "cosmetics",
+    "cosmetician",
+    "קוסמטיקה",
+    "קוסמטיקאית",
+    "ציפורניים",
+    "ריסים",
+    "גבות"
+   ],
+   "osm": "beauty,cosmetics,massage",
+   "lo": 2000,
+   "hi": 4500,
+   "ease": 7.7,
+   "why": "Booking by phone is a daily pain they feel. Owner decides fast. The usual objection: 'Instagram is enough'.",
+   "look": "Soft, light, elegant: lots of close-up work photos, a price list, one booking button.",
+   "mood": [
+    "#f7e1e3",
+    "#c47b8a",
+    "#3a2a2e"
+   ],
+   "pitch": "Bookings at night without answering the phone.",
+   "pitch_he": "לקוחות קובעות תור גם בלילה, בלי שתצטרכי לענות לטלפון באמצע טיפול.",
+   "name_keywords": null,
+   "must_have": [
+    "Online booking",
+    "WhatsApp button",
+    "Prices / menu",
+    "Gallery / portfolio",
+    "Reviews",
+    "Map & hours"
+   ],
+   "nice_to_have": [
+    "Click to call",
+    "Team & credentials"
+   ]
+  },
+  {
+   "id": "barber",
+   "name": "Hair salons & barbershops",
+   "he": "מספרות וברברשופים",
+   "aliases": [
+    "barber",
+    "barbers",
+    "barbershop",
+    "barbershops",
+    "hair",
+    "hairdresser",
+    "salon",
+    "ברבר",
+    "ברברשופ",
+    "מספרה",
+    "מספרות",
+    "ספר"
+   ],
+   "osm": "hairdresser",
+   "lo": 2000,
+   "hi": 3500,
+   "ease": 8.2,
+   "why": "The fastest yes: owner in the chair, booking pain, small decision. Also the smallest budget.",
+   "look": "Bold and dark for barbers (strong type, black and brass); lighter for hair salons. Photos of real cuts.",
+   "mood": [
+    "#151515",
+    "#b08d57",
+    "#e9e4da"
+   ],
+   "pitch": "Queue-free booking from the phone.",
+   "pitch_he": "קביעת תור מהטלפון, בלי לחכות ובלי שיחות באמצע תספורת.",
+   "name_keywords": null,
+   "must_have": [
+    "Online booking",
+    "WhatsApp button",
+    "Prices / menu",
+    "Gallery / portfolio",
+    "Map & hours"
+   ],
+   "nice_to_have": [
+    "Click to call",
+    "Reviews",
+    "Team & credentials"
+   ]
+  },
+  {
+   "id": "restaurant",
+   "name": "Restaurants & cafés",
+   "he": "מסעדות ובתי קפה",
+   "aliases": [
+    "restaurant",
+    "restaurants",
+    "cafe",
+    "cafes",
+    "café",
+    "food",
+    "bakery",
+    "מסעדה",
+    "מסעדות",
+    "בית קפה",
+    "קפה",
+    "מאפייה"
+   ],
+   "osm": "restaurant,cafe,fast_food,bakery",
+   "lo": 2500,
+   "hi": 5000,
+   "ease": 6.0,
+   "why": "Easy to reach and the gap is obvious, but margins are thin and Wolt / 10bis already cover orders.",
+   "look": "Appetite first: big food photography, the menu one tap away, the place's own colours.",
+   "mood": [
+    "#7a1f1f",
+    "#f2c14e",
+    "#fbf6ee"
+   ],
+   "pitch": "Your menu and table booking on Google, without the delivery-app commission on pickups.",
+   "pitch_he": "התפריט והזמנת שולחן ישר מגוגל, והזמנות איסוף בלי עמלה של אפליקציות המשלוחים.",
+   "name_keywords": null,
+   "must_have": [
+    "Click to call",
+    "Prices / menu",
+    "Gallery / portfolio",
+    "Map & hours"
+   ],
+   "nice_to_have": [
+    "Online booking",
+    "WhatsApp button",
+    "Orders & payments",
+    "Reviews",
+    "EN / RU / AR"
+   ]
+  },
+  {
+   "id": "realestate",
+   "name": "Real-estate agents",
+   "he": "מתווכי נדל\"ן",
+   "aliases": [
+    "realestate",
+    "real estate",
+    "real-estate",
+    "realtor",
+    "agent",
+    "agents",
+    "estate agent",
+    "נדלן",
+    "נדל\"ן",
+    "מתווך",
+    "מתווכים",
+    "תיווך"
+   ],
+   "osm": "estate_agent",
+   "lo": 4000,
+   "hi": 10000,
+   "ease": 5.0,
+   "why": "Listings live on Yad2 and Madlan, so the site has to be a personal brand. Competitive and sceptical.",
+   "look": "Polished personal brand: a professional portrait, current listings, neighbourhood pages.",
+   "mood": [
+    "#1d3557",
+    "#e9c46a",
+    "#f8f9fa"
+   ],
+   "pitch": "Sellers pick the agent they found and trusted online.",
+   "pitch_he": "מוכרים בוחרים מתווך שמצאו ברשת וסומכים עליו, לא עוד מודעה ביד2.",
+   "name_keywords": null,
+   "must_have": [
+    "WhatsApp button",
+    "Click to call",
+    "Gallery / portfolio",
+    "Reviews",
+    "Lead / quote form",
+    "Team & credentials"
+   ],
+   "nice_to_have": [
+    "Map & hours",
+    "Articles (SEO)",
+    "EN / RU / AR",
+    "Accessibility (IS 5568)"
+   ]
+  },
+  {
+   "id": "retail",
+   "name": "Boutiques & shops",
+   "he": "בוטיקים וחנויות",
+   "aliases": [
+    "retail",
+    "boutique",
+    "boutiques",
+    "shop",
+    "shops",
+    "store",
+    "stores",
+    "clothes",
+    "fashion",
+    "בוטיק",
+    "חנות",
+    "חנויות",
+    "אופנה"
+   ],
+   "osm": "clothes,shoes,jewelry,gift,boutique,florist,toys,interior_decoration",
+   "lo": 4000,
+   "hi": 10000,
+   "ease": 4.2,
+   "why": "They want an online store, which is more work (stock, payments, delivery). 'Instagram is enough' is strong here.",
+   "look": "Brand-led: product photography, the shop's own palette, a simple catalogue.",
+   "mood": [
+    "#2e2e2e",
+    "#d4a5a5",
+    "#faf7f5"
+   ],
+   "pitch": "Sell after closing time: a small catalogue with WhatsApp ordering.",
+   "pitch_he": "למכור גם אחרי שעות הסגירה: קטלוג קטן עם הזמנה בוואטסאפ.",
+   "name_keywords": null,
+   "must_have": [
+    "WhatsApp button",
+    "Prices / menu",
+    "Orders & payments",
+    "Gallery / portfolio",
+    "Map & hours"
+   ],
+   "nice_to_have": [
+    "Click to call",
+    "Reviews",
+    "EN / RU / AR",
+    "Accessibility (IS 5568)"
+   ]
+  },
+  {
+   "id": "accountant",
+   "name": "Accountants & bookkeepers",
+   "he": "רואי חשבון ומנהלי חשבונות",
+   "aliases": [
+    "accountant",
+    "accountants",
+    "bookkeeper",
+    "bookkeeping",
+    "tax",
+    "cpa",
+    "רואה חשבון",
+    "רואי חשבון",
+    "הנהלת חשבונות",
+    "יועץ מס"
+   ],
+   "osm": "accountant,tax_advisor",
+   "lo": 4000,
+   "hi": 9000,
+   "ease": 3.9,
+   "why": "Conservative, referral-based, busy around reporting deadlines. They pay once they trust you.",
+   "look": "Conservative and clean: navy and white, a clear service list, no stock-photo handshakes.",
+   "mood": [
+    "#14213d",
+    "#5c7aa6",
+    "#f5f7fa"
+   ],
+   "pitch": "New clients from Google, and a contact form that sorts enquiries for you.",
+   "pitch_he": "לקוחות חדשים מגוגל, וטופס פנייה שממיין לכם את הפניות.",
+   "name_keywords": null,
+   "must_have": [
+    "WhatsApp button",
+    "Click to call",
+    "Lead / quote form",
+    "Map & hours",
+    "Team & credentials"
+   ],
+   "nice_to_have": [
+    "Online booking",
+    "Reviews",
+    "Articles (SEO)",
+    "EN / RU / AR",
+    "Accessibility (IS 5568)"
+   ]
+  },
+  {
+   "id": "dentist",
+   "name": "Dentists",
+   "he": "רופאי שיניים",
+   "aliases": [
+    "dentist",
+    "dentists",
+    "dental",
+    "רופא שיניים",
+    "רופאי שיניים",
+    "מרפאת שיניים",
+    "שיניים"
+   ],
+   "osm": "dentist",
+   "lo": 8000,
+   "hi": 20000,
+   "ease": 3.4,
+   "why": "High lifetime value per patient, but dental marketing agencies already court them and a receptionist screens calls.",
+   "look": "Clean and calming: white and teal, the real team and clinic, gentle smile photos.",
+   "mood": [
+    "#e8f4f3",
+    "#2a9d8f",
+    "#1b3a3a"
+   ],
+   "pitch": "New patients book online, and the site meets the accessibility standard.",
+   "pitch_he": "מטופלים חדשים קובעים תור אונליין, באתר נגיש שעומד בתקן.",
+   "name_keywords": null,
+   "must_have": [
+    "Online booking",
+    "WhatsApp button",
+    "Click to call",
+    "Reviews",
+    "Map & hours",
+    "Team & credentials",
+    "Accessibility (IS 5568)"
+   ],
+   "nice_to_have": [
+    "Prices / menu",
+    "Gallery / portfolio",
+    "Lead / quote form",
+    "Articles (SEO)",
+    "EN / RU / AR"
+   ]
+  },
+  {
+   "id": "lawyer",
+   "name": "Lawyers",
+   "he": "עורכי דין",
+   "aliases": [
+    "lawyer",
+    "lawyers",
+    "law",
+    "attorney",
+    "attorneys",
+    "legal",
+    "notary",
+    "עורך דין",
+    "עורכי דין",
+    "עו\"ד",
+    "משרד עורכי דין"
+   ],
+   "osm": "lawyer,notary",
+   "lo": 8000,
+   "hi": 25000,
+   "ease": 2.4,
+   "why": "Highest value per client (highest Google Ads cost per lead), but risk-averse, partners decide, and competition is heavy.",
+   "look": "Serious and typographic: dark navy or charcoal, practice-area pages, credentials up front.",
+   "mood": [
+    "#0f1c2e",
+    "#8a6d3b",
+    "#f4f2ee"
+   ],
+   "pitch": "Practice-area pages that bring in the cases you want.",
+   "pitch_he": "עמודי תחומי עיסוק שמביאים את התיקים שאתם רוצים.",
+   "name_keywords": null,
+   "must_have": [
+    "Click to call",
+    "Lead / quote form",
+    "Articles (SEO)",
+    "Team & credentials",
+    "Accessibility (IS 5568)"
+   ],
+   "nice_to_have": [
+    "Online booking",
+    "WhatsApp button",
+    "Reviews",
+    "Map & hours",
+    "EN / RU / AR"
+   ]
+  },
+  {
+   "id": "garage",
+   "name": "Garages",
+   "he": "מוסכים",
+   "aliases": [
+    "garage",
+    "garages",
+    "mechanic",
+    "car repair",
+    "tyres",
+    "tires",
+    "מוסך",
+    "מוסכים",
+    "פנצריה",
+    "מכונאי"
+   ],
+   "osm": "car_repair,tyres",
+   "lo": 2500,
+   "hi": 4500,
+   "ease": 4.4,
+   "why": "Word of mouth fills the bays. Old-school owners rarely see the point, and budgets are small.",
+   "look": "Practical: services and prices, test (טסט) reminders, a map and opening hours.",
+   "mood": [
+    "#222831",
+    "#d65a31",
+    "#eeeeee"
+   ],
+   "pitch": "Test-date reminders and quotes on WhatsApp.",
+   "pitch_he": "תזכורות לטסט והצעות מחיר בוואטסאפ.",
+   "name_keywords": null,
+   "must_have": [
+    "WhatsApp button",
+    "Click to call",
+    "Reviews",
+    "Map & hours"
+   ],
+   "nice_to_have": [
+    "Online booking",
+    "Prices / menu",
+    "Gallery / portfolio",
+    "Lead / quote form",
+    "EN / RU / AR"
+   ]
+  }
+ ]
+}

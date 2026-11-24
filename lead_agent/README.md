@@ -27,6 +27,18 @@ opener for each and hands you an Excel sheet. See `.claude/skills/find-leads/SKI
   Fields: `app_profile.example.json`. Engine: `find … --focus app` (files end in `-app`, separate seen-list).
 - `find` with no `--focus` keeps the original mixed run (website + redesign + automation).
 
+## Business types (which one today?)
+The website finder works one **business type** at a time, from a playbook of 18 types (`data/business_types.json`):
+price band, how easy it is to close, the pitch, the look and the must-have features. Each time you start it, Claude asks
+**"Which type should we go for today?"** and suggests one sweet-spot type (easy, pays well), one volume type and one
+big-fish type, picking the ones you haven't run for the longest.
+```bash
+python3 -m lead_agent types list            # all 18 with quadrant, ₪ band and ease
+python3 -m lead_agent types show zimmer     # pitch, look, must-have features (Hebrew names work: צימרים)
+python3 -m lead_agent types suggest         # today's three suggestions
+python3 -m lead_agent find "Haifa" --type renovation --focus website
+```
+
 ## Or run the engine directly
 ```bash
 python3 -m lead_agent find "Tel Aviv" --category beauty --limit 100 --focus website
