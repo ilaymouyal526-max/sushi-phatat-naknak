@@ -6,7 +6,7 @@ Handoff from the session of 10–24 Nov 2026. To continue in a new session, say:
 ## Start here
 - **Branch:** `claude/wizardly-allen-y5msa0` (repo `ilaymouyal526-max/sushi-phatat-naknak`, **public**). It contains the
   original work from `claude/jolly-meitner-s4e01m` (merged) plus the lead-burn scheduler (section 8). No pull request has been opened.
-- **Tests:** `python3 -m unittest discover -s tests` (51 tests, stdlib `unittest`, no pytest needed). All pass.
+- **Tests:** `python3 -m unittest discover -s tests` (55 tests, stdlib `unittest`, no pytest needed). All pass.
 - **Needs:** Python 3.10+ with `requests`, `beautifulsoup4`, `openpyxl` (and `zoneinfo`, built in).
 - **The repo also holds an unrelated project** (`commercial/`, the AI sushi commercial). The lead finder is self-contained in
   `lead_agent/`, `tests/` and `.claude/skills/find-leads/`.
@@ -126,6 +126,29 @@ a lot of credits, ask for permission and notify me beforehand in case I have ano
   repeat leads after the container (and `leads/`) is reset.
 - **Limit:** there's no exact "% left", only `allowed` vs `allowed_warning`/`rejected` and the reset time.
 
+### 9. Split: website-lead-finder + app-lead-finder (24 Nov 2026)
+The user asked: "split the lead finder to two agents: one searching for businesses in need of a quick website, and others in
+need of an app that I'm waiting on a handoff file from my friend."
+- `.claude/agents/lead-finder.md` was **replaced** by two subagents:
+  - `website-lead-finder.md`: `find --focus website` keeps only leads of type WEBSITE (no own site) or with the `site_dead`
+    signal (`cli.needs_quick_website`). It pitches a quick one-page site (hours, map, Call + WhatsApp buttons). Ready to use.
+  - `app-lead-finder.md`: `find --focus app` uses the categories in the **app profile** (`lead_agent/app_profile.py`).
+    Claude rates each lead's fit (high / medium / low) against the profile's good and bad signs, writes `app fit: …` in `notes`,
+    and writes openers only for high and medium fits. The success % in those files comes from the website model, so it's
+    only a hint about the app.
+- **Waiting on the friend's handoff.** No profile exists yet, so `--focus app` stops with a message. When the handoff
+  arrives: read it, fill in the fields from `lead_agent/app_profile.example.json`, and save the profile. **Ask the user where
+  to keep it:** `lead_agent/app_profile.json` is committed to a **public** repo; `leads/app_profile.json` is private but lost
+  when the container resets; `$LEAD_APP_PROFILE` can point anywhere. Then consider a real app scorer in place of the fit judgement.
+- Seen-lists are per focus: website (and older mixed) runs use `seen.csv`, app runs use `seen-app.csv`, and burn memory hashes
+  app ids as `app:<id>`. So one business can be offered both a website and the app. Do-not-contact is shared.
+- AUTOMATION and REDESIGN leads (businesses with a working but weak site) are no longer covered by either agent. They're
+  still available with `find` without `--focus`. The app profile may end up covering them.
+- `/lead-burn`: `go` runs website-lead-finder; `go app …` runs app-lead-finder (only when `burn status` → `app_profile.ready`).
+  `burn finish --focus website|app`.
+- `show --type WEBSITE,REDESIGN` filters by lead type.
+- `HANDOFF-lead-burn.md` was **not** updated for this split. It still names the old `lead-finder` agent.
+
 ## File map
 | Path | Role |
 |---|---|
@@ -142,11 +165,13 @@ a lot of credits, ask for permission and notify me beforehand in case I have ano
 | `lead_agent/export.py` | JSON / CSV / XLSX writer, carries over sheet edits, applies the call log |
 | `lead_agent/cards.py` | Phone page and plan page (HTML + JS) |
 | `lead_agent/burn.py` / `state/burn.json` | Lead-burn decisions, rotation, hashed memory (section 8) |
-| `.claude/skills/lead-burn/SKILL.md` / `.claude/agents/lead-finder.md` | Scheduled leftover-usage runs + the subagent |
+| `.claude/skills/lead-burn/SKILL.md` | Scheduled leftover-usage runs |
+| `.claude/agents/website-lead-finder.md` / `app-lead-finder.md` | The two subagents (section 9) |
+| `lead_agent/app_profile.py` / `app_profile.example.json` | The app profile, waiting on the friend's handoff |
 | `lead_agent/paths.py` | User data folder: `./leads` or `$LEAD_AGENT_HOME` |
 | `lead_agent/RESEARCH.md` | Sources for the % and the call times (sourced vs. inferred) |
 | `lead_agent/README.md` | User guide |
-| `tests/` | 51 tests: audit, score/learn/osm, cards, CLI end-to-end, call times/holidays, call log/plan, lead burn |
+| `tests/` | 55 tests: audit, score/learn/osm, cards, CLI end-to-end, call times/holidays, call log/plan, lead burn, website/app focus |
 | `leads/` (**git-ignored**) | Run files, `seen.csv`, `calls.csv`, `do_not_contact.csv`, `outcomes.csv`, `weights.learned.json`, plans |
 
 ## Research summary (details and links in `lead_agent/RESEARCH.md`)

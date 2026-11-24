@@ -80,16 +80,21 @@ def row_values(lead: dict) -> dict:
     return out
 
 
-def load_seen(directory: Path) -> set[str]:
-    p = directory / SEEN
+def seen_file(focus: str = "all") -> str:
+    """Website runs share seen.csv with older runs; app runs keep their own list, so one business can be both."""
+    return "seen-app.csv" if focus == "app" else SEEN
+
+
+def load_seen(directory: Path, focus: str = "all") -> set[str]:
+    p = directory / seen_file(focus)
     if not p.exists():
         return set()
     return {line.strip() for line in p.read_text(encoding="utf-8").splitlines()[1:] if line.strip()}
 
 
-def mark_seen(directory: Path, ids: list[str]) -> None:
-    p = directory / SEEN
-    existing = load_seen(directory)
+def mark_seen(directory: Path, ids: list[str], focus: str = "all") -> None:
+    p = directory / seen_file(focus)
+    existing = load_seen(directory, focus)
     new = [i for i in ids if i not in existing]
     if not p.exists():
         p.write_text("lead_id\n", encoding="utf-8")

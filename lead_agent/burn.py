@@ -64,13 +64,17 @@ def hash_id(lead_id: str) -> str:
     return hashlib.sha256(f"lead-burn:{lead_id}".encode()).hexdigest()[:16]
 
 
-def remembered(lead_id: str, state: dict | None = None) -> str | None:
-    """'seen' / 'dnc' if a burn run delivered this lead before or it said no, else None."""
+def seen_key(lead_id: str, focus: str = "website") -> str:
+    """App runs remember leads separately, so a business found for a website can still be found for the app."""
+    return f"app:{lead_id}" if focus == "app" else lead_id
+
+
+def remembered(lead_id: str, state: dict | None = None, focus: str = "website") -> str | None:
+    """'seen' / 'dnc' if a burn run delivered this lead before (for this focus) or it said no, else None."""
     state = state if state is not None else (load() if state_path().exists() else {})
-    h = hash_id(lead_id)
-    if h in set(state.get("dnc", ())):
+    if hash_id(lead_id) in set(state.get("dnc", ())):
         return "dnc"
-    if h in set(state.get("seen", ())):
+    if hash_id(seen_key(lead_id, focus)) in set(state.get("seen", ())):
         return "seen"
     return None
 
@@ -145,16 +149,17 @@ def mark_asked(resets_at: int) -> dict:
 
 
 def finish(run_json: Path | None, resets_at: int | None, target: dict | None,
-           dnc_csv: Path | None = None, advance: bool = True) -> dict:
+           dnc_csv: Path | None = None, advance: bool = True, focus: str = "website") -> dict:
     """Record a finished run: counts only, hashed lead ids, and move the rotation on."""
     st = load()
     entry = {"resets_at": resets_at, "finished": dt.datetime.now(IL).isoformat(timespec="minutes"),
-             "target": target}
+             "target": target, "focus": focus}
     if run_json and run_json.exists():
         data = json.loads(run_json.read_text(encoding="utf-8"))
         leads = data.get("leads", [])
         seen = set(st["seen"])
-        st["seen"] = st["seen"] + [h for h in (hash_id(l["lead_id"]) for l in leads) if h not in seen]
+        st["seen"] = st["seen"] + [h for h in (hash_id(seen_key(l["lead_id"], focus)) for l in leads)
+                                   if h not in seen]
         entry.update(delivered=len(leads), hot=sum(l.get("band") == "Hot" for l in leads),
                      warm=sum(l.get("band") == "Warm" for l in leads),
                      verified=sum(l.get("verified_online") == "yes" for l in leads))

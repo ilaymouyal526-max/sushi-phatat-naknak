@@ -14,7 +14,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import audit, burn, calls, cities, export, learn, osm, paths, plan, score
+from . import app_profile, audit, burn, calls, cities, export, learn, osm, paths, plan, score
 
 EDITABLE = {"phone", "website", "facebook", "instagram", "email", "opening_hours", "outreach_he", "notes",
             "status", "address", "call_script_he", "missed_he"}
@@ -37,7 +37,20 @@ def _compact(lead: dict) -> dict:
     return out
 
 
+WEBSITE_TYPES = {"WEBSITE"}
+
+
+def needs_quick_website(lead: dict) -> bool:
+    """No own website, or the one they have doesn't open: a quick one-page site is the pitch."""
+    return lead.get("lead_type") in WEBSITE_TYPES or "site_dead" in (lead.get("signals") or [])
+
+
 def cmd_find(args) -> int:
+    focus = args.focus
+    if focus == "app":
+        profile = app_profile.load()  # raises SystemExit with a clear message until the friend's handoff is in
+        if args.category == "all" and profile.get("categories"):
+            args.category = profile["categories"]
     if args.bbox:
         bbox = tuple(float(x) for x in args.bbox.split(","))
         city = args.city or "custom"
@@ -46,10 +59,10 @@ def cmd_find(args) -> int:
     out_dir = Path(args.out_dir) if args.out_dir else paths.home()
     print(f"Searching OpenStreetMap: {city} / {args.category} …", file=sys.stderr)
     leads, stats = osm.find_businesses(bbox, args.category, city)
-    seen = set() if args.include_seen else export.load_seen(out_dir)
+    seen = set() if args.include_seen else export.load_seen(out_dir, focus)
     before = len(leads)
     memory = burn.load() if burn.state_path().exists() else {}
-    remembered = {l["lead_id"]: burn.remembered(l["lead_id"], memory) for l in leads}
+    remembered = {l["lead_id"]: burn.remembered(l["lead_id"], memory, focus) for l in leads}
     leads = [l for l in leads if l["lead_id"] not in seen and (args.include_seen or remembered[l["lead_id"]] != "seen")]
     stats["skipped_already_delivered"] = before - len(leads)
     dnc = calls.load_dnc()
@@ -64,15 +77,23 @@ def cmd_find(args) -> int:
         print(f"Checking {with_site} websites …", file=sys.stderr)
         audit.audit_many(leads)
     score.score_all(leads)
+    if focus == "website":
+        before = len(leads)
+        leads = [l for l in leads if needs_quick_website(l)]
+        stats["skipped_has_working_website"] = before - len(leads)
+    for l in leads:
+        l["focus"] = focus
     leads = leads[: args.limit]
     stats.update({"websites_checked": with_site, "delivered": len(leads),
                   "hot": sum(l["band"] == "Hot" for l in leads),
                   "warm": sum(l["band"] == "Warm" for l in leads)})
-    base = out_dir / f"{dt.date.today().isoformat()}-{export.slug(city)}-{export.slug(args.category)}"
-    meta = {"city": city, "category": args.category, "bbox": bbox, "created": dt.datetime.now().isoformat(),
+    suffix = "" if focus == "all" else f"-{focus}"
+    base = out_dir / f"{dt.date.today().isoformat()}-{export.slug(city)}-{export.slug(args.category)}{suffix}"
+    meta = {"city": city, "category": args.category, "focus": focus, "bbox": bbox,
+            "created": dt.datetime.now().isoformat(),
             "stats": stats, "weights_version": score.load_weights().get("version")}
     files = export.write_all(leads, base, meta)
-    export.mark_seen(out_dir, [l["lead_id"] for l in leads])
+    export.mark_seen(out_dir, [l["lead_id"] for l in leads], focus)
     _print({"files": {k: str(v) for k, v in files.items()}, "stats": stats,
             "top": [_compact(l) for l in leads[: args.show]]})
     return 0
@@ -90,6 +111,8 @@ def cmd_show(args) -> int:
                                                                    or l.get("instagram"))]
     if args.band:
         leads = [l for l in leads if l.get("band", "").lower() in args.band.lower().split(",")]
+    if args.type:
+        leads = [l for l in leads if l.get("lead_type", "").lower() in args.type.lower().split(",")]
     _print([_compact(l) for l in leads[: args.top]])
     return 0
 
@@ -206,9 +229,9 @@ def cmd_burn(args) -> int:
     elif args.action == "finish":
         target = {"city": args.city, "category": args.category} if args.city else burn.current_target()
         _print(burn.finish(Path(args.run) if args.run else None, args.resets_at, target,
-                           calls.dnc_path(), advance=not args.no_advance))
+                           calls.dnc_path(), advance=not args.no_advance, focus=args.focus))
     elif args.action == "status":
-        _print(burn.status())
+        _print({**burn.status(), "app_profile": app_profile.status()})
     elif args.action == "set":
         quiet = args.quiet.split("-") if args.quiet else None
         enabled = {"on": True, "off": False}.get(args.enabled or "")
@@ -232,12 +255,16 @@ def main(argv: list[str] | None = None) -> int:
     f.add_argument("--no-audit", action="store_true", help="skip website checks (fast, less accurate)")
     f.add_argument("--out-dir", default=None, help="default: ./leads or $LEAD_AGENT_HOME")
     f.add_argument("--show", type=int, default=10, help="how many top leads to print")
+    f.add_argument("--focus", choices=["all", "website", "app"], default="all",
+                   help="website: only businesses with no working website (quick-site pitch); "
+                        "app: categories from the app profile (see app_profile.py); all: everything")
     f.set_defaults(func=cmd_find)
 
     s = sub.add_parser("show", help="print leads from a run file")
     s.add_argument("run")
     s.add_argument("--top", type=int, default=30)
     s.add_argument("--band", help="Hot,Warm,Cold filter")
+    s.add_argument("--type", help="lead type filter, e.g. WEBSITE,REDESIGN")
     s.add_argument("--needs-enrichment", action="store_true", help="only leads missing phone or web presence")
     s.set_defaults(func=cmd_show)
 
@@ -285,6 +312,7 @@ def main(argv: list[str] | None = None) -> int:
     bf.add_argument("--city")
     bf.add_argument("--category")
     bf.add_argument("--no-advance", action="store_true", help="custom target: keep the rotation where it is")
+    bf.add_argument("--focus", choices=["website", "app"], default="website")
     bsub.add_parser("status", help="settings, next target and past runs")
     bs = bsub.add_parser("set", help="change settings")
     bs.add_argument("--enabled", choices=["on", "off"])

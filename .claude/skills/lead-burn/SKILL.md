@@ -1,13 +1,16 @@
 ---
 name: lead-burn
-description: Use leftover Claude plan usage before it resets by running the lead-finder subagent in the last hour of the usage window, but only after notifying the user and getting a "go". Use for "/lead-burn check" (fired by the scheduled check), "/lead-burn go [city] [category] [count]" or a plain "go"/"yes" reply to a burn notification, "/lead-burn skip", "/lead-burn status", "/lead-burn on|off", "/lead-burn set …", or "use my leftover credits for leads".
+description: Use leftover Claude plan usage before it resets by running a lead-finder subagent (website-lead-finder, or app-lead-finder once the app profile exists) in the last hour of the usage window, but only after notifying the user and getting a "go". Use for "/lead-burn check" (fired by the scheduled check), "/lead-burn go [app] [city] [category] [count]" or a plain "go"/"go app"/"yes" reply to a burn notification, "/lead-burn skip", "/lead-burn status", "/lead-burn on|off", "/lead-burn set …", or "use my leftover credits for leads".
 ---
 
 # /lead-burn: spend leftover usage on leads, with permission
 
 The plan's usage window resets on a schedule. Usage left at the reset is lost, so about **70 minutes before each reset**
 a scheduled check looks at the window. If usage is plentiful it **notifies the user and asks**. Only on a "go" does it run
-the `lead-finder` subagent (`.claude/agents/lead-finder.md`) until 5 minutes before the reset.
+a lead-finder subagent until 5 minutes before the reset:
+- **`website-lead-finder`** (`.claude/agents/website-lead-finder.md`): the default. Businesses that need a quick website.
+- **`app-lead-finder`** (`.claude/agents/app-lead-finder.md`): only on `go app …`, and only when the app profile is ready
+  (`burn status` → `app_profile.ready`). The profile comes from a handoff file the user is waiting for from a friend.
 The notification comes first, so the user can keep the usage for another project instead.
 
 CLAUDE.md applies: running the subagent spends usage, so **no run without an explicit "go" for that window**.
@@ -40,41 +43,48 @@ Schedule with `at` = the `next_check` epoch as an RFC3339 UTC time (`date -u -d 
    - `notify`:
      a. `python3 -m lead_agent burn asked <resets_at>`.
      b. **PushNotification** (one line, under 200 chars), e.g.
-        `Claude usage resets 17:20 with plenty left. Reply "go" to run the lead finder (Tel Aviv beauty, 40 leads) till 17:15, or ignore to keep it.`
-     c. Post the same question in the chat with the options: `go`, `go <city> <category> <count>`, `skip`.
+        `Claude usage resets 17:20 with plenty left. Reply "go" for website leads (Tel Aviv beauty, 40) till 17:15, or ignore to keep it.`
+        Only if `app_profile.ready` is true (from `burn status`), add ` "go app" = app leads.` (keep it under 200 chars).
+     c. Post the same question in the chat with the options: `go`, `go <city> <category> <count>`,
+        `go app [city] [count]` (only if the app profile is ready), `skip`.
      d. Schedule the next check at `next_check`. End the turn and **wait**. Don't start anything.
 3. Commit `lead_agent/state/burn.json` if it changed (`git add lead_agent/state/burn.json`, message
    "lead-burn: update state"), and push to the session's branch.
 
-## "go" (the user's reply to a notification, or `/lead-burn go …`)
+## "go" / "go app" (the user's reply to a notification, or `/lead-burn go …`)
 1. Re-read the window. If the reset has already passed or fewer than 25 minutes remain, say so and don't run.
    If `/lead-burn go` comes with no recent notification, it's still a valid request: use the current window's reset.
-2. Target: the user's city/category/count if given, otherwise `python3 -m lead_agent burn target` and `verify_count`
-   from `burn status`. Deadline = reset − 5 min, in Israel time.
-3. Start the **`lead-finder`** subagent (Agent tool, `subagent_type: "lead-finder"`; if that type isn't listed,
-   use `general-purpose` and tell it to read and follow `.claude/agents/lead-finder.md`) with city, category,
-   verify_count and deadline. Run it in the foreground so the files exist when it returns.
-4. When it returns:
-   - `python3 -m lead_agent burn finish --run <run.json> --resets-at <resetsAt>`
+2. Focus: `app` if the reply says "app", otherwise `website`. For `app`, check `burn status` → `app_profile.ready`.
+   If it's not ready, say the app profile is still waiting on the friend's handoff and offer `go` (website) instead. Don't run.
+3. Target: the user's city/category/count if given. Otherwise use `python3 -m lead_agent burn target` and `verify_count`
+   from `burn status`. For `app`, use the rotation's city with no category (the agent uses the profile's categories).
+   Deadline = reset − 5 min, in Israel time.
+4. Start the subagent: **`website-lead-finder`** or **`app-lead-finder`** (Agent tool with that `subagent_type`). If that
+   type isn't listed, use `general-purpose` and tell it to read and follow `.claude/agents/<name>.md`. Pass city,
+   category, verify_count and deadline. Run it in the foreground so the files exist when it returns.
+5. When it returns:
+   - `python3 -m lead_agent burn finish --run <run.json> --resets-at <resetsAt> --focus <website|app>`
      (add `--city … --category … --no-advance` if the user picked a custom target).
    - Send the `.html` phone page and the `.xlsx` to the user with **SendUserFile** (status `proactive`). The container's
      `leads/` folder doesn't survive restarts, so this is how the user keeps them.
-   - PushNotification: `Lead run done: <N> Hot, <M> Warm in <city> <category>. Phone page + sheet are in the chat.`
+   - PushNotification: `Website leads done: <N> Hot, <M> Warm in <city> <category>. Phone page + sheet in the chat.`
+     (for app runs: `App leads done: <N> high fit, <M> medium in <city>. …`)
    - In the chat: the subagent's top-10 table, stats, the compliance line from `/find-leads`, and the next target.
    - Commit and push `lead_agent/state/burn.json` only. **Never commit `leads/`.**
 
 ## Other commands
 - `skip` (reply to a notification): say OK and do nothing. The next check is already scheduled.
-- `/lead-burn status`: `python3 -m lead_agent burn status`, the current window (reset time, status), and the pending
-  `lead-burn check` from `list_triggers`.
+- `/lead-burn status`: `python3 -m lead_agent burn status` (includes whether the app profile is ready), the current
+  window (reset time, status), and the pending `lead-burn check` from `list_triggers`.
 - `/lead-burn off`: `burn set --enabled off`, then delete every pending `lead-burn check`.
 - `/lead-burn on`: `burn set --enabled on`, then run a check now (same steps as `check`).
 - `/lead-burn set --verify-count N | --notify-before MIN | --quiet HH:MM-HH:MM`: pass through to `burn set`.
 
 ## Defaults (change with `set`)
 Ask 70 min before the reset; the run stops 5 min before it; no question if under 25 min are left; quiet hours
-23:00–08:00 Israel time (no notifications, that window is skipped); 40 leads verified per run; rotation
-through 16 cities × beauty, health, trades, auto, fitness, professional. Leads delivered by earlier burn runs, and
+23:00–08:00 Israel time (no notifications, that window is skipped); 40 leads verified per run; website runs
+rotate through 16 cities × beauty, health, trades, auto, fitness, professional. Website and app runs remember
+delivered leads separately, so one business can be offered both; a "not interested" blocks it for both. Leads delivered by earlier burn runs, and
 businesses that said no, are skipped even after the container is reset (hashed ids in the state file).
 
 ## Limits to tell the user about

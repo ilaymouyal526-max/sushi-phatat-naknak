@@ -1,0 +1,17 @@
+{
+ "_comment": "Example only. Copy to app_profile.json and fill it in from the friend's handoff file. Every value below is a placeholder.",
+ "app_name": "",
+ "what_it_does": "One or two sentences: what the app does for a business.",
+ "who_it_is_for": "Which businesses get the most out of it, in plain words.",
+ "categories": "food,fitness",
+ "good_signs": [
+  "Example: takes orders or bookings by phone or WhatsApp only",
+  "Example: has regular customers who come back weekly"
+ ],
+ "bad_signs": [
+  "Example: already has its own app or a chain-wide app"
+ ],
+ "pitch_he": "One Hebrew line on the main benefit, used in openers.",
+ "price_note": "Optional: price range or model, if the friend wants it mentioned (never put prices in openers unless asked).",
+ "source": "Path or name of the friend's handoff file this was built from."
+}

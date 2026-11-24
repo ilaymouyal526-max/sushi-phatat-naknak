@@ -10,6 +10,16 @@ verifying leads online and writing Hebrew openers. **Everything is free**: OpenS
 checks and your own WebSearch/WebFetch. Never call a paid API (Google Places, etc.). If the user wants one,
 follow CLAUDE.md: show the cost and get a clear yes first.
 
+## Two lead finders: website vs. app
+The work is split between two subagents. Pick by what the user wants to sell:
+- **Quick website** → `website-lead-finder` (`.claude/agents/website-lead-finder.md`), which runs `find --focus website`.
+  It keeps only businesses with no website of their own, or a site that doesn't open. This is the default for "/find-leads".
+- **The app** → `app-lead-finder` (`.claude/agents/app-lead-finder.md`), which runs `find --focus app`. It needs the app
+  profile, which gets built from a handoff file the user is waiting on from a friend. Until then it stops with that message.
+- `find` with no `--focus` (= `all`) keeps the old mixed behaviour (website + redesign + automation).
+For a big run (more than about 15 leads to verify), hand it to the subagent so the main conversation stays short.
+For a small one, follow the steps below yourself, with `--focus website` on `find`.
+
 ## Arguments
 - `/find-leads <city> [category] [count]`. Defaults: category `all`, count `30` to verify and draft.
   - City: English or Hebrew (`Tel Aviv`, `רמת גן`, `Haifa` …). Unknown cities fall back to free Nominatim geocoding.

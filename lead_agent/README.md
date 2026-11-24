@@ -14,14 +14,22 @@ Free and local. Uses OpenStreetMap plus direct checks of each business's own web
 /lead-burn status                # leftover-usage runs: ~70 min before each plan reset Claude asks, you reply "go"
 ```
 **Lead burn:** before each usage reset, if plenty is left, Claude notifies you and asks. Reply `go` (or
-`go haifa trades 30`) and the `lead-finder` subagent runs until 5 minutes before the reset. Ignore it and nothing runs.
+`go haifa trades 30`, or `go app` once the app profile exists) and the matching subagent runs until 5 minutes before the reset. Ignore it and nothing runs.
 `/lead-burn off` stops the checks. Details: `.claude/skills/lead-burn/SKILL.md`.
 Claude finds, audits and scores the businesses. It then verifies the best leads online, writes a personal Hebrew
 opener for each and hands you an Excel sheet. See `.claude/skills/find-leads/SKILL.md`.
 
+## Two lead finders: quick website vs. app
+- **`website-lead-finder`** (subagent): businesses with **no website of their own, or a site that doesn't open**, pitched a
+  quick one-page site. Engine: `find … --focus website` (files end in `-website`).
+- **`app-lead-finder`** (subagent): businesses that fit **the app** described in the app profile. The profile is built from
+  a friend's handoff file that hasn't arrived yet. Until then, `find --focus app` stops and says so.
+  Fields: `app_profile.example.json`. Engine: `find … --focus app` (files end in `-app`, separate seen-list).
+- `find` with no `--focus` keeps the original mixed run (website + redesign + automation).
+
 ## Or run the engine directly
 ```bash
-python3 -m lead_agent find "Tel Aviv" --category beauty --limit 100
+python3 -m lead_agent find "Tel Aviv" --category beauty --limit 100 --focus website
 python3 -m lead_agent show leads/<run>.json --band hot --top 20
 python3 -m lead_agent merge leads/<run>.json updates.json
 python3 -m lead_agent learn leads/<run>.xlsx
