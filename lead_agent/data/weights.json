@@ -1,0 +1,33 @@
+{
+  "version": "baseline-2026-11",
+  "meaning": "Estimated probability that this business becomes a paying client after one personal outreach sequence (call or one-to-one WhatsApp + follow-up). Logistic model: log-odds = intercept + sum(weight * signal), with grouped signals capped.",
+  "intercept": -4.184,
+  "intercept_note": "logit(1.5%). Cold outreach to unfiltered local businesses closes ~0.2-2% (Belkins, Martal, Hunter benchmarks). See RESEARCH.md.",
+  "groups": {
+    "opportunity": {
+      "cap": 1.1,
+      "note": "Website/automation gaps are correlated; capping stops a broken site from stacking past roughly 'no website at all' plus a bit."
+    }
+  },
+  "features": {
+    "no_website":            {"weight": 0.90,  "group": "opportunity", "note": "No site at all: the strongest website-sale signal in every agency scorer; no-website call campaigns report ~12% discovery-call rate."},
+    "site_dead":             {"weight": 0.85,  "group": "opportunity", "note": "Listed site is down / times out / returns an error. Scorers weight dead sites highest among site issues."},
+    "ssl_error":             {"weight": 0.55,  "group": "opportunity", "note": "Browser shows a security warning to visitors."},
+    "no_https":              {"weight": 0.25,  "group": "opportunity", "note": "Plain http: 'Not secure' label in Chrome."},
+    "no_mobile":             {"weight": 0.45,  "group": "opportunity", "note": "No mobile viewport: the page is not mobile-friendly."},
+    "stale_site":            {"weight": 0.30,  "group": "opportunity", "note": "Copyright year is 3+ years old: likely abandoned or outdated."},
+    "slow_site":             {"weight": 0.15,  "group": "opportunity", "note": "First response took more than 4 seconds."},
+    "free_builder":          {"weight": 0.30,  "group": "opportunity", "note": "Free builder subdomain (wixsite, business.site, sites.google…)."},
+    "no_booking_or_whatsapp":{"weight": 0.35,  "group": "opportunity", "note": "Working site but no online booking and no WhatsApp link: the automation pitch. WhatsApp is the default business channel in Israel."},
+    "no_contact_capture":    {"weight": 0.15,  "group": "opportunity", "note": "No form, no click-to-call, no WhatsApp, no chat widget: leads are leaking."},
+    "has_phone":             {"weight": 0.35,  "note": "Reachable by phone/WhatsApp, the channels that convert best for local businesses."},
+    "has_social":            {"weight": 0.15,  "note": "Active Facebook/Instagram page: the business is alive and markets itself."},
+    "has_email":             {"weight": 0.10,  "note": "Extra contact channel."},
+    "has_hours":             {"weight": 0.10,  "note": "Opening hours are mapped: an active business."},
+    "high_value_cat":        {"weight": 0.45,  "note": "Clinics, dentists, beauty, lawyers, trades, restaurants, fitness, hotels: higher ticket and bookings-driven; reported as best converting."},
+    "low_value_cat":         {"weight": -0.80, "note": "Kiosks, convenience stores, tobacco etc.: little budget and little need."},
+    "modern_complete":       {"weight": -0.90, "note": "Already has a modern HTTPS mobile site with booking/WhatsApp/chat: little to sell."},
+    "no_contact":            {"weight": -1.20, "note": "No phone, email, social or website found: cannot be reached personally."}
+  },
+  "bands": {"hot": 7.0, "warm": 3.5}
+}

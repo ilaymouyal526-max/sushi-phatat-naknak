@@ -1,0 +1,402 @@
+{
+ "enabled": true,
+ "notify_minutes_before": 70,
+ "stop_minutes_before": 5,
+ "min_minutes_to_run": 25,
+ "quiet_hours": [
+  "23:00",
+  "08:00"
+ ],
+ "verify_count": 40,
+ "targets": [
+  [
+   "tel aviv",
+   "beauty"
+  ],
+  [
+   "ramat gan",
+   "beauty"
+  ],
+  [
+   "haifa",
+   "beauty"
+  ],
+  [
+   "jerusalem",
+   "beauty"
+  ],
+  [
+   "rishon lezion",
+   "beauty"
+  ],
+  [
+   "petah tikva",
+   "beauty"
+  ],
+  [
+   "netanya",
+   "beauty"
+  ],
+  [
+   "holon",
+   "beauty"
+  ],
+  [
+   "herzliya",
+   "beauty"
+  ],
+  [
+   "kfar saba",
+   "beauty"
+  ],
+  [
+   "raanana",
+   "beauty"
+  ],
+  [
+   "rehovot",
+   "beauty"
+  ],
+  [
+   "ashdod",
+   "beauty"
+  ],
+  [
+   "beer sheva",
+   "beauty"
+  ],
+  [
+   "modiin",
+   "beauty"
+  ],
+  [
+   "givatayim",
+   "beauty"
+  ],
+  [
+   "tel aviv",
+   "health"
+  ],
+  [
+   "ramat gan",
+   "health"
+  ],
+  [
+   "haifa",
+   "health"
+  ],
+  [
+   "jerusalem",
+   "health"
+  ],
+  [
+   "rishon lezion",
+   "health"
+  ],
+  [
+   "petah tikva",
+   "health"
+  ],
+  [
+   "netanya",
+   "health"
+  ],
+  [
+   "holon",
+   "health"
+  ],
+  [
+   "herzliya",
+   "health"
+  ],
+  [
+   "kfar saba",
+   "health"
+  ],
+  [
+   "raanana",
+   "health"
+  ],
+  [
+   "rehovot",
+   "health"
+  ],
+  [
+   "ashdod",
+   "health"
+  ],
+  [
+   "beer sheva",
+   "health"
+  ],
+  [
+   "modiin",
+   "health"
+  ],
+  [
+   "givatayim",
+   "health"
+  ],
+  [
+   "tel aviv",
+   "trades"
+  ],
+  [
+   "ramat gan",
+   "trades"
+  ],
+  [
+   "haifa",
+   "trades"
+  ],
+  [
+   "jerusalem",
+   "trades"
+  ],
+  [
+   "rishon lezion",
+   "trades"
+  ],
+  [
+   "petah tikva",
+   "trades"
+  ],
+  [
+   "netanya",
+   "trades"
+  ],
+  [
+   "holon",
+   "trades"
+  ],
+  [
+   "herzliya",
+   "trades"
+  ],
+  [
+   "kfar saba",
+   "trades"
+  ],
+  [
+   "raanana",
+   "trades"
+  ],
+  [
+   "rehovot",
+   "trades"
+  ],
+  [
+   "ashdod",
+   "trades"
+  ],
+  [
+   "beer sheva",
+   "trades"
+  ],
+  [
+   "modiin",
+   "trades"
+  ],
+  [
+   "givatayim",
+   "trades"
+  ],
+  [
+   "tel aviv",
+   "auto"
+  ],
+  [
+   "ramat gan",
+   "auto"
+  ],
+  [
+   "haifa",
+   "auto"
+  ],
+  [
+   "jerusalem",
+   "auto"
+  ],
+  [
+   "rishon lezion",
+   "auto"
+  ],
+  [
+   "petah tikva",
+   "auto"
+  ],
+  [
+   "netanya",
+   "auto"
+  ],
+  [
+   "holon",
+   "auto"
+  ],
+  [
+   "herzliya",
+   "auto"
+  ],
+  [
+   "kfar saba",
+   "auto"
+  ],
+  [
+   "raanana",
+   "auto"
+  ],
+  [
+   "rehovot",
+   "auto"
+  ],
+  [
+   "ashdod",
+   "auto"
+  ],
+  [
+   "beer sheva",
+   "auto"
+  ],
+  [
+   "modiin",
+   "auto"
+  ],
+  [
+   "givatayim",
+   "auto"
+  ],
+  [
+   "tel aviv",
+   "fitness"
+  ],
+  [
+   "ramat gan",
+   "fitness"
+  ],
+  [
+   "haifa",
+   "fitness"
+  ],
+  [
+   "jerusalem",
+   "fitness"
+  ],
+  [
+   "rishon lezion",
+   "fitness"
+  ],
+  [
+   "petah tikva",
+   "fitness"
+  ],
+  [
+   "netanya",
+   "fitness"
+  ],
+  [
+   "holon",
+   "fitness"
+  ],
+  [
+   "herzliya",
+   "fitness"
+  ],
+  [
+   "kfar saba",
+   "fitness"
+  ],
+  [
+   "raanana",
+   "fitness"
+  ],
+  [
+   "rehovot",
+   "fitness"
+  ],
+  [
+   "ashdod",
+   "fitness"
+  ],
+  [
+   "beer sheva",
+   "fitness"
+  ],
+  [
+   "modiin",
+   "fitness"
+  ],
+  [
+   "givatayim",
+   "fitness"
+  ],
+  [
+   "tel aviv",
+   "professional"
+  ],
+  [
+   "ramat gan",
+   "professional"
+  ],
+  [
+   "haifa",
+   "professional"
+  ],
+  [
+   "jerusalem",
+   "professional"
+  ],
+  [
+   "rishon lezion",
+   "professional"
+  ],
+  [
+   "petah tikva",
+   "professional"
+  ],
+  [
+   "netanya",
+   "professional"
+  ],
+  [
+   "holon",
+   "professional"
+  ],
+  [
+   "herzliya",
+   "professional"
+  ],
+  [
+   "kfar saba",
+   "professional"
+  ],
+  [
+   "raanana",
+   "professional"
+  ],
+  [
+   "rehovot",
+   "professional"
+  ],
+  [
+   "ashdod",
+   "professional"
+  ],
+  [
+   "beer sheva",
+   "professional"
+  ],
+  [
+   "modiin",
+   "professional"
+  ],
+  [
+   "givatayim",
+   "professional"
+  ]
+ ],
+ "next_target": 0,
+ "asked_for": null,
+ "runs": [],
+ "seen": [],
+ "dnc": []
+}

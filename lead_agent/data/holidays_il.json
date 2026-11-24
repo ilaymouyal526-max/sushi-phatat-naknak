@@ -1,0 +1,461 @@
+{
+ "source": "Hebcal (hebcal.com) Jewish holiday API, Israel schedule (i=on), fetched 2026-11-15",
+ "kinds": {
+  "closed": "Yom Tov / national holiday: most businesses closed, no calls",
+  "eve": "Holiday eve: short day like Friday, call only before 11:00",
+  "low": "Chol HaMoed / Purim: open but many owners away or busy, low availability",
+  "sensitive": "Memorial day: avoid sales calls"
+ },
+ "days": {
+  "2026-03-03": {
+   "kind": "low",
+   "name": "Purim",
+   "name_he": "פורים"
+  },
+  "2026-04-01": {
+   "kind": "eve",
+   "name": "Erev Pesach",
+   "name_he": "ערב פסח"
+  },
+  "2026-04-02": {
+   "kind": "closed",
+   "name": "Pesach I",
+   "name_he": "פסח"
+  },
+  "2026-04-03": {
+   "kind": "low",
+   "name": "Pesach II (CH’’M)",
+   "name_he": "חול המועד פסח"
+  },
+  "2026-04-04": {
+   "kind": "low",
+   "name": "Pesach III (CH’’M)",
+   "name_he": "חול המועד פסח"
+  },
+  "2026-04-05": {
+   "kind": "low",
+   "name": "Pesach IV (CH’’M)",
+   "name_he": "חול המועד פסח"
+  },
+  "2026-04-06": {
+   "kind": "low",
+   "name": "Pesach V (CH’’M)",
+   "name_he": "חול המועד פסח"
+  },
+  "2026-04-07": {
+   "kind": "eve",
+   "name": "Pesach VI (CH’’M)",
+   "name_he": "ערב שביעי של פסח"
+  },
+  "2026-04-08": {
+   "kind": "closed",
+   "name": "Pesach VII",
+   "name_he": "פסח"
+  },
+  "2026-04-14": {
+   "kind": "sensitive",
+   "name": "Yom HaShoah",
+   "name_he": "יום השואה"
+  },
+  "2026-04-21": {
+   "kind": "sensitive",
+   "name": "Yom HaZikaron",
+   "name_he": "יום הזיכרון"
+  },
+  "2026-04-22": {
+   "kind": "closed",
+   "name": "Yom HaAtzma’ut",
+   "name_he": "יום העצמאות"
+  },
+  "2026-05-21": {
+   "kind": "eve",
+   "name": "Erev Shavuot",
+   "name_he": "ערב שבועות"
+  },
+  "2026-05-22": {
+   "kind": "closed",
+   "name": "Shavuot",
+   "name_he": "שבועות"
+  },
+  "2026-07-23": {
+   "kind": "low",
+   "name": "Tish’a B’Av",
+   "name_he": "תשעה באב"
+  },
+  "2026-09-11": {
+   "kind": "eve",
+   "name": "Erev Rosh Hashana",
+   "name_he": "ערב ראש השנה"
+  },
+  "2026-09-12": {
+   "kind": "closed",
+   "name": "Rosh Hashana 5787",
+   "name_he": "ראש השנה"
+  },
+  "2026-09-13": {
+   "kind": "closed",
+   "name": "Rosh Hashana II",
+   "name_he": "ראש השנה"
+  },
+  "2026-09-20": {
+   "kind": "eve",
+   "name": "Erev Yom Kippur",
+   "name_he": "ערב יום כיפור"
+  },
+  "2026-09-21": {
+   "kind": "closed",
+   "name": "Yom Kippur",
+   "name_he": "יום כיפור"
+  },
+  "2026-09-25": {
+   "kind": "eve",
+   "name": "Erev Sukkot",
+   "name_he": "ערב סוכות"
+  },
+  "2026-09-26": {
+   "kind": "closed",
+   "name": "Sukkot I",
+   "name_he": "סוכות"
+  },
+  "2026-09-27": {
+   "kind": "low",
+   "name": "Sukkot II (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2026-09-28": {
+   "kind": "low",
+   "name": "Sukkot III (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2026-09-29": {
+   "kind": "low",
+   "name": "Sukkot IV (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2026-09-30": {
+   "kind": "low",
+   "name": "Sukkot V (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2026-10-01": {
+   "kind": "low",
+   "name": "Sukkot VI (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2026-10-02": {
+   "kind": "eve",
+   "name": "Sukkot VII (Hoshana Raba)",
+   "name_he": "הושענא רבה (ערב שמיני עצרת)"
+  },
+  "2026-10-03": {
+   "kind": "closed",
+   "name": "Shmini Atzeret",
+   "name_he": "שמיני עצרת"
+  },
+  "2026-10-05": {
+   "kind": "sensitive",
+   "name": "Swords of Iron War Memorial Day",
+   "name_he": "יום הזיכרון לחללי חרבות ברזל"
+  },
+  "2027-03-23": {
+   "kind": "low",
+   "name": "Purim",
+   "name_he": "פורים"
+  },
+  "2027-04-21": {
+   "kind": "eve",
+   "name": "Erev Pesach",
+   "name_he": "ערב פסח"
+  },
+  "2027-04-22": {
+   "kind": "closed",
+   "name": "Pesach I",
+   "name_he": "פסח"
+  },
+  "2027-04-23": {
+   "kind": "low",
+   "name": "Pesach II (CH’’M)",
+   "name_he": "חול המועד פסח"
+  },
+  "2027-04-24": {
+   "kind": "low",
+   "name": "Pesach III (CH’’M)",
+   "name_he": "חול המועד פסח"
+  },
+  "2027-04-25": {
+   "kind": "low",
+   "name": "Pesach IV (CH’’M)",
+   "name_he": "חול המועד פסח"
+  },
+  "2027-04-26": {
+   "kind": "low",
+   "name": "Pesach V (CH’’M)",
+   "name_he": "חול המועד פסח"
+  },
+  "2027-04-27": {
+   "kind": "eve",
+   "name": "Pesach VI (CH’’M)",
+   "name_he": "ערב שביעי של פסח"
+  },
+  "2027-04-28": {
+   "kind": "closed",
+   "name": "Pesach VII",
+   "name_he": "פסח"
+  },
+  "2027-05-04": {
+   "kind": "sensitive",
+   "name": "Yom HaShoah",
+   "name_he": "יום השואה"
+  },
+  "2027-05-11": {
+   "kind": "sensitive",
+   "name": "Yom HaZikaron",
+   "name_he": "יום הזיכרון"
+  },
+  "2027-05-12": {
+   "kind": "closed",
+   "name": "Yom HaAtzma’ut",
+   "name_he": "יום העצמאות"
+  },
+  "2027-06-10": {
+   "kind": "eve",
+   "name": "Erev Shavuot",
+   "name_he": "ערב שבועות"
+  },
+  "2027-06-11": {
+   "kind": "closed",
+   "name": "Shavuot",
+   "name_he": "שבועות"
+  },
+  "2027-08-12": {
+   "kind": "low",
+   "name": "Tish’a B’Av",
+   "name_he": "תשעה באב"
+  },
+  "2027-10-01": {
+   "kind": "eve",
+   "name": "Erev Rosh Hashana",
+   "name_he": "ערב ראש השנה"
+  },
+  "2027-10-02": {
+   "kind": "closed",
+   "name": "Rosh Hashana 5788",
+   "name_he": "ראש השנה"
+  },
+  "2027-10-03": {
+   "kind": "closed",
+   "name": "Rosh Hashana II",
+   "name_he": "ראש השנה"
+  },
+  "2027-10-10": {
+   "kind": "eve",
+   "name": "Erev Yom Kippur",
+   "name_he": "ערב יום כיפור"
+  },
+  "2027-10-11": {
+   "kind": "closed",
+   "name": "Yom Kippur",
+   "name_he": "יום כיפור"
+  },
+  "2027-10-15": {
+   "kind": "eve",
+   "name": "Erev Sukkot",
+   "name_he": "ערב סוכות"
+  },
+  "2027-10-16": {
+   "kind": "closed",
+   "name": "Sukkot I",
+   "name_he": "סוכות"
+  },
+  "2027-10-17": {
+   "kind": "low",
+   "name": "Sukkot II (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2027-10-18": {
+   "kind": "low",
+   "name": "Sukkot III (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2027-10-19": {
+   "kind": "low",
+   "name": "Sukkot IV (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2027-10-20": {
+   "kind": "low",
+   "name": "Sukkot V (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2027-10-21": {
+   "kind": "low",
+   "name": "Sukkot VI (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2027-10-22": {
+   "kind": "eve",
+   "name": "Sukkot VII (Hoshana Raba)",
+   "name_he": "הושענא רבה (ערב שמיני עצרת)"
+  },
+  "2027-10-23": {
+   "kind": "closed",
+   "name": "Shmini Atzeret",
+   "name_he": "שמיני עצרת"
+  },
+  "2027-10-25": {
+   "kind": "sensitive",
+   "name": "Swords of Iron War Memorial Day",
+   "name_he": "יום הזיכרון לחללי חרבות ברזל"
+  },
+  "2028-03-12": {
+   "kind": "low",
+   "name": "Purim",
+   "name_he": "פורים"
+  },
+  "2028-04-10": {
+   "kind": "eve",
+   "name": "Erev Pesach",
+   "name_he": "ערב פסח"
+  },
+  "2028-04-11": {
+   "kind": "closed",
+   "name": "Pesach I",
+   "name_he": "פסח"
+  },
+  "2028-04-12": {
+   "kind": "low",
+   "name": "Pesach II (CH’’M)",
+   "name_he": "חול המועד פסח"
+  },
+  "2028-04-13": {
+   "kind": "low",
+   "name": "Pesach III (CH’’M)",
+   "name_he": "חול המועד פסח"
+  },
+  "2028-04-14": {
+   "kind": "low",
+   "name": "Pesach IV (CH’’M)",
+   "name_he": "חול המועד פסח"
+  },
+  "2028-04-15": {
+   "kind": "low",
+   "name": "Pesach V (CH’’M)",
+   "name_he": "חול המועד פסח"
+  },
+  "2028-04-16": {
+   "kind": "eve",
+   "name": "Pesach VI (CH’’M)",
+   "name_he": "ערב שביעי של פסח"
+  },
+  "2028-04-17": {
+   "kind": "closed",
+   "name": "Pesach VII",
+   "name_he": "פסח"
+  },
+  "2028-04-24": {
+   "kind": "sensitive",
+   "name": "Yom HaShoah",
+   "name_he": "יום השואה"
+  },
+  "2028-05-01": {
+   "kind": "sensitive",
+   "name": "Yom HaZikaron",
+   "name_he": "יום הזיכרון"
+  },
+  "2028-05-02": {
+   "kind": "closed",
+   "name": "Yom HaAtzma’ut",
+   "name_he": "יום העצמאות"
+  },
+  "2028-05-30": {
+   "kind": "eve",
+   "name": "Erev Shavuot",
+   "name_he": "ערב שבועות"
+  },
+  "2028-05-31": {
+   "kind": "closed",
+   "name": "Shavuot",
+   "name_he": "שבועות"
+  },
+  "2028-08-01": {
+   "kind": "low",
+   "name": "Tish’a B’Av",
+   "name_he": "תשעה באב"
+  },
+  "2028-09-20": {
+   "kind": "eve",
+   "name": "Erev Rosh Hashana",
+   "name_he": "ערב ראש השנה"
+  },
+  "2028-09-21": {
+   "kind": "closed",
+   "name": "Rosh Hashana 5789",
+   "name_he": "ראש השנה"
+  },
+  "2028-09-22": {
+   "kind": "closed",
+   "name": "Rosh Hashana II",
+   "name_he": "ראש השנה"
+  },
+  "2028-09-29": {
+   "kind": "eve",
+   "name": "Erev Yom Kippur",
+   "name_he": "ערב יום כיפור"
+  },
+  "2028-09-30": {
+   "kind": "closed",
+   "name": "Yom Kippur",
+   "name_he": "יום כיפור"
+  },
+  "2028-10-04": {
+   "kind": "eve",
+   "name": "Erev Sukkot",
+   "name_he": "ערב סוכות"
+  },
+  "2028-10-05": {
+   "kind": "closed",
+   "name": "Sukkot I",
+   "name_he": "סוכות"
+  },
+  "2028-10-06": {
+   "kind": "low",
+   "name": "Sukkot II (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2028-10-07": {
+   "kind": "low",
+   "name": "Sukkot III (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2028-10-08": {
+   "kind": "low",
+   "name": "Sukkot IV (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2028-10-09": {
+   "kind": "low",
+   "name": "Sukkot V (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2028-10-10": {
+   "kind": "low",
+   "name": "Sukkot VI (CH’’M)",
+   "name_he": "חול המועד סוכות"
+  },
+  "2028-10-11": {
+   "kind": "eve",
+   "name": "Sukkot VII (Hoshana Raba)",
+   "name_he": "הושענא רבה (ערב שמיני עצרת)"
+  },
+  "2028-10-12": {
+   "kind": "closed",
+   "name": "Shmini Atzeret",
+   "name_he": "שמיני עצרת"
+  },
+  "2028-10-15": {
+   "kind": "sensitive",
+   "name": "Swords of Iron War Memorial Day",
+   "name_he": "יום הזיכרון לחללי חרבות ברזל"
+  }
+ }
+}
