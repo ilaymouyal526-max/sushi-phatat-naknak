@@ -1,0 +1,919 @@
+{
+ "version": "2026-11-24",
+ "kind": "app",
+ "source": "App Client Map research (restaurants), 24 Nov 2026. Prices = first year (setup + 12 months), estimates. See lead_agent/RESEARCH.md.",
+ "feature_names": {
+  "order": "Online ordering",
+  "loyal": "Loyalty / punch card",
+  "push": "Push & coupons",
+  "reorder": "One-tap reorder",
+  "pre": "Pre-orders (Shabbat, holidays)",
+  "table": "Table booking",
+  "qr": "Order from the table (QR)",
+  "pay": "Payments (Bit, Apple/Google Pay)",
+  "track": "Delivery tracking",
+  "multi": "Multi-branch",
+  "allerg": "Allergens & kosher info",
+  "group": "Group / office orders"
+ },
+ "quadrant_rule": {
+  "ease_split": 5.5,
+  "price_split": 8000,
+  "note": "price = geometric middle of lo..hi, first year (setup + 12 months)"
+ },
+ "approach": {
+  "sweet": "Easy and pays well. Lead with the commission they pay today and one regular-customer feature (loyalty, one-tap reorder). Offer a 2-minute demo on the phone and ask for 10 minutes.",
+  "volume": "Easy but cheap. Sell the simplest version: a digital punch card or pre-orders, quick to set up, low monthly price. Get to yes or no in one call.",
+  "bigfish": "Hard but pays well. Credibility first: a short demo video or mockup in their brand, proof from a similar place, 2-3 touches. Reach the owner or partner. Ask what they use today (Tabit, POS) and fit around it.",
+  "skip": "Cheap and hard, or an app is the wrong product. Don't run unless the user picks it; for catering, pitch a website instead."
+ },
+ "types": [
+  {
+   "id": "pizza",
+   "name": "Pizzerias",
+   "he": "פיצריות",
+   "aliases": [
+    "pizza",
+    "pizzeria",
+    "pizzerias",
+    "פיצה",
+    "פיצריה",
+    "פיצריות"
+   ],
+   "osm": "restaurant,fast_food",
+   "cuisine": [
+    "pizza"
+   ],
+   "name_keywords": [
+    "פיצ",
+    "pizz"
+   ],
+   "lo": 6000,
+   "hi": 16000,
+   "ease": 6.6,
+   "why": "Delivery-heavy, the same families order every week, and every Wolt order costs them about a third. The saving is easy to show.",
+   "look": "Bold and fast: big 'order again' button, the pizza builder front and centre, the shop's own colours.",
+   "mood": [
+    "#b3261e",
+    "#f6c445",
+    "#fff8ef"
+   ],
+   "pitch": "Your regulars order from your own app, and the commission stays with you.",
+   "pitch_he": "הלקוחות הקבועים מזמינים ישר מהאפליקציה שלכם, והעמלה נשארת אצלכם.",
+   "must_have": [
+    "Online ordering",
+    "Loyalty / punch card",
+    "Push & coupons",
+    "One-tap reorder",
+    "Payments (Bit, Apple/Google Pay)",
+    "Delivery tracking",
+    "Group / office orders"
+   ],
+   "nice_to_have": [
+    "Pre-orders (Shabbat, holidays)",
+    "Multi-branch",
+    "Allergens & kosher info"
+   ],
+   "features": {
+    "order": 2,
+    "loyal": 2,
+    "push": 2,
+    "reorder": 2,
+    "pre": 1,
+    "table": 0,
+    "qr": 0,
+    "pay": 2,
+    "track": 2,
+    "multi": 1,
+    "allerg": 1,
+    "group": 2
+   }
+  },
+  {
+   "id": "burger",
+   "name": "Burger joints",
+   "he": "המבורגריות",
+   "aliases": [
+    "burger",
+    "burgers",
+    "hamburger",
+    "המבורגר",
+    "המבורגריה",
+    "המבורגריות"
+   ],
+   "osm": "restaurant,fast_food",
+   "cuisine": [
+    "burger"
+   ],
+   "name_keywords": [
+    "בורגר",
+    "burger",
+    "המבורג"
+   ],
+   "lo": 7000,
+   "hi": 18000,
+   "ease": 6.0,
+   "why": "Burgers are the most-ordered dish on Wolt in Israel. High delivery share, young tech-savvy customers.",
+   "look": "Dark and appetising: close-up food photography, combo deals, loyalty progress on the home screen.",
+   "mood": [
+    "#1c1c1c",
+    "#e8a33d",
+    "#f3eee6"
+   ],
+   "pitch": "Every tenth burger on the house, and orders without the delivery-app cut.",
+   "pitch_he": "כל המבורגר עשירי עלינו, והזמנות בלי העמלה של אפליקציות המשלוחים.",
+   "must_have": [
+    "Online ordering",
+    "Loyalty / punch card",
+    "Push & coupons",
+    "One-tap reorder",
+    "Payments (Bit, Apple/Google Pay)",
+    "Delivery tracking"
+   ],
+   "nice_to_have": [
+    "Order from the table (QR)",
+    "Multi-branch",
+    "Allergens & kosher info",
+    "Group / office orders"
+   ],
+   "features": {
+    "order": 2,
+    "loyal": 2,
+    "push": 2,
+    "reorder": 2,
+    "pre": 0,
+    "table": 0,
+    "qr": 1,
+    "pay": 2,
+    "track": 2,
+    "multi": 1,
+    "allerg": 1,
+    "group": 1
+   }
+  },
+  {
+   "id": "sushi",
+   "name": "Sushi & Asian",
+   "he": "סושי ואסייתי",
+   "aliases": [
+    "sushi",
+    "asian",
+    "thai",
+    "noodles",
+    "wok",
+    "סושי",
+    "אסייתי",
+    "תאילנדי",
+    "ווק"
+   ],
+   "osm": "restaurant,fast_food",
+   "cuisine": [
+    "sushi",
+    "japanese",
+    "asian",
+    "thai",
+    "chinese",
+    "vietnamese"
+   ],
+   "name_keywords": [
+    "סושי",
+    "sushi",
+    "ווק",
+    "wok",
+    "תאי",
+    "thai",
+    "אסיי",
+    "asia",
+    "נודלס",
+    "noodle"
+   ],
+   "lo": 8000,
+   "hi": 20000,
+   "ease": 6.4,
+   "why": "Large order values (₪150+), delivery-heavy and frequent. Sushi and Thai are among Wolt's top and fastest-growing categories.",
+   "look": "Clean and premium: lots of white space, sharp dish photos, a build-your-own-roll flow.",
+   "mood": [
+    "#101820",
+    "#e94f37",
+    "#f5f3ef"
+   ],
+   "pitch": "Big orders straight to you, with a club that brings customers back every week.",
+   "pitch_he": "הזמנות גדולות ישר אליכם, ומועדון שמחזיר לקוחות כל שבוע.",
+   "must_have": [
+    "Online ordering",
+    "Loyalty / punch card",
+    "Push & coupons",
+    "One-tap reorder",
+    "Payments (Bit, Apple/Google Pay)",
+    "Delivery tracking",
+    "Allergens & kosher info",
+    "Group / office orders"
+   ],
+   "nice_to_have": [
+    "Pre-orders (Shabbat, holidays)",
+    "Multi-branch"
+   ],
+   "features": {
+    "order": 2,
+    "loyal": 2,
+    "push": 2,
+    "reorder": 2,
+    "pre": 1,
+    "table": 0,
+    "qr": 0,
+    "pay": 2,
+    "track": 2,
+    "multi": 1,
+    "allerg": 2,
+    "group": 2
+   }
+  },
+  {
+   "id": "shabbat",
+   "name": "Ready meals & Shabbat takeaway",
+   "he": "אוכל מוכן ואוכל לשבת",
+   "aliases": [
+    "shabbat",
+    "takeaway",
+    "ready meals",
+    "home food",
+    "אוכל לשבת",
+    "אוכל מוכן",
+    "אוכל ביתי",
+    "טייק אווי"
+   ],
+   "osm": "restaurant,fast_food,deli",
+   "name_keywords": [
+    "אוכל ביתי",
+    "אוכל מוכן",
+    "לשבת",
+    "שבת",
+    "מעדני",
+    "בית אוכל",
+    "ביתי",
+    "deli",
+    "home"
+   ],
+   "lo": 6000,
+   "hi": 14000,
+   "ease": 7.0,
+   "why": "The same families pre-order every Thursday and Friday. The menu changes weekly, so push notifications sell by themselves.",
+   "look": "Warm and homely: the weekly menu as the first screen, pre-order cut-off time, family-size portions.",
+   "mood": [
+    "#6b3e26",
+    "#e9b44c",
+    "#fbf5ea"
+   ],
+   "pitch": "The Shabbat menu reaches every customer's phone on Wednesday, and orders come in by themselves.",
+   "pitch_he": "תפריט השבת מגיע לטלפון של כל לקוח ביום רביעי, וההזמנות נכנסות לבד.",
+   "cuisine": null,
+   "must_have": [
+    "Online ordering",
+    "Push & coupons",
+    "Pre-orders (Shabbat, holidays)",
+    "Payments (Bit, Apple/Google Pay)",
+    "Allergens & kosher info"
+   ],
+   "nice_to_have": [
+    "Loyalty / punch card",
+    "One-tap reorder",
+    "Delivery tracking",
+    "Group / office orders"
+   ],
+   "features": {
+    "order": 2,
+    "loyal": 1,
+    "push": 2,
+    "reorder": 1,
+    "pre": 2,
+    "table": 0,
+    "qr": 0,
+    "pay": 2,
+    "track": 1,
+    "multi": 0,
+    "allerg": 2,
+    "group": 1
+   }
+  },
+  {
+   "id": "healthy",
+   "name": "Salads, bowls & healthy",
+   "he": "סלטים, בריאות וקערות",
+   "aliases": [
+    "healthy",
+    "salad",
+    "salads",
+    "bowls",
+    "vegan",
+    "סלט",
+    "סלטים",
+    "בריא",
+    "טבעוני",
+    "קערות"
+   ],
+   "osm": "restaurant,fast_food,cafe",
+   "cuisine": [
+    "salad",
+    "vegan",
+    "vegetarian",
+    "healthy",
+    "poke"
+   ],
+   "name_keywords": [
+    "סלט",
+    "salad",
+    "bowl",
+    "פוקי",
+    "poke",
+    "טבעונ",
+    "vegan",
+    "בריא",
+    "green"
+   ],
+   "lo": 6000,
+   "hi": 14000,
+   "ease": 6.4,
+   "why": "Office lunch orders repeat daily, and the customers are young and app-friendly. Group orders are a strong hook.",
+   "look": "Fresh and light: greens and whites, nutrition info, 'my usual bowl' one tap away.",
+   "mood": [
+    "#2d6a4f",
+    "#b7e4c7",
+    "#fafdf7"
+   ],
+   "pitch": "Daily office lunches ordered in one tap, with group orders for the whole team.",
+   "pitch_he": "ארוחת הצהריים של המשרד בהקשה אחת, כולל הזמנה קבוצתית לכל הצוות.",
+   "must_have": [
+    "Online ordering",
+    "Loyalty / punch card",
+    "One-tap reorder",
+    "Payments (Bit, Apple/Google Pay)",
+    "Allergens & kosher info",
+    "Group / office orders"
+   ],
+   "nice_to_have": [
+    "Push & coupons",
+    "Pre-orders (Shabbat, holidays)",
+    "Delivery tracking",
+    "Multi-branch"
+   ],
+   "features": {
+    "order": 2,
+    "loyal": 2,
+    "push": 1,
+    "reorder": 2,
+    "pre": 1,
+    "table": 0,
+    "qr": 0,
+    "pay": 2,
+    "track": 1,
+    "multi": 1,
+    "allerg": 2,
+    "group": 2
+   }
+  },
+  {
+   "id": "cafe",
+   "name": "Cafés & coffee shops",
+   "he": "בתי קפה",
+   "aliases": [
+    "cafe",
+    "cafes",
+    "café",
+    "coffee",
+    "coffee shop",
+    "קפה",
+    "בית קפה",
+    "בתי קפה"
+   ],
+   "osm": "cafe",
+   "lo": 3000,
+   "hi": 8000,
+   "ease": 7.0,
+   "why": "Customers come several times a week and already know punch cards. Small orders, so the budget is small.",
+   "look": "Cosy and branded: a digital punch card on the home screen, order-ahead for the morning rush.",
+   "mood": [
+    "#4b3621",
+    "#d9b99b",
+    "#f7f1e8"
+   ],
+   "pitch": "A digital punch card and ordering ahead, so the morning queue moves.",
+   "pitch_he": "כרטיסיית קפה דיגיטלית והזמנה מראש, כדי שהתור של הבוקר יזוז.",
+   "cuisine": null,
+   "name_keywords": null,
+   "must_have": [
+    "Loyalty / punch card",
+    "Push & coupons",
+    "Payments (Bit, Apple/Google Pay)"
+   ],
+   "nice_to_have": [
+    "Online ordering",
+    "One-tap reorder",
+    "Order from the table (QR)",
+    "Multi-branch",
+    "Allergens & kosher info"
+   ],
+   "features": {
+    "order": 1,
+    "loyal": 2,
+    "push": 2,
+    "reorder": 1,
+    "pre": 0,
+    "table": 0,
+    "qr": 1,
+    "pay": 2,
+    "track": 0,
+    "multi": 1,
+    "allerg": 1,
+    "group": 0
+   }
+  },
+  {
+   "id": "bakery",
+   "name": "Bakeries & patisseries",
+   "he": "מאפיות וקונדיטוריות",
+   "aliases": [
+    "bakery",
+    "bakeries",
+    "patisserie",
+    "cakes",
+    "מאפייה",
+    "מאפיות",
+    "קונדיטוריה",
+    "עוגות",
+    "חלות"
+   ],
+   "osm": "bakery,pastry,confectionery",
+   "lo": 4000,
+   "hi": 10000,
+   "ease": 6.6,
+   "why": "Friday and holiday pre-orders (challah, cakes) jam the phone. Owner-run, but small margins per item.",
+   "look": "Warm and crafted: product photos, a pre-order calendar, pickup time slots.",
+   "mood": [
+    "#8c5a3c",
+    "#f2d0a4",
+    "#fffaf2"
+   ],
+   "pitch": "Friday and holiday orders come in through the app, not on the phone.",
+   "pitch_he": "ההזמנות לשישי ולחגים נכנסות דרך האפליקציה, לא בטלפון.",
+   "cuisine": null,
+   "name_keywords": null,
+   "must_have": [
+    "Online ordering",
+    "Push & coupons",
+    "Pre-orders (Shabbat, holidays)",
+    "Payments (Bit, Apple/Google Pay)",
+    "Allergens & kosher info"
+   ],
+   "nice_to_have": [
+    "Loyalty / punch card",
+    "One-tap reorder",
+    "Multi-branch",
+    "Group / office orders"
+   ],
+   "features": {
+    "order": 2,
+    "loyal": 1,
+    "push": 2,
+    "reorder": 1,
+    "pre": 2,
+    "table": 0,
+    "qr": 0,
+    "pay": 2,
+    "track": 0,
+    "multi": 1,
+    "allerg": 2,
+    "group": 1
+   }
+  },
+  {
+   "id": "icecream",
+   "name": "Ice cream & juice bars",
+   "he": "גלידריות ובארים של מיצים",
+   "aliases": [
+    "ice cream",
+    "icecream",
+    "gelato",
+    "juice",
+    "frozen yogurt",
+    "גלידה",
+    "גלידריה",
+    "מיצים",
+    "יוגורט"
+   ],
+   "osm": "ice_cream",
+   "name_keywords": null,
+   "lo": 3000,
+   "hi": 7000,
+   "ease": 6.4,
+   "why": "Visit-based loyalty fits small, frequent purchases, but it's seasonal and the budget is small.",
+   "look": "Playful and colourful: a stamp card, flavour of the week, family packs for pickup.",
+   "mood": [
+    "#ff8fab",
+    "#ffd6a5",
+    "#fffbf5"
+   ],
+   "pitch": "A stamp card that brings families back all summer.",
+   "pitch_he": "כרטיסיית ניקובים שמחזירה משפחות כל הקיץ.",
+   "cuisine": null,
+   "must_have": [
+    "Loyalty / punch card",
+    "Push & coupons",
+    "Allergens & kosher info"
+   ],
+   "nice_to_have": [
+    "Online ordering",
+    "Pre-orders (Shabbat, holidays)",
+    "Payments (Bit, Apple/Google Pay)",
+    "Multi-branch"
+   ],
+   "features": {
+    "order": 1,
+    "loyal": 2,
+    "push": 2,
+    "reorder": 0,
+    "pre": 1,
+    "table": 0,
+    "qr": 0,
+    "pay": 1,
+    "track": 0,
+    "multi": 1,
+    "allerg": 2,
+    "group": 0
+   }
+  },
+  {
+   "id": "ghost",
+   "name": "Delivery-only kitchens",
+   "he": "מטבחי משלוחים בלבד",
+   "aliases": [
+    "ghost kitchen",
+    "dark kitchen",
+    "delivery only",
+    "מטבח משלוחים",
+    "מטבח ללא סועדים"
+   ],
+   "osm": "restaurant,fast_food",
+   "name_keywords": [
+    "משלוחים",
+    "delivery",
+    "kitchen",
+    "מטבח"
+   ],
+   "lo": 6000,
+   "hi": 15000,
+   "ease": 5.0,
+   "why": "All their sales go through Wolt, so the commission hurts most. But with no walk-in customers, getting app downloads is hard.",
+   "look": "Brand-first: strong logo and colours, a short menu, 'order again' up front.",
+   "mood": [
+    "#240046",
+    "#ff9e00",
+    "#f8f5ff"
+   ],
+   "pitch": "Move your regulars off Wolt with a club price only in your own app.",
+   "pitch_he": "להעביר את הלקוחות הקבועים מוולט לאפליקציה שלכם, עם מחיר מועדון רק אצלכם.",
+   "cuisine": null,
+   "must_have": [
+    "Online ordering",
+    "Loyalty / punch card",
+    "Push & coupons",
+    "One-tap reorder",
+    "Payments (Bit, Apple/Google Pay)",
+    "Delivery tracking"
+   ],
+   "nice_to_have": [
+    "Pre-orders (Shabbat, holidays)",
+    "Multi-branch",
+    "Allergens & kosher info",
+    "Group / office orders"
+   ],
+   "features": {
+    "order": 2,
+    "loyal": 2,
+    "push": 2,
+    "reorder": 2,
+    "pre": 1,
+    "table": 0,
+    "qr": 0,
+    "pay": 2,
+    "track": 2,
+    "multi": 1,
+    "allerg": 1,
+    "group": 1
+   }
+  },
+  {
+   "id": "chain",
+   "name": "Small local chains (2-5 branches)",
+   "he": "רשתות מקומיות קטנות",
+   "aliases": [
+    "chain",
+    "chains",
+    "small chain",
+    "branches",
+    "רשת",
+    "רשתות",
+    "סניפים"
+   ],
+   "osm": "restaurant,fast_food,cafe",
+   "min_branches": 2,
+   "name_keywords": null,
+   "lo": 20000,
+   "hi": 60000,
+   "ease": 4.0,
+   "why": "The biggest budgets: one club across all branches. But partners or a marketing manager decide, and some already use Tabit.",
+   "look": "Brand system: branch picker, one club across branches, consistent design per brand.",
+   "mood": [
+    "#003049",
+    "#f77f00",
+    "#fcfcfc"
+   ],
+   "pitch": "One app and one club for all your branches, without paying commission.",
+   "pitch_he": "אפליקציה אחת ומועדון אחד לכל הסניפים, בלי לשלם עמלות.",
+   "cuisine": null,
+   "must_have": [
+    "Online ordering",
+    "Loyalty / punch card",
+    "Push & coupons",
+    "One-tap reorder",
+    "Table booking",
+    "Payments (Bit, Apple/Google Pay)",
+    "Delivery tracking",
+    "Multi-branch",
+    "Allergens & kosher info"
+   ],
+   "nice_to_have": [
+    "Pre-orders (Shabbat, holidays)",
+    "Order from the table (QR)",
+    "Group / office orders"
+   ],
+   "features": {
+    "order": 2,
+    "loyal": 2,
+    "push": 2,
+    "reorder": 2,
+    "pre": 1,
+    "table": 2,
+    "qr": 1,
+    "pay": 2,
+    "track": 2,
+    "multi": 2,
+    "allerg": 2,
+    "group": 1
+   }
+  },
+  {
+   "id": "chef",
+   "name": "Chef & full-service restaurants",
+   "he": "מסעדות שף ומסעדות ישיבה",
+   "aliases": [
+    "chef",
+    "fine dining",
+    "bistro",
+    "sit-down",
+    "full service",
+    "מסעדת שף",
+    "מסעדות שף",
+    "ביסטרו",
+    "מסעדת ישיבה"
+   ],
+   "osm": "restaurant",
+   "cuisine": [
+    "regional",
+    "french",
+    "italian",
+    "steak_house",
+    "mediterranean",
+    "fine_dining"
+   ],
+   "name_keywords": [
+    "ביסטרו",
+    "bistro",
+    "שף",
+    "chef",
+    "בר ",
+    "brasserie",
+    "טאבון"
+   ],
+   "lo": 10000,
+   "hi": 25000,
+   "ease": 3.5,
+   "why": "Bookings already go through Ontopo or Tabit and delivery is a small share. The value is a VIP club and events, which is a harder sell.",
+   "look": "Elegant and quiet: dark tones, seasonal menu, event invitations, VIP club perks.",
+   "mood": [
+    "#1b1b1b",
+    "#a68a64",
+    "#f2efe9"
+   ],
+   "pitch": "A VIP club that fills quiet nights and sells out events.",
+   "pitch_he": "מועדון VIP שממלא ערבים שקטים ומוכר את האירועים שלכם.",
+   "must_have": [
+    "Table booking",
+    "Allergens & kosher info"
+   ],
+   "nice_to_have": [
+    "Loyalty / punch card",
+    "Push & coupons",
+    "Order from the table (QR)",
+    "Payments (Bit, Apple/Google Pay)"
+   ],
+   "features": {
+    "order": 0,
+    "loyal": 1,
+    "push": 1,
+    "reorder": 0,
+    "pre": 0,
+    "table": 2,
+    "qr": 1,
+    "pay": 1,
+    "track": 0,
+    "multi": 0,
+    "allerg": 2,
+    "group": 0
+   }
+  },
+  {
+   "id": "bar",
+   "name": "Bars & pubs",
+   "he": "ברים ופאבים",
+   "aliases": [
+    "bar",
+    "bars",
+    "pub",
+    "pubs",
+    "בר",
+    "ברים",
+    "פאב",
+    "פאבים"
+   ],
+   "osm": "bar,pub",
+   "lo": 4000,
+   "hi": 10000,
+   "ease": 4.8,
+   "why": "Happy hour and events are a fit for push notifications, but the owners work at night and rarely prioritise tech.",
+   "look": "Night mode: dark, neon accents, tonight's event and happy hour first.",
+   "mood": [
+    "#0b0c10",
+    "#66fcf1",
+    "#1f2833"
+   ],
+   "pitch": "Tonight's event and happy hour on every regular's phone.",
+   "pitch_he": "האירוע של הערב וההאפי האוור מגיעים לטלפון של כל לקוח קבוע.",
+   "cuisine": null,
+   "name_keywords": null,
+   "must_have": [
+    "Push & coupons",
+    "Table booking"
+   ],
+   "nice_to_have": [
+    "Loyalty / punch card",
+    "Order from the table (QR)",
+    "Payments (Bit, Apple/Google Pay)",
+    "Group / office orders"
+   ],
+   "features": {
+    "order": 0,
+    "loyal": 1,
+    "push": 2,
+    "reorder": 0,
+    "pre": 0,
+    "table": 2,
+    "qr": 1,
+    "pay": 1,
+    "track": 0,
+    "multi": 0,
+    "allerg": 0,
+    "group": 1
+   }
+  },
+  {
+   "id": "street",
+   "name": "Shawarma, falafel & street food",
+   "he": "שווארמה, פלאפל וחומוס",
+   "aliases": [
+    "shawarma",
+    "falafel",
+    "hummus",
+    "street food",
+    "kebab",
+    "grill",
+    "שווארמה",
+    "שוורמה",
+    "פלאפל",
+    "חומוס",
+    "גריל",
+    "שיפודים"
+   ],
+   "osm": "fast_food,restaurant",
+   "cuisine": [
+    "kebab",
+    "falafel",
+    "shawarma",
+    "middle_eastern",
+    "hummus"
+   ],
+   "name_keywords": [
+    "שווארמה",
+    "שוורמה",
+    "פלאפל",
+    "חומוס",
+    "shawarma",
+    "falafel",
+    "hummus",
+    "שיפוד",
+    "גריל"
+   ],
+   "lo": 3000,
+   "hi": 8000,
+   "ease": 4.4,
+   "why": "Shawarma is Wolt's fastest-growing dish, but orders are small, owners are old-school and a lot is walk-in.",
+   "look": "Simple and fast: big photos, a short menu, 'order again' and pickup time.",
+   "mood": [
+    "#7f1d1d",
+    "#f59e0b",
+    "#fefce8"
+   ],
+   "pitch": "Pickup orders ready when the customer arrives, with no line.",
+   "pitch_he": "הזמנות לאיסוף שמוכנות כשהלקוח מגיע, בלי תור.",
+   "must_have": [
+    "Online ordering",
+    "Payments (Bit, Apple/Google Pay)"
+   ],
+   "nice_to_have": [
+    "Loyalty / punch card",
+    "Push & coupons",
+    "One-tap reorder",
+    "Delivery tracking",
+    "Allergens & kosher info",
+    "Group / office orders"
+   ],
+   "features": {
+    "order": 2,
+    "loyal": 1,
+    "push": 1,
+    "reorder": 1,
+    "pre": 0,
+    "table": 0,
+    "qr": 0,
+    "pay": 2,
+    "track": 1,
+    "multi": 0,
+    "allerg": 1,
+    "group": 1
+   }
+  },
+  {
+   "id": "catering",
+   "name": "Event catering",
+   "he": "קייטרינג לאירועים",
+   "aliases": [
+    "catering",
+    "events catering",
+    "קייטרינג",
+    "קייטרינג לאירועים"
+   ],
+   "osm": "catering,restaurant",
+   "name_keywords": [
+    "קייטרינג",
+    "catering",
+    "אירועים",
+    "events"
+   ],
+   "lo": 3000,
+   "hi": 8000,
+   "ease": 4.6,
+   "why": "Orders are rare and big, so customers won't keep an app. A website with a quote form fits them better.",
+   "look": "If anything, a catalogue: menus per event type and a quote request.",
+   "mood": [
+    "#264653",
+    "#e9c46a",
+    "#fdfcf8"
+   ],
+   "pitch": "Better pitched a website with a quote form than an app.",
+   "pitch_he": "מתאים יותר לאתר עם טופס הצעת מחיר מאשר לאפליקציה.",
+   "cuisine": null,
+   "must_have": [
+    "Pre-orders (Shabbat, holidays)",
+    "Allergens & kosher info"
+   ],
+   "nice_to_have": [
+    "Online ordering",
+    "Payments (Bit, Apple/Google Pay)",
+    "Group / office orders"
+   ],
+   "features": {
+    "order": 1,
+    "loyal": 0,
+    "push": 0,
+    "reorder": 0,
+    "pre": 2,
+    "table": 0,
+    "qr": 0,
+    "pay": 1,
+    "track": 0,
+    "multi": 0,
+    "allerg": 2,
+    "group": 1
+   }
+  }
+ ]
+}

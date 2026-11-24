@@ -1,0 +1,25 @@
+{
+ "provisional": true,
+ "app_name": "Restaurant app (working name until the friend's handoff arrives)",
+ "what_it_does": "A branded ordering and loyalty app for one restaurant: direct pickup and delivery orders without delivery-app commission, a loyalty club or digital punch card, push notifications and coupons, one-tap reorder, and pre-orders for Shabbat and holidays.",
+ "who_it_is_for": "Independent restaurants, cafés, bakeries and small local chains with regulars, especially ones that get a real share of their orders through Wolt or 10bis.",
+ "categories": "restaurant,fast_food,cafe,bakery,pastry,confectionery,ice_cream,deli",
+ "good_signs": [
+  "Listed on Wolt or 10bis (pays commission on every order)",
+  "Busy, with many reviews or a loyal crowd (regulars to move into the app)",
+  "Does delivery or takeaway",
+  "Active Instagram or Facebook with deals or a weekly menu",
+  "Already runs a punch card, club or WhatsApp list (values loyalty)",
+  "Two or more branches"
+ ],
+ "bad_signs": [
+  "Already has its own branded app (check the name + 'אפליקציה')",
+  "Part of a national chain or franchise (decided at HQ)",
+  "Already runs a Tabit club app or similar",
+  "Possibly closed, temporary or seasonal pop-up",
+  "Event catering only (rare orders; pitch a website instead)"
+ ],
+ "pitch_he": "אפליקציה ממותגת למסעדה: הזמנות ישירות בלי עמלה, מועדון לקוחות והזמנה חוזרת בהקשה אחת.",
+ "price_note": "First-year estimates per restaurant type are in lead_agent/data/app_types.json (setup + 12 months). Never put prices in openers.",
+ "source": "Provisional, from the App Client Map research (24 Nov 2026). Replace with the friend's handoff when it arrives; ask the user before committing details from it (the repo is public)."
+}

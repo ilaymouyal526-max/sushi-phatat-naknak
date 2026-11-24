@@ -177,6 +177,7 @@ def element_to_lead(el: dict, city: str) -> dict | None:
         "instagram": instagram,
         "directory_page": directory,
         "opening_hours": tags.get("opening_hours", ""),
+        "cuisine": tags.get("cuisine", ""),
         "lat": lat,
         "lon": lon,
     }

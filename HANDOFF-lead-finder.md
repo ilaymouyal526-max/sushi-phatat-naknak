@@ -6,7 +6,7 @@ Handoff from the session of 10–24 Nov 2026. To continue in a new session, say:
 ## Start here
 - **Branch:** `claude/wizardly-allen-y5msa0` (repo `ilaymouyal526-max/sushi-phatat-naknak`, **public**). It contains the
   original work from `claude/jolly-meitner-s4e01m` (merged) plus the lead-burn scheduler (section 8). No pull request has been opened.
-- **Tests:** `python3 -m unittest discover -s tests` (61 tests, stdlib `unittest`, no pytest needed). All pass.
+- **Tests:** `python3 -m unittest discover -s tests` (64 tests, stdlib `unittest`, no pytest needed). All pass.
 - **Needs:** Python 3.10+ with `requests`, `beautifulsoup4`, `openpyxl` (and `zoneinfo`, built in).
 - **The repo also holds an unrelated project** (`commercial/`, the AI sushi commercial). The lead finder is self-contained in
   `lead_agent/`, `tests/` and `.claude/skills/find-leads/`.
@@ -167,6 +167,22 @@ features. Then: "add these rules to the subagent, and when I pull him up, ask me
 - **Asking:** `/find-leads` asks "Which type should we go for today?" with AskUserQuestion (3 suggestions + Other) unless the
   user named a type. `/lead-burn` notifications ask the same with 1/2/3 replies; a bare "go" = suggestion 1.
 
+### 11. Restaurant app playbook (24 Nov 2026)
+The user (in Hebrew): "the same for apps; for now restaurants, that's what we have; research how to close restaurants on an app,
+same chart" and run it in Petah Tikva.
+- **Artifact:** "App Client Map" https://claude.ai/artifact/QzngxhbHwP2vsKbpqWmJbE (chart, 5-step close, objections, app
+  features matrix, look cards, sources). Research notes: `RESEARCH.md` ("Restaurant apps").
+- **Data:** `lead_agent/data/app_types.json` has 14 restaurant types with `cuisine` + `name_keywords` filters, `min_branches`
+  (small chains), first-year ₪ band, ease, pitch_he, look, app features. Quadrants: sweet = pizza, burger, sushi, shabbat,
+  healthy; volume = cafe, bakery, icecream; bigfish = chain, chef, ghost; skip = bar, street, catering.
+- **Engine:** `business_types.py` now has two playbooks (`kind="website"|"app"`); `types --app list|show|suggest`;
+  `find --focus app --type <id>`; OSM leads keep `cuisine`; run meta has `playbook`, so suggestion history is per playbook.
+- **App profile:** `lead_agent/app_profile.json` is a **provisional** generic restaurant ordering + loyalty app (committed;
+  no friend data). Replace it when the friend's handoff arrives (ask before committing their details; the repo is public).
+- **app-lead-finder** needs a `type`, checks Wolt/10bis presence and an existing own app for the top 10, uses the quadrant
+  approach, writes `app fit:` and `look:` notes, and reports the first-year band. `/find-leads` and `/lead-burn go app` ask
+  "which type today?" with `types --app suggest`.
+
 ## File map
 | Path | Role |
 |---|---|
@@ -185,12 +201,12 @@ features. Then: "add these rules to the subagent, and when I pull him up, ask me
 | `lead_agent/burn.py` / `state/burn.json` | Lead-burn decisions, rotation, hashed memory (section 8) |
 | `.claude/skills/lead-burn/SKILL.md` | Scheduled leftover-usage runs |
 | `.claude/agents/website-lead-finder.md` / `app-lead-finder.md` | The two subagents (section 9) |
-| `lead_agent/business_types.py` / `data/business_types.json` | Business-type playbook, `find --type`, `types suggest` (section 10) |
+| `lead_agent/business_types.py` / `data/business_types.json` / `data/app_types.json` | Website + restaurant-app playbooks, `find --type`, `types [--app] suggest` (sections 10–11) |
 | `lead_agent/app_profile.py` / `app_profile.example.json` | The app profile, waiting on the friend's handoff |
 | `lead_agent/paths.py` | User data folder: `./leads` or `$LEAD_AGENT_HOME` |
 | `lead_agent/RESEARCH.md` | Sources for the % and the call times (sourced vs. inferred) |
 | `lead_agent/README.md` | User guide |
-| `tests/` | 61 tests: audit, score/learn/osm, cards, CLI end-to-end, call times/holidays, call log/plan, lead burn, website/app focus, business types |
+| `tests/` | 64 tests: audit, score/learn/osm, cards, CLI end-to-end, call times/holidays, call log/plan, lead burn, website/app focus, business types |
 | `leads/` (**git-ignored**) | Run files, `seen.csv`, `calls.csv`, `do_not_contact.csv`, `outcomes.csv`, `weights.learned.json`, plans |
 
 ## Research summary (details and links in `lead_agent/RESEARCH.md`)

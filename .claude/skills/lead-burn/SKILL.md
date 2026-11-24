@@ -47,7 +47,7 @@ Schedule with `at` = the `next_check` epoch as an RFC3339 UTC time (`date -u -d 
         `Usage resets 17:20, plenty left. Which type today? 1 Aesthetic clinics 2 Photographers 3 Dentists. Reply 1/2/3 or a type, or ignore.`
      d. Post the same question in the chat: "Which type should we go for today?" with the three suggestions (name, quadrant,
         price band, ease), and the reply options: `1` / `2` / `3`, any type by name (`go zimmers haifa 30`),
-        `go app [city] [count]` (only if `app_profile.ready`), or `skip`. Don't use AskUserQuestion here: the user is
+        `go app [type] [city] [count]` (only if `app_profile.ready`; list the three `types --app suggest` picks too), or `skip`. Don't use AskUserQuestion here: the user is
         probably away, and a plain chat question waits for them.
      e. Schedule the next check at `next_check`. End the turn and **wait**. Don't start anything.
 3. Commit `lead_agent/state/burn.json` if it changed (`git add lead_agent/state/burn.json`, message
@@ -64,7 +64,8 @@ Schedule with `at` = the `next_check` epoch as an RFC3339 UTC time (`date -u -d 
      notification, ask "Which type should we go for today?" with AskUserQuestion, the same way as in `/find-leads`.
    - **City**: the user's, otherwise the rotation city from `python3 -m lead_agent burn target` (ignore its category).
    - **Count**: the user's, otherwise `verify_count` from `burn status`.
-   - For `app`: the rotation city and no type (the app agent uses the profile).
+   - For `app`: the type the user named (`types --app show "<name>"`); a bare "go app" = suggestion 1 of
+     `python3 -m lead_agent types --app suggest`. City as above. Pass `type` to the app-lead-finder.
    Deadline = reset − 5 min, in Israel time.
 4. Start the subagent: **`website-lead-finder`** or **`app-lead-finder`** (Agent tool with that `subagent_type`). If that
    type isn't listed, use `general-purpose` and tell it to read and follow `.claude/agents/<name>.md`. Pass city,

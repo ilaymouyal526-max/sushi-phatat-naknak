@@ -53,10 +53,11 @@ def cmd_find(args) -> int:
             args.category = profile["categories"]
     btype = None
     if args.type:
-        btype = business_types.get(args.type)
+        kind = "app" if focus == "app" else "website"
+        btype = business_types.get(args.type, kind)
         if not btype:
-            ids = ", ".join(t["id"] for t in business_types.load())
-            raise SystemExit(f"Unknown business type '{args.type}'. Use one of: {ids}")
+            ids = ", ".join(t["id"] for t in business_types.load(kind))
+            raise SystemExit(f"Unknown {kind} business type '{args.type}'. Use one of: {ids}")
         args.category = btype["osm"]
     if args.bbox:
         bbox = tuple(float(x) for x in args.bbox.split(","))
@@ -104,7 +105,7 @@ def cmd_find(args) -> int:
     label = btype["id"] if btype else args.category
     base = out_dir / f"{dt.date.today().isoformat()}-{export.slug(city)}-{export.slug(label)}{suffix}"
     meta = {"city": city, "category": args.category, "focus": focus, "bbox": bbox,
-            "business_type": btype["id"] if btype else None,
+            "business_type": btype["id"] if btype else None, "playbook": btype["playbook"] if btype else None,
             "created": dt.datetime.now().isoformat(),
             "stats": stats, "weights_version": score.load_weights().get("version")}
     files = export.write_all(leads, base, meta)
@@ -234,15 +235,17 @@ def cmd_learn(args) -> int:
 
 
 def cmd_types(args) -> int:
+    kind = "app" if args.app else "website"
     if args.action == "list":
-        _print([business_types.summary(t) for t in business_types.load()])
+        _print([business_types.summary(t) for t in business_types.load(kind)])
     elif args.action == "show":
-        t = business_types.get(args.key)
+        t = business_types.get(args.key, kind)
         if not t:
-            raise SystemExit(f"Unknown business type '{args.key}'. Run: python3 -m lead_agent types list")
+            raise SystemExit(f"Unknown {kind} business type '{args.key}'. Run: python3 -m lead_agent types list"
+                             + (" --app" if args.app else ""))
         _print(t)
     elif args.action == "suggest":
-        _print(business_types.suggest())
+        _print(business_types.suggest(kind))
     return 0
 
 
@@ -289,8 +292,8 @@ def main(argv: list[str] | None = None) -> int:
     f.add_argument("--focus", choices=["all", "website", "app"], default="all",
                    help="website: only businesses with no working website (quick-site pitch); "
                         "app: categories from the app profile (see app_profile.py); all: everything")
-    f.add_argument("--type", help="business type from the playbook (e.g. renovation, zimmer, dentist); "
-                                  "overrides --category. List: python3 -m lead_agent types list")
+    f.add_argument("--type", help="business type from the playbook (e.g. renovation, zimmer, dentist; with --focus app: "
+                                  "pizza, sushi, cafe…); overrides --category. List: types list [--app]")
     f.set_defaults(func=cmd_find)
 
     s = sub.add_parser("show", help="print leads from a run file")
@@ -329,7 +332,8 @@ def main(argv: list[str] | None = None) -> int:
     pl.add_argument("--max", type=int, default=25, help="max calls in the plan")
     pl.set_defaults(func=cmd_plan)
 
-    ty = sub.add_parser("types", help="business-type playbook: list / show <type> / suggest")
+    ty = sub.add_parser("types", help="business-type playbooks: list / show <type> / suggest  (--app: restaurant app playbook)")
+    ty.add_argument("--app", action="store_true", help="use the app playbook (restaurant types) instead of websites")
     tsub = ty.add_subparsers(dest="action", required=True)
     tsub.add_parser("list", help="all types with quadrant, price band and ease")
     tsh = tsub.add_parser("show", help="one type in full: pitch, look, must-have features")
