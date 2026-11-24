@@ -1,25 +1,24 @@
 {
  "provisional": true,
- "app_name": "Restaurant app (working name until the friend's handoff arrives)",
- "what_it_does": "A branded ordering and loyalty app for one restaurant: direct pickup and delivery orders without delivery-app commission, a loyalty club or digital punch card, push notifications and coupons, one-tap reorder, and pre-orders for Shabbat and holidays.",
- "who_it_is_for": "Independent restaurants, cafés, bakeries and small local chains with regulars, especially ones that get a real share of their orders through Wolt or 10bis.",
- "categories": "restaurant,fast_food,cafe,bakery,pastry,confectionery,ice_cream,deli",
+ "app_name": "Restaurant management app (working name until the friend's handoff arrives)",
+ "what_it_does": "A management app for the restaurant manager and the staff: shift scheduling, swaps and a time clock with hours for payroll; tasks and checklists (opening, closing, cleaning, food safety, training); stock counts and supplier orders. More features exist; details will come from the friend's handoff.",
+ "who_it_is_for": "Restaurants, cafés, bars and bakeries with roughly 8+ employees on shifts, where the owner or general manager runs shifts, hours, tips and stock on WhatsApp, Excel or paper.",
+ "categories": "restaurant,fast_food,cafe,bar,pub,bakery,pastry,confectionery,ice_cream,catering,events_venue",
  "good_signs": [
-  "Listed on Wolt or 10bis (pays commission on every order)",
-  "Busy, with many reviews or a loyal crowd (regulars to move into the app)",
-  "Does delivery or takeaway",
-  "Active Instagram or Facebook with deals or a weekly menu",
-  "Already runs a punch card, club or WhatsApp list (values loyalty)",
-  "Two or more branches"
+  "Hiring right now (job posts on Facebook, Instagram, AllJobs or a 'דרושים' sign): staff turnover is the pain",
+  "Busy: many reviews, a large sit-down area, a bar, or a big team visible in photos",
+  "Long opening hours or open 7 days, so many shifts to cover",
+  "Waiters or bartenders (tips to split and top up to minimum wage)",
+  "Two or more branches, or events and catering on top of the restaurant",
+  "Heavy daily stock or production (bakery, kitchen with many fresh items)"
  ],
  "bad_signs": [
-  "Already has its own branded app (check the name + 'אפליקציה')",
-  "Part of a national chain or franchise (decided at HQ)",
-  "Already runs a Tabit club app or similar",
-  "Possibly closed, temporary or seasonal pop-up",
-  "Event catering only (rare orders; pitch a website instead)"
+  "Tiny team (owner plus 1-3 family members)",
+  "Part of a national chain or franchise (systems decided at HQ)",
+  "Clearly already using a management system (mentions Restigo, MarketMan or similar)",
+  "Possibly closed, temporary or seasonal pop-up"
  ],
- "pitch_he": "אפליקציה ממותגת למסעדה: הזמנות ישירות בלי עמלה, מועדון לקוחות והזמנה חוזרת בהקשה אחת.",
+ "pitch_he": "אפליקציית ניהול למסעדה: סידור עבודה ושעון נוכחות, משימות וצ'קליסטים, מלאי והזמנות מספקים, במקום אחד למנהל ולעובדים.",
  "price_note": "First-year estimates per restaurant type are in lead_agent/data/app_types.json (setup + 12 months). Never put prices in openers.",
- "source": "Provisional, from the App Client Map research (24 Nov 2026). Replace with the friend's handoff when it arrives; ask the user before committing details from it (the repo is public)."
+ "source": "Provisional, from the App Client Map research (management app, 24 Nov 2026). The user confirmed the concept: shifts + time clock, tasks + checklists, stock + supplier orders, and more. Replace with the friend's handoff when it arrives; ask before committing details from it (the repo is public)."
 }

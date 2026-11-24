@@ -82,18 +82,20 @@ if __name__ == "__main__":
 class AppPlaybook(unittest.TestCase):
     def test_restaurant_quadrants(self):
         q = {t["id"]: t["quadrant"] for t in bt.load("app")}
-        self.assertEqual(len(q), 14)
-        self.assertEqual({k for k, v in q.items() if v == "sweet"}, {"pizza", "burger", "sushi", "shabbat", "healthy"})
-        self.assertEqual(q["cafe"], "volume")
+        self.assertEqual(len(q), 12)
+        self.assertEqual({k for k, v in q.items() if v == "sweet"}, {"fullservice", "cafe", "bar", "bakery"})
+        self.assertEqual(q["delivery"], "volume")
         self.assertEqual(q["chain"], "bigfish")
-        self.assertEqual(q["catering"], "skip")
-        self.assertEqual(bt.get("פיצה", "app")["id"], "pizza")
-        self.assertIsNone(bt.get("pizza", "website"))
+        self.assertEqual(q["family"], "skip")
+        self.assertEqual(bt.get("פיצה", "app")["id"], "delivery")
+        self.assertEqual(bt.get("בית קפה", "app")["id"], "cafe")
+        self.assertIsNone(bt.get("delivery", "website"))
 
     def test_cuisine_or_name_and_branches(self):
         leads = [{"name": "Napoli", "cuisine": "pizza"}, {"name": "פיצה שמש", "cuisine": ""},
                  {"name": "Sushi Bar", "cuisine": "sushi;japanese"}, {"name": "Cafe X", "cuisine": ""}]
-        self.assertEqual([l["name"] for l in bt.filter_by_name(bt.get("pizza", "app"), leads)], ["Napoli", "פיצה שמש"])
+        self.assertEqual([l["name"] for l in bt.filter_by_name(bt.get("delivery", "app"), leads)],
+                         ["Napoli", "פיצה שמש", "Sushi Bar"])
         self.assertEqual(len(bt.filter_by_name(bt.get("cafe", "app"), leads)), 4)  # no filter for plain cafés
         branches = [{"name": "Burger Bros"}, {"name": "burger  bros"}, {"name": "Solo"}]
         self.assertEqual(len(bt.filter_by_name(bt.get("chain", "app"), branches)), 2)
@@ -106,9 +108,9 @@ class AppPlaybook(unittest.TestCase):
                      "instagram": "", "directory_page": "", "opening_hours": "", "lat": 32.09, "lon": 34.88}]
             out = StringIO()
             with mock.patch.object(cli.osm, "find_businesses", return_value=(fake, {})), redirect_stdout(out):
-                cli.main(["find", "Petah Tikva", "--focus", "app", "--type", "pizza", "--no-audit"])
+                cli.main(["find", "Petah Tikva", "--focus", "app", "--type", "delivery", "--no-audit"])
             res = json.loads(out.getvalue())
-            self.assertTrue(res["files"]["json"].endswith("-pizza-app.json"))
-            self.assertIn("pizza", bt.history("app"))
-            self.assertNotIn("pizza", bt.history("website"))
-            self.assertNotIn("pizza", [s["id"] for s in bt.suggest("app")])
+            self.assertTrue(res["files"]["json"].endswith("-delivery-app.json"))
+            self.assertIn("delivery", bt.history("app"))
+            self.assertNotIn("delivery", bt.history("website"))
+            self.assertNotIn("delivery", [s["id"] for s in bt.suggest("app")])

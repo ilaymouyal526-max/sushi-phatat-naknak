@@ -167,21 +167,23 @@ features. Then: "add these rules to the subagent, and when I pull him up, ask me
 - **Asking:** `/find-leads` asks "Which type should we go for today?" with AskUserQuestion (3 suggestions + Other) unless the
   user named a type. `/lead-burn` notifications ask the same with 1/2/3 replies; a bare "go" = suggestion 1.
 
-### 11. Restaurant app playbook (24 Nov 2026)
-The user (in Hebrew): "the same for apps; for now restaurants, that's what we have; research how to close restaurants on an app,
-same chart" and run it in Petah Tikva.
-- **Artifact:** "App Client Map" https://claude.ai/artifact/QzngxhbHwP2vsKbpqWmJbE (chart, 5-step close, objections, app
-  features matrix, look cards, sources). Research notes: `RESEARCH.md` ("Restaurant apps").
-- **Data:** `lead_agent/data/app_types.json` has 14 restaurant types with `cuisine` + `name_keywords` filters, `min_branches`
-  (small chains), first-year ₪ band, ease, pitch_he, look, app features. Quadrants: sweet = pizza, burger, sushi, shabbat,
-  healthy; volume = cafe, bakery, icecream; bigfish = chain, chef, ghost; skip = bar, street, catering.
-- **Engine:** `business_types.py` now has two playbooks (`kind="website"|"app"`); `types --app list|show|suggest`;
-  `find --focus app --type <id>`; OSM leads keep `cuisine`; run meta has `playbook`, so suggestion history is per playbook.
-- **App profile:** `lead_agent/app_profile.json` is a **provisional** generic restaurant ordering + loyalty app (committed;
-  no friend data). Replace it when the friend's handoff arrives (ask before committing their details; the repo is public).
-- **app-lead-finder** needs a `type`, checks Wolt/10bis presence and an existing own app for the top 10, uses the quadrant
-  approach, writes `app fit:` and `look:` notes, and reports the first-year band. `/find-leads` and `/lead-burn go app` ask
-  "which type today?" with `types --app suggest`.
+### 11. Restaurant management-app playbook (24 Nov 2026)
+The user (in Hebrew): "the same for apps; for now restaurants; research how to close restaurants on an app, same chart",
+run in Petah Tikva. Then corrected: **the app is for the manager and the staff, a management interface**: shifts + time clock,
+tasks + checklists, stock + supplier orders ("and more, but that's the concept"). The first, customer-app version was replaced
+the same day and the half-finished Petah Tikva run was stopped and deleted.
+- **Artifact:** "App Client Map" https://claude.ai/artifact/QzngxhbHwP2vsKbpqWmJbE (chart, 5-step close, objections, feature
+  matrix, demo-first-screen cards, sources). Research notes: `RESEARCH.md` ("Restaurant management app").
+- **Data:** `lead_agent/data/app_types.json` has 12 restaurant types (filters `cuisine`, `name_keywords`, `min_branches`),
+  a first-year ₪ band, ease, pitch_he, `look` (= the demo's first screen) and 13 features. Quadrants: sweet = fullservice,
+  cafe, bar, bakery; volume = delivery, fastcasual, icecream; bigfish = chain, events, chef, ghost; skip = family.
+- **Engine:** `business_types.py` has two playbooks (`kind="website"|"app"`); `types --app list|show|suggest`;
+  `find --focus app --type <id>`; OSM leads keep `cuisine`; run meta `playbook` keeps suggestion history separate.
+- **App profile:** `lead_agent/app_profile.json` is a **provisional** management-app description (committed, no friend data).
+  Replace it when the friend's handoff arrives (ask before committing their details; the repo is public).
+- **app-lead-finder** needs a `type`; checks "<name> דרושים" (hiring = turnover pain) for the top 10; targets the owner or GM;
+  uses the quadrant approach; no legal threats (hours record / tips only as "keeps you covered"); writes `app fit:` and
+  `demo:` notes; reports the first-year band. `/find-leads` and `/lead-burn go app` ask "which type today?" via `types --app suggest`.
 
 ## File map
 | Path | Role |

@@ -36,10 +36,11 @@ Every time the user starts the website lead finder (`/find-leads`, "find me lead
    (garages) runs only because the user picked it, so say in one line that it's cheap and hard to close, then run it.
 **Apps work the same way, with the restaurant app playbook.** When the user starts the app lead finder ("find app
 leads", "app leads in Petah Tikva", starting `app-lead-finder`), ask the same question with
-`python3 -m lead_agent types --app suggest` (sweet: pizza / burgers / sushi / Shabbat takeaway / healthy; volume: cafés /
-bakeries / ice cream; big fish: small chains / chef / delivery-only). Resolve with `types --app show "<answer>"` and pass
-`type` to the `app-lead-finder`. The app profile (`lead_agent/app_profile.json`) is a provisional restaurant
-ordering + loyalty app until the friend's handoff arrives.
+`python3 -m lead_agent types --app suggest` (sweet: busy sit-down restaurants / busy cafés / bars / bakeries; volume:
+pizza-burger-delivery kitchens / fast-casual / ice cream; big fish: small chains / event halls & catering / chef /
+multi-brand kitchens). Resolve with `types --app show "<answer>"` and pass `type` to the `app-lead-finder`.
+The app is a **restaurant management app for the manager and staff** (shifts + time clock, tasks + checklists, stock +
+supplier orders). `lead_agent/app_profile.json` describes it provisionally until the friend's handoff arrives.
 
 ## Arguments
 - `/find-leads <city> [type] [count]`. Count defaults to `30` to verify and draft. With no type, ask (see above).

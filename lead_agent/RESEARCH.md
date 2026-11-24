@@ -77,19 +77,21 @@ Israeli business type.
   check current rules.
 - Quadrant rule: ease ≥ 5.5 and middle price (geometric) ≥ ₪5,000 → sweet spot. Re-place types from your own won/lost data.
 
-## Restaurant apps: who pays, who closes, how to close (24 Nov 2026)
-Feeds `data/app_types.json` (app playbook: `types --app`, `find --focus app --type`, app-lead-finder). Published as the
-"App Client Map" artifact (https://claude.ai/artifact/QzngxhbHwP2vsKbpqWmJbE). Prices = first year (setup + 12 months), estimates.
-- **Wolt commission:** a small restaurant owner told N12 (2025) he pays Wolt 32% of each sale; big chains pay less. Wolt changed
-  its service fees to a dynamic model in Jan 2025 and launched a subscription. Competition Authority looked at Wolt's position.
-  https://www.mako.co.il/news-money/2025_q2/Article-184b09ec76d0691027.htm
-- **Demand:** Wolt Israel 2024: burgers, fries, onion rings, shawarma, pizza, sushi lead; shawarma, Thai, chicken and sandwiches
-  grew fastest. https://timeout.co.il/וולט-2024/
-- **App pricing abroad (vendor pages):** setup $0–310, $49–499/month (UpMenu, MenuDrive, Zuppler, Ordering.co); custom apps up to
-  $150k (Popmenu, which argues many independents don't need one). Commission-free still means subscription + payment fees.
-- **Vendor-reported effects:** loyalty members spent 2.2× (DoorDash, Brothers Burgers); app users order 1.4× more often (Green Tomato
-  Grill); 85% of guests more likely to use an app with rewards, 93% would download a favourite's app (Owner.com survey); cafés suit
-  visit-based rewards with the first reward at 3–4 visits (DoorDash). Treat as talking points, not promises.
-- **Objections:** cost, "customers won't download", "apps are for Gen Z", set-up effort (Popmenu, Owner, Per Diem, PMQ).
-- **Israeli competitor:** Tabit runs branded ordering/club apps for restaurant groups (e.g. NONO group).
+## Restaurant management app: who pays, who closes, how to close (24 Nov 2026)
+The app (the user's friend's product) is a **management app for the manager and staff**: shifts + time clock, tasks +
+checklists, stock + supplier orders, and more. Feeds `data/app_types.json` (app playbook). Published as the "App Client Map"
+artifact (https://claude.ai/artifact/QzngxhbHwP2vsKbpqWmJbE). Prices = first year (setup + 12 months), estimates.
+(An earlier version of this section assumed a customer ordering/loyalty app; the user corrected it the same day.)
+- **Hours record:** since the 2009 amendment every employer must keep an exact record of working hours, rest and overtime
+  (Hours of Work and Rest Law §25(a1)). A time clock isn't required, but without one each day's record must be signed by the
+  employee and approved. In overtime claims the burden of proof is on the employer up to 15 h/week or 60 h/month.
+  https://www.workrights.co.il/פנקס-עבודה · https://www.bizportal.co.il/general/news/article/189561 · https://www.chamber.org.il/serviceslobby/legal/1856/2211/
+- **Tips:** tips are wages, must appear on the payslip, and with the common "top-up to minimum wage" practice need records per
+  shift and employee. Tips can't be used for employer contributions. https://www.kolzchut.org.il/he/תשר_למלצרים
+- **Sector pressure (Israeli press, 2025):** severe staff shortage (quota of 2,000 foreign workers for restaurants), minimum wage
+  up 17.9% since 2021 (₪6,247.67/month in 2025), ~4.6% of restaurants closed in 2025 (D&B), ~15% at risk (CofaceBDi).
+- **Comparable tools (vendor/review pages):** 7shifts $39.99–134.99 per location/month (payroll extra; tasks add-on $12.99);
+  Connecteam from ~$29/month (sources conflict); MarketMan $127–449 per location/month. Restigo (Israeli) has no public prices.
+- **Vendor-claimed effects:** 1–3% of sales saved on labour (7shifts), ~2 points of labour cost (Restaurant365), turnover down
+  up to 13% (sponsored QSR piece); replacing an hourly employee costs $2,305–5,864 (sources differ). Talking points, not promises.
 - Quadrant rule: ease ≥ 5.5 and middle first-year price ≥ ₪8,000 → sweet spot.
