@@ -97,6 +97,9 @@ If the city is missing, ask for it (and offer the category groups). Don't ask ab
      opener pre-filled; good to send to a partner) and the **`.xlsx`** (for tracking status and `learn`).
    - One line explaining the %: *an estimate of the chance this business becomes a paying client after one
      personal outreach, based on published outreach benchmarks; it gets more accurate as you log results.*
+   - Point to the **call sheet** at the top of the `.html` page (and the "דף שיחה · Call sheet" sheet in the `.xlsx`):
+     what else to offer by type of business, numbers to quote with sources, questions for the owner, prices and Israeli
+     rules. Its content is `lead_agent/data/services_he.json` + `facts_he.json`. Add a number only with a real source.
    - The compliance line below, and the learn reminder.
 
 ## Learning (`/find-leads learn <file>`)

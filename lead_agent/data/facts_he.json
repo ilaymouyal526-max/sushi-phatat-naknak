@@ -7,7 +7,9 @@
    "source": "BrightLocal, Local Consumer Review Survey",
    "url": "https://www.brightlocal.com/research/local-consumer-review-survey/",
    "year": 2026,
-   "groups": ["*"]
+   "groups": [
+    "*"
+   ]
   },
   "reviews_google": {
    "say_he": "גוגל הוא המקום מספר 1 לקרוא ביקורות על עסקים מקומיים: 83% מהצרכנים קוראים שם.",
@@ -15,7 +17,9 @@
    "source": "BrightLocal, Local Consumer Review Survey 2025",
    "url": "https://www.brightlocal.com/research/local-consumer-review-survey-2025/",
    "year": 2025,
-   "groups": ["*"]
+   "groups": [
+    "*"
+   ]
   },
   "low_rating": {
    "say_he": "71% מהצרכנים לא ילכו לעסק עם דירוג ממוצע מתחת ל-3 כוכבים. לכן חשוב לבקש ביקורת מכל לקוח מרוצה.",
@@ -23,7 +27,9 @@
    "source": "BrightLocal, Local Consumer Review Survey 2024",
    "url": "https://brightlocal.com/research/local-consumer-review-survey-2024/",
    "year": 2024,
-   "groups": ["*"]
+   "groups": [
+    "*"
+   ]
   },
   "whatsapp_il": {
    "say_he": "99% מהישראלים משתמשים בוואטסאפ. זו הפלטפורמה הנפוצה ביותר בארץ, ולכן כפתור וואטסאפ באתר הוא חובה.",
@@ -31,7 +37,9 @@
    "source": "איגוד האינטרנט הישראלי, דוח שנתי 2025 (דרך Jerusalem Post)",
    "url": "https://www.jpost.com/business-and-innovation/article-871715",
    "year": 2025,
-   "groups": ["*"]
+   "groups": [
+    "*"
+   ]
   },
   "after_hours": {
    "say_he": "46% מהתורים במספרות ומכוני יופי נקבעים כשהעסק סגור (בערב או לפני הפתיחה). בלי זימון אונליין, התורים האלה הולכים למתחרה.",
@@ -39,7 +47,14 @@
    "source": "Phorest, ניתוח של יותר מ-5,000 מספרות וספא (דרך HJi)",
    "url": "https://hji.co.uk/nearly-half-of-salon-appointments-booked-outside-of-salon-hours",
    "year": 2019,
-   "groups": ["hair", "beauty", "massage", "tattoo", "fitness", "health"]
+   "groups": [
+    "hair",
+    "beauty",
+    "massage",
+    "tattoo",
+    "fitness",
+    "health"
+   ]
   },
   "after_hours_booksy": {
    "say_he": "לפי Booksy, 38% מהלקוחות קובעים תור מחוץ לשעות 9:00-18:00.",
@@ -47,7 +62,12 @@
    "source": "Booksy, Online booking habits",
    "url": "https://biz.booksy.com/en-us/blog/customers-online-booking-habits",
    "year": 2023,
-   "groups": ["hair", "beauty", "massage", "tattoo"]
+   "groups": [
+    "hair",
+    "beauty",
+    "massage",
+    "tattoo"
+   ]
   },
   "reminders": {
    "say_he": "תזכורת בהודעה לפני התור מעלה את ההגעה: במחקרים, מ-68% ל-79%. בערך שליש פחות 'לא הגיעו'.",
@@ -55,7 +75,17 @@
    "source": "Cochrane Review: Mobile phone messaging reminders for attendance (Gurol-Urganci et al.)",
    "url": "https://pubmed.ncbi.nlm.nih.gov/24310741/",
    "year": 2013,
-   "groups": ["hair", "beauty", "massage", "tattoo", "health", "fitness", "auto", "professional"]
+   "groups": [
+    "hair",
+    "beauty",
+    "massage",
+    "tattoo",
+    "health",
+    "fitness",
+    "auto",
+    "professional",
+    "food"
+   ]
   },
   "lead_speed": {
    "say_he": "מי שחוזר לפנייה תוך שעה מגיע לשיחה אמיתית פי 7 יותר ממי שמחכה עוד שעה. מענה אוטומטי מיידי בוואטסאפ עוזר לא לאבד פניות.",
@@ -63,7 +93,9 @@
    "source": "Harvard Business Review, The Short Life of Online Sales Leads",
    "url": "https://hbr.org/2011/03/the-short-life-of-online-sales-leads",
    "year": 2011,
-   "groups": ["*"]
+   "groups": [
+    "*"
+   ]
   },
   "gift_new_clients": {
    "say_he": "בערך 1 מכל 4 שמממשים שובר מתנה בספא לא ביקר שם אף פעם. שובר מתנה מביא לקוחות חדשים.",
@@ -71,7 +103,13 @@
    "source": "Zenoti, spa gift card data",
    "url": "https://www.zenoti.com/thecheckin/spa-gift-card-members",
    "year": 2024,
-   "groups": ["massage", "beauty", "hair", "tattoo", "food"]
+   "groups": [
+    "massage",
+    "beauty",
+    "hair",
+    "tattoo",
+    "food"
+   ]
   },
   "gift_online": {
    "say_he": "31% ממכירות שוברי המתנה במספרות ובספא נעשות אונליין, כלומר שובר שאפשר לקנות באתר מוכר גם כשאתם סגורים.",
@@ -79,7 +117,11 @@
    "source": "Zenoti, gift card sales",
    "url": "https://www.zenoti.com/thecheckin/sell-gift-cards-online",
    "year": 2024,
-   "groups": ["massage", "beauty", "hair"]
+   "groups": [
+    "massage",
+    "beauty",
+    "hair"
+   ]
   }
  },
  "legal": {

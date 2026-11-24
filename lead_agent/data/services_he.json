@@ -1,5 +1,5 @@
 {
- "_about": "What else to offer, by type of business. 'facts', 'legal' and 'price' point at ids in facts_he.json. time_he is our own estimate of the work. Edit freely; keep the ids. Groups not listed fall back to 'default'.",
+ "_about": "What else to offer, by type of business. 'facts', 'legal' and 'price' point at ids in facts_he.json. time_he is our own estimate of the work. 'map' is an exact OSM tag match; otherwise 'osm_groups' maps the lead_agent category group (osm.CATEGORY_GROUPS) to a service group. Edit freely; keep the ids.",
  "map": {
   "shop=hairdresser": "hair",
   "shop=beauty": "beauty",
@@ -17,8 +17,14 @@
    "pitch_he": "מי שמחפש אתכם בגוגל מוצא מיד שעות, כתובת וכפתור וואטסאפ, ולא עובר למתחרה.",
    "time_he": "2-5 ימי עבודה",
    "price": "site",
-   "facts": ["reviews_google", "whatsapp_il"],
-   "legal": ["accessibility", "privacy_13"]
+   "facts": [
+    "reviews_google",
+    "whatsapp_il"
+   ],
+   "legal": [
+    "accessibility",
+    "privacy_13"
+   ]
   },
   "gbp": {
    "name_he": "פרופיל עסק בגוגל",
@@ -26,7 +32,9 @@
    "pitch_he": "זה מה שמופיע במפות כשמחפשים עסק כמו שלכם באזור.",
    "time_he": "שעה, ועוד כמה ימים לאימות של גוגל",
    "price": "google_profile",
-   "facts": ["reviews_google"],
+   "facts": [
+    "reviews_google"
+   ],
    "legal": []
   },
   "wa_business": {
@@ -35,8 +43,13 @@
    "pitch_he": "כל פנייה מקבלת תשובה מיד, גם כשאתם באמצע עבודה.",
    "time_he": "1-2 שעות",
    "price": "whatsapp",
-   "facts": ["whatsapp_il", "lead_speed"],
-   "legal": ["whatsapp_api"]
+   "facts": [
+    "whatsapp_il",
+    "lead_speed"
+   ],
+   "legal": [
+    "whatsapp_api"
+   ]
   },
   "missed_call": {
    "name_he": "מענה לשיחה שלא נענתה",
@@ -44,8 +57,12 @@
    "pitch_he": "לא מאבדים לקוח רק כי הטלפון צלצל באמצע עבודה.",
    "time_he": "חצי יום (תלוי בטלפון או במרכזייה)",
    "price": "whatsapp",
-   "facts": ["lead_speed"],
-   "legal": ["spam_law"]
+   "facts": [
+    "lead_speed"
+   ],
+   "legal": [
+    "spam_law"
+   ]
   },
   "reviews": {
    "name_he": "בקשת ביקורת אוטומטית",
@@ -53,8 +70,13 @@
    "pitch_he": "עוד ביקורות טובות מביאות עוד לקוחות חדשים.",
    "time_he": "2-3 שעות",
    "price": "whatsapp",
-   "facts": ["reviews_read", "low_rating"],
-   "legal": ["spam_law"]
+   "facts": [
+    "reviews_read",
+    "low_rating"
+   ],
+   "legal": [
+    "spam_law"
+   ]
   },
   "receipts": {
    "name_he": "קבלות דיגיטליות אוטומטיות",
@@ -63,7 +85,10 @@
    "time_he": "2-4 שעות חיבור",
    "price": "invoicing",
    "facts": [],
-   "legal": ["digital_receipts", "invoice_allocation"]
+   "legal": [
+    "digital_receipts",
+    "invoice_allocation"
+   ]
   },
   "pay_link": {
    "name_he": "לינק תשלום",
@@ -72,7 +97,9 @@
    "time_he": "1-2 שעות",
    "price": "invoicing",
    "facts": [],
-   "legal": ["digital_receipts"]
+   "legal": [
+    "digital_receipts"
+   ]
   },
   "clients": {
    "name_he": "רשימת לקוחות מסודרת",
@@ -81,7 +108,10 @@
    "time_he": "חצי יום",
    "price": "",
    "facts": [],
-   "legal": ["privacy_13", "spam_law"]
+   "legal": [
+    "privacy_13",
+    "spam_law"
+   ]
   },
   "suppliers": {
    "name_he": "הזמנות מספקים",
@@ -98,8 +128,14 @@
    "pitch_he": "תורים נקבעים גם כשאתם סגורים, ופחות לקוחות לא מגיעים.",
    "time_he": "יום עבודה",
    "price": "booking",
-   "facts": ["after_hours", "after_hours_booksy", "reminders"],
-   "legal": ["spam_law"]
+   "facts": [
+    "after_hours",
+    "after_hours_booksy",
+    "reminders"
+   ],
+   "legal": [
+    "spam_law"
+   ]
   },
   "deposit": {
    "name_he": "מקדמה לתור",
@@ -107,8 +143,12 @@
    "pitch_he": "מי ששילם מקדמה מגיע, וביטול ברגע האחרון לא עולה לכם יום עבודה.",
    "time_he": "שעתיים",
    "price": "invoicing",
-   "facts": ["reminders"],
-   "legal": ["digital_receipts"]
+   "facts": [
+    "reminders"
+   ],
+   "legal": [
+    "digital_receipts"
+   ]
   },
   "rebook": {
    "name_he": "תזכורת לתור הבא",
@@ -116,8 +156,12 @@
    "pitch_he": "לקוחות קבועים חוזרים בזמן ולא הולכים למקום אחר.",
    "time_he": "חצי יום",
    "price": "whatsapp",
-   "facts": ["reminders"],
-   "legal": ["spam_law"]
+   "facts": [
+    "reminders"
+   ],
+   "legal": [
+    "spam_law"
+   ]
   },
   "waitlist": {
    "name_he": "רשימת המתנה לביטולים",
@@ -134,8 +178,13 @@
    "pitch_he": "מוכר גם כשאתם סגורים, ובמיוחד בחגים, ומביא לקוחות חדשים.",
    "time_he": "יום עבודה",
    "price": "invoicing",
-   "facts": ["gift_new_clients", "gift_online"],
-   "legal": ["digital_receipts"]
+   "facts": [
+    "gift_new_clients",
+    "gift_online"
+   ],
+   "legal": [
+    "digital_receipts"
+   ]
   },
   "packages": {
    "name_he": "כרטיסיות וחבילות",
@@ -144,7 +193,9 @@
    "time_he": "חצי יום",
    "price": "invoicing",
    "facts": [],
-   "legal": ["digital_receipts"]
+   "legal": [
+    "digital_receipts"
+   ]
   },
   "consult_form": {
    "name_he": "טופס ייעוץ עם תמונת רפרנס",
@@ -152,8 +203,12 @@
    "pitch_he": "פחות 'כמה עולה?' בלי פרטים, והצעת מחיר מהירה יותר.",
    "time_he": "חצי יום",
    "price": "",
-   "facts": ["lead_speed"],
-   "legal": ["privacy_13"]
+   "facts": [
+    "lead_speed"
+   ],
+   "legal": [
+    "privacy_13"
+   ]
   },
   "consent_form": {
    "name_he": "הצהרת בריאות והסכמה חתומה אונליין",
@@ -162,7 +217,10 @@
    "time_he": "חצי יום",
    "price": "",
    "facts": [],
-   "legal": ["health_forms", "privacy_13"]
+   "legal": [
+    "health_forms",
+    "privacy_13"
+   ]
   },
   "aftercare": {
    "name_he": "הוראות טיפול אוטומטיות",
@@ -170,8 +228,12 @@
    "pitch_he": "לקוח מרוצה, ביקורת בגוגל ועוד תמונה לתיק העבודות.",
    "time_he": "2-3 שעות",
    "price": "whatsapp",
-   "facts": ["reviews_read"],
-   "legal": ["spam_law"]
+   "facts": [
+    "reviews_read"
+   ],
+   "legal": [
+    "spam_law"
+   ]
   },
   "portfolio": {
    "name_he": "תיק עבודות לפי סגנון",
@@ -181,6 +243,255 @@
    "price": "site",
    "facts": [],
    "legal": []
+  },
+  "digital_menu": {
+   "name_he": "תפריט דיגיטלי עם QR",
+   "what_he": "תפריט בטלפון עם תמונות ומחירים שמתעדכנים בלי להדפיס מחדש, וקוד QR לשולחן ולחלון.",
+   "pitch_he": "משנים מחיר או מנה בדקה, והתפריט מופיע גם בגוגל.",
+   "time_he": "חצי יום",
+   "price": "site",
+   "facts": [
+    "reviews_google"
+   ],
+   "legal": []
+  },
+  "table_booking": {
+   "name_he": "הזמנת שולחנות עם תזכורת",
+   "what_he": "הזמנה אונליין לפי שעה וכמות סועדים, עם תזכורת ואישור הגעה.",
+   "pitch_he": "פחות שולחנות ריקים של מי שהזמין ולא הגיע, ופחות טלפונים בשעת הלחץ.",
+   "time_he": "יום עבודה",
+   "price": "booking",
+   "facts": [
+    "reminders"
+   ],
+   "legal": [
+    "spam_law"
+   ]
+  },
+  "wa_orders": {
+   "name_he": "הזמנות לאיסוף בוואטסאפ",
+   "what_he": "קטלוג מנות בוואטסאפ, הזמנה ותשלום בלינק, והודעה כשההזמנה מוכנה.",
+   "pitch_he": "הזמנות בלי עמלה של אפליקציית משלוחים.",
+   "time_he": "יום עבודה",
+   "price": "whatsapp",
+   "facts": [
+    "whatsapp_il"
+   ],
+   "legal": [
+    "whatsapp_api",
+    "digital_receipts"
+   ]
+  },
+  "events_form": {
+   "name_he": "טופס אירועים וקייטרינג",
+   "what_he": "טופס לאירוע: תאריך, כמות, תקציב והעדפות. הפנייה מגיעה מסודרת לוואטסאפ.",
+   "pitch_he": "פניות של אירועים הן הכסף הגדול, וחבל לפספס אותן.",
+   "time_he": "חצי יום",
+   "price": "",
+   "facts": [
+    "lead_speed"
+   ],
+   "legal": [
+    "privacy_13"
+   ]
+  },
+  "intake_form": {
+   "name_he": "שאלון לפני ביקור",
+   "what_he": "טופס קליטה בטלפון לפני הביקור: פרטים, רקע רפואי והסכמות, שנשמר מאובטח.",
+   "pitch_he": "פחות ניירת בקבלה ופחות זמן המתנה.",
+   "time_he": "יום עבודה",
+   "price": "",
+   "facts": [],
+   "legal": [
+    "privacy_13",
+    "health_forms"
+   ]
+  },
+  "recall": {
+   "name_he": "תזכורת לבדיקה תקופתית",
+   "what_he": "תזכורת אוטומטית לביקור הבא: ניקוי שיניים כל חצי שנה, חיסון שנתי לכלב, בדיקת עיניים.",
+   "pitch_he": "מטופלים חוזרים בזמן בלי שמישהו יתקשר אליהם.",
+   "time_he": "חצי יום",
+   "price": "whatsapp",
+   "facts": [
+    "reminders"
+   ],
+   "legal": [
+    "spam_law"
+   ]
+  },
+  "quote_form": {
+   "name_he": "טופס הצעת מחיר עם תמונות",
+   "what_he": "הלקוח מתאר את התקלה ומצרף תמונות, כתובת ושעה נוחה, והכול מגיע מסודר לוואטסאפ.",
+   "pitch_he": "מגיעים לעבודה עם הכלים הנכונים, ופחות נסיעות סתם.",
+   "time_he": "חצי יום",
+   "price": "",
+   "facts": [
+    "lead_speed"
+   ],
+   "legal": [
+    "privacy_13"
+   ]
+  },
+  "quote_pdf": {
+   "name_he": "הצעת מחיר עם חתימה דיגיטלית",
+   "what_he": "הצעת מחיר מסודרת עם לוגו, שהלקוח מאשר בחתימה בטלפון.",
+   "pitch_he": "נראה מקצועי, ואין ויכוח אחר כך על מה סוכם.",
+   "time_he": "2-3 שעות",
+   "price": "invoicing",
+   "facts": [],
+   "legal": [
+    "digital_receipts"
+   ]
+  },
+  "service_reminder": {
+   "name_he": "תזכורת לשירות שנתי",
+   "what_he": "תזכורת ללקוח לטיפול השנתי: ניקוי מזגן, דוד, מסננים או בדיקת גז.",
+   "pitch_he": "עבודה חוזרת בלי לחפש לקוחות חדשים.",
+   "time_he": "חצי יום",
+   "price": "whatsapp",
+   "facts": [
+    "reminders"
+   ],
+   "legal": [
+    "spam_law"
+   ]
+  },
+  "test_reminder": {
+   "name_he": "תזכורת טסט וטיפול",
+   "what_he": "תזכורת לפני הטסט השנתי ולפני הטיפול התקופתי, עם לינק לקביעת תור.",
+   "pitch_he": "הלקוח חוזר אליכם ולא למוסך שבדרך.",
+   "time_he": "חצי יום",
+   "price": "whatsapp",
+   "facts": [
+    "reminders"
+   ],
+   "legal": [
+    "spam_law"
+   ]
+  },
+  "quote_approval": {
+   "name_he": "אישור עבודה בוואטסאפ",
+   "what_he": "שולחים ללקוח תמונה של החלק והצעת מחיר, והוא מאשר בלחיצה.",
+   "pitch_he": "פחות טלפונים, ואישור כתוב לכל עבודה.",
+   "time_he": "2-3 שעות",
+   "price": "whatsapp",
+   "facts": [
+    "whatsapp_il"
+   ],
+   "legal": [
+    "whatsapp_api"
+   ]
+  },
+  "car_ready": {
+   "name_he": "הודעת 'הרכב מוכן' עם תשלום",
+   "what_he": "כשהרכב מוכן נשלחת הודעה עם לינק תשלום וקבלה.",
+   "pitch_he": "הלקוח מגיע מוכן לשלם, ואין תור בקופה.",
+   "time_he": "2-3 שעות",
+   "price": "invoicing",
+   "facts": [],
+   "legal": [
+    "digital_receipts"
+   ]
+  },
+  "class_schedule": {
+   "name_he": "מערכת שיעורים והרשמה",
+   "what_he": "לוח שיעורים באתר, הרשמה לשיעור, רשימת המתנה ותזכורת.",
+   "pitch_he": "שיעורים מלאים ופחות מקומות שתפוסים סתם.",
+   "time_he": "יום עבודה",
+   "price": "booking",
+   "facts": [
+    "reminders",
+    "after_hours"
+   ],
+   "legal": [
+    "spam_law"
+   ]
+  },
+  "recurring": {
+   "name_he": "מנוי חודשי בהוראת קבע",
+   "what_he": "חיוב חודשי אוטומטי באשראי, עם קבלה אוטומטית.",
+   "pitch_he": "הכנסה קבועה בלי לרדוף אחרי תשלומים.",
+   "time_he": "2-4 שעות",
+   "price": "invoicing",
+   "facts": [],
+   "legal": [
+    "digital_receipts"
+   ]
+  },
+  "trial_form": {
+   "name_he": "שיעור ניסיון",
+   "what_he": "טופס קצר לשיעור ניסיון, ומעקב בוואטסאפ אחרי השיעור.",
+   "pitch_he": "כל מי שמתעניין מקבל תשובה מהר.",
+   "time_he": "חצי יום",
+   "price": "",
+   "facts": [
+    "lead_speed"
+   ],
+   "legal": [
+    "privacy_13"
+   ]
+  },
+  "renewal": {
+   "name_he": "תזכורת חידוש מנוי",
+   "what_he": "תזכורת לפני שהמנוי או הכרטיסייה נגמרים.",
+   "pitch_he": "פחות מנויים שנעלמים בשקט.",
+   "time_he": "2-3 שעות",
+   "price": "whatsapp",
+   "facts": [
+    "reminders"
+   ],
+   "legal": [
+    "spam_law"
+   ]
+  },
+  "docs_collect": {
+   "name_he": "איסוף מסמכים מלקוחות",
+   "what_he": "לינק שבו הלקוח מעלה מסמכים לפי רשימה, עם תזכורת למי שלא העלה.",
+   "pitch_he": "לא רודפים אחרי מסמכים בוואטסאפ ובמייל.",
+   "time_he": "יום עבודה",
+   "price": "",
+   "facts": [],
+   "legal": [
+    "privacy_13"
+   ]
+  },
+  "deadline_reminder": {
+   "name_he": "תזכורת לפני מועד דיווח",
+   "what_he": "תזכורת אוטומטית ללקוחות לפני מועד מע\"מ, דוח שנתי או חידוש.",
+   "pitch_he": "פחות קנסות וריצות של הרגע האחרון.",
+   "time_he": "חצי יום",
+   "price": "whatsapp",
+   "facts": [
+    "reminders"
+   ],
+   "legal": [
+    "spam_law"
+   ]
+  },
+  "esign": {
+   "name_he": "חתימה דיגיטלית על הסכם",
+   "what_he": "הסכם או ייפוי כוח שהלקוח חותם עליו בטלפון.",
+   "pitch_he": "סוגרים לקוח באותו יום, בלי לקבוע פגישה רק בשביל חתימה.",
+   "time_he": "2-3 שעות",
+   "price": "",
+   "facts": [],
+   "legal": [
+    "privacy_13"
+   ]
+  },
+  "wa_catalog": {
+   "name_he": "קטלוג מוצרים בוואטסאפ",
+   "what_he": "מוצרים עם תמונות ומחירים בקטלוג של WhatsApp Business, והזמנה לאיסוף.",
+   "pitch_he": "הלקוח רואה מה יש לפני שהוא מגיע.",
+   "time_he": "2-4 שעות",
+   "price": "whatsapp",
+   "facts": [
+    "whatsapp_il"
+   ],
+   "legal": [
+    "whatsapp_api"
+   ]
   }
  },
  "common_questions_he": [
@@ -193,7 +504,20 @@
  "groups": {
   "hair": {
    "label_he": "מספרה",
-   "services": ["site", "booking", "rebook", "deposit", "reviews", "gift", "waitlist", "suppliers", "receipts", "gbp", "wa_business", "missed_call"],
+   "services": [
+    "site",
+    "booking",
+    "rebook",
+    "deposit",
+    "reviews",
+    "gift",
+    "waitlist",
+    "suppliers",
+    "receipts",
+    "gbp",
+    "wa_business",
+    "missed_call"
+   ],
    "questions_he": [
     "איך קובעים תור היום? טלפון, וואטסאפ או אינסטגרם?",
     "כמה תורים בשבוע בערך לא מגיעים?",
@@ -205,7 +529,20 @@
   },
   "beauty": {
    "label_he": "קוסמטיקה וציפורניים",
-   "services": ["site", "booking", "rebook", "deposit", "reviews", "gift", "packages", "waitlist", "suppliers", "receipts", "gbp", "wa_business"],
+   "services": [
+    "site",
+    "booking",
+    "rebook",
+    "deposit",
+    "reviews",
+    "gift",
+    "packages",
+    "waitlist",
+    "suppliers",
+    "receipts",
+    "gbp",
+    "wa_business"
+   ],
    "questions_he": [
     "איך קובעים תור היום?",
     "כמה ביטולים או אי-הגעות יש בשבוע?",
@@ -217,7 +554,20 @@
   },
   "tattoo": {
    "label_he": "קעקועים",
-   "services": ["site", "portfolio", "consult_form", "deposit", "consent_form", "aftercare", "booking", "reviews", "gift", "suppliers", "receipts", "gbp"],
+   "services": [
+    "site",
+    "portfolio",
+    "consult_form",
+    "deposit",
+    "consent_form",
+    "aftercare",
+    "booking",
+    "reviews",
+    "gift",
+    "suppliers",
+    "receipts",
+    "gbp"
+   ],
    "questions_he": [
     "איך מגיעות פניות היום? הודעות באינסטגרם?",
     "כמה פניות בשבוע הן רק 'כמה עולה?' בלי פרטים?",
@@ -229,7 +579,20 @@
   },
   "massage": {
    "label_he": "עיסוי וספא",
-   "services": ["site", "booking", "gift", "packages", "consent_form", "deposit", "reviews", "rebook", "receipts", "gbp", "wa_business", "suppliers"],
+   "services": [
+    "site",
+    "booking",
+    "gift",
+    "packages",
+    "consent_form",
+    "deposit",
+    "reviews",
+    "rebook",
+    "receipts",
+    "gbp",
+    "wa_business",
+    "suppliers"
+   ],
    "questions_he": [
     "איך לקוח בוחר מטפל או מטפלת היום?",
     "מוכרים שוברי מתנה? כמה בערך לפני חגים?",
@@ -241,11 +604,185 @@
   },
   "default": {
    "label_he": "כל עסק",
-   "services": ["site", "gbp", "wa_business", "missed_call", "reviews", "receipts", "pay_link", "clients", "suppliers"],
+   "services": [
+    "site",
+    "gbp",
+    "wa_business",
+    "missed_call",
+    "reviews",
+    "receipts",
+    "pay_link",
+    "clients",
+    "suppliers"
+   ],
    "questions_he": [
     "מה הלקוחות הכי שואלים כשהם מתקשרים?",
     "מה לוקח לכם הכי הרבה זמן ביום שלא קשור לעבודה עצמה?"
    ]
+  },
+  "food": {
+   "label_he": "מסעדה ובית קפה",
+   "services": [
+    "site",
+    "digital_menu",
+    "table_booking",
+    "wa_orders",
+    "suppliers",
+    "reviews",
+    "events_form",
+    "gift",
+    "receipts",
+    "gbp",
+    "missed_call"
+   ],
+   "questions_he": [
+    "איך מקבלים הזמנות שולחנות היום? טלפון?",
+    "כמה הזמנות בשבוע לא מגיעות?",
+    "עובדים עם אפליקציות משלוחים? כמה עמלה זה עולה לכם?",
+    "איך מזמינים מספקים היום? מי עושה את זה ומתי?",
+    "יש לכם אירועים או קייטרינג? איך מגיעות הפניות?",
+    "התפריט מעודכן בגוגל?"
+   ]
+  },
+  "health": {
+   "label_he": "מרפאה וקליניקה",
+   "services": [
+    "site",
+    "booking",
+    "recall",
+    "intake_form",
+    "reviews",
+    "receipts",
+    "gbp",
+    "missed_call",
+    "pay_link"
+   ],
+   "questions_he": [
+    "איך קובעים תור היום? מזכירה בטלפון?",
+    "כמה מטופלים בשבוע לא מגיעים?",
+    "שולחים תזכורת לבדיקה התקופתית? איך?",
+    "יש טופס קליטה לפני ביקור? נייר או דיגיטלי?",
+    "איפה נשמר המידע על המטופלים היום?"
+   ]
+  },
+  "trades": {
+   "label_he": "בעלי מקצוע",
+   "services": [
+    "site",
+    "quote_form",
+    "missed_call",
+    "quote_pdf",
+    "receipts",
+    "service_reminder",
+    "reviews",
+    "gbp",
+    "wa_business",
+    "suppliers",
+    "pay_link"
+   ],
+   "questions_he": [
+    "כמה שיחות ביום אתם מפספסים כשאתם באמצע עבודה?",
+    "איך שולחים הצעות מחיר היום?",
+    "איך מוציאים חשבונית או קבלה בסוף עבודה?",
+    "יש לקוחות שצריכים שירות כל שנה? מזכירים להם?",
+    "מאיפה מזמינים חלקים וחומרים, ואיך?",
+    "באילו אזורים אתם עובדים?"
+   ]
+  },
+  "auto": {
+   "label_he": "מוסך ורכב",
+   "services": [
+    "site",
+    "test_reminder",
+    "booking",
+    "quote_approval",
+    "car_ready",
+    "reviews",
+    "receipts",
+    "gbp",
+    "suppliers"
+   ],
+   "questions_he": [
+    "איך לקוחות קובעים טיפול היום?",
+    "מזכירים ללקוחות לפני טסט או טיפול?",
+    "איך מאשרים עם הלקוח עבודה נוספת שמצאתם?",
+    "איך מקבלים תשלום ומוציאים חשבונית?",
+    "מאיפה מזמינים חלקים? כמה ספקים?"
+   ]
+  },
+  "fitness": {
+   "label_he": "סטודיו וחדר כושר",
+   "services": [
+    "site",
+    "class_schedule",
+    "trial_form",
+    "recurring",
+    "renewal",
+    "reviews",
+    "receipts",
+    "gbp",
+    "wa_business"
+   ],
+   "questions_he": [
+    "איך נרשמים לשיעור היום?",
+    "כמה מגיעים לשיעור ניסיון בחודש, וכמה מהם נרשמים?",
+    "איך גובים את המנוי? הוראת קבע?",
+    "מזכירים למנויים לפני שהמנוי נגמר?",
+    "יש רשימת המתנה לשיעורים מלאים?"
+   ]
+  },
+  "professional": {
+   "label_he": "משרד ושירותים מקצועיים",
+   "services": [
+    "site",
+    "booking",
+    "docs_collect",
+    "deadline_reminder",
+    "esign",
+    "receipts",
+    "gbp",
+    "clients"
+   ],
+   "questions_he": [
+    "איך לקוחות שולחים לכם מסמכים היום?",
+    "כמה זמן בחודש הולך על רדיפה אחרי מסמכים?",
+    "איך מזכירים ללקוחות מועדים?",
+    "איך חותמים על הסכם התקשרות?",
+    "איך לקוח חדש קובע פגישה ראשונה?"
+   ]
+  },
+  "retail": {
+   "label_he": "חנות",
+   "services": [
+    "site",
+    "gbp",
+    "wa_catalog",
+    "reviews",
+    "gift",
+    "receipts",
+    "pay_link",
+    "clients",
+    "suppliers"
+   ],
+   "questions_he": [
+    "לקוחות שואלים בוואטסאפ אם יש מוצר במלאי?",
+    "יש לכם קטלוג אונליין?",
+    "מוכרים שוברי מתנה?",
+    "איך מזמינים סחורה מספקים?",
+    "יש רשימת לקוחות קבועים?"
+   ]
   }
+ },
+ "osm_groups": {
+  "beauty": "beauty",
+  "health": "health",
+  "food": "food",
+  "trades": "trades",
+  "fitness": "fitness",
+  "professional": "professional",
+  "retail": "retail",
+  "auto": "auto",
+  "education": "default",
+  "hospitality": "default"
  }
 }

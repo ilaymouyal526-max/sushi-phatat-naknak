@@ -48,6 +48,12 @@ Requires Python 3.10+ with `requests`, `beautifulsoup4` and `openpyxl`.
   next suggested try, a call script, answers to common objections, and a "ניסיתי להתקשר…" ("I tried calling…") WhatsApp button.
   Filter "📞 טוב עכשיו" ("good now") shows who to call right now. Logged calls stay on the phone until you tap
   "ייצוא יומן שיחות" ("export call log") and give the file to Claude.
+- **Call sheet ("📋 דף שיחה לפי סוג עסק")** at the top of the same page: for each type of business in the run
+  (hair, beauty, tattoo, massage/spa, food, health, trades, auto, fitness, offices, retail), what else you can offer
+  (booking + reminders, deposits, digital receipts, supplier orders, review requests, gift vouchers…), numbers to quote
+  with their source and year, questions to ask the owner, market prices (estimates are marked) and Israeli rules to
+  know (allocation numbers, digital receipts, spam law, privacy amendment 13, website accessibility, WhatsApp API).
+  Each card's "🧰 להציע גם" line names the 3 services that fit that lead best and links to its pack.
 - **`plan-<date>.html` + `plan-<date>.ics`**: the daily call plan in time order, and a calendar file with the call
   blocks and callback reminders.
 - **`.xlsx` (and `.csv`)** for tracking and learning. Columns start with what you act on:
@@ -59,6 +65,7 @@ Requires Python 3.10+ with `requests`, `beautifulsoup4` and `openpyxl`.
 | best time to call / rush hours / opening hours | when the owner is most likely free, and when not to call |
 | attempts / next try | from your call log |
 | what to sell | New website (no own site) · Redesign (broken/outdated site) · Automation (no booking/WhatsApp/lead capture) · Low fit |
+| להציע גם / upsell | the 3 extra services that fit this lead best (details in the "דף שיחה · Call sheet" sheet) |
 | why / why (English) | the top reasons behind the score |
 | outreach_he | a Hebrew opener naming a real gap, which you send yourself |
 | verified_online | `yes` once Claude has checked the business online |
@@ -73,6 +80,9 @@ How the % is built and its sources: [RESEARCH.md](RESEARCH.md).
 - `leads/calls.csv` and `leads/do_not_contact.csv` hold your call log and the businesses that said no.
 - `data/weights.json` holds the research baseline weights. `data/holidays_il.json` holds Israeli holidays 2026–2028
   (from Hebcal). `data/objections_he.json` holds the objection answers, which you can edit.
+- `data/services_he.json` (services, questions and which business types get which) and `data/facts_he.json` (numbers,
+  laws and prices, each with a source, url and year or checked date) feed the call sheet. Edit them freely; keep the ids,
+  give every new number a real source, and mark price guesses `"estimate": true`. `tests/test_services.py` checks this.
 
 ## Rules of the road
 Never bulk-message. Israel's Communications Law §30A restricts bulk commercial messages. Send one personal message

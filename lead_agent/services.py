@@ -23,11 +23,25 @@ def facts() -> dict:
     return json.loads((DATA / "facts_he.json").read_text(encoding="utf-8"))
 
 
+def _osm_group(category: str) -> str:
+    """'amenity=dentist' -> 'health', using the finder's own category groups (osm.CATEGORY_GROUPS)."""
+    from .osm import CATEGORY_GROUPS
+    key, _, value = category.partition("=")
+    for name, spec in CATEGORY_GROUPS.items():
+        values = spec.get(key, [])
+        if value and ("*" in values or value in values):
+            return name
+    return ""
+
+
 def group_for(lead: dict) -> str:
-    """OSM category ('shop=hairdresser') -> service group ('hair'); 'default' when unknown."""
-    groups = catalog()["groups"]
-    g = catalog()["map"].get(str(lead.get("category", "")).strip(), "default")
-    return g if g in groups else "default"
+    """OSM category ('shop=hairdresser') -> service group ('hair'); 'default' when unknown.
+
+    An exact tag in 'map' wins; otherwise the finder's category group is mapped through 'osm_groups'."""
+    cat = catalog()
+    category = str(lead.get("category", "")).strip()
+    g = cat["map"].get(category) or cat.get("osm_groups", {}).get(_osm_group(category), "default")
+    return g if g in cat["groups"] else "default"
 
 
 def _gaps(lead: dict) -> set[str]:

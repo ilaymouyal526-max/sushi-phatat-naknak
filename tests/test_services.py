@@ -43,7 +43,21 @@ class TestPicking(unittest.TestCase):
         self.assertEqual(services.group_for(lead("shop=tattoo")), "tattoo")
         self.assertEqual(services.group_for(lead("amenity=spa")), "massage")
         self.assertEqual(services.group_for(lead("shop=cosmetics")), "beauty")
-        self.assertEqual(services.group_for(lead("amenity=dentist")), "default")
+        self.assertEqual(services.group_for(lead("amenity=dentist")), "health")
+        self.assertEqual(services.group_for(lead("craft=electrician")), "trades")
+        self.assertEqual(services.group_for(lead("amenity=restaurant")), "food")
+        self.assertEqual(services.group_for(lead("shop=car_repair")), "auto")
+        self.assertEqual(services.group_for(lead("office=accountant")), "professional")
+        self.assertEqual(services.group_for(lead("leisure=fitness_centre")), "fitness")
+        self.assertEqual(services.group_for(lead("shop=florist")), "retail")
+        self.assertEqual(services.group_for(lead("tourism=hotel")), "default")
+        self.assertEqual(services.group_for(lead("something=else")), "default")
+
+    def test_every_group_has_a_full_pack(self):
+        for g in services.catalog()["groups"]:
+            pk = services.pack(g)
+            self.assertGreaterEqual(len(pk["services"]), 3, g)
+            self.assertTrue(pk["facts"] and pk["questions_he"], g)
 
     def test_no_website_puts_site_and_booking_first(self):
         top = [s["id"] for s in services.top_services(lead())]
@@ -51,7 +65,7 @@ class TestPicking(unittest.TestCase):
         self.assertEqual(len(top), 3)
 
     def test_unknown_group_still_offers_something(self):
-        top = services.top_services(lead("amenity=dentist", lead_type="AUTOMATION", signals=["has_phone"]))
+        top = services.top_services(lead("tourism=hotel", lead_type="AUTOMATION", signals=["has_phone"]))
         self.assertEqual(len(top), 3)
 
     def test_pack_has_all_four_kinds(self):

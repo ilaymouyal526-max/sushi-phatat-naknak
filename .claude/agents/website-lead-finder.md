@@ -44,4 +44,5 @@ Keep it short; the main session relays it:
 - the run file paths (`.json`, `.html`, `.xlsx`, `.csv`),
 - stats: found, excluded, delivered, verified, Hot / Warm counts, whether you hit the deadline,
 - the top 10 as a table: name, type, success %, main reason, phone, best time to call,
+  and the "להציע גם" (upsell) services for each, from the run file's `upsell` field,
 - anything that went wrong (mirror failures, blocked searches).
