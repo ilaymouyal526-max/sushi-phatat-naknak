@@ -1,5 +1,7 @@
 # lead_agent: find Israeli businesses that need a website or automation
 
+> Full project history, decisions and next steps: [`HANDOFF-lead-finder.md`](../HANDOFF-lead-finder.md).
+
 Free and local. Uses OpenStreetMap plus direct checks of each business's own website. No paid APIs.
 
 ## Use it from Claude Code (recommended)
