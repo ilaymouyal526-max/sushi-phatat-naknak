@@ -162,7 +162,7 @@ def finish(run_json: Path | None, resets_at: int | None, target: dict | None,
                                    if h not in seen]
         entry.update(delivered=len(leads), hot=sum(l.get("band") == "Hot" for l in leads),
                      warm=sum(l.get("band") == "Warm" for l in leads),
-                     verified=sum(l.get("verified_online") == "yes" for l in leads))
+                     verified=sum((l.get("verified") or l.get("verified_online")) == "yes" for l in leads))
     if dnc_csv and dnc_csv.exists():
         with dnc_csv.open(encoding="utf-8") as f:
             ids = [r["lead_id"] for r in csv.DictReader(f) if r.get("lead_id")]

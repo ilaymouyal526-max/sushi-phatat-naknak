@@ -10,7 +10,8 @@ import requests
 from .cities import USER_AGENT
 
 # Public Overpass endpoints, tried in order. maps.mail.ru answered reliably in testing;
-# the others are kept as fallbacks.
+# the others are kept as fallbacks. Queries go by POST: in Nov 2026 maps.mail.ru started
+# timing out (HTTP 504) on GET while still answering the same query by POST in ~13 s.
 MIRRORS = [
     "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
     "https://overpass-api.de/api/interpreter",
@@ -105,8 +106,8 @@ def fetch(query: str, retries_per_mirror: int = 1, timeout: int = 120) -> list[d
     for url in MIRRORS:
         for attempt in range(retries_per_mirror + 1):
             try:
-                resp = requests.get(url, params={"data": query}, headers={"User-Agent": USER_AGENT},
-                                    timeout=timeout)
+                resp = requests.post(url, data={"data": query}, headers={"User-Agent": USER_AGENT},
+                                     timeout=timeout)
                 if resp.status_code == 200 and resp.text.lstrip().startswith("{"):
                     print(f"  OpenStreetMap answered via {url.split('/')[2]}", file=sys.stderr)
                     return resp.json().get("elements", [])

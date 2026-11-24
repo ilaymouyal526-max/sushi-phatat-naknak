@@ -169,13 +169,20 @@ CSS = """
 --chip:#181b21;--chip-on:#e5e7eb;--chip-on-t:#111827;--opener:#1c2433;--good:#123821;--good-t:#bbf7d0;
 --rush:#45240f;--rush-t:#fed7aa;--off:#262a31;--off-t:#d1d5db;--when:#1d2027}
 *{box-sizing:border-box}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.cbf,.csvbox{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.cbf input,.csvbox textarea{font:inherit;font-size:.9rem;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:6px 8px}
+.csvbox textarea{width:100%;font-family:ui-monospace,monospace;font-size:.8rem}
+.cbf button,.csvbox button{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--chip-on);color:var(--chip-on-t);border-radius:8px;padding:6px 12px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--chip-on);color:var(--chip-on-t);padding:10px 16px;border-radius:10px;z-index:20;max-width:calc(100% - 32px);font-size:.9rem}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
 main{max-width:720px;margin:0 auto;padding:16px}
 h1{font-size:1.3rem;margin:4px 0}
 .sub,.muted,.meta{color:var(--muted);font-size:.9rem}
 .note{font-size:.85rem;color:var(--muted);border-left:3px solid var(--line);padding-left:10px;margin:10px 0}
 .daynote{background:var(--rush);color:var(--rush-t);border-radius:10px;padding:10px 12px;margin:10px 0}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 16px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:1}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 16px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:8px 0;z-index:1}
 .chips button{border:1px solid var(--line);background:var(--chip);color:var(--text);border-radius:999px;padding:8px 14px;font:inherit;font-size:.9rem}
 .chips button[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-t);border-color:var(--chip-on)}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
@@ -275,6 +282,9 @@ function status(S,now){
   if(inR(di.best,now.min))return{cls:'good',good:true,text:'🟢 זמן טוב להתקשר עכשיו'+(di.note?' · '+di.note:'')};
   return{cls:'',text:'אפשר להתקשר · הכי טוב '+nx()+(di.note?' · '+di.note:'')};
 }
+function toast(t){let el=document.querySelector('.toast');
+  if(!el){el=document.createElement('div');el.className='toast';el.setAttribute('role','status');document.body.append(el)}
+  el.textContent=t;el.hidden=false;clearTimeout(el._t);el._t=setTimeout(()=>el.hidden=true,3500)}
 function local(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}}
 function saveLocal(a){try{localStorage.setItem(KEY,JSON.stringify(a));return true}catch(e){return false}}
 function history(L){
@@ -319,16 +329,28 @@ chips.forEach(b=>b.addEventListener('click',()=>{chips.forEach(x=>x.setAttribute
 function nowStamp(){const n=ilNow();return n.date+' '+hhmm(n.min)}
 document.querySelectorAll('.card').forEach(c=>{
   const L=JSON.parse(c.dataset.lead);
-  c.querySelectorAll('[data-result]').forEach(b=>b.addEventListener('click',()=>{
-    const result=b.dataset.result;let cb='';
-    if(result==='call_back'){
-      const t=prompt('מתי לחזור? (למשל 15:30, או 2026-11-17 10:00)');if(!t)return;
-      cb=/^\d{1,2}:\d{2}$/.test(t.trim())?ilNow().date+' '+t.trim().padStart(5,'0'):t.trim().replace('T',' ');
-    }
-    if(result==='not_interested'&&!confirm('לסמן "לא מעוניין"? העסק לא יופיע יותר ברשימות.'))return;
-    const a=local();a.push({lead_id:L.lead_id,at:nowStamp(),result,callback_at:cb,note:'',name:L.name,profile:L.profile});
-    if(!saveLocal(a))alert('לא הצלחתי לשמור בטלפון. רשום ידנית או שלח ל-Claude.');
+  const add=(result,cb)=>{
+    const a=local();a.push({lead_id:L.lead_id,at:nowStamp(),result,callback_at:cb||'',note:'',name:L.name,profile:L.profile});
+    toast(saveLocal(a)?'נרשם: '+HE[result]:'לא הצלחתי לשמור בטלפון. רשום ידנית או שלח ל-Claude.');
     refresh();
+  };
+  c.querySelectorAll('[data-result]').forEach(b=>b.addEventListener('click',()=>{
+    const result=b.dataset.result;
+    if(result==='call_back'){
+      let f=c.querySelector('.cbf');
+      if(f){f.remove();return}
+      f=document.createElement('form');f.className='cbf';f.dir='rtl';
+      f.innerHTML='<label>מתי לחזור? <input type="text" inputmode="numeric" placeholder="15:30 או 2026-11-17 10:00" required></label> <button type="submit">שמור</button>';
+      b.closest('div,nav').after(f);const inp=f.querySelector('input');inp.id='cb-'+L.lead_id.replace(/\W/g,'-');inp.focus();
+      f.addEventListener('submit',e=>{e.preventDefault();const t=inp.value.trim();if(!t)return;
+        add(result,/^\d{1,2}:\d{2}$/.test(t)?ilNow().date+' '+t.padStart(5,'0'):t.replace('T',' '));f.remove()});
+      return;
+    }
+    if(result==='not_interested'&&b.dataset.arm!=='1'){
+      const old=b.textContent;b.dataset.arm='1';b.textContent='לחצו שוב לאישור';
+      setTimeout(()=>{b.dataset.arm='';b.textContent=old},4000);return;
+    }
+    b.dataset.arm='';add(result,'');
   }));
   c.querySelector('[data-undo]').addEventListener('click',()=>{
     const a=local();for(let i=a.length-1;i>=0;i--)if(a[i].lead_id===L.lead_id){a.splice(i,1);break}
@@ -344,9 +366,17 @@ document.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',async()
 }));
 const exp=document.querySelector('[data-export]');
 if(exp)exp.addEventListener('click',async()=>{
-  const rows=local();if(!rows.length){alert('עוד לא נרשמו שיחות בטלפון הזה.');return}
+  const rows=local();if(!rows.length){toast('עוד לא נרשמו שיחות בטלפון הזה.');return}
   const f=['lead_id','at','result','callback_at','note','name','profile'],q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
   const csv=[f.join(',')].concat(rows.map(r=>f.map(k=>q(r[k])).join(','))).join('\n');
+  let box=document.querySelector('.csvbox');
+  if(!box){box=document.createElement('div');box.className='csvbox';box.dir='rtl';
+    box.innerHTML='<p class="small">יומן השיחות. העתיקו ושלחו ל-Claude, או שמרו כקובץ calls.csv:</p><textarea id="calllog-csv" readonly rows="6"></textarea><button type="button">Copy</button>';
+    exp.closest('.toolbar').after(box);
+    box.querySelector('button').addEventListener('click',async e=>{const ta=box.querySelector('textarea');
+      try{await navigator.clipboard.writeText(ta.value);e.target.textContent='Copied ✓'}
+      catch(err){ta.select();e.target.textContent='Selected, now copy'}setTimeout(()=>e.target.textContent='Copy',2000)});}
+  box.querySelector('textarea').value=csv;box.scrollIntoView({block:'nearest'});
   const name='calls-'+ilNow().date+'.csv',file=new File(['﻿'+csv],name,{type:'text/csv'});
   try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:name});return}}catch(e){}
   const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=name;a.click();
