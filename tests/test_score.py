@@ -110,3 +110,19 @@ class Osm(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class AppFitRating(unittest.TestCase):
+    def test_app_runs_use_the_fit_note(self):
+        from lead_agent import score
+        base = {"category": "amenity=bar", "phone": "03-1", "focus": "app", "website": "", "audit": {"site_status": "none"}}
+        leads = [dict(base, lead_id="a", name="A", notes="app fit: low – tiny"),
+                 dict(base, lead_id="b", name="B", notes="app fit: high – open every night until 02:00. demo: tips"),
+                 dict(base, lead_id="c", name="C", notes="app fit: medium - two branches"),
+                 dict(base, lead_id="d", name="D")]
+        out = score.score_all(leads)
+        self.assertEqual([l["lead_id"] for l in out][:3], ["b", "c", "a"])
+        self.assertEqual((out[0]["band"], out[0]["lead_type"], out[0]["app_fit"]), ("Hot", "APP", "high"))
+        self.assertTrue(out[0]["why"].startswith("open every night"))
+        self.assertEqual(out[1]["band"], "Warm")
+        self.assertEqual(next(l for l in out if l["lead_id"] == "d")["app_fit"], "unrated")

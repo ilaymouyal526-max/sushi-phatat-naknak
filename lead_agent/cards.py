@@ -140,7 +140,7 @@ def _card(lead: dict, slot: str = "", kind: str = "") -> str:
   {slot_html}
   <header>
     <h2 dir="auto">{_e(lead.get("name"))}</h2>
-    <span class="badge {_e(band.lower())}">{_e(BAND_LABEL.get(band, band))} · {_e(lead.get("success_pct"))}%</span>
+    <span class="badge {_e(band.lower())}">{_e(BAND_LABEL.get(band, band))} · {_e(("app fit " + str(lead.get("app_fit"))) if lead.get("lead_type") == "APP" else str(lead.get("success_pct")) + "%")}</span>
   </header>
   <p class="meta" dir="auto">{meta}</p>
   <p class="sell"><span class="pill">{_e(lead.get("sell") or lead.get("lead_type"))}</span> {verified}</p>
@@ -394,10 +394,15 @@ TOOLBAR = ('<div class="toolbar" dir="rtl"><button type="button" data-export>⬇
 def render_cards(leads: list[dict], meta: dict) -> str:
     city = str(meta.get("city", "")).title()
     created = str(meta.get("created", ""))[:10]
+    if meta.get("focus") == "app":
+        rating_note = ("Rated by <b>app fit</b>: Claude checked each business online against the app's good and bad signs "
+                       "(Hot = high fit, Warm = medium, Cold = low or not checked). It's a judgement, not a measured %.")
+    else:
+        rating_note = ("The % is an <b>estimate</b> of the chance a business becomes a paying client after one personal "
+                       "message or call (Hot ≥ 7%, Warm ≥ 3.5%).")
     intro = f"""<h1>Leads · {_e(city)}</h1>
   <p class="sub">{_e(meta.get("category", ""))} · {_e(created)} · {len(leads)} businesses</p>
-  <p class="note">The % is an <b>estimate</b> of the chance a business becomes a paying client after one personal
-  message or call (Hot ≥ 7%, Warm ≥ 3.5%). The green badge shows who is good to call <b>right now</b> (Israel time).
+  <p class="note">{rating_note} The green badge shows who is good to call <b>right now</b> (Israel time).
   Send messages yourself, one at a time, and stop if they say no.</p>
   {TOOLBAR.format(extra="")}"""
     return _page(f"Leads · {city}", intro, "".join(_card(l) for l in leads), leads)

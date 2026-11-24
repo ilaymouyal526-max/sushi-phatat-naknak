@@ -5,6 +5,7 @@ from __future__ import annotations
 import datetime as dt
 import json
 import math
+import re
 from .paths import BASELINE, learned_weights
 
 HIGH_VALUE = {
@@ -175,9 +176,31 @@ def score_lead(lead: dict, weights: dict | None = None) -> dict:
     return lead
 
 
+APP_FIT = re.compile(r"app fit:\s*(high|medium|low)\b\s*[–—:-]?\s*([^\n]*)", re.I)
+FIT_RANK = {"high": 3, "medium": 2, "low": 1}
+
+
+def apply_app_fit(lead: dict) -> dict:
+    """App runs: the rating is Claude's app-fit judgement (in notes), not the website model.
+
+    high -> Hot, medium -> Warm, low or not rated yet -> Cold. success_pct stays as a tie-breaker only.
+    """
+    m = APP_FIT.search(lead.get("notes") or "")
+    fit = m.group(1).lower() if m else "unrated"
+    lead["app_fit"] = fit
+    lead["band"] = {"high": "Hot", "medium": "Warm"}.get(fit, "Cold")
+    lead["lead_type"] = "APP"
+    if m and m.group(2).strip():
+        reason = re.split(r"\s+(?:demo|look):", m.group(2).strip(), maxsplit=1, flags=re.I)[0].strip().rstrip(".")
+        lead["why"] = lead["why_he"] = reason[:200]
+    return lead
+
+
 def score_all(leads: list[dict]) -> list[dict]:
     weights = load_weights()
     for lead in leads:
         score_lead(lead, weights)
-    leads.sort(key=lambda l: -l["success_pct"])
+        if lead.get("focus") == "app":
+            apply_app_fit(lead)
+    leads.sort(key=lambda l: (-FIT_RANK.get(l.get("app_fit", ""), 0), -l["success_pct"]))
     return leads

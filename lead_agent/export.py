@@ -51,6 +51,7 @@ COLUMNS = [
 ]
 
 SELL_LABELS = {
+    "APP": "Management app / אפליקציית ניהול",
     "WEBSITE": "אתר חדש · New website",
     "REDESIGN": "שדרוג אתר · Redesign",
     "AUTOMATION": "אוטומציה · Automation",
@@ -68,7 +69,10 @@ def add_links(lead: dict) -> None:
     lead["maps_link"] = f"https://www.google.com/maps/search/?api=1&query={q}"
     lead["search_link"] = f"https://www.google.com/search?q={q}"
     lead["verified"] = "yes" if lead.get("enriched") else "no"
-    lead["rating"] = f"{lead.get('band', '')} · {lead.get('success_pct', 0)}%"
+    if lead.get("lead_type") == "APP":
+        lead["rating"] = f"{lead.get('band', '')} · app fit {lead.get('app_fit', 'unrated')}"
+    else:
+        lead["rating"] = f"{lead.get('band', '')} · {lead.get('success_pct', 0)}%"
     lead["sell"] = SELL_LABELS.get(lead.get("lead_type", ""), lead.get("lead_type", ""))
 
 
