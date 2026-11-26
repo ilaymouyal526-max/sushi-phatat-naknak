@@ -1,5 +1,5 @@
 {
- "enabled": true,
+ "enabled": false,
  "notify_minutes_before": 70,
  "stop_minutes_before": 5,
  "min_minutes_to_run": 25,
